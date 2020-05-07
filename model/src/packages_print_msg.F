@@ -47,7 +47,7 @@ c     print *, prtFmt
 
       iLen = LEN(pkgName)
       pkgLwc(1:iLen+4) = 'pkg/'//pkgName
-      CALL LCASE(pkgLwc(1:iLen+4))
+      CALL EES_LCASE(pkgLwc(1:iLen+4))
 
       IF ( pkgMsg .EQ. 'None' ) THEN
         WRITE(standardMessageUnit,prtFmt)

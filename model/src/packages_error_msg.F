@@ -41,8 +41,8 @@ CEOP
       iLen = LEN(msg1)
       msgLwc(1:iLen) = msg1
       msgUpc(1:iLen) = msg1
-      CALL LCASE(msgLwc(1:iLen))
-      CALL UCASE(msgUpc(1:iLen))
+      CALL EES_LCASE(msgLwc(1:iLen))
+      CALL EES_UCASE(msgUpc(1:iLen))
       IF ( msg2 .EQ. ' ' ) THEN
        WRITE(msgBuf,'(4A)') 'from PACKAGES_CHECK: ',
      &  'run-time control flag use',msg1,' is set'

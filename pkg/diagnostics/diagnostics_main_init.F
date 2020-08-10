@@ -154,6 +154,14 @@ c    &diagTitle = 'Sea Surface Elevation'
       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
      I          diagName, diagCode, diagUnits, diagTitle, 0, myThid )
 
+      diagName  = 'SSHwIceL'
+      diagTitle = DIAGS_MK_TITLE(
+     &    eTitle//rTitle//' Anomaly including seaice loading', myThid )
+      diagUnits = DIAGS_MK_UNITS( rUnit2c, myThid )
+      diagCode  = 'SM      M1      '
+      CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I          diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
       diagName  = 'THETA   '
       diagTitle = 'Potential Temperature'
       diagUnits = DIAGS_MK_UNITS( tUnit4c, myThid )

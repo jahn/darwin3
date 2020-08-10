@@ -22,6 +22,9 @@ C     == Global variables ===
 #include "SURFACE.h"
 #include "DYNVARS.h"
 #include "NH_VARS.h"
+#ifdef ATMOSPHERIC_LOADING
+#include "FFIELDS.h"
+#endif
 #ifdef ALLOW_GENERIC_ADVDIFF
 # include "GAD.h"
 #endif
@@ -52,6 +55,9 @@ C     == Local variables ==
 #ifdef ALLOW_FIZHI
       _RL dummy1, dummy2, dummy3, dummy4, kappa, getcon
 #endif
+#ifdef ATMOSPHERIC_LOADING
+      _RL sIceLoadFac
+#endif
 #ifdef ALLOW_ADAMSBASHFORTH_3
       INTEGER m1
 #endif
@@ -62,6 +68,27 @@ C     == Local variables ==
 C--   fill momentum state-var diagnostics:
 
         CALL DIAGNOSTICS_FILL(etaN, 'ETAN    ',0, 1,0,1,1,myThid)
+
+        IF ( DIAGNOSTICS_IS_ON('SSHwIceL',myThid) ) THEN
+#ifdef ATMOSPHERIC_LOADING
+         sIceLoadFac=zeroRL
+         IF ( useRealFreshWaterFlux ) sIceLoadFac=recip_rhoConst
+#endif
+         DO bj = myByLo(myThid), myByHi(myThid)
+          DO bi = myBxLo(myThid), myBxHi(myThid)
+           DO j = 1,sNy
+            DO i = 1,sNx
+              tmp1k(i,j,bi,bj) = (ETAN(i,j,bi,bj)
+#ifdef ATMOSPHERIC_LOADING
+     &                +sIceLoad(i,j,bi,bj)*sIceLoadFac
+#endif
+     &                ) * maskC(i,j,1,bi,bj)
+            ENDDO
+           ENDDO
+          ENDDO
+         ENDDO
+         CALL DIAGNOSTICS_FILL(tmp1k,'SSHwIceL',0,1,0,1,1,myThid)
+        ENDIF
 
         IF ( DIAGNOSTICS_IS_ON('RSURF   ',myThid) ) THEN
          DO bj = myByLo(myThid), myByHi(myThid)

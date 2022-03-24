@@ -45,3 +45,4 @@ grdchk		+autodiff	+cost		+ctrl
 showflops	+runclock
 steep_cavity    +shelfice
 
+sal             +exf

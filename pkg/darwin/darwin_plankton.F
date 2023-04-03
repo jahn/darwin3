@@ -867,10 +867,13 @@ C======================================
 
         Qn_exc = MAX(0 _d 0, mmQn - Qn_D0)
         PC_n = 2*Qn_exc/(Qn_D1 + SQRT(Qn_D1*Qn_D1 + 4*Qn_D2*Qn_exc))
+
         Qp_exc = Max(0 _d 0, mmQp - Qp_D0)
         PC_p = 2*Qp_exc/(Qp_D1 + SQRT(Qp_D1*Qp_D1 + 4*Qp_D2*Qp_exc))
+
         Qfe_exc = Max(0 _d 0, mmQfe - Qfe_D0)
         PC_fe = Qfe_exc/Qfe_D1
+
         Qc_exc = MAX(0 _d 0, Qc(j) - Qc_D0)
         PCc = 2*Qc_exc/(Qc_D1 + SQRT(Qc_D1*Qc_D1 + 4*Qc_D2*Qc_exc))
 

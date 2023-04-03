@@ -786,20 +786,22 @@ C==== Photosynthesis ===================================================
          mmX = 0 _d 0
         ENDIF
 
-C       set up Chl and N requirements as a function of growth rate PC
+C       set up quota requirements as a function of growth rate PC,
 C       then solve for PC
 
-C       Carbohydrate fixation rate per chlorophyll (s-1)
+C       Carbohydrate fixation rate per (carbon in) chlorophyll (s-1)
         PChl = Sf(j)*VI_max(j)*(1 - EXP(-A_I(j)*PARtot))
 
-C       At low light, hold PChl at lowest value that supports growth
-        PChlTgt = MAX(VI_min(j), PChl)
+C       chlorophyll quota (mol C molC-1):
+C
+C         QC_Chl = ((1 _d 0 + E)*PC + m)/PChl
+C
+C       Due to carbon limitation, no growth is possible at low light
+C       when PChl <= VI_min(j).  We set Chl = m/VI_min(j) in this case.
 
-C       chlorophyll quota (mol C cell-1)
-C       Chl = ((1 _d 0 + E)*ls + m)/PChlTgT
-C       where ls = D*Qc               (molC s-1) Biomass synthesis rate
-        QC_chl_const = maintConsum(j)/PChlTgT
-        QC_chl_D     = (1 + ECo2Prod(j))/PChlTgT
+        PChlTgt = MAX(VI_min(j), PChl)
+        QC_chl_const = maintConsum(j)/PChlTgt
+        QC_chl_D     = (1 + ECo2Prod(j))/PChlTgt
 
 C       nitrogen pools in mol N (mol C)-1
         QN_chl_const = QC_chl_const*Y_NC_chl(j)
@@ -824,12 +826,11 @@ C        Total
         Qn_D2 = QN_rna_D2
 
 C       Kei3: For P limitation
-        A_P = ((1 _d 0 + ECo2Prod(j))*A_pho(j)/Y_CN_protein(j))/PChlTgT
-     &          + A_bio(j)/Y_CN_protein(j)/macromolTempFunc
-        B_P = QN_pro_other(j)
-     &          + (maintConsum(j)*A_pho(j)/Y_CN_protein(j))/PChlTgT
-        L_P = ((1 _d 0 + ECo2Prod(j))*Y_THY_P(j))/PChlTgT
-        M_P = (maintConsum(j)*Y_THY_P(j))/PChlTgT
+        A_P = QC_chl_D*A_pho(j)/Y_CN_protein(j)
+     &      + A_bio(j)/Y_CN_protein(j)/macromolTempFunc
+        B_P = QN_pro_other(j) + QC_chl_const*A_pho(j)/Y_CN_protein(j)
+        L_P = QC_chl_D*Y_THY_P(j)
+        M_P = QC_chl_const*Y_THY_P(j)
 
         Qp_D0 = M_P + QN_RNA_min(j)*Y_PN_nucacid(j)
      &         + QN_DNA(j)*Y_PN_nucacid(j) + QP_other(j)
@@ -840,10 +841,8 @@ C       Kei3: For P limitation
 
 
 C       Kei3-1: For Fe limitation
-        Qfe_D1=((1 _d 0 + ECo2Prod(j))*A_pho(j)/Y_CN_protein(j)
-     &       *Y_FeN_photo(j))/PChlTgT
-        Qfe_D0 =(maintConsum(j)*A_pho(j)/Y_CN_protein(j)*Y_FeN_photo(j))
-     &       /PChlTgT
+        Qfe_D1 = QC_chl_D*A_pho(j)/Y_CN_protein(j)*Y_FeN_photo(j)
+        Qfe_D0 = QC_chl_const*A_pho(j)/Y_CN_protein(j)*Y_FeN_photo(j)
 
 
 C       carbon restriction on growth rate

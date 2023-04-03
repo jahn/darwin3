@@ -316,6 +316,48 @@ C---+----1----+----2----+----3----+----4----+----5----+----6----+----7-|--+----|
        CALL DIAGNOSTICS_ADDTOLIST( diagNum,
      I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
 
+       WRITE(diagName,'(A,I4.4)')'Ness', j
+       WRITE(diagTitle,'(A)')'essential N quota'
+       diagUnits = 'mol N molC-1    '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+       WRITE(diagName,'(A,I4.4)')'Pess', j
+       WRITE(diagTitle,'(A)')'essential P quota'
+       diagUnits = 'mol P molC-1    '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+       WRITE(diagName,'(A,I4.4)')'Fess', j
+       WRITE(diagTitle,'(A)')'essential Fe quota'
+       diagUnits = 'mol Fe molC-1   '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+       WRITE(diagName,'(A,I4.4)')'Nes', j
+       WRITE(diagTitle,'(A)')'essential N quota'
+       diagUnits = 'mol N molC-1    '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+       WRITE(diagName,'(A,I4.4)')'Pes', j
+       WRITE(diagTitle,'(A)')'essential P quota'
+       diagUnits = 'mol P molC-1    '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+       WRITE(diagName,'(A,I4.4)')'Fes', j
+       WRITE(diagTitle,'(A)')'essential Fe quota'
+       diagUnits = 'mol Fe molC-1   '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
       ENDDO
 #endif /* DARWIN_MACROMOLECULAR_GROWTH */
 

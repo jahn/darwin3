@@ -936,6 +936,24 @@ C === diagnostics ======================================================
         WRITE(diagname, '(A,I4.4)') 'FEXC', iTr
         CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iFEXC+iTr-1),diagname,
      &          0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'Ness', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iNess+iTr-1),diagname,
+     &          0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'Pess', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iPess+iTr-1),diagname,
+     &          0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'Fess', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iFess+iTr-1),diagname,
+     &          0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'Nes', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iNes+iTr-1),diagname,
+     &          0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'Pes', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iPes+iTr-1),diagname,
+     &          0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'Fes', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iFes+iTr-1),diagname,
+     &          0,Nr,2,bi,bj,myThid)
        ENDDO
 #endif /* DARWIN_MACROMOLECULAR_GROWTH */
 

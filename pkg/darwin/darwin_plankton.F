@@ -284,6 +284,12 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL QP_essential
       _RL QN_max
       _RL QC_essential
+      _RL QN_ess1
+      _RL QP_ess1
+      _RL QFe_ess1
+      _RL QN_ess2
+      _RL QP_ess2
+      _RL QFe_ess2
       _RL PC_c
       _RL QP_store
       _RL QP_excess
@@ -907,19 +913,26 @@ C       convert to mg Chl m-3
         QN_RNA       = QN_RNA_min(j) + QN_pro_tot*AP_RNA(j)*PC
      &         /macromolTempFunc
 
-         QP_thy = QC_chl*Y_THY_P(j)
-         QP_RNA = QN_RNA*Y_PN_nucacid(j)
-         Qfe_pro_photo = QN_pro_photo*Y_FeN_photo(j)
+        QP_thy = QC_chl*Y_THY_P(j)
+        QP_RNA = QN_RNA*Y_PN_nucacid(j)
+        Qfe_pro_photo = QN_pro_photo*Y_FeN_photo(j)
 
 C===========================
 CRevising store amount
 C===========================
-      QN_essential = QN_chl + QN_pro_tot + QN_RNA + QN_DNA(j)
-      QP_essential = QP_thy + QP_RNA + QP_DNA(j) +  QP_other(j)
-      Qfe_essential = Qfe_pro_photo
-      QN_max = QN_essential + QN_sto_max(j)
+        QN_essential = QN_chl + QN_pro_tot + QN_RNA + QN_DNA(j)
+        QP_essential = QP_thy + QP_RNA + QP_DNA(j) +  QP_other(j)
+        Qfe_essential = Qfe_pro_photo
+        QN_max = QN_essential + QN_sto_max(j)
 
-      QC_essential = Qc_D0 + Qc_D1*PC + Qc_D2*PC*PC
+        QN_ess1 = QN_essential
+        QP_ess1 = QP_essential
+        QFe_ess1 = QFe_essential
+
+        QC_essential = Qc_D0 + Qc_D1*PC + Qc_D2*PC*PC
+        QN_ess2 = Qn_D0 + Qn_D1*PC + Qn_D2*PC*PC
+        QP_ess2 = Qp_D0 + Qp_D1*PC + Qp_D2*PC*PC
+        QFe_ess2 = Qfe_D0 + Qfe_D1*PC
 
 c=======================================
 cHere compute when N,P,or Fe are scarce
@@ -1098,6 +1111,12 @@ C          PC = PC !- exQc
         diags(iFPHO+j-1) = Qfe_pro_photo
         diags(iFSTO+j-1) = Qfe_Store
         diags(iFEXC+j-1) = Qfe_excess
+        diags(iNess+j-1) = QN_ess1
+        diags(iPess+j-1) = QP_ess1
+        diags(iFess+j-1) = QFe_ess1
+        diags(iNes+j-1) = QN_ess2
+        diags(iPes+j-1) = QP_ess2
+        diags(iFes+j-1) = QFe_ess2
 
 
 #else /* DARWIN_MACROMOLECULAR_GROWTH */

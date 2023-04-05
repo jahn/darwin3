@@ -1020,7 +1020,6 @@ C
 C       exude excess nitrogen to NO3
         IF (tauExN(j) .NE. 0 _d 0) THEN
           IF (Nlim .NE. 1 _d 0) THEN
-C          QnExc = mmQn - (QN_chl+QN_pro_tot+QN_RNA+QN_DNA_plot+QN_store)
           QnExc = QN_excess
           exQn = MAX(0 _d 0, QnExc)/tauExN(j)
           uptakeN = uptakeN - exQn*mmX
@@ -1033,10 +1032,8 @@ C          QnExc = mmQn - (QN_chl+QN_pro_tot+QN_RNA+QN_DNA_plot+QN_store)
        ! Kei6: Exudation of P and Fe
          IF (tauExP(j) .NE. 0 _d 0) THEN
           IF (Plim .NE. 1 _d 0) THEN
-C          QpExc = mmQp - (QP_essential+QP_store)
           QpExc = QP_excess
           exQp = MAX(0 _d 0, QpExc)/tauExP(j)  !applying the same rate as N
-C         uptakeP = uptakeP - exQp*mmX
           uptakePO4 = uptakePO4 - exQp*mmX
           VP = VP - exQp
           ENDIF
@@ -1044,10 +1041,8 @@ C         uptakeP = uptakeP - exQp*mmX
 
         IF (tauExFe(j) .NE. 0 _d 0) THEN
           IF (Flim .NE. 1 _d 0) THEN
-C          QfeExc = mmQfe - (Qfe_essential+Qfe_Store)
           QfeExc = Qfe_excess
           exQfe = MAX(0 _d 0, QfeExc)/tauExFe(j)
-C         uptakeFe = uptakeFe - exQfe*mmX
           uptakeFeT = uptakeFeT - exQfe*mmX
           Vfe = Vfe - exQfe
           ENDIF

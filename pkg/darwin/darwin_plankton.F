@@ -1019,15 +1019,15 @@ C
 
 C       exude excess nitrogen to NO3
         IF (tauExN(j) .NE. 0 _d 0) THEN
-          IF (Nlim .NE. 1 _d 0) THEN
+C          IF (Nlim .NE. 1 _d 0) THEN
           QnExc = QN_excess
           exQn = MAX(0 _d 0, QnExc)/tauExN(j)
           uptakeN = uptakeN - exQn*mmX
           uptakeNO3 = uptakeNO3 - exQn*mmX
           VN = VN - exQn
-          ELSE
+        ELSE
           exQn = 0 _d 0
-          ENDIF
+C          ENDIF
         ENDIF
        ! Kei6: Exudation of P and Fe
          IF (tauExP(j) .NE. 0 _d 0) THEN

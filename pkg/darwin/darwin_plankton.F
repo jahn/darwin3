@@ -251,7 +251,6 @@ c !LOCAL VARIABLES: ====================================================
       _RL QN_pro_bio
       _RL QN_pro_tot
       _RL QN_RNA
-      _RL QnExc
       _RL exQn
       _RL QC_thy_D0
       _RL QC_thy_D1
@@ -301,7 +300,6 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL QN_store
       _RL QN_excess
       _RL Qc_essential_and_Nstore
-      _RL QpExc
       _RL exQp
       _RL uptakeP
 
@@ -327,7 +325,6 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL Qfe_Store
       _RL Qfe_excess
       _RL exQfe
-      _RL QfeExc
       _RL uptakeFe
       _RL MODE
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -985,35 +982,24 @@ C Storage calculation -----------------
         Qfe_store = MIN(mmQfe, Qfe_max(j)) - Qfe_essential
         Qfe_store = MAX(0 _d 0, Qfe_store)
 
-        QN_store = MAX(0 _d 0, QN_store)
-        QN_excess = MAX(0 _d 0, QN_excess)
-        QP_excess = MAX(0 _d 0, QP_excess)
-        QP_store = MAX(0 _d 0, QP_store)
-        Qfe_excess = MAX(0 _d 0, Qfe_excess)
-        Qfe_store = MAX(0 _d 0, Qfe_store)
-C
-
 C       exude excess nitrogen to NO3
         IF (tauExN(j) .NE. 0 _d 0) THEN
-          QnExc = QN_excess
-          exQn = MAX(0 _d 0, QnExc)/tauExN(j)
+          exQn = QN_excess/tauExN(j)
           uptakeN = uptakeN - exQn*mmX
           uptakeNO3 = uptakeNO3 - exQn*mmX
           VN = VN - exQn
         ELSE
           exQn = 0 _d 0
         ENDIF
-       ! Kei6: Exudation of P and Fe
-         IF (tauExP(j) .NE. 0 _d 0) THEN
-          QpExc = QP_excess
-          exQp = MAX(0 _d 0, QpExc)/tauExP(j)  !applying the same rate as N
+
+        IF (tauExP(j) .NE. 0 _d 0) THEN
+          exQp = QP_excess/tauExP(j)  !applying the same rate as N
           uptakePO4 = uptakePO4 - exQp*mmX
           VP = VP - exQp
         ENDIF
 
         IF (tauExFe(j) .NE. 0 _d 0) THEN
-          QfeExc = Qfe_excess
-          exQfe = MAX(0 _d 0, QfeExc)/tauExFe(j)
+          exQfe = Qfe_excess/tauExFe(j)
           uptakeFeT = uptakeFeT - exQfe*mmX
           Vfe = Vfe - exQfe
         ENDIF
@@ -1045,16 +1031,16 @@ C          PC = PC - exQc
         diags(iNRNA+j-1) = QN_RNA
         diags(iNDNA+j-1) = QN_DNA_plot
         diags(iNSTO+j-1) = QN_store
-        diags(iNEXC+j-1) = MAX(0 _d 0, QNexc)
+        diags(iNEXC+j-1) = QN_excess
         diags(iPRNA+j-1) = QP_RNA
         diags(iPDNA+j-1) = QP_DNA_plot
         diags(iPTHY+j-1) = QP_thy
         diags(iPCON+j-1) = QP_const_plot
         diags(iPSTO+j-1) = QP_store
-        diags(iPEXC+j-1) = MAX(0 _d 0, QPexc)
+        diags(iPEXC+j-1) = QP_excess
         diags(iFPHO+j-1) = Qfe_pro_photo
         diags(iFSTO+j-1) = Qfe_Store
-        diags(iFEXC+j-1) = MAX(0 _d 0, Qfeexc)
+        diags(iFEXC+j-1) = Qfe_excess
         diags(iNess+j-1) = QN_ess1
         diags(iPess+j-1) = QP_ess1
         diags(iFess+j-1) = QFe_ess1

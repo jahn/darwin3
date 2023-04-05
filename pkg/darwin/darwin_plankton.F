@@ -288,7 +288,6 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL QP_RNA
       _RL QN_essential
       _RL QP_essential
-      _RL QN_max
       _RL QC_essential
       _RL QN_ess1
       _RL QP_ess1
@@ -927,19 +926,18 @@ C       convert to mg Chl m-3
 C===========================
 CRevising store amount
 C===========================
-        QN_essential = QN_chl + QN_pro_tot + QN_RNA + QN_DNA(j)
-        QP_essential = QP_thy + QP_RNA + QP_DNA(j) +  QP_other(j)
-        Qfe_essential = Qfe_pro_photo
-        QN_max = QN_essential + QN_sto_max(j)
+C        QN_essential = QN_chl + QN_pro_tot + QN_RNA + QN_DNA(j)
+C        QP_essential = QP_thy + QP_RNA + QP_DNA(j) +  QP_other(j)
+C        Qfe_essential = Qfe_pro_photo
 
-        QN_ess1 = QN_essential
-        QP_ess1 = QP_essential
-        QFe_ess1 = QFe_essential
+c        QN_ess1 = QN_essential
+c        QP_ess1 = QP_essential
+c        QFe_ess1 = QFe_essential
 
         QC_essential = Qc_D0 + Qc_D1*PC + Qc_D2*PC*PC
-        QN_ess2 = Qn_D0 + Qn_D1*PC + Qn_D2*PC*PC
-        QP_ess2 = Qp_D0 + Qp_D1*PC + Qp_D2*PC*PC
-        QFe_ess2 = Qfe_D0 + Qfe_D1*PC
+c        QN_ess2 = Qn_D0 + Qn_D1*PC + Qn_D2*PC*PC
+c        QP_ess2 = Qp_D0 + Qp_D1*PC + Qp_D2*PC*PC
+c        QFe_ess2 = Qfe_D0 + Qfe_D1*PC
 
 c=======================================
 cHere compute when N,P,or Fe are scarce
@@ -956,7 +954,6 @@ c=======================================
         ENDIF
 
         QN_essential  = QN_chl + QN_pro_tot + QN_RNA + QN_DNA_plot
-        QN_max        = QN_essential + QN_sto_max(j)
         QP_essential  = QP_thy + QP_RNA + QP_DNA_plot +  QP_const_plot
         Qfe_essential = Qfe_pro_photo
 C        QC_essential  = QC_chl + QN_pro_tot*Y_CN_protein(j)
@@ -971,7 +968,6 @@ C     &                + QP_thy * Y_PC_pg(j) + QC_other(j)
 
 C Storage calculation -----------------
 
-c        QN_max = QN_essential + QN_sto_max(j)
         QN_store = MIN(mmQn - QN_essential,
      &                 (Qc(j) - Qc_essential)/Y_CN_cyano(j),
      &                 QN_sto_max(j))
@@ -1030,7 +1026,7 @@ C       exude excess nitrogen to NO3
 
           QcnExc = 1 - mmQn/Qn_min
           exQc = MAX(0 _d 0, QcnExc)/tauExC(j) !Same rate as N
-C          PC = PC !- exQc
+C          PC = PC - exQc
         ELSE
           exQc = 0 _d 0
         ENDIF

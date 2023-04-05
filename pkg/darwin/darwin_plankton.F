@@ -966,6 +966,11 @@ C        QC_essential  = QC_chl + QN_pro_tot*Y_CN_protein(j)
 C     &                + QN_RNA*Y_CN_RNA(j) + QN_DNA_plot*Y_CN_DNA(j)
 C     &                + QP_thy * Y_PC_pg(j) + QC_other(j)
 
+        IF (mmQn.EQ.QnNoChl(j) .OR.
+     &      (QC_Chl.GT.0 _d 0 .AND. QC_chl.EQ.QC_chlN)) THEN
+         QN_essential = mmQn
+        ENDIF
+
       IF (mmQn.LT.QnNoChl(j)) THEN
         Nlim = 1 _d 0
       ELSE
@@ -986,48 +991,23 @@ C     &                + QP_thy * Y_PC_pg(j) + QC_other(j)
 
 C Storage calculation -----------------
 
-        !If P is smaller than max
-        IF (mmQp.LT.Qp_max(j)) THEN
-         QP_store = mmQp - QP_essential
-         QP_excess = 0 _d 0
-        
-        !If P is greater than max and  P essential > max
-        ELSE IF (QP_essential.GT.Qp_max(j)) THEN
-         QP_store = 0 _d 0
-         QP_excess = mmQp - QP_essential
-        
-        !If P is great than max but P essential < max  
-        Else  
-         QP_store = Qp_max(j) - QP_essential
-         QP_excess = mmQp - Qp_max(j)
-        ENDIF
+c        QN_max = QN_essential + QN_sto_max(j)
+        QN_store = MIN(mmQn - QN_essential,
+     &                 (Qc(j) - Qc_essential)/Y_CN_cyano(j),
+     &                 QN_sto_max(j))
+        QN_store = MAX(0 _d 0, QN_store)
+        QN_excess = mmQn - QN_essential - QN_store
+        QN_excess = MAX(0 _d 0, QN_excess)
 
-        IF (mmQn.LT.QN_max) THEN
-         QN_store = mmQn - QN_essential
-         QN_excess = 0 _d 0
-        ELSE
-         QN_store = QN_sto_max(j)
-         QN_excess = mmQn - QN_max
-        ENDIF
-        
-        IF (mmQfe.LT.Qfe_max(j)) THEN
-         Qfe_Store = mmQfe - Qfe_essential
-         Qfe_excess = 0 _d 0
-        ELSE IF (Qfe_essential.GT.Qfe_max(j)) THEN
-         Qfe_Store = 0 _d 0
-         Qfe_excess = mmQfe - Qfe_essential
-        ELSE
-         Qfe_Store = Qfe_max(j) - Qfe_essential
-         Qfe_excess = mmQfe - Qfe_max(j)
-        ENDIF
+        QP_excess = mmQp - MAX(Qp_max(j), QP_essential)
+        QP_excess = MAX(0 _d 0, QP_excess)
+        QP_store = MIN(mmQp, Qp_max(j)) - QP_essential
+        QP_store = MAX(0 _d 0, QP_store)
 
-        Qc_essential_and_Nstore = QC_essential + QN_store* Y_CN_cyano(j)
-
-        IF (Qc_essential_and_Nstore.GT.1) THEN
-         QN_store = (1.0 _d 0 - Qc_Essential)/ Y_CN_cyano(j)
-         QN_excess = mmQn  - QN_store - QN_essential
-
-        ENDIF
+        Qfe_excess = mmQfe - MAX(Qfe_max(j), Qfe_essential)
+        Qfe_excess = MAX(0 _d 0, Qfe_excess)
+        Qfe_store = MIN(mmQfe, Qfe_max(j)) - Qfe_essential
+        Qfe_store = MAX(0 _d 0, Qfe_store)
 
         QN_store = MAX(0 _d 0, QN_store)
         QN_excess = MAX(0 _d 0, QN_excess)

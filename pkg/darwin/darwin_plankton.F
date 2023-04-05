@@ -1031,21 +1031,21 @@ C       exude excess nitrogen to NO3
         ENDIF
        ! Kei6: Exudation of P and Fe
          IF (tauExP(j) .NE. 0 _d 0) THEN
-          IF (Plim .NE. 1 _d 0) THEN
+C          IF (Plim .NE. 1 _d 0) THEN
           QpExc = QP_excess
           exQp = MAX(0 _d 0, QpExc)/tauExP(j)  !applying the same rate as N
           uptakePO4 = uptakePO4 - exQp*mmX
           VP = VP - exQp
-          ENDIF
+C          ENDIF
         ENDIF
 
         IF (tauExFe(j) .NE. 0 _d 0) THEN
-          IF (Flim .NE. 1 _d 0) THEN
+C          IF (Flim .NE. 1 _d 0) THEN
           QfeExc = Qfe_excess
           exQfe = MAX(0 _d 0, QfeExc)/tauExFe(j)
           uptakeFeT = uptakeFeT - exQfe*mmX
           Vfe = Vfe - exQfe
-          ENDIF
+C          ENDIF
         ENDIF
 
 

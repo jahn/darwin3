@@ -1028,6 +1028,13 @@ C Storage calculation -----------------
          QN_excess = mmQn  - QN_store - QN_essential
 
         ENDIF
+
+        QN_store = MAX(0 _d 0, QN_store)
+        QN_excess = MAX(0 _d 0, QN_excess)
+        QP_excess = MAX(0 _d 0, QP_excess)
+        QP_store = MAX(0 _d 0, QP_store)
+        Qfe_excess = MAX(0 _d 0, Qfe_excess)
+        Qfe_store = MAX(0 _d 0, Qfe_store)
 C
 
 C       exude excess nitrogen to NO3

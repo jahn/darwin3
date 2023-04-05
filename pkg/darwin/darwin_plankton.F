@@ -354,6 +354,7 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL Flim
       _RL PCc
       _RL PCg
+      _RL Scal_coeff
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 #endif /* DARWIN_MACROMOLECULAR_GROWTH */
 
@@ -915,10 +916,15 @@ C       convert to mg Chl m-3
         QN_pro_bio   = A_bio(j)/Y_CN_protein(j)*PC/macromolTempFunc
         QN_pro_tot   = QN_pro_other(j) + QN_pro_photo + QN_pro_bio
         QN_RNA       = QN_RNA_min(j) + QN_pro_tot*AP_RNA(j)*PC
-     &         /macromolTempFunc
+     &                                 /macromolTempFunc
+        QN_pro_const = QN_pro_other(j)
+        QN_DNA_plot  = QN_DNA(j)
 
         QP_thy = QC_chl*Y_THY_P(j)
         QP_RNA = QN_RNA*Y_PN_nucacid(j)
+        QP_DNA_plot = QN_DNA(j)*Y_PN_nucacid(j)
+        QP_const_plot = QP_other(j)
+
         Qfe_pro_photo = QN_pro_photo*Y_FeN_photo(j)
 
 C===========================
@@ -942,56 +948,37 @@ c=======================================
 cHere compute when N,P,or Fe are scarce
 c=======================================
 
-      NCmin = QnNoChl(j)
-      PCmin = QpNoChl(j)
-      FCmin = QfeNoChl(j)
+        IF (QC_chl.EQ.0 _d 0) THEN
+         Scal_coeff    = MIN(mmQp/QpNoChl(j), mmQn/QnNoChl(j), 1 _d 0)
+         QN_RNA        = QN_RNA_min(j)*Scal_coeff
+         QN_DNA_plot   = QN_DNA(j)*Scal_coeff
+         QP_RNA        = QP_RNA_min(j)*Scal_coeff
+         QP_DNA_plot   = QP_DNA(j)*Scal_coeff
+         QN_pro_tot    = MIN(mmQn-QN_RNA-QN_DNA_plot,QN_pro_other(j))
+         QP_const_plot = MIN(mmQp - QP_RNA - QP_DNA_plot,QP_other(j))
+        ENDIF
 
-      IF (mmQn.LT.NCmin) THEN
+        QN_essential  = QN_chl + QN_pro_tot + QN_RNA + QN_DNA_plot
+        QN_max        = QN_essential + QN_sto_max(j)
+        QP_essential  = QP_thy + QP_RNA + QP_DNA_plot +  QP_const_plot
+        Qfe_essential = Qfe_pro_photo
+C        QC_essential  = QC_chl + QN_pro_tot*Y_CN_protein(j)
+C     &                + QN_RNA*Y_CN_RNA(j) + QN_DNA_plot*Y_CN_DNA(j)
+C     &                + QP_thy * Y_PC_pg(j) + QC_other(j)
+
+      IF (mmQn.LT.QnNoChl(j)) THEN
         Nlim = 1 _d 0
-        QN_pro_const = mmQn*QN_pro_other(j)/QnNoChl(j)
-        QN_pro_tot = QN_pro_const
-        QN_RNA = mmQn*QN_RNA_min(j)/QnNoChl(j)
-        QN_DNA_plot = mmQn*QN_DNA(j)/QnNoChl(j)
-
-        QN_essential = QN_pro_const + QN_RNA + QN_DNA_plot
-        QN_max = QN_essential + QN_sto_max(j)
-
-        QP_RNA = QN_RNA * Y_PN_nucacid(j)
-        QP_DNA_plot = QN_DNA_plot * Y_PN_nucacid(j)
-        QP_essential = QP_RNA + QP_DNA_plot +  QP_other(j)
-        PCmin = QP_essential
       ELSE
         Nlim = 0 _d 0
-        QN_pro_const = QN_pro_other(j)
-        QN_DNA_plot = QN_DNA(j)
-        QP_DNA_plot = QN_DNA(j)*Y_PN_nucacid(j)
       ENDIF
 
-      IF (mmQp.LT.PCmin) THEN
+      IF (mmQp.LT.QpNoChl(j)) THEN
         Plim = 1 _d 0
-        QP_rna0 = mmQp*QN_RNA_min(j)*Y_PN_nucacid(j)/QpNoChl(j)
-        QP_RNA = MIN(QP_rna0,QP_RNA)
-        QP_DNA_plot0 = mmQp*QN_DNA(j)*Y_PN_nucacid(j)/QpNoChl(j)
-        QP_DNA_plot = MIN(QP_DNA_plot0,QP_DNA_plot)
-        QP_const_plot = MIN(mmQp - QP_RNA - QP_DNA_plot,  QP_other(j))
-        QP_essential = QP_RNA + QP_DNA_plot + QP_const_plot
-
-        QN_RNA = QP_RNA/Y_PN_nucacid(j)
-        QN_DNA_plot = QP_DNA_plot/Y_PN_nucacid(j)
-
-C       !re-compute Npro_const as Nrna and Ndna might be reduced.
-        QN_pro_const0 = mmQn - QN_RNA - QN_DNA_plot
-        QN_pro_const = MIN(QN_pro_const0, QN_pro_other(j))
-        QN_pro_tot = QN_pro_const
-        QN_essential = QN_pro_const + QN_RNA + QN_DNA_plot
-        QN_max = QN_essential + QN_sto_max(j)
-        NCmin = QN_essential
       ELSE
         Plim = 0 _d 0
-        QP_const_plot =  QP_other(j)
       ENDIF
 
-      IF (mmQfe.LT.FCmin) THEN
+      IF (mmQfe.LT.QfeNoChl(j)) THEN
         Flim = 1 _d 0
       ELSE
         Flim = 0 _d 0

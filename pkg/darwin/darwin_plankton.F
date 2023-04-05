@@ -349,9 +349,6 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL QP_rna0
       _RL QN_pro_const0
       _RL QP_DNA_plot0
-      _RL Nlim
-      _RL Plim
-      _RL Flim
       _RL PCc
       _RL PCg
       _RL Scal_coeff
@@ -971,23 +968,6 @@ C     &                + QP_thy * Y_PC_pg(j) + QC_other(j)
          QN_essential = mmQn
         ENDIF
 
-      IF (mmQn.LT.QnNoChl(j)) THEN
-        Nlim = 1 _d 0
-      ELSE
-        Nlim = 0 _d 0
-      ENDIF
-
-      IF (mmQp.LT.QpNoChl(j)) THEN
-        Plim = 1 _d 0
-      ELSE
-        Plim = 0 _d 0
-      ENDIF
-
-      IF (mmQfe.LT.QfeNoChl(j)) THEN
-        Flim = 1 _d 0
-      ELSE
-        Flim = 0 _d 0
-      ENDIF
 
 C Storage calculation -----------------
 
@@ -1019,7 +999,6 @@ C
 
 C       exude excess nitrogen to NO3
         IF (tauExN(j) .NE. 0 _d 0) THEN
-C          IF (Nlim .NE. 1 _d 0) THEN
           QnExc = QN_excess
           exQn = MAX(0 _d 0, QnExc)/tauExN(j)
           uptakeN = uptakeN - exQn*mmX
@@ -1027,28 +1006,21 @@ C          IF (Nlim .NE. 1 _d 0) THEN
           VN = VN - exQn
         ELSE
           exQn = 0 _d 0
-C          ENDIF
         ENDIF
        ! Kei6: Exudation of P and Fe
          IF (tauExP(j) .NE. 0 _d 0) THEN
-C          IF (Plim .NE. 1 _d 0) THEN
           QpExc = QP_excess
           exQp = MAX(0 _d 0, QpExc)/tauExP(j)  !applying the same rate as N
           uptakePO4 = uptakePO4 - exQp*mmX
           VP = VP - exQp
-C          ENDIF
         ENDIF
 
         IF (tauExFe(j) .NE. 0 _d 0) THEN
-C          IF (Flim .NE. 1 _d 0) THEN
           QfeExc = Qfe_excess
           exQfe = MAX(0 _d 0, QfeExc)/tauExFe(j)
           uptakeFeT = uptakeFeT - exQfe*mmX
           Vfe = Vfe - exQfe
-C          ENDIF
         ENDIF
-
-
 
         PCg = PC
         ! Kei7: Exudation of C

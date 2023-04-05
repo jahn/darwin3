@@ -1040,7 +1040,7 @@ C
 C       exude excess nitrogen to NO3
         IF (tauExN(j) .NE. 0 _d 0) THEN
           IF (Nlim .NE. 1 _d 0) THEN
-          QnExc = mmQn - (QN_chl+QN_pro_tot+QN_RNA+QN_DNA(j)+QN_store)
+          QnExc = mmQn - (QN_chl+QN_pro_tot+QN_RNA+QN_DNA_plot+QN_store)
           exQn = MAX(0 _d 0, QnExc)/tauExN(j)
           uptakeN = uptakeN - exQn*mmX
           uptakeNO3 = uptakeNO3 - exQn*mmX

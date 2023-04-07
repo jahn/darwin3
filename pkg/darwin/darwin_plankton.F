@@ -957,11 +957,6 @@ C        QC_essential  = QC_chl + QN_pro_tot*Y_CN_protein(j)
 C     &                + QN_RNA*Y_CN_RNA(j) + QN_DNA_plot*Y_CN_DNA(j)
 C     &                + QP_thy * Y_PC_pg(j) + QC_other(j)
 
-        IF (mmQn.EQ.QnNoChl(j) .OR.
-     &      (QC_Chl.GT.0 _d 0 .AND. QC_chl.EQ.QC_chlN)) THEN
-         QN_essential = mmQn
-        ENDIF
-
 
 C Storage calculation -----------------
 
@@ -1006,7 +1001,7 @@ C       exude excess nitrogen to NO3
 
         PCg = PC
         ! Kei7: Exudation of C
-        IF (tauExC(j) .NE. 0 _d 0 .AND. exQn .EQ. 0 _d 0) THEN
+        IF (tauExC(j) .NE. 0 _d 0 .AND. exQn .LT. 1 _d -16) THEN
           Qn_min = QN_RNA_min(j) + QN_pro_other(j) + QN_DNA(j)
      &     + QN_chl_const + QN_photo_const
 

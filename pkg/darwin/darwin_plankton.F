@@ -955,7 +955,7 @@ c=======================================
         Qfe_essential = Qfe_pro_photo
 C        QC_essential  = QC_chl + QN_pro_tot*Y_CN_protein(j)
 C     &                + QN_RNA*Y_CN_RNA(j) + QN_DNA_plot*Y_CN_DNA(j)
-C     &                + QP_thy * Y_PC_pg(j) + QC_other(j)
+C     &                + QP_thy * Y_CP_pg(j) + QC_other(j)
 
 
 C Storage calculation -----------------

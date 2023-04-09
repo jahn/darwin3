@@ -132,7 +132,8 @@
      &    ksatDOP,
      &    ksatDOFe
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
-     &   ,Y_CN_protein,
+     &   ,Y_CP_pg,
+     &    Y_CN_protein,
      &    Y_NC_chl,
      &    Y_CN_cyano,
      &    Y_PN_nucacid,

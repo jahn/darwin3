@@ -395,10 +395,10 @@ C       Photosynthetic parameters
         QP_other(jp) = 6.5344 _d -4                              ! (molP molC-1) Constant part of phosphorus
         QP_RNA_min(jp) = 2.23 _d -4                              ! (molP molC-1)
         QC_DNA(jp) = 9.41 _d -4                                  ! (molC molC-1) constant part of DNA in carbon
-        QN_pro_other(jp) = QC_pro_other(jp)/Y_CN_protein(jp)     ! (molN molC-1)
-        QN_RNA_min(jp) = QP_RNA_min(jp)/Y_PN_nucacid(jp)         ! (molN molC-1) constant part of RNA in nitrogen
-        QN_DNA(jp) = QC_DNA(jp)/Y_CN_DNA(jp)                     ! (molN molC-1) DNA in nitrogen
-        QP_DNA(jp) = QN_DNA(jp)*Y_PN_nucacid(jp)                 ! (molP molC-1) DNA in phosphorous
+C        QN_pro_other(jp) = QC_pro_other(jp)/Y_CN_protein(jp)     ! (molN molC-1)
+C        QN_RNA_min(jp) = QP_RNA_min(jp)/Y_PN_nucacid(jp)         ! (molN molC-1) constant part of RNA in nitrogen
+C        QN_DNA(jp) = QC_DNA(jp)/Y_CN_DNA(jp)                     ! (molN molC-1) DNA in nitrogen
+C        QP_DNA(jp) = QN_DNA(jp)*Y_PN_nucacid(jp)                 ! (molP molC-1) DNA in phosphorous
         QN_sto_max(jp) = 0.035 _d 0                              ! (molN molC-1) maximum nitrogen storage
         Qp_max(jp) = 0.0052 _d 0                                 ! (molP molC-1) maximum phosphorus quota
         Qfe_max(jp) = 2.436 _d -4                                ! (molFe molC-1) maximum iron quota
@@ -406,22 +406,23 @@ C       Photosynthetic parameters
 C       Constant parameters
         A_pho(jp) = 16.0 _d 0                                    ! ((molC)/(molC in chl)-1) A constant of proportionalty
         A_bio(jp) = 0.2711 _d 0*3600*24                          ! (molC (molC)-1 s) Constant for variable part of biosynthesis protein
-        AP_RNA(jp) = 0.00423 _d 0*3600*24*Y_CN_RNA(jp)
-     &    /Y_PN_nucacid(jp)                                      ! (s) Constant for Variable part of RNA
-        A_thy(jp) = Y_THY_P(jp)*Y_CP_pg(jp)                      ! (molC (molC in chl)-1)
+        AC_RNA(jp) = 0.00423 _d 0*3600*24                        ! (molP molC-1 s) Constant for Variable part of RNA
+C        AP_RNA(jp) = 0.00423 _d 0*3600*24*Y_CN_RNA(jp)
+C     &    /Y_PN_nucacid(jp)                                      ! (s) Constant for Variable part of RNA
+C        A_thy(jp) = Y_THY_P(jp)*Y_CP_pg(jp)                      ! (molC (molC in chl)-1)
 
         Sf(jp) = 1.0 _d 0
 
 C       compute minimum carbon fixing rate (zero growth)
-        QC_const = QC_pro_other(jp) + QN_RNA_min(jp)*Y_CN_RNA(jp) +
-     &    QC_DNA(jp) + QC_other(jp)
-        VI_min(jp) = maintConsum(jp)*
-     &    (1. + A_thy(jp) + A_pho(jp))/(1 - QC_const)
-        QC_chlMax(jp) = maintConsum(jp)/VI_min(jp)
+C        QC_const = QC_pro_other(jp) + QN_RNA_min(jp)*Y_CN_RNA(jp) +
+C     &    QC_DNA(jp) + QC_other(jp)
+C        VI_min(jp) = maintConsum(jp)*
+C     &    (1. + A_thy(jp) + A_pho(jp))/(1 - QC_const)
+C        QC_chlMax(jp) = maintConsum(jp)/VI_min(jp)
 
-        QnNoChl(jp) = QN_DNA(jp) + QN_RNA_min(jp) + QN_pro_other(jp)
-        QpNoChl(jp) = QN_RNA_min(jp)*Y_PN_nucacid(jp)
-     &         + QN_DNA(jp)*Y_PN_nucacid(jp) + QP_other(jp)
+C        QnNoChl(jp) = QN_DNA(jp) + QN_RNA_min(jp) + QN_pro_other(jp)
+C        QpNoChl(jp) = QN_RNA_min(jp)*Y_PN_nucacid(jp)
+C     &         + QN_DNA(jp)*Y_PN_nucacid(jp) + QP_other(jp)
         QfeNoChl(jp) = 0.0 _d 0
 
         ksatPAR(jp) = 0.008633641 _d 0

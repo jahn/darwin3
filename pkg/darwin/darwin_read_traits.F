@@ -26,6 +26,9 @@
       INTEGER jz
       INTEGER l
       INTEGER iopt
+#ifdef DARWIN_MACROMOLECULAR_GROWTH
+      _RL QC_const
+#endif
 
       NAMELIST/DARWIN_TRAITS/
      &    isPhoto,
@@ -286,6 +289,29 @@ C       only Coccolithophores have PIC
        ELSE
         normI(jp) = 1.0
        ENDIF
+      ENDDO
+#endif
+
+#ifdef DARWIN_MACROMOLECULAR_GROWTH
+      DO jp = 1, nplank
+        QN_pro_other(jp) = QC_pro_other(jp)/Y_CN_protein(jp)     ! (molN molC-1)
+        QN_RNA_min(jp) = QP_RNA_min(jp)/Y_PN_nucacid(jp)         ! (molN molC-1) constant part of RNA in nitrogen
+        QN_DNA(jp) = QC_DNA(jp)/Y_CN_DNA(jp)                     ! (molN molC-1) DNA in nitrogen
+        QP_DNA(jp) = QN_DNA(jp)*Y_PN_nucacid(jp)                 ! (molP molC-1) DNA in phosphorous
+
+        AP_RNA(jp) = AC_RNA(jp)*Y_CN_RNA(jp)/Y_PN_nucacid(jp)    ! (s) Constant for Variable part of RNA
+        A_thy(jp) = Y_THY_P(jp)*Y_CP_pg(jp)                      ! (molC (molC in chl)-1)
+
+C       compute minimum carbon fixing rate (zero growth)
+        QC_const = QC_pro_other(jp) + QN_RNA_min(jp)*Y_CN_RNA(jp) +
+     &    QC_DNA(jp) + QC_other(jp)
+        VI_min(jp) = maintConsum(jp)*
+     &    (1. + A_thy(jp) + A_pho(jp))/(1 - QC_const)
+        QC_chlMax(jp) = maintConsum(jp)/VI_min(jp)
+
+        QnNoChl(jp) = QN_DNA(jp) + QN_RNA_min(jp) + QN_pro_other(jp)
+        QpNoChl(jp) = QN_RNA_min(jp)*Y_PN_nucacid(jp)
+     &         + QN_DNA(jp)*Y_PN_nucacid(jp) + QP_other(jp)
       ENDDO
 #endif
 

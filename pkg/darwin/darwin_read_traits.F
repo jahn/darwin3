@@ -163,6 +163,7 @@
      &    A_pho,
      &    A_bio,
      &    AP_RNA,
+     &    A_RNA,
      &    A_thy,
      &    Sf,
      &    VI_min,
@@ -299,7 +300,7 @@ C       only Coccolithophores have PIC
         QN_DNA(jp) = QC_DNA(jp)/Y_CN_DNA(jp)                     ! (molN molC-1) DNA in nitrogen
         QP_DNA(jp) = QN_DNA(jp)*Y_PN_nucacid(jp)                 ! (molP molC-1) DNA in phosphorous
 
-        AP_RNA(jp) = AC_RNA(jp)*Y_CN_RNA(jp)/Y_PN_nucacid(jp)    ! (s) Constant for Variable part of RNA
+        A_RNA(jp) = AP_RNA(jp)*Y_CN_RNA(jp)/Y_PN_nucacid(jp)     ! (s) Constant for Variable part of RNA
         A_thy(jp) = Y_THY_P(jp)*Y_CP_pg(jp)                      ! (molC (molC in chl)-1)
 
 C       compute minimum carbon fixing rate (zero growth)

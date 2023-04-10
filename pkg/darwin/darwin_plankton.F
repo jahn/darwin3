@@ -817,8 +817,8 @@ C       biosynthesis related protein
         QN_protein_D     = QN_photo_D + QN_bio_D
 
 C       nitrogen in RNA
-        QN_rna_D  = QN_protein_const*A_RNA(j)/macromolTempFunc
-        QN_rna_D2 = QN_protein_D*A_RNA(j)/macromolTempFunc
+        QN_rna_D  = QN_protein_const*A_NN_RNA(j)/macromolTempFunc
+        QN_rna_D2 = QN_protein_D*A_NN_RNA(j)/macromolTempFunc
 
 C        Total
         Qn_D0 = QN_chl_const+QN_protein_const+QN_RNA_min(j)+QN_DNA(j)
@@ -908,7 +908,7 @@ C       convert to mg Chl m-3
         QN_pro_photo = QC_chl*A_pho(j)/Y_CN_protein(j)
         QN_pro_bio   = A_bio(j)/Y_CN_protein(j)*PC/macromolTempFunc
         QN_pro_tot   = QN_pro_other(j) + QN_pro_photo + QN_pro_bio
-        QN_RNA       = QN_RNA_min(j) + QN_pro_tot*A_RNA(j)*PC
+        QN_RNA       = QN_RNA_min(j) + QN_pro_tot*A_NN_RNA(j)*PC
      &                                 /macromolTempFunc
         QN_pro_const = QN_pro_other(j)
         QN_DNA_plot  = QN_DNA(j)

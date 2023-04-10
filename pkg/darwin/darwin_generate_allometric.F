@@ -407,7 +407,7 @@ C       Constant parameters
         A_pho(jp) = 16.0 _d 0                                    ! ((molC)/(molC in chl)-1) A constant of proportionalty
         A_bio(jp) = 0.2711 _d 0*3600*24                          ! (molC (molC)-1 s) Constant for variable part of biosynthesis protein
         AP_RNA(jp) = 0.00423 _d 0*3600*24                        ! (molP molC-1 s) Constant for Variable part of RNA
-C        A_RNA(jp) = 0.00423 _d 0*3600*24*Y_CN_RNA(jp)
+C        A_NN_RNA(jp) = 0.00423 _d 0*3600*24*Y_CN_RNA(jp)
 C     &    /Y_PN_nucacid(jp)                                      ! (s) Constant for Variable part of RNA
 C        A_thy(jp) = Y_THY_P(jp)*Y_CP_pg(jp)                      ! (molC (molC in chl)-1)
 

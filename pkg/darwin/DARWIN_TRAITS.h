@@ -279,7 +279,7 @@ C     ksatDOFe           :: [mmol Fe m^-3]  half-saturation of DOFe for bacteria
      &    A_pho,
      &    A_bio,
      &    AP_RNA,
-     &    A_RNA,
+     &    A_NN_RNA,
      &    A_thy,
      &    Sf,
      &    VI_min,
@@ -408,7 +408,7 @@ C     ksatDOFe           :: [mmol Fe m^-3]  half-saturation of DOFe for bacteria
       _RL A_pho(nplank)
       _RL A_bio(nplank)
       _RL AP_RNA(nplank)
-      _RL A_RNA(nplank)
+      _RL A_NN_RNA(nplank)
       _RL A_thy(nplank)
       _RL Sf(nplank)
       _RL VI_min(nplank)

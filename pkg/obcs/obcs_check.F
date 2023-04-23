@@ -599,6 +599,8 @@ c     IF ( useSEAICE .AND. SEAICEuseDYNAMICS ) THEN
 
       _END_MASTER(myThid)
 
+      CALL WRITE_REC_XY_RS('maskInC',maskInC,1,0,myThid)
+
 C---+----1----+----2----+----3----+----4----+----5----+----6----+----7-|--+----|
 C--   Check if Interior mask is consistent with OB list of indices
 c     IF ( insideOBmaskFile.NE.' ' ) THEN

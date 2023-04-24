@@ -33,7 +33,7 @@ C     === Global variables ===
 #include "SIZE.h"
 #include "EEPARAMS.h"
 #include "PARAMS.h"
-c#include "GRID.h"
+#include "GRID.h"
 #include "SURFACE.h"
 #include "DYNVARS.h"
 #include "FFIELDS.h"
@@ -387,6 +387,17 @@ C     (as it is the case when using Non-Lin Free-Surf)
      &                          / rStarFacW(i,j,bi,bj)
               vVel(i,j,k,bi,bj) = vVel(i,j,k,bi,bj)
      &                          / rStarFacS(i,j,bi,bj)
+            ENDDO
+           ENDDO
+          ENDDO
+         ELSEIF ( selectSigmaCoord.GT.0 ) THEN
+          DO k=1,Nr
+           DO j=1-OLy,sNy+OLy
+            DO i=1-OLx,sNx+OLx
+              uVel(i,j,k,bi,bj) = uVel(i,j,k,bi,bj)*h0FacW(i,j,k,bi,bj)
+     &                          * recip_hFacW(i,j,k,bi,bj)
+              vVel(i,j,k,bi,bj) = vVel(i,j,k,bi,bj)*h0FacS(i,j,k,bi,bj)
+     &                          * recip_hFacS(i,j,k,bi,bj)
             ENDDO
            ENDDO
           ENDDO

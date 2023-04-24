@@ -197,25 +197,25 @@ C-    Set hFacW and hFacS (at U and V points)
        DO bi=myBxLo(myThid), myBxHi(myThid)
         DO k=1, Nr
          DO j=1-OLy,sNy+OLy
-          DO i=1-OLx,sNx+OLx
-            hFactmp =
-     &          ( dAHybSigF(k)*rFullDepth
-     &          + dBHybSigF(i,j,kbi,bj)
-     &            *( rSurfW(i,j,bi,bj)-rLowW(i,j,bi,bj) )
-     &          )*recip_drF(k)
-            hFacW(i,j,k,bi,bj) = hFactmp*maskInW(i,j,bi,bj)
+          DO i=2-OLx,sNx+OLx
+            IF ( maskInW(i,j,bi,bj) .NE. zeroRS ) THEN
+             hFacW(i,j,k,bi,bj) = ( hFacC(i-1,j,k,bi,bj)
+     &                            + hFacC(i  ,j,k,bi,bj) )*0.5 _d 0
+            ELSE
+             hFacW(i,j,k,bi,bj) = 0 _d 0
+            ENDIF
           ENDDO
          ENDDO
         ENDDO
         DO k=1, Nr
-         DO j=1-OLy,sNy+OLy
+         DO j=2-OLy,sNy+OLy
           DO i=1-OLx,sNx+OLx
-            hFactmp =
-     &          ( dAHybSigF(k)*rFullDepth
-     &          + dBHybSigF(i,j,k,bi,bj)
-     &            *( rSurfS(i,j,bi,bj)-rLowS(i,j,bi,bj) )
-     &          )*recip_drF(k)
-            hFacS(i,j,k,bi,bj) = hFactmp*maskInS(i,j,bi,bj)
+            IF ( maskInS(i,j,bi,bj) .NE. zeroRS ) THEN
+             hFacS(i,j,k,bi,bj) = ( hFacC(i,j-1,k,bi,bj)
+     &                            + hFacC(i,j  ,k,bi,bj) )*0.5 _d 0
+            ELSE
+             hFacS(i,j,k,bi,bj) = 0 _d 0
+            ENDIF
           ENDDO
          ENDDO
         ENDDO

@@ -106,53 +106,31 @@ C-- Update the fractional thickness hFacC (& "recip_hFac") :
         ENDDO
 
 C-- Update the fractional thickness hFacW (& "recip_hFac") :
-        DO j=1-OLy,sNy+OLy
-         DO i=1-OLx,sNx+OLx
-          IF ( kSurfW(i,j,bi,bj).LE.Nr ) THEN
-           tmpFld(i,j) = etaHw(i,j,bi,bj)
-     &                 + ( rSurfW(i,j,bi,bj)-rLowW(i,j,bi,bj) )
-          ELSE
-           tmpFld(i,j) = rFullDepth
-          ENDIF
-         ENDDO
-        ENDDO
-        DO k=1,Nr
+        DO k=1, Nr
          DO j=1-OLy,sNy+OLy
-          DO i=1-OLx,sNx+OLx
-            hFacW(i,j,k,bi,bj) = maskW(i,j,k,bi,bj)
-     &                         *( dAHybSigF(k)*rFullDepth
-     &                           +dBHybSigF(i,j,k,bi,bj)*tmpFld(i,j)
-     &                          )*recip_drF(k)
-            recip_hFacW(i,j,k,bi,bj) = maskW(i,j,k,bi,bj)*drF(k)
-     &                         /( dAHybSigF(k)*rFullDepth
-     &                           +dBHybSigF(i,j,k,bi,bj)*tmpFld(i,j)
-     &                          )
+          DO i=2-OLx,sNx+OLx
+            IF ( maskInW(i,j,bi,bj).NE.zeroRS ) THEN
+             hFacW(i,j,k,bi,bj) = ( hFacC(i-1,j,k,bi,bj)
+     &                            + hFacC(i  ,j,k,bi,bj) )*0.5 _d 0
+             recip_hFacW(i,j,k,bi,bj) = 1 _d 0/hFacW(i,j,k,bi,bj)
+            ELSE
+             hFacW(i,j,k,bi,bj) = 0 _d 0
+            ENDIF
           ENDDO
          ENDDO
         ENDDO
 
 C-- Update the fractional thickness hFacS (& "recip_hFac") :
-        DO j=1-OLy,sNy+OLy
-         DO i=1-OLx,sNx+OLx
-          IF ( kSurfS(i,j,bi,bj).LE.Nr ) THEN
-           tmpFld(i,j) = etaHs(i,j,bi,bj)
-     &                 + ( rSurfS(i,j,bi,bj)-rLowS(i,j,bi,bj) )
-          ELSE
-           tmpFld(i,j) = rFullDepth
-          ENDIF
-         ENDDO
-        ENDDO
-        DO k=1,Nr
-         DO j=1-OLy,sNy+OLy
+        DO k=1, Nr
+         DO j=2-OLy,sNy+OLy
           DO i=1-OLx,sNx+OLx
-            hFacS(i,j,k,bi,bj) = maskS(i,j,k,bi,bj)
-     &                         *( dAHybSigF(k)*rFullDepth
-     &                           +dBHybSigF(i,j,k,bi,bj)*tmpFld(i,j)
-     &                          )*recip_drF(k)
-            recip_hFacS(i,j,k,bi,bj) = maskS(i,j,k,bi,bj)*drF(k)
-     &                         /( dAHybSigF(k)*rFullDepth
-     &                           +dBHybSigF(i,j,k,bi,bj)*tmpFld(i,j)
-     &                          )
+            IF ( maskInS(i,j,bi,bj).NE.zeroRS ) THEN
+             hFacS(i,j,k,bi,bj) = ( hFacC(i,j-1,k,bi,bj)
+     &                            + hFacC(i,j  ,k,bi,bj) )*0.5 _d 0
+             recip_hFacS(i,j,k,bi,bj) = 1 _d 0/hFacS(i,j,k,bi,bj)
+            ELSE
+             hFacS(i,j,k,bi,bj) = 0 _d 0
+            ENDIF
           ENDDO
          ENDDO
         ENDDO

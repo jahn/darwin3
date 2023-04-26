@@ -19,6 +19,7 @@ C     == Global variables ==
 #include "EEPARAMS.h"
 #include "PARAMS.h"
 #include "GRID.h"
+#include "SURFACE.h"
 #include "OBCS_PARAMS.h"
 #include "OBCS_GRID.h"
 #include "OBCS_FIELDS.h"
@@ -74,6 +75,169 @@ c     ENDIF
 
 c     DO bj = jtLo,jtHi
 c      DO bi = itLo,itHi
+
+      IF (selectSigmaCoord.NE.0) THEN
+
+C--   Set Tangential component first:
+
+#ifdef ALLOW_OBCS_NORTH
+        IF ( tileHasOBN(bi,bj) ) THEN
+C Northern boundary
+         DO i=1-OLx,sNx+OLx
+          Jobc = OB_Jn(i,bi,bj)
+          IF ( Jobc.NE.OB_indexNone ) THEN
+           DO k = kLo,kHi
+             uFld(i,Jobc,k,bi,bj) = OBNu(i,k,bi,bj)
+     &                            *h0FacW(i,Jobc,k,bi,bj)
+     &                            *recip_hFacW(i,Jobc,k,bi,bj)
+     &                            *_maskW(i,Jobc,k,bi,bj)
+           ENDDO
+          ENDIF
+         ENDDO
+        ENDIF
+#endif
+#ifdef ALLOW_OBCS_SOUTH
+        IF ( tileHasOBS(bi,bj) ) THEN
+C Southern boundary
+         DO i=1-OLx,sNx+OLx
+          Jobc = OB_Js(i,bi,bj)
+          IF ( Jobc.NE.OB_indexNone ) THEN
+           DO k = kLo,kHi
+             uFld(i,Jobc,k,bi,bj) = OBSu(i,k,bi,bj)
+     &                            *h0FacW(i,Jobc,k,bi,bj)
+     &                            *recip_hFacW(i,Jobc,k,bi,bj)
+     &                            *_maskW(i,Jobc,k,bi,bj)
+           ENDDO
+          ENDIF
+         ENDDO
+        ENDIF
+#endif
+
+C     Set model variables to OB values on East/West Boundaries
+#ifdef ALLOW_OBCS_EAST
+        IF ( tileHasOBE(bi,bj) ) THEN
+C Eastern boundary
+         DO j=1-OLy,sNy+OLy
+          Iobc = OB_Ie(j,bi,bj)
+          IF ( Iobc.NE.OB_indexNone ) THEN
+           DO k = kLo,kHi
+             vFld(Iobc,j,k,bi,bj) = OBEv(j,k,bi,bj)
+     &                            *h0FacS(Iobc,j,k,bi,bj)
+     &                            *recip_hFacS(Iobc,j,k,bi,bj)
+     &                            *_maskS(Iobc,j,k,bi,bj)
+           ENDDO
+          ENDIF
+         ENDDO
+        ENDIF
+#endif
+#ifdef ALLOW_OBCS_WEST
+        IF ( tileHasOBW(bi,bj) ) THEN
+C Western boundary
+         DO j=1-OLy,sNy+OLy
+          Iobc = OB_Iw(j,bi,bj)
+          IF ( Iobc.NE.OB_indexNone ) THEN
+           DO k = kLo,kHi
+             vFld(Iobc,j,k,bi,bj) = OBWv(j,k,bi,bj)
+     &                            *h0FacS(Iobc,j,k,bi,bj)
+     &                            *recip_hFacS(Iobc,j,k,bi,bj)
+     &                            *_maskS(Iobc,j,k,bi,bj)
+           ENDDO
+          ENDIF
+         ENDDO
+        ENDIF
+#endif
+
+C--   Then set Normal component:
+
+#ifdef ALLOW_OBCS_NORTH
+        IF ( tileHasOBN(bi,bj) ) THEN
+C Northern boundary
+         DO i=1-OLx,sNx+OLx
+          Jobc = OB_Jn(i,bi,bj)
+          IF ( Jobc.NE.OB_indexNone ) THEN
+           DO k = kLo,kHi
+             vFld(i,Jobc,k,bi,bj)   = OBNv(i,k,bi,bj)
+     &                              *h0FacS(i,Jobc,k,bi,bj)
+     &                              *recip_hFacS(i,Jobc,k,bi,bj)
+     &                              *_maskS(i,Jobc,k,bi,bj)
+             vFld(i,Jobc+1,k,bi,bj) = OBNv(i,k,bi,bj)
+     &                              *h0FacS(i,Jobc,k,bi,bj)
+     &                              *recip_hFacS(i,Jobc,k,bi,bj)
+     &                              *_maskS(i,Jobc,k,bi,bj)
+     &                              *OBCS_uvApplyFac
+           ENDDO
+          ENDIF
+         ENDDO
+        ENDIF
+#endif
+#ifdef ALLOW_OBCS_SOUTH
+        IF ( tileHasOBS(bi,bj) ) THEN
+C Southern boundary
+         DO i=1-OLx,sNx+OLx
+          Jobc = OB_Js(i,bi,bj)
+          IF ( Jobc.NE.OB_indexNone ) THEN
+           DO k = kLo,kHi
+             vFld(i,Jobc+1,k,bi,bj) = OBSv(i,k,bi,bj)
+     &                              *h0FacS(i,Jobc+1,k,bi,bj)
+     &                              *recip_hFacS(i,Jobc+1,k,bi,bj)
+     &                              *_maskS(i,Jobc+1,k,bi,bj)
+             vFld(i,Jobc,k,bi,bj)   = OBSv(i,k,bi,bj)
+     &                              *h0FacS(i,Jobc+1,k,bi,bj)
+     &                              *recip_hFacS(i,Jobc+1,k,bi,bj)
+     &                              *_maskS(i,Jobc+1,k,bi,bj)
+     &                              *OBCS_uvApplyFac
+           ENDDO
+          ENDIF
+         ENDDO
+        ENDIF
+#endif
+
+C     Set model variables to OB values on East/West Boundaries
+#ifdef ALLOW_OBCS_EAST
+        IF ( tileHasOBE(bi,bj) ) THEN
+C Eastern boundary
+         DO j=1-OLy,sNy+OLy
+          Iobc = OB_Ie(j,bi,bj)
+          IF ( Iobc.NE.OB_indexNone ) THEN
+           DO k = kLo,kHi
+             uFld(Iobc,j,k,bi,bj)   = OBEu(j,k,bi,bj)
+     &                              *h0FacW(Iobc,j,k,bi,bj)
+     &                              *recip_hFacW(Iobc,j,k,bi,bj)
+     &                              *_maskW(Iobc,j,k,bi,bj)
+             uFld(Iobc+1,j,k,bi,bj) = OBEu(j,K,bi,bj)
+     &                              *h0FacW(Iobc,j,k,bi,bj)
+     &                              *recip_hFacW(Iobc,j,k,bi,bj)
+     &                              *_maskW(Iobc,j,k,bi,bj)
+     &                              *OBCS_uvApplyFac
+           ENDDO
+          ENDIF
+         ENDDO
+        ENDIF
+#endif
+#ifdef ALLOW_OBCS_WEST
+        IF ( tileHasOBW(bi,bj) ) THEN
+C Western boundary
+         DO j=1-OLy,sNy+OLy
+          Iobc = OB_Iw(j,bi,bj)
+          IF ( Iobc.NE.OB_indexNone ) THEN
+           DO k = kLo,kHi
+             uFld(Iobc+1,j,k,bi,bj) = OBWu(j,k,bi,bj)
+     &                              *h0FacW(Iobc+1,j,k,bi,bj)
+     &                              *recip_hFacW(Iobc+1,j,k,bi,bj)
+     &                              *_maskW(Iobc+1,j,k,bi,bj)
+             uFld(Iobc,j,k,bi,bj)   = OBWu(j,k,bi,bj)
+     &                              *h0FacW(Iobc+1,j,k,bi,bj)
+     &                              *recip_hFacW(Iobc+1,j,k,bi,bj)
+     &                              *_maskW(Iobc+1,j,k,bi,bj)
+     &                              *OBCS_uvApplyFac
+           ENDDO
+          ENDIF
+         ENDDO
+        ENDIF
+#endif
+
+C     not selectSigmaCoord
+      ELSE
 
 C--   Set Tangential component first:
 
@@ -208,6 +372,8 @@ C Western boundary
          ENDDO
         ENDIF
 #endif
+
+      ENDIF
 
 c      ENDDO
 c     ENDDO

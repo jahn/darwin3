@@ -12,7 +12,7 @@ C-  Forcing files
      &       UvelFile, VvelFile, WvelFile, ThetFile, Saltfile,
      &       ConvFile, KPP_DiffSFile, KPP_ghatKFile,
      &       GMwxFile, GMwyFile, GMwzFile,
-     &       HFluxFile, SFluxFile, IceFile
+     &       HFluxFile, SFluxFile, IceFile, SSHFile
       CHARACTER*(MAX_LEN_FNAM) UvelFile
       CHARACTER*(MAX_LEN_FNAM) VvelFile
       CHARACTER*(MAX_LEN_FNAM) WvelFile
@@ -27,6 +27,7 @@ C-  Forcing files
       CHARACTER*(MAX_LEN_FNAM) HFluxFile
       CHARACTER*(MAX_LEN_FNAM) SFluxFile
       CHARACTER*(MAX_LEN_FNAM) IceFile
+      CHARACTER*(MAX_LEN_FNAM) SSHFile
 
       COMMON /OFFLINE_PARAMS_I/
      &       offlineLoadPrec,
@@ -36,11 +37,13 @@ C-  Forcing files
 
       COMMON /OFFLINE_PARAMS_R/
      &       deltaToffline, offlineTimeOffset,
-     &       offlineForcingPeriod, offlineForcingCycle
+     &       offlineForcingPeriod, offlineForcingCycle,
+     &       offlineSSHRelaxTime
       _RL deltaToffline
       _RL offlineTimeOffset
       _RL offlineForcingPeriod
       _RL offlineForcingCycle
+      _RL offlineSSHRelaxTime
 
 C---+----1----+----2----+----3----+----4----+----5----+----6----+----7-|--+----|
 C-- Offline variables:
@@ -52,9 +55,10 @@ C     offlineLdRec :: time-record currently loaded (in temp arrays *[1])
 
       COMMON /OFFLINE_VARS_R/
 c    &       ConvectCount, ICEM,
-     &       offline_Wght
+     &       offlineSSH, offline_Wght
 c     _RL ICEM(1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
 c     _RS ConvectCount(1-OLx:sNx+OLx,1-OLy:sNy+OLy,Nr,nSx,nSy)
+      _RL offlineSSH(1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
       _RL offline_Wght(2,nSx,nSy)
 
 C     Forcing fields:
@@ -70,7 +74,7 @@ C     aWght, bWght :: Interpolation weights
      &                 tave0, tave1, save0, save1,
      &                 gmkx0, gmkx1, gmky0, gmky1, gmkz0, gmkz1,
      &                 conv0, conv1, kdfs0, kdfs1, kght0, kght1,
-     &                 sflx0, sflx1
+     &                 ssh0, ssh1, sflx0, sflx1
 c    &               , hflx0, hflx1, icem0, icem1
       _RS  uvel0    (1-OLx:sNx+OLx,1-OLy:sNy+OLy,Nr,nSx,nSy)
       _RS  uvel1    (1-OLx:sNx+OLx,1-OLy:sNy+OLy,Nr,nSx,nSy)
@@ -94,6 +98,8 @@ c    &               , hflx0, hflx1, icem0, icem1
       _RS  kdfs1    (1-OLx:sNx+OLx,1-OLy:sNy+OLy,Nr,nSx,nSy)
       _RS  kght0    (1-OLx:sNx+OLx,1-OLy:sNy+OLy,Nr,nSx,nSy)
       _RS  kght1    (1-OLx:sNx+OLx,1-OLy:sNy+OLy,Nr,nSx,nSy)
+      _RS  ssh0     (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
+      _RS  ssh1     (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
       _RS  sflx0    (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
       _RS  sflx1    (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
 c     _RS  hflx0    (1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)

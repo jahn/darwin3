@@ -136,6 +136,27 @@ C         the product ghat*diffKzS (and not ghat alone).
         ENDIF
 #endif /* ALLOW_KPP */
 
+        IF ( SSHFile.NE.' ' ) THEN
+         DO j=1-OLy,sNy+OLy
+          DO i=1-OLx,sNx+OLx
+           offlineSSH(i,j,bi,bj) = bWght*ssh0(i,j,bi,bj)
+     &                           + aWght*ssh1(i,j,bi,bj)
+          ENDDO
+         ENDDO
+         IF ( offlineSSHRelaxTime .NE. 0 ) THEN
+          DO j=1-OLy,sNy+OLy
+           DO i=1-OLx,sNx+OLx
+            etaN(i,j,bi,bj) = etaN(i,j,bi,bj)
+     &        + (offlineSSH(i,j,bi,bj) - etaN(i,j,bi,bj))
+     &          *deltaTfreesurf/offlineSSHRelaxTime
+            etaH(i,j,bi,bj) = etaH(i,j,bi,bj)
+     &        + (offlineSSH(i,j,bi,bj) - etaH(i,j,bi,bj))
+     &          *deltaTfreesurf/offlineSSHRelaxTime
+           ENDDO
+          ENDDO
+         ENDIF
+        ENDIF
+
 C--   Interpolate surface forcing
 #if ( (defined ALLOW_DIC) || (defined ALLOW_DARWIN) )
 #ifdef ALLOW_OLD_VIRTUALFLUX

@@ -58,6 +58,8 @@ C     i,j,k,bi,bj  :: loop indices
          ENDDO
          DO j=1-OLy,sNy+OLy
            DO i=1-OLx,sNx+OLx
+             ssh0(i,j,bi,bj) = 0. _d 0
+             ssh1(i,j,bi,bj) = 0. _d 0
 c            hflx0(i,j,bi,bj) = 0. _d 0
 c            hflx1(i,j,bi,bj) = 0. _d 0
              sflx0(i,j,bi,bj) = 0. _d 0

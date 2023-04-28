@@ -111,6 +111,11 @@ C-    stop if files are specified but not used.
         CALL PRINT_ERROR( msgBuf, myThid )
         errCount =  errCount + 1
        ENDIF
+       IF ( SSHFile.NE.' ' .AND. offlineSSHRelaxTime.EQ.0. ) THEN
+        WRITE(msgBuf,'(A)') 'SSHFile is set but not used'
+        CALL PRINT_ERROR( msgBuf, myThid )
+        errCount =  errCount + 1
+       ENDIF
 
        IF ( errCount.GE.1 ) THEN
         WRITE(msgBuf,'(A,I3,A)')

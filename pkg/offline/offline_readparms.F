@@ -34,12 +34,13 @@ C--   Bulk Formula parameter
      &         GMwxFile, GMwyFile, GMwzFile,
      &         ConvFile, KPP_DiffSFile, KPP_ghatKFile,
      &         HFluxFile, SFluxFile, IceFile,
-     &         KPP_ghatFile
+     &         KPP_ghatFile, SSHFile
 
       NAMELIST /OFFLINE_PARM02/
      &         offlineIter0, deltaToffline, offlineTimeOffset,
      &         offlineForcingPeriod, offlineForcingCycle,
-     &         offlineLoadPrec, offlineOffsetIter
+     &         offlineLoadPrec, offlineOffsetIter,
+     &         offlineSSHRelaxTime
 
 C---+----1----+----2----+----3----+----4----+----5----+----6----+----7-|--+----|
 
@@ -68,6 +69,7 @@ C--   Default values for params in OFFLINE_PARM01 :
       UvelFile = ' '
       VvelFile = ' '
       WvelFile = ' '
+      SSHFile  = ' '
       ThetFile = ' '
       SaltFile = '  '
       GMwxFile = ' '
@@ -92,6 +94,7 @@ C--   Default values for params in OFFLINE_PARM02 :
       offlineForcingPeriod = 2592000.
       offlineForcingCycle = 31104000.
       offlineLoadPrec = readBinaryPrec
+      offlineSSHRelaxTime = 0.
 
 C--   Read parameters from open data file
       READ(UNIT=iUnit,NML=OFFLINE_PARM02)

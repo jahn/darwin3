@@ -296,6 +296,19 @@ C         even if, for convienience, it will be loaded into array KPPghat
 
 C--   Read in 2-D fields and apply EXCH
 
+       IF ( SSHFile .NE. ' ' ) THEN
+        I1=IFNBLNK(SSHFile)
+        I2=ILNBLNK(SSHFile)
+        WRITE(fn,'(A,A,I10.10)') SSHFile(I1:I2),'.',
+     &        intime0*Ifprd +offlineIter0
+        CALL READ_REC_3D_RS( fn, prec,  1, ssh0, 1, myIter, myThid )
+        WRITE(fn,'(A,A,I10.10)') SSHFile(I1:I2),'.',
+     &        intime1*Ifprd +offlineIter0
+        CALL READ_REC_3D_RS( fn, prec,  1, ssh1, 1, myIter, myThid )
+        _EXCH_XY_RS(ssh0, myThid )
+        _EXCH_XY_RS(ssh1, myThid )
+       ENDIF
+
 c      IF ( HFluxFile .NE. ' ' ) THEN
 c       I1=IFNBLNK(HFluxFile)
 c       I2=ILNBLNK(HFluxFile)

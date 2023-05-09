@@ -136,25 +136,23 @@ C         the product ghat*diffKzS (and not ghat alone).
         ENDIF
 #endif /* ALLOW_KPP */
 
-        IF ( SSHFile.NE.' ' ) THEN
+        IF ( offlineSSHRelaxTime .NE. 0 ) THEN
          DO j=1-OLy,sNy+OLy
           DO i=1-OLx,sNx+OLx
            offlineSSH(i,j,bi,bj) = bWght*ssh0(i,j,bi,bj)
      &                           + aWght*ssh1(i,j,bi,bj)
           ENDDO
          ENDDO
-         IF ( offlineSSHRelaxTime .NE. 0 ) THEN
-          DO j=1-OLy,sNy+OLy
-           DO i=1-OLx,sNx+OLx
-            etaN(i,j,bi,bj) = etaN(i,j,bi,bj)
-     &        + (offlineSSH(i,j,bi,bj) - etaN(i,j,bi,bj))
-     &          *deltaTfreesurf/offlineSSHRelaxTime
-            etaH(i,j,bi,bj) = etaH(i,j,bi,bj)
-     &        + (offlineSSH(i,j,bi,bj) - etaH(i,j,bi,bj))
-     &          *deltaTfreesurf/offlineSSHRelaxTime
-           ENDDO
+         DO j=1-OLy,sNy+OLy
+          DO i=1-OLx,sNx+OLx
+           etaN(i,j,bi,bj) = etaN(i,j,bi,bj)
+     &       + (offlineSSH(i,j,bi,bj) - etaN(i,j,bi,bj))
+     &         *deltaTfreesurf/offlineSSHRelaxTime
+           etaH(i,j,bi,bj) = etaH(i,j,bi,bj)
+     &       + (offlineSSH(i,j,bi,bj) - etaH(i,j,bi,bj))
+     &         *deltaTfreesurf/offlineSSHRelaxTime
           ENDDO
-         ENDIF
+         ENDDO
         ENDIF
 
 C--   Interpolate surface forcing

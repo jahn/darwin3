@@ -459,6 +459,29 @@ C     and vice open boundary condition files
       _RL     siobWperiod
       _RL     siobWrepCycle
 
+C-    The following variables are used in conjunction with pkg/obcs
+C     and pkg/ptracers to describe ptracers open boundary conditions
+      INTEGER ptobNstartdate1
+      INTEGER ptobNstartdate2
+      INTEGER ptobSstartdate1
+      INTEGER ptobSstartdate2
+      INTEGER ptobEstartdate1
+      INTEGER ptobEstartdate2
+      INTEGER ptobWstartdate1
+      INTEGER ptobWstartdate2
+      _RL     ptobNstartTime
+      _RL     ptobNperiod
+      _RL     ptobNrepCycle
+      _RL     ptobSstartTime
+      _RL     ptobSperiod
+      _RL     ptobSrepCycle
+      _RL     ptobEstartTime
+      _RL     ptobEperiod
+      _RL     ptobErepCycle
+      _RL     ptobWstartTime
+      _RL     ptobWperiod
+      _RL     ptobWrepCycle
+
 C-    File names.
       CHARACTER*(128) hfluxfile
       CHARACTER*(128) atempfile
@@ -531,7 +554,11 @@ C-    File names.
      &       siobNstartdate1,   siobNstartdate2,
      &       siobSstartdate1,   siobSstartdate2,
      &       siobEstartdate1,   siobEstartdate2,
-     &       siobWstartdate1,   siobWstartdate2
+     &       siobWstartdate1,   siobWstartdate2,
+     &       ptobNstartdate1,   ptobNstartdate2,
+     &       ptobSstartdate1,   ptobSstartdate2,
+     &       ptobEstartdate1,   ptobEstartdate2,
+     &       ptobWstartdate1,   ptobWstartdate2
 
       COMMON /EXF_PARAM_R/
      &       repeatPeriod,      exf_monFreq,     exf_adjMonFreq,
@@ -590,7 +617,11 @@ C-    File names.
      &       siobNrepCycle,     siobNperiod,     siobNstartTime,
      &       siobSrepCycle,     siobSperiod,     siobSstartTime,
      &       siobErepCycle,     siobEperiod,     siobEstartTime,
-     &       siobWrepCycle,     siobWperiod,     siobWstartTime
+     &       siobWrepCycle,     siobWperiod,     siobWstartTime,
+     &       ptobNrepCycle,     ptobNperiod,     ptobNstartTime,
+     &       ptobSrepCycle,     ptobSperiod,     ptobSstartTime,
+     &       ptobErepCycle,     ptobEperiod,     ptobEstartTime,
+     &       ptobWrepCycle,     ptobWperiod,     ptobWstartTime
 
       COMMON /EXF_PARAM_TREND_REMOVAL/
      &       hflux_exfremo_intercept,

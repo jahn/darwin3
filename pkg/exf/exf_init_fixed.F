@@ -466,6 +466,42 @@ C     from the beginning of the year.
      I                    myThid )
       ENDIF
 # endif /* ALLOW_SEAICE */
+# ifdef ALLOW_PTRACERS
+      IF ( useOBCS .AND. usePTRACERS ) THEN
+# ifdef ALLOW_DEBUG
+       IF (debugMode) CALL DEBUG_CALL('GETFFIELD_START ptobN',myThid)
+# endif
+       CALL EXF_GETFFIELD_START( useOBCSYearlyFields,
+     I                    'exf', 'ptobN', ptobNperiod,
+     I                    ptobNstartdate1, ptobNstartdate2,
+     U                    ptobNstartTime, errCount,
+     I                    myThid )
+# ifdef ALLOW_DEBUG
+       IF (debugMode) CALL DEBUG_CALL('GETFFIELD_START ptobS',myThid)
+# endif
+       CALL EXF_GETFFIELD_START( useOBCSYearlyFields,
+     I                    'exf', 'ptobS', ptobSperiod,
+     I                    ptobSstartdate1, ptobSstartdate2,
+     U                    ptobSstartTime, errCount,
+     I                    myThid )
+# ifdef ALLOW_DEBUG
+       IF (debugMode) CALL DEBUG_CALL('GETFFIELD_START ptobE',myThid)
+# endif
+       CALL EXF_GETFFIELD_START( useOBCSYearlyFields,
+     I                    'exf', 'ptobE', ptobEperiod,
+     I                    ptobEstartdate1, ptobEstartdate2,
+     U                    ptobEstartTime, errCount,
+     I                    myThid )
+# ifdef ALLOW_DEBUG
+       IF (debugMode) CALL DEBUG_CALL('GETFFIELD_START ptobW',myThid)
+# endif
+       CALL EXF_GETFFIELD_START( useOBCSYearlyFields,
+     I                    'exf', 'ptobW', ptobWperiod,
+     I                    ptobWstartdate1, ptobWstartdate2,
+     U                    ptobWstartTime, errCount,
+     I                    myThid )
+      ENDIF
+# endif /* ALLOW_PTRACERS */
 #endif /* ALLOW_OBCS */
 
 #ifdef ALLOW_CLIMSST_RELAXATION

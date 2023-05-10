@@ -71,6 +71,7 @@ CEOP
      U     OBNvice,OBNvice0,OBNvice1,OBNvicefile,
 #  endif
 #  ifdef ALLOW_PTRACERS
+     I     ptobNstartTime, ptobNperiod, ptobNrepCycle,
      U     OBNptr ,OBNptr0, OBNptr1, OBNptrFile,
 #  endif
      I     myTime, myIter, myThid )
@@ -97,6 +98,7 @@ CEOP
      U     OBSvice,OBSvice0,OBSvice1,OBSvicefile,
 #  endif
 #  ifdef ALLOW_PTRACERS
+     I     ptobSstartTime, ptobSperiod, ptobSrepCycle,
      U     OBSptr ,OBSptr0, OBSptr1, OBSptrFile,
 #  endif
      I     myTime, myIter, myThid )
@@ -123,6 +125,7 @@ CEOP
      U     OBEvice,OBEvice0,OBEvice1,OBEvicefile,
 #  endif
 #  ifdef ALLOW_PTRACERS
+     I     ptobEstartTime, ptobEperiod, ptobErepCycle,
      U     OBEptr ,OBEptr0, OBEptr1, OBEptrFile,
 #  endif
      I     myTime, myIter, myThid )
@@ -149,6 +152,7 @@ CEOP
      U     OBWvice,OBWvice0,OBWvice1,OBWvicefile,
 #  endif
 #  ifdef ALLOW_PTRACERS
+     I     ptobWstartTime, ptobWperiod, ptobWrepCycle,
      U     OBWptr ,OBWptr0, OBWptr1, OBWptrFile,
 #  endif
      I     myTime, myIter, myThid )
@@ -184,6 +188,7 @@ C     !INTERFACE:
      U     OBvice,OBvice0,OBvice1,OBvicefile,
 #endif
 #ifdef ALLOW_PTRACERS
+     I     ptobStartTime, ptobPeriod, ptobRepeatCycle,
      U     OBptr ,OBptr0, OBptr1, OBptrFile,
 #endif
      I     myTime, myIter, myThid )
@@ -258,6 +263,7 @@ C     !INPUT/OUTPUT PARAMETERS:
      &     OBaFile,OBhFile,OBslFile,OBsnFile,OBuiceFile,OBviceFile
 #endif /* ALLOW_SEAICE */
 #ifdef ALLOW_PTRACERS
+      _RL     ptobStartTime, ptobPeriod, ptobRepeatCycle
       _RL OBptr (1-OLx:sNx+OLx,Nr,nSx,nSy,PTRACERS_num)
       _RL OBptr0(1-OLx:sNx+OLx,Nr,nSx,nSy,PTRACERS_num)
       _RL OBptr1(1-OLx:sNx+OLx,Nr,nSx,nSy,PTRACERS_num)
@@ -359,13 +365,66 @@ C-    get record numbers and interpolation factor
 # endif /* NONLIN_FRSURF */
 # ifdef ALLOW_PTRACERS
       IF ( usePTRACERS ) THEN
+       IF ( useCAL .AND. ptobPeriod .EQ. -12. _d 0 ) THEN
+#  ifdef ALLOW_CAL
+C-    obcsPeriod=-12 means input file contains 12 monthly means
+C     records, corresponding to Jan. (rec=1) through Dec. (rec=12)
+        CALL cal_GetMonthsRec(
+     O              fac, first, changed,
+     O              count0, count1, year0, year1,
+     I              myTime, myIter, myThid )
+#  endif /* ALLOW_CAL */
+       ELSEIF ( useCal .AND. ptobPeriod .EQ. -1. _d 0 ) THEN
+C-    ptobPeriod=-1 means fields are monthly means.
+C     With useYearlyFields=.TRUE., each yearly input file contains
+C     12 monthly mean records.  Otherwise, a single input file contains
+C     monthly mean records starting at the month ptobStartTime falls in.
+# ifdef ALLOW_CAL
+        CALL EXF_GetMonthsRec(
+     I              ptobStartTime, useYearlyFields,
+     O              fac, first, changed,
+     O              count0, count1, year0, year1,
+     I              myTime, myIter, myThid )
+# endif /* ALLOW_CAL */
+       ELSEIF ( ptobPeriod .LT. 0. _d 0 ) THEN
+        WRITE(msgBuf,'(A,1PE16.8,3A)')
+     &     'OBCS_EXF_READ_XZ: Invalid ptobPeriod=', ptobPeriod,
+     &     ' for ', obName, ' OBCS files'
+        CALL PRINT_ERROR( msgBuf, myThid )
+        STOP 'ABNORMAL END: S/R OBCS_EXF_READ_XZ'
+       ELSE
+C-    get record numbers and interpolation factor
+        fldName = 'ptob'//obName
+        CALL EXF_GetFFieldRec(
+     I              ptobStartTime, ptobPeriod, ptobRepeatCycle,
+     I              fldName, useYearlyFields,
+     O              fac, first, changed,
+     O              count0, count1, year0, year1,
+     I              myTime, myIter, myThid )
+       ENDIF
+       IF ( exf_debugLev.GE.debLevD ) THEN
+         _BEGIN_MASTER( myThid )
+         WRITE(msgBuf,'(4A)') ' OBCS_EXF_READ_XZ: ',
+     &     'processing SEAICE ', obName, '-OBCS files'
+         CALL PRINT_MESSAGE( msgBuf, standardMessageUnit,
+     &                       SQUEEZE_RIGHT, myThid )
+         WRITE(msgBuf,'(2A,I10,2I7)') ' OBCS_EXF_READ_XZ: ',
+     &     ' myIter, count0, count1:', myIter, count0, count1
+         CALL PRINT_MESSAGE( msgBuf, standardMessageUnit,
+     &                       SQUEEZE_RIGHT, myThid )
+         WRITE(msgBuf,'(2A,2(L2,2X),E16.9)') ' OBCS_EXF_READ_XZ: ',
+     &     ' first, changed, fac:  ', first, changed, fac
+         CALL PRINT_MESSAGE( msgBuf, standardMessageUnit,
+     &                       SQUEEZE_RIGHT, myThid )
+         _END_MASTER( myThid )
+       ENDIF
        DO iTracer = 1, PTRACERS_numInUse
         CALL EXF_SET_OBCS_XZ( OBptr (1-OLx,1,1,1,iTracer),
      I                        OBptr0(1-OLx,1,1,1,iTracer),
      I                        OBptr1(1-OLx,1,1,1,iTracer),
      I                        OBptrFile(iTracer), 's', Nr,
      I                        fac, first, changed, useYearlyFields,
-     I                        obcsPeriod, count0, count1, year0, year1,
+     I                        ptobPeriod, count0, count1, year0, year1,
      I                        myTime, myIter, myThid )
        ENDDO
       ENDIF
@@ -483,6 +542,7 @@ C     !INTERFACE:
      U     OBvice,OBvice0,OBvice1,OBvicefile,
 #endif
 #ifdef ALLOW_PTRACERS
+     I     ptobStartTime, ptobPeriod, ptobRepeatCycle,
      U     OBptr ,OBptr0, OBptr1, OBptrFile,
 #endif
      I     myTime, myIter, myThid )
@@ -557,6 +617,7 @@ C     !INPUT/OUTPUT PARAMETERS:
      &     OBaFile,OBhFile,OBslFile,OBsnFile,OBuiceFile,OBviceFile
 #endif /* ALLOW_SEAICE */
 #ifdef ALLOW_PTRACERS
+      _RL     ptobStartTime, ptobPeriod, ptobRepeatCycle
       _RL OBptr (1-OLy:sNy+OLy,Nr,nSx,nSy,PTRACERS_num)
       _RL OBptr0(1-OLy:sNy+OLy,Nr,nSx,nSy,PTRACERS_num)
       _RL OBptr1(1-OLy:sNy+OLy,Nr,nSx,nSy,PTRACERS_num)
@@ -658,13 +719,67 @@ C-    get record numbers and interpolation factor
 # endif /* NONLIN_FRSURF */
 # ifdef ALLOW_PTRACERS
       IF ( usePTRACERS ) THEN
+       IF ( useCAL .AND. ptobPeriod .EQ. -12. _d 0 ) THEN
+#  ifdef ALLOW_CAL
+C-    obcsPeriod=-12 means input file contains 12 monthly means
+C     records, corresponding to Jan. (rec=1) through Dec. (rec=12)
+        CALL cal_GetMonthsRec(
+     O              fac, first, changed,
+     O              count0, count1, year0, year1,
+     I              myTime, myIter, myThid )
+#  endif /* ALLOW_CAL */
+       ELSEIF ( useCal .AND. ptobPeriod .EQ. -1. _d 0 ) THEN
+C-    ptobPeriod=-1 means fields are monthly means.
+C     With useYearlyFields=.TRUE., each yearly input file contains
+C     12 monthly mean records.  Otherwise, a single input file contains
+C     monthly mean records starting at the month ptobStartTime falls in.
+# ifdef ALLOW_CAL
+        CALL EXF_GetMonthsRec(
+     I              ptobStartTime, useYearlyFields,
+     O              fac, first, changed,
+     O              count0, count1, year0, year1,
+     I              myTime, myIter, myThid )
+# endif /* ALLOW_CAL */
+       ELSEIF ( ptobPeriod .LT. 0. _d 0 ) THEN
+        WRITE(msgBuf,'(A,1PE16.8,3A)')
+     &     'OBCS_EXF_READ_YZ: Invalid ptobPeriod=', ptobPeriod,
+     &     ' for ', obName, ' OBCS files'
+        CALL PRINT_ERROR( msgBuf, myThid )
+        STOP 'ABNORMAL END: S/R OBCS_EXF_READ_YZ'
+       ELSE
+C-    get record numbers and interpolation factor
+        fldName = 'ptob'//obName
+        CALL EXF_GetFFieldRec(
+     I              ptobStartTime, ptobPeriod, ptobRepeatCycle,
+     I              fldName, useYearlyFields,
+     O              fac, first, changed,
+     O              count0, count1, year0, year1,
+     I              myTime, myIter, myThid )
+       ENDIF
+       IF ( exf_debugLev.GE.debLevD ) THEN
+         _BEGIN_MASTER( myThid )
+         WRITE(msgBuf,'(4A)') ' OBCS_EXF_READ_XZ: ',
+     &     'processing SEAICE ', obName, '-OBCS files'
+         CALL PRINT_MESSAGE( msgBuf, standardMessageUnit,
+     &                       SQUEEZE_RIGHT, myThid )
+         WRITE(msgBuf,'(2A,I10,2I7)') ' OBCS_EXF_READ_YZ: ',
+     &     ' myIter, count0, count1:', myIter, count0, count1
+         CALL PRINT_MESSAGE( msgBuf, standardMessageUnit,
+     &                       SQUEEZE_RIGHT, myThid )
+         WRITE(msgBuf,'(2A,2(L2,2X),E16.9)') ' OBCS_EXF_READ_YZ: ',
+     &     ' first, changed, fac:  ', first, changed, fac
+         CALL PRINT_MESSAGE( msgBuf, standardMessageUnit,
+     &                       SQUEEZE_RIGHT, myThid )
+         _END_MASTER( myThid )
+       ENDIF
+
        DO iTracer = 1, PTRACERS_numInUse
         CALL EXF_SET_OBCS_YZ( OBptr (1-OLx,1,1,1,iTracer),
      I                        OBptr0(1-OLx,1,1,1,iTracer),
      I                        OBptr1(1-OLx,1,1,1,iTracer),
      I                        OBptrFile(iTracer), 's', Nr,
      I                        fac, first, changed, useYearlyFields,
-     I                        obcsPeriod, count0, count1, year0, year1,
+     I                        ptobPeriod, count0, count1, year0, year1,
      I                        myTime, myIter, myThid )
        ENDDO
       ENDIF

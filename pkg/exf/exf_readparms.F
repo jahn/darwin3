@@ -277,7 +277,15 @@ C     Surface flux data.
      &    siobEstartdate1,   siobEstartdate2,   siobEstartTime,
      &        siobEperiod,   siobErepCycle,
      &    siobWstartdate1,   siobWstartdate2,   siobWstartTime,
-     &        siobWperiod,   siobWrepCycle
+     &        siobWperiod,   siobWrepCycle,
+     &    ptobNstartdate1,   ptobNstartdate2,   ptobNstartTime,
+     &        ptobNperiod,   ptobNrepCycle,
+     &    ptobSstartdate1,   ptobSstartdate2,   ptobSstartTime,
+     &        ptobSperiod,   ptobSrepCycle,
+     &    ptobEstartdate1,   ptobEstartdate2,   ptobEstartTime,
+     &        ptobEperiod,   ptobErepCycle,
+     &    ptobWstartdate1,   ptobWstartdate2,   ptobWstartTime,
+     &        ptobWperiod,   ptobWrepCycle
 #endif /* ALLOW_OBCS */
 
       IF ( .NOT.useEXF ) THEN
@@ -597,6 +605,19 @@ C     Calendar data.
       siobWstartdate2    = UNSET_I
       siobWperiod        = UNSET_RL
 
+      ptobNstartdate1    = UNSET_I
+      ptobNstartdate2    = UNSET_I
+      ptobNperiod        = UNSET_RL
+      ptobSstartdate1    = UNSET_I
+      ptobSstartdate2    = UNSET_I
+      ptobSperiod        = UNSET_RL
+      ptobEstartdate1    = UNSET_I
+      ptobEstartdate2    = UNSET_I
+      ptobEperiod        = UNSET_RL
+      ptobWstartdate1    = UNSET_I
+      ptobWstartdate2    = UNSET_I
+      ptobWperiod        = UNSET_RL
+
       repeatPeriod       = 0.0 _d 0
       windstressmax      = 2.0 _d 0
 
@@ -671,6 +692,10 @@ C     Start Time.
       siobSstartTime     = UNSET_RL
       siobEstartTime     = UNSET_RL
       siobWstartTime     = UNSET_RL
+      ptobNstartTime     = UNSET_RL
+      ptobSstartTime     = UNSET_RL
+      ptobEstartTime     = UNSET_RL
+      ptobWstartTime     = UNSET_RL
 
 C     Initialise file type and field precision
       exf_iprec            = 32
@@ -975,6 +1000,10 @@ C-
       siobSrepCycle      = UNSET_RL
       siobErepCycle      = UNSET_RL
       siobWrepCycle      = UNSET_RL
+      ptobNrepCycle      = UNSET_RL
+      ptobSrepCycle      = UNSET_RL
+      ptobErepCycle      = UNSET_RL
+      ptobWrepCycle      = UNSET_RL
 
       WRITE(msgBuf,'(A)')
      &     'EXF_READPARMS: reading EXF_NML_02'
@@ -1018,6 +1047,23 @@ C-
        IF(siobWstartdate2.EQ.UNSET_I ) siobWstartdate2=obcsWstartdate2
        IF(siobWperiod    .EQ.UNSET_RL) siobWperiod    =obcsWperiod
        IF(siobWrepCycle  .EQ.UNSET_RL) siobWrepCycle  =obcsWrepCycle
+
+       IF(ptobNstartdate1.EQ.UNSET_I ) ptobNstartdate1=obcsNstartdate1
+       IF(ptobNstartdate2.EQ.UNSET_I ) ptobNstartdate2=obcsNstartdate2
+       IF(ptobNperiod    .EQ.UNSET_RL) ptobNperiod    =obcsNperiod
+       IF(ptobNrepCycle  .EQ.UNSET_RL) ptobNrepCycle  =obcsNrepCycle
+       IF(ptobSstartdate1.EQ.UNSET_I ) ptobSstartdate1=obcsSstartdate1
+       IF(ptobSstartdate2.EQ.UNSET_I ) ptobSstartdate2=obcsSstartdate2
+       IF(ptobSperiod    .EQ.UNSET_RL) ptobSperiod    =obcsSperiod
+       IF(ptobSrepCycle  .EQ.UNSET_RL) ptobSrepCycle  =obcsSrepCycle
+       IF(ptobEstartdate1.EQ.UNSET_I ) ptobEstartdate1=obcsEstartdate1
+       IF(ptobEstartdate2.EQ.UNSET_I ) ptobEstartdate2=obcsEstartdate2
+       IF(ptobEperiod    .EQ.UNSET_RL) ptobEperiod    =obcsEperiod
+       IF(ptobErepCycle  .EQ.UNSET_RL) ptobErepCycle  =obcsErepCycle
+       IF(ptobWstartdate1.EQ.UNSET_I ) ptobWstartdate1=obcsWstartdate1
+       IF(ptobWstartdate2.EQ.UNSET_I ) ptobWstartdate2=obcsWstartdate2
+       IF(ptobWperiod    .EQ.UNSET_RL) ptobWperiod    =obcsWperiod
+       IF(ptobWrepCycle  .EQ.UNSET_RL) ptobWrepCycle  =obcsWrepCycle
 
        IF(exf_iprec_obcs .EQ. UNSET_I) exf_iprec_obcs =exf_iprec
 #endif /* ALLOW_OBCS */

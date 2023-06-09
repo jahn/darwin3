@@ -798,6 +798,8 @@ C         QC_Chl = ((1 _d 0 + E)*PC + m)/PChl
 C
 C       Due to carbon limitation, no growth is possible at low light
 C       when PChl <= VI_min(j).  We set Chl = m/VI_min(j) in this case.
+C       For now assume nutrients are sufficient for this Chl.  This
+C       will be corrected below.
 
         PChlTgt = MAX(VI_min(j), PChl)
         QC_chl_const = maintConsum(j)/PChlTgt
@@ -890,8 +892,10 @@ C       multiple conditions may be met, so the order matters here
 
         QC_chl = QC_chl_const + QC_chl_D*PC
 
+C essential C is based on target Chl, even with insufficient nutrients
+        QC_essential = Qc_D0 + Qc_D1*PC + Qc_D2*PC*PC
 
-C        if growth rate is zero
+C       zero growth rate: reduce Chl according to nutrient availability
         IF (PC .EQ. 0. _d 0) THEN
          QC_chlN = (mmQn - QnNoChl(j))
      &         /(Y_NC_chl(j) + A_pho(j)/Y_CN_protein(j))
@@ -920,26 +924,7 @@ C       convert to mg Chl m-3
 
         Qfe_pro_photo = QN_pro_photo*Y_FeN_photo(j)
 
-C===========================
-CRevising store amount
-C===========================
-C        QN_essential = QN_chl + QN_pro_tot + QN_RNA + QN_DNA(j)
-C        QP_essential = QP_thy + QP_RNA + QP_DNA(j) +  QP_other(j)
-C        Qfe_essential = Qfe_pro_photo
-
-c        QN_ess1 = QN_essential
-c        QP_ess1 = QP_essential
-c        QFe_ess1 = QFe_essential
-
-        QC_essential = Qc_D0 + Qc_D1*PC + Qc_D2*PC*PC
-c        QN_ess2 = Qn_D0 + Qn_D1*PC + Qn_D2*PC*PC
-c        QP_ess2 = Qp_D0 + Qp_D1*PC + Qp_D2*PC*PC
-c        QFe_ess2 = Qfe_D0 + Qfe_D1*PC
-
-c=======================================
-cHere compute when N,P,or Fe are scarce
-c=======================================
-
+C       not enough nutrients to make any Chl: scale down minimum pools
         IF (QC_chl.EQ.0 _d 0) THEN
          Scal_coeff    = MIN(mmQp/QpNoChl(j), mmQn/QnNoChl(j), 1 _d 0)
          QN_RNA        = QN_RNA_min(j)*Scal_coeff

@@ -28,6 +28,23 @@
       INTEGER iopt
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
       _RL QC_const
+      _RL PChlTgt
+      _RL QC_chl_const
+      _RL QN_chl_const
+      _RL QN_photo_const
+      _RL QN_protein_const
+      _RL Qn_D0
+      _RL Qp_thy_D0
+      _RL Qp_RNA_D0
+      _RL Qp_DNA_D0
+      _RL Qp_D0
+      _RL QC_thy_D0
+      _RL QC_pro_const
+      _RL QC_RNA_min
+      _RL Qc_D0
+      _RL QC_chl
+      _RL QC_ess_ll(nplank)
+      _RL QC_ess_lim(nplank)
 #endif
 
       NAMELIST/DARWIN_TRAITS/
@@ -174,7 +191,9 @@
      &    tauExN,
      &    tauExP,
      &    tauExFe,
-     &    tauExC
+     &    tauExC,
+     &    QC_ess_ll,
+     &    QC_ess_lim
 #endif
 
       NAMELIST/DARWIN_DEPENDENT_TRAITS/
@@ -313,6 +332,43 @@ C       compute minimum carbon fixing rate (zero growth)
         QnNoChl(jp) = QN_DNA(jp) + QN_RNA_min(jp) + QN_pro_other(jp)
         QpNoChl(jp) = QN_RNA_min(jp)*Y_PN_nucacid(jp)
      &         + QN_DNA(jp)*Y_PN_nucacid(jp) + QP_other(jp)
+
+C low light parameters
+
+        PChlTgt = VI_min(jp)
+        QC_chl_const = maintConsum(jp)/PChlTgt
+
+C       nitrogen pools in mol N (mol C)-1
+        QN_chl_const = QC_chl_const*Y_NC_chl(jp)
+
+C       photosynthesis related protein
+        QN_photo_const = QC_chl_const*A_pho(jp)/Y_CN_protein(jp)
+
+C       biosynthesis related protein
+        QN_protein_const = QN_photo_const + QN_pro_other(jp)
+
+C        Total
+        Qn_D0 = QN_chl_const+QN_protein_const+QN_RNA_min(jp)+QN_DNA(jp)
+
+C       Kei3: For P limitation
+        Qp_thy_D0 = QC_chl_const*Y_THY_P(jp)
+        Qp_RNA_D0 = QN_rna_min(jp)*Y_PN_nucacid(jp)
+        Qp_DNA_D0 = QN_dna(jp)*Y_PN_nucacid(jp)
+
+C       carbon restriction on growth rate
+        QC_thy_D0 = QC_chl_const*A_thy(jp)
+        QC_pro_const = QN_protein_const*Y_CN_protein(jp)
+        QC_RNA_min = QN_RNA_min(jp)*Y_CN_RNA(jp)
+
+        Qc_D0 = QC_chl_const + QC_pro_const + QC_RNA_min + QC_thy_D0
+     &        + QC_DNA(jp) + QC_other(jp)
+
+        QC_chl = QC_chl_const
+
+C essential C is based on target Chl, even with insufficient nutrients
+        QC_ess_ll(jp) = Qc_D0
+
+        QC_ess_lim(jp) = 1 _d 0 - Y_CN_cyano(jp)*QN_sto_max(jp)
       ENDDO
 #endif
 

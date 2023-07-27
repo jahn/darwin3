@@ -39,7 +39,7 @@ C     !FUNCTIONS:
       EXTERNAL FLT_MAP_K2R
 
 C     !LOCAL VARIABLES:
-      INTEGER bi, bj, nFlds
+      INTEGER i, j, bi, bj, nFlds
       INTEGER ip, k, ii
       INTEGER imax
       PARAMETER (imax=(9+4*Nr))
@@ -109,9 +109,11 @@ C     If float has died move to level 0
 C     Convert to coordinates
              ix = ipart(ip,bi,bj)
              jy = jpart(ip,bi,bj)
+             i = NINT(ix)
+             j = NINT(jy)
              CALL FLT_MAP_IJLOCAL2XY( xx, yy,
      I                                ix, jy, bi,bj, myThid )
-             zz = FLT_MAP_K2R( kpart(ip,bi,bj),bi,bj,myThid )
+             zz = FLT_MAP_K2R( i,j,kpart(ip,bi,bj),bi,bj,myThid )
 
              tmp(1) = npart(ip,bi,bj)
              tmp(2) = myTime

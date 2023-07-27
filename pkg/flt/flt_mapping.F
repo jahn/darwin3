@@ -219,7 +219,7 @@ C-    r decreases when k increases (rkSign < 0):
 C---+----1----+----2----+----3----+----4----+----5----+----6----+----7-|--+----|
 
       _RL FUNCTION FLT_MAP_K2R(
-     I                          kr, bi, bj, myThid )
+     I                          i, j, kr, bi, bj, myThid )
 
 C     ==================================================================
 C     FUNCTION FLT_MAP_K2R
@@ -238,25 +238,32 @@ C     == global variables ==
 #include "SIZE.h"
 #include "EEPARAMS.h"
 #include "GRID.h"
+#include "SURFACE.h"
 
 C     == routine arguments ==
       _RL kr
-      INTEGER bi, bj, myThid
+      INTEGER i, j, bi, bj, myThid
 
 C     == local variables ==
-      _RL ddz
-      INTEGER k
+      _RL kf
+      INTEGER k,ki
 
 C     == end of interface ==
 
-      k = NINT(kr)
-      IF ( k.LT.1 ) THEN
+      ki = NINT(kr)
+      kf = 0.5 _d 0 + kr - DFLOAT(ki)
+      IF ( ki.LT.1 ) THEN
         FLT_MAP_K2R = rF(1)
-      ELSEIF ( k.GT.Nr ) THEN
-        FLT_MAP_K2R = rF(Nr+1)
       ELSE
-        ddz = 0.5 _d 0 + kr - DFLOAT(k)
-        FLT_MAP_K2R = rF(k) + ddz*drF(k)*rkSign
+        IF ( ki.GT.Nr ) THEN
+          ki = Nr
+          kf = 1.
+        ENDIF
+        FLT_MAP_K2R = rF(1)
+        DO k=1,ki-1
+          FLT_MAP_K2R=FLT_MAP_K2R + h0FacC(i,j,k,bi,bj)*drF(k)*rkSign
+        ENDDO
+        FLT_MAP_K2R=FLT_MAP_K2R + kf*h0FacC(i,j,ki,bi,bj)*drF(ki)*rkSign
       ENDIF
 
       RETURN

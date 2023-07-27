@@ -41,7 +41,7 @@ C     !FUNCTIONS:
       EXTERNAL FLT_MAP_K2R
 
 C     !LOCAL VARIABLES:
-      INTEGER bi, bj, nFlds
+      INTEGER i, j, bi, bj, nFlds
       INTEGER ip, kp, ii
       _RL ix, jy, i0x, j0y, xx, yy, zz
       _RL uu, vv, tt, ss, pp
@@ -100,9 +100,11 @@ C--   Calculate position + other fields at float position and fill up IO-buffer
 
             ix = ipart(ip,bi,bj)
             jy = jpart(ip,bi,bj)
+            i = NINT(ix)
+            j = NINT(jy)
             CALL FLT_MAP_IJLOCAL2XY( xx, yy,
      I                               ix, jy, bi,bj, myThid )
-            zz = FLT_MAP_K2R( kpart(ip,bi,bj),bi,bj,myThid )
+            zz = FLT_MAP_K2R( i,j,kpart(ip,bi,bj),bi,bj,myThid )
             kp = NINT(kpart(ip,bi,bj))
             tmp(1) = npart(ip,bi,bj)
             tmp(2) = myTime

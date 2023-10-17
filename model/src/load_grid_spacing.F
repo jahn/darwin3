@@ -94,17 +94,6 @@ C--   vertical coordinate "R"
      &                      SQUEEZE_RIGHT , myThid )
       ENDIF
 
-C--   hybrid sigma vertical coordinate coefficient
-      IF ( hybSigmFile .NE. ' ' ) THEN
-        iLen = ILNBLNK(hybSigmFile)
-        CALL READ_REC_LEV_RS( hybSigmFile, readBinaryPrec, Nr+1,
-     &                        1, Nr+1, bHybSigmF, 1, 0, myThid )
-        WRITE(msgBuf,'(3A)') 'S/R LOAD_GRID_SPACING:',
-     &    ' bHybSigmF loaded from file: ', hybSigmFile(1:iLen)
-        CALL PRINT_MESSAGE( msgBuf, standardMessageUnit,
-     &                      SQUEEZE_RIGHT , myThid )
-      ENDIF
-
 C--   Check horizontal grid-spacing
       IF ( .NOT.usingCurvilinearGrid ) THEN
 C Note: To avoid multiple copies of the same code in several horiz.grid
@@ -177,6 +166,18 @@ C--   Set default (=whole domain) for where relaxation to climatology applies
       _END_MASTER(myThid)
 C--   Everyone else must wait for the parameters to be loaded
       _BARRIER
+
+C--   hybrid sigma vertical coordinate coefficient
+      IF ( hybSigmFile .NE. ' ' ) THEN
+        iLen = ILNBLNK(hybSigmFile)
+        CALL READ_REC_LEV_RS( hybSigmFile, readBinaryPrec, Nr+1,
+     &                        1, Nr+1, bHybSigmF, 1, 0, myThid )
+        _EXCH_XYZ_RS(bHybSigmF, myThid)
+        WRITE(msgBuf,'(3A)') 'S/R LOAD_GRID_SPACING:',
+     &    ' bHybSigmF loaded from file: ', hybSigmFile(1:iLen)
+        CALL PRINT_MESSAGE( msgBuf, standardMessageUnit,
+     &                      SQUEEZE_RIGHT , myThid )
+      ENDIF
 
       RETURN
       END

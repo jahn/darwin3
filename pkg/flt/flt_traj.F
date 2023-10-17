@@ -39,9 +39,12 @@ C     myThid :: my Thread Id number
 C     !FUNCTIONS:
       _RL FLT_MAP_K2R
       EXTERNAL FLT_MAP_K2R
+      INTEGER ILNBLNK
+      EXTERNAL ILNBLNK
 
 C     !LOCAL VARIABLES:
-      INTEGER i, j, bi, bj, nFlds
+      LOGICAL exst
+      INTEGER i, j, bi, bj, nFlds, nRecs, filePrec
       INTEGER ip, kp, ii
       _RL ix, jy, i0x, j0y, xx, yy, zz
       _RL uu, vv, tt, ss, pp
@@ -196,6 +199,24 @@ C-       for backward compatibility with old trajectory files:
             ENDIF
 C-       close the read-unit (safer to use a different unit for writing)
             CLOSE( ioUnit )
+            IF (npart_read .GT. 16777216 _d 0) THEN
+C            npart_read affected by round-off error - get from metafile
+             CALL FLT_READ_TRAJMETA(
+     I                                fn,
+     O                                nRecs, ii, filePrec,
+     I                                myIter, myThid )
+             IF ( nFlds .GE. 0 .AND. ii.NE.nFlds ) THEN
+              WRITE(msgBuf,'(A,I4,A)')
+     &            'FLT_TRAJ: nFlds=', nFlds,' different from'
+              CALL PRINT_ERROR( msgBuf, myThid )
+              WRITE(msgBuf,'(3A,I4,A)')
+     &            'meta file (',fn(1:18),') value =',ii
+              CALL PRINT_ERROR( msgBuf, myThid )
+              CALL ALL_PROC_DIE( 0 )
+              STOP 'ABNORMAL END: S/R FLT_TRAJ'
+             ENDIF
+             npart_read = nRecs
+            ENDIF
          ELSE
             npart_read  = 0.
             npart_times = 0.

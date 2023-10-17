@@ -373,6 +373,8 @@ C--   end bi,bj loops
        ENDDO
       ENDDO
 
+      CALL WRITE_REC_XY_RS('OBinM',OBCS_insideMask,1,0,myThid)
+
 C---+----1----+----2----+----3----+----4----+----5----+----6----+----7-|--+----|
 
 C--   Set OB active tiles:

@@ -95,11 +95,11 @@ C-- Update the fractional thickness hFacC (& "recip_hFac") :
           DO i=1-OLx,sNx+OLx
             hFacC(i,j,k,bi,bj) = maskC(i,j,k,bi,bj)
      &                         *( dAHybSigF(k)*rFullDepth
-     &                           +dBHybSigF(k)*tmpFld(i,j)
+     &                           +dBHybSigF(i,j,k,bi,bj)*tmpFld(i,j)
      &                          )*recip_drF(k)
             recip_hFacC(i,j,k,bi,bj) = maskC(i,j,k,bi,bj)*drF(k)
      &                         /( dAHybSigF(k)*rFullDepth
-     &                           +dBHybSigF(k)*tmpFld(i,j)
+     &                           +dBHybSigF(i,j,k,bi,bj)*tmpFld(i,j)
      &                          )
           ENDDO
          ENDDO
@@ -121,11 +121,11 @@ C-- Update the fractional thickness hFacW (& "recip_hFac") :
           DO i=1-OLx,sNx+OLx
             hFacW(i,j,k,bi,bj) = maskW(i,j,k,bi,bj)
      &                         *( dAHybSigF(k)*rFullDepth
-     &                           +dBHybSigF(k)*tmpFld(i,j)
+     &                           +dBHybSigF(i,j,k,bi,bj)*tmpFld(i,j)
      &                          )*recip_drF(k)
             recip_hFacW(i,j,k,bi,bj) = maskW(i,j,k,bi,bj)*drF(k)
      &                         /( dAHybSigF(k)*rFullDepth
-     &                           +dBHybSigF(k)*tmpFld(i,j)
+     &                           +dBHybSigF(i,j,k,bi,bj)*tmpFld(i,j)
      &                          )
           ENDDO
          ENDDO
@@ -147,11 +147,11 @@ C-- Update the fractional thickness hFacS (& "recip_hFac") :
           DO i=1-OLx,sNx+OLx
             hFacS(i,j,k,bi,bj) = maskS(i,j,k,bi,bj)
      &                         *( dAHybSigF(k)*rFullDepth
-     &                           +dBHybSigF(k)*tmpFld(i,j)
+     &                           +dBHybSigF(i,j,k,bi,bj)*tmpFld(i,j)
      &                          )*recip_drF(k)
             recip_hFacS(i,j,k,bi,bj) = maskS(i,j,k,bi,bj)*drF(k)
      &                         /( dAHybSigF(k)*rFullDepth
-     &                           +dBHybSigF(k)*tmpFld(i,j)
+     &                           +dBHybSigF(i,j,k,bi,bj)*tmpFld(i,j)
      &                          )
           ENDDO
          ENDDO

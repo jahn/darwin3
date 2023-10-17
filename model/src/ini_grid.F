@@ -59,6 +59,9 @@ C--   Load grid spacing (vector) from files
 C--   Set up vertical grid and coordinate system
       CALL INI_VERTICAL_GRID( myThid )
 
+C--   Set up vertical grid and coordinate system
+      CALL INI_SIGMA_GRID( myThid )
+
 C--   Initialise (everywhere) all horizontal grid array to null value
 C     Note: some arrays are not defined in some parts of the halo
 C     region. We set them to zero here for safety. If they are ever

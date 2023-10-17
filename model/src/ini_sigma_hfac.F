@@ -100,7 +100,7 @@ C-    Set 3-D hFacC
           DO i=1-OLx,sNx+OLx
            IF ( maskInC(i,j,bi,bj).NE.0. _d 0 ) THEN
              hFactmp = ( dAHybSigF(k)*rFullDepth
-     &                 + dBHybSigF(k)*tmpFld(i,j)
+     &                 + dBHybSigF(i,j,k,bi,bj)*tmpFld(i,j)
      &                 )*recip_drF(k)
              hFacC(i,j,k,bi,bj) = hFactmp
              min_hFac = MIN( min_hFac, hFactmp )
@@ -200,7 +200,8 @@ C-    Set hFacW and hFacS (at U and V points)
           DO i=1-OLx,sNx+OLx
             hFactmp =
      &          ( dAHybSigF(k)*rFullDepth
-     &          + dBHybSigF(k)*( rSurfW(i,j,bi,bj)-rLowW(i,j,bi,bj) )
+     &          + dBHybSigF(i,j,kbi,bj)
+     &            *( rSurfW(i,j,bi,bj)-rLowW(i,j,bi,bj) )
      &          )*recip_drF(k)
             hFacW(i,j,k,bi,bj) = hFactmp*maskInW(i,j,bi,bj)
           ENDDO
@@ -211,7 +212,8 @@ C-    Set hFacW and hFacS (at U and V points)
           DO i=1-OLx,sNx+OLx
             hFactmp =
      &          ( dAHybSigF(k)*rFullDepth
-     &          + dBHybSigF(k)*( rSurfS(i,j,bi,bj)-rLowS(i,j,bi,bj) )
+     &          + dBHybSigF(i,j,k,bi,bj)
+     &            *( rSurfS(i,j,bi,bj)-rLowS(i,j,bi,bj) )
      &          )*recip_drF(k)
             hFacS(i,j,k,bi,bj) = hFactmp*maskInS(i,j,bi,bj)
           ENDDO

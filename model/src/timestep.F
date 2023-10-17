@@ -289,12 +289,12 @@ C---+----1----+----2----+----3----+----4----+----5----+----6----+----7-|--+----|
          DO i=iMin,iMax
            gUtmp(i,j) = gUtmp(i,j)
      &        /( 1. _d 0 + dEtaWdt(i,j,bi,bj)*deltaTFreeSurf
-     &                    *dBHybSigF(k)*recip_drF(k)
+     &                    *dBHybSigF(i,j,k,bi,bj)*recip_drF(k)
      &                    *recip_hFacW(i,j,k,bi,bj)
      &         )
            gVtmp(i,j) = gVtmp(i,j)
      &        /( 1. _d 0 + dEtaSdt(i,j,bi,bj)*deltaTFreeSurf
-     &                    *dBHybSigF(k)*recip_drF(k)
+     &                    *dBHybSigF(i,j,k,bi,bj)*recip_drF(k)
      &                    *recip_hFacS(i,j,k,bi,bj)
      &         )
          ENDDO

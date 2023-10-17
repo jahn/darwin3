@@ -388,7 +388,7 @@ C--    use future hFac to stay consistent with solver matrix
               DO i=iMin,iMax
                div(i,j) = div(i,j)*(
      &               _hFacC(i,j,k,bi,bj)*drF(k)
-     &              + dBHybSigF(k)*dEtaHdt(i,j,bi,bj)*deltaTFreeSurf
+     &        + dBHybSigF(i,j,k,bi,bj)*dEtaHdt(i,j,bi,bj)*deltaTFreeSurf
      &                             )
               ENDDO
              ENDDO

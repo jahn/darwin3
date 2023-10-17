@@ -131,13 +131,15 @@ C     Write vertical grid arrays
         CALL WRITE_GLVEC_RS( 'DRF',' ', drF, Nr, -1, myThid )
         IF ( selectSigmaCoord.NE.0 ) THEN
          CALL WRITE_GLVEC_RS( 'AHybSigF',' ',aHybSigmF,1+Nr,-1,myThid )
-         CALL WRITE_GLVEC_RS( 'BHybSigF',' ',bHybSigmF,1+Nr,-1,myThid )
          CALL WRITE_GLVEC_RS( 'AHybSigC',' ',aHybSigmC, Nr, -1,myThid )
-         CALL WRITE_GLVEC_RS( 'BHybSigC',' ',bHybSigmC, Nr, -1,myThid )
          CALL WRITE_GLVEC_RS('DAHybSigF',' ',dAHybSigF, Nr, -1,myThid )
-         CALL WRITE_GLVEC_RS('DBHybSigF',' ',dBHybSigF, Nr, -1,myThid )
          CALL WRITE_GLVEC_RS('DAHybSigC',' ',dAHybSigC,1+Nr,-1,myThid )
-         CALL WRITE_GLVEC_RS('DBHybSigC',' ',dBHybSigC,1+Nr,-1,myThid )
+         CALL WRITE_REC_LEV_RS( 'BHybSigF', writeBinaryPrec, 1+Nr, 1,
+     &                          1+Nr, bHybSigmF, 1, 0, myThid)
+         CALL WRITE_FLD_XYZ_RS( 'BHybSigC',' ',bHybSigmC, 0,myThid )
+         CALL WRITE_FLD_XYZ_RS('DBHybSigF',' ',dBHybSigF, 0,myThid )
+         CALL WRITE_REC_LEV_RS('DBHybSigC', writeBinaryPrec, 1+Nr, 1,
+     &                         1+Nr, dBHybSigC, 1, 0, myThid)
         ENDIF
 
       ENDIF

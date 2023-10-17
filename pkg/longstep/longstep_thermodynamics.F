@@ -115,7 +115,7 @@ C--     Compute new reciprocal hFac for implicit calculation
             DO i=1-OLx,sNx+OLx
              recip_hFacNew(i,j,k) = recip_hFacC(i,j,k,bi,bj)
      &        /( 1. _d 0 + dEtaHdt(i,j,bi,bj)*deltaTFreeSurf
-     &                    *dBHybSigF(k)*recip_drF(k)
+     &                    *dBHybSigF(i,j,k,bi,bj)*recip_drF(k)
      &                    *recip_hFacC(i,j,k,bi,bj)
      &         )
             ENDDO

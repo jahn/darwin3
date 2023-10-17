@@ -130,12 +130,12 @@ C     of surf.thickness (hFac): account for change in surf.thickness
           DO i=iMin,iMax
             surfaceForcingT(i,j,bi,bj) = surfaceForcingT(i,j,bi,bj)
      &        *( 1. _d 0 + dEtaHdt(i,j,bi,bj)*deltaTFreeSurf
-     &                    *dBHybSigF(ks)*recip_drF(ks)
+     &                    *dBHybSigF(i,j,ks,bi,bj)*recip_drF(ks)
      &                    *recip_hFacC(i,j,ks,bi,bj)
      &         )
             surfaceForcingS(i,j,bi,bj) = surfaceForcingS(i,j,bi,bj)
      &        *( 1. _d 0 + dEtaHdt(i,j,bi,bj)*deltaTFreeSurf
-     &                    *dBHybSigF(ks)*recip_drF(ks)
+     &                    *dBHybSigF(i,j,ks,bi,bj)*recip_drF(ks)
      &                    *recip_hFacC(i,j,ks,bi,bj)
      &         )
           ENDDO

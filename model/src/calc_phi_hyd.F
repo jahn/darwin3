@@ -466,15 +466,15 @@ C  --  Finite Volume Form, integrated to r-level (cell center & upper interface)
 #endif
            pKappaF(i,j) = (
      &           ( R_low(i,j,bi,bj) + aHybSigmF( k )*fullDepth
-     &                              + bHybSigmF( k )*locDepth
+     &                              + bHybSigmF( i,j,k,bi,bj )*locDepth
      &           )/atm_Po )**atm_kappa
            pKappaC      = (
      &           ( R_low(i,j,bi,bj) + aHybSigmC( k )*fullDepth
-     &                              + bHybSigmC( k )*locDepth
+     &                              + bHybSigmC( i,j,k,bi,bj )*locDepth
      &           )/atm_Po )**atm_kappa
            pKappaU(i,j) = (
      &           ( R_low(i,j,bi,bj)+ aHybSigmF(k+1)*fullDepth
-     &                             + bHybSigmF(k+1)*locDepth
+     &                             + bHybSigmF(i,j,k+1,bi,bj)*locDepth
      &           )/atm_Po )**atm_kappa
            phiHydC(i,j) = phiHydF(i,j)
      &        + atm_Cp*( pKappaF(i,j) - pKappaC      )*alphaRho(i,j)

@@ -900,8 +900,6 @@ c    &     'pickup_write_immed =','   /* Model IO flag. */')
       IF ( selectSigmaCoord.NE.0 ) THEN
        CALL WRITE_COPY1D_RS( bufRL,dAHybSigF,Nr,INDEX_K,'dAHybSigF =',
      &  ' /* vertical increment of Hybrid-sigma Coeff. (-) */')
-       CALL WRITE_COPY1D_RS( bufRL,dBHybSigF,Nr,INDEX_K,'dBHybSigF =',
-     &  ' /* vertical increment of Hybrid-sigma Coeff. (-) */')
       ENDIF
       IF ( usingCurvilinearGrid ) THEN
        CALL WRITE_0D_RL( radius_fromHorizGrid, INDEX_NONE,
@@ -933,8 +931,6 @@ c    &     'pickup_write_immed =','   /* Model IO flag. */')
      &'   /* W-Interf. R coordinate (  units of r ) */')
       IF ( selectSigmaCoord.NE.0 ) THEN
        CALL WRITE_COPY1D_RS(bufRL,aHybSigmF,Nr+1,INDEX_K,'aHybSigmF =',
-     &  ' /* Hybrid-sigma vert. Coord coeff. @ W-Interface (-) */')
-       CALL WRITE_COPY1D_RS(bufRL,bHybSigmF,Nr+1,INDEX_K,'bHybSigmF =',
      &  ' /* Hybrid-sigma vert. Coord coeff. @ W-Interface (-) */')
       ENDIF
       CALL WRITE_1D_RL( deepFacC, Nr,   INDEX_K, 'deepFacC = ',

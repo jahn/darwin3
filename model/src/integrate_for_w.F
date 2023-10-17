@@ -151,7 +151,7 @@ C-  o Hybrid Sigma coordinate:
            DO i=1,sNx
              wFld(i,j,k,bi,bj) =
      &        ( conv2d(i,j)*recip_rA(i,j,bi,bj)
-     &         -dEtaHdt(i,j,bi,bj)*dBHybSigF(k)
+     &         -dEtaHdt(i,j,bi,bj)*dBHybSigF(i,j,k,bi,bj)
      &        )*maskC(i,j,k,bi,bj)
            ENDDO
           ENDDO
@@ -161,7 +161,7 @@ C-  o Hybrid Sigma coordinate:
              wFld(i,j,k,bi,bj) =
      &        ( wFld(i,j,k+1,bi,bj)
      &         +conv2d(i,j)*recip_rA(i,j,bi,bj)
-     &         -dEtaHdt(i,j,bi,bj)*dBHybSigF(k)
+     &         -dEtaHdt(i,j,bi,bj)*dBHybSigF(i,j,k,bi,bj)
      &        )*maskC(i,j,k,bi,bj)
            ENDDO
           ENDDO

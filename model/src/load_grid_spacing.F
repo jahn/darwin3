@@ -97,10 +97,10 @@ C--   vertical coordinate "R"
 C--   hybrid sigma vertical coordinate coefficient
       IF ( hybSigmFile .NE. ' ' ) THEN
         iLen = ILNBLNK(hybSigmFile)
-        CALL READ_GLVEC_RS( hybSigmFile,' ',aHybSigmF,Nr+1, 1,myThid )
-        CALL READ_GLVEC_RS( hybSigmFile,' ',bHybSigmF,Nr+1, 2,myThid )
+        CALL READ_REC_LEV_RS( hybSigmFile, readBinaryPrec, Nr+1,
+     &                        1, Nr+1, bHybSigmF, 1, 0, myThid )
         WRITE(msgBuf,'(3A)') 'S/R LOAD_GRID_SPACING:',
-     &    ' a&b_HybSigmF loaded from file: ', hybSigmFile(1:iLen)
+     &    ' bHybSigmF loaded from file: ', hybSigmFile(1:iLen)
         CALL PRINT_MESSAGE( msgBuf, standardMessageUnit,
      &                      SQUEEZE_RIGHT , myThid )
       ENDIF

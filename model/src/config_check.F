@@ -719,12 +719,12 @@ C     for now, issue a warning (but might change the code later on):
       ENDIF
 
       IF ( selectSigmaCoord.NE.0 ) THEN
-       IF ( fluidIsWater ) THEN
-        WRITE(msgBuf,'(A)')
-     &   'CONFIG_CHECK: Sigma-Coords not yet coded for Oceanic set-up'
-        CALL PRINT_ERROR( msgBuf, myThid )
-        errCount = errCount + 1
-       ENDIF
+C       IF ( fluidIsWater ) THEN
+C        WRITE(msgBuf,'(A)')
+C     &   'CONFIG_CHECK: Sigma-Coords not yet coded for Oceanic set-up'
+C        CALL PRINT_ERROR( msgBuf, myThid )
+C       errCount = errCount + 1
+C       ENDIF
        IF ( nonlinFreeSurf.LE.0 ) THEN
         WRITE(msgBuf,'(A)')
      &   'CONFIG_CHECK: Sigma-Coords not coded for Lin-FreeSurf'

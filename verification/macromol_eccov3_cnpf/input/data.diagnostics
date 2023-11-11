@@ -292,12 +292,14 @@
 #-----------------
  &DIAG_STATIS_PARMS
  diagst_mnc=.FALSE.,
-     stat_freq(1:3)= 3*10800.,
-    stat_phase(1:3)= 3*0.,
+     stat_freq(1:4)= 3*3600.,
+    stat_phase(1:4)= 3*0.,
  stat_fields(1,1)= 'PP      '
  stat_fields(1,2)= 'Nfix    '
  stat_fields(1,3)= 'Denit   '
+ stat_fields(1,3)= 'pH      '
     stat_fname(1)= 'statsPP',
     stat_fname(2)= 'statsNfix',
     stat_fname(3)= 'statsDenit',
+    stat_fname(3)= 'statspH',
  &

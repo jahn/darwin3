@@ -170,30 +170,18 @@
      &    QP_other,
      &    QP_RNA_min,
      &    QC_DNA,
-     &    QN_pro_other,
-     &    QN_RNA_min,
-     &    QN_DNA,
-     &    QP_DNA,
      &    QN_sto_max,
      &    Qp_max,
      &    Qfe_max,
      &    A_pho,
      &    A_bio,
      &    AP_RNA,
-     &    A_NN_RNA,
-     &    A_thy,
      &    Sf,
-     &    VI_min,
-     &    QC_chlMax,
-     &    QnNoChl,
-     &    QpNoChl,
      &    QfeNoChl,
      &    tauExN,
      &    tauExP,
      &    tauExFe,
-     &    tauExC,
-     &    QC_ess_ll,
-     &    QC_ess_lim
+     &    tauExC
 #endif
 
       NAMELIST/DARWIN_DEPENDENT_TRAITS/
@@ -210,6 +198,20 @@
      &    biovol_bygroup,
      &    alpha_mean,
      &    chl2cmin
+#ifdef DARWIN_MACROMOLECULAR_GROWTH
+     &   ,QN_pro_other,
+     &    QN_RNA_min,
+     &    QN_DNA,
+     &    QP_DNA,
+     &    A_NN_RNA,
+     &    A_thy,
+     &    VI_min,
+     &    QC_chlMax,
+     &    QnNoChl,
+     &    QpNoChl,
+     &    QC_ess_ll,
+     &    QC_ess_lim
+#endif
 
 
 #ifdef ALLOW_RADTRANS

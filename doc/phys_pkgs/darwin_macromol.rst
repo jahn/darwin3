@@ -449,39 +449,39 @@ and similar for phosphorus and iron.
 
 .. csv-table:: Traits of the macromolecular growth model
    :delim: &
-   :widths: auto
+   :widths: 13,20,22,16,11,18
    :header: symbol, trait, param, default, units, description
    :name: tab_phys_pkg_darwin_macromol_traits
 
-   :math:`\ECoiiProd`   & ECo2Prod     & a_ECo2Prod     & 0.774       & dimensionless              & CO2 production ratio
-   :math:`\maintConsum` & maintConsum  & a_maintConsum  & 0.393/day   & 1/s                        & maintenance carbohydrate consumption
-   :math:`\VImax`       & VI_max       & a_VI_max       & 277/day     & molC/s / (molC in Chl)     & carbon fixing rate
-                        &              & b_VI_max       & 0           &                            &
-   :math:`\AI`          & A_I          & a_A_I          & 0.008633641 & m\ :sup:`2`\ s/μmol        & coefficient characterizing the absorption cross section
-   :math:`\Sf`          & Sf           &                & 1.0         & unitless                   & enhancement of photosynthesis due to size
-   :math:`\Apho`        & A_pho        & a_A_pho        & 16.0        & molC / (molC in Chl)       & A constant of proportionalty
-   :math:`\Abio`        & A_bio        & a_A_bio        & 0.2711*day  & molC / (molC/s)            & constant for variable part of biosynthesis protein
-   :math:`\APRNA`       & AP_RNA       & a_AP_RNA       & 0.00423*day & molP / (molC/s)            & constant for Variable part of RNA
-   :math:`\QCother`     & QC_other     & a_QC_other     & 0.0182      & molC / molC                & constant pool of structural lipids and carbs
-   :math:`\QCproother`  & QC_pro_other & a_QC_pro_other & 0.24        & molC / molC                & constant pool of essential proteins
-   :math:`\QPother`     & QP_other     & a_QP_other     & 6.5344E-4   & molP / molC                & constant part of phosphorus
-   :math:`\QPRNAmin`    & QP_RNA_min   & a_QP_RNA_min   & 2.23E-4     & molP / molC                & minimum RNA in the cell
-   :math:`\QCDNA`       & QC_DNA       & a_QC_DNA       & 9.41E-4     & molC / molC                & constant part of DNA in carbon
-   :math:`\QNstomax`    & QN_sto_max   & a_QN_sto_max   & 0.035       & molN / molC                & maximum nitrogen storage
-                        &              & b_QN_sto_max   & 0           &                            &
-   :math:`\Qpmax`       & Qp_max       & a_Qp_max       & 0.0052      & molP / molC                & maximum phosphorus quota
-                        &              & b_Qp_max       & 0           &                            &
-   :math:`\Qfemax`      & Qfe_max      & a_Qfe_max      & 2.436E-4    & molFe / molC               & maximum iron quota
-                        &              & b_Qfe_max      & 0           &                            &
-   :math:`\YCPPlip`     & Y_CP_Plip    & a_Y_CP_Plip    & 40.0        & molC / molP                & C/P molar ratio of thylacoid membrane
-   :math:`\YCNprotein`  & Y_CN_protein & a_Y_CN_protein & 5.3/1.4     & molC / molN                & C/N molar ratio in protein
-   :math:`\YNCchl`      & Y_NC_chl     & a_Y_NC_chl     & 4.0/55.0    & molN / molC                & N/C molar ratio in chlorophyll
-   :math:`\YCNcyano`    & Y_CN_cyano   & a_Y_CN_cyano   & 2.0         & molC / molN                & C/N molar ratio of cyanophycin
-   :math:`\YPNnucacid`  & Y_PN_nucacid & a_Y_PN_nucacid & 1/3.75      & molP / molN                & P/N molar ratio of RNA
-   :math:`\YCNDNA`      & Y_CN_DNA     & a_Y_CN_DNA     & 9.75/3.75   & molC / molN                & C/N molar ratio of DNA
-   :math:`\YCNRNA`      & Y_CN_RNA     & a_Y_CN_RNA     & 9.50/3.75   & molC / molN                & C/N molar ratio of RNA
-   :math:`\YTHYP`       & Y_THY_P      & a_Y_THY_P      & 0.028163    & molP / (molC in Chl)       & the stoichiometric ratio for cell phosphorus in thylakoid membrane to chlorophyll
-   :math:`\YFeNphoto`   & Y_FeN_photo  & a_Y_FeN_photo  & 0.00163     & molFe / molN               & Fe/N ratio in photosystem iron
+   :math:`\ECoiiProd`   & :varlink:`ECo2Prod`     & :varlink:`a_ECo2Prod`     & 0.774       & unitless                   & CO2 production ratio
+   :math:`\maintConsum` & :varlink:`maintConsum`  & :varlink:`a_maintConsum`  & 0.393/day   & 1/s                        & maintenance carbohydrate consumption
+   :math:`\VImax`       & :varlink:`VI_max`       & :varlink:`a_VI_max`       & 277/day     & molC/s / (molC in Chl)     & carbon fixing rate
+                        &                         & :varlink:`b_VI_max`       & 0           &                            &
+   :math:`\AI`          & :varlink:`A_I`          & :varlink:`a_A_I`          & 0.008633641 & m\ :sup:`2`\ s/μmol        & coefficient characterizing the absorption cross section
+   :math:`\Sf`          & :varlink:`Sf`           &                          & 1.0         & unitless                   & enhancement of photosynthesis due to size
+   :math:`\Apho`        & :varlink:`A_pho`        & :varlink:`a_A_pho`        & 16.0        & molC / (molC in Chl)       & A constant of proportionality
+   :math:`\Abio`        & :varlink:`A_bio`        & :varlink:`a_A_bio`        & 0.2711*day  & molC / (molC/s)            & constant for variable part of biosynthesis protein
+   :math:`\APRNA`       & :varlink:`AP_RNA`       & :varlink:`a_AP_RNA`       & 0.00423*day & molP / (molC/s)            & constant for Variable part of RNA
+   :math:`\QCother`     & :varlink:`QC_other`     & :varlink:`a_QC_other`     & 0.0182      & molC / molC                & constant pool of structural lipids and carbs
+   :math:`\QCproother`  & :varlink:`QC_pro_other` & :varlink:`a_QC_pro_other` & 0.24        & molC / molC                & constant pool of essential proteins
+   :math:`\QPother`     & :varlink:`QP_other`     & :varlink:`a_QP_other`     & 6.5344E-4   & molP / molC                & constant part of phosphorus
+   :math:`\QPRNAmin`    & :varlink:`QP_RNA_min`   & :varlink:`a_QP_RNA_min`   & 2.23E-4     & molP / molC                & minimum RNA in the cell
+   :math:`\QCDNA`       & :varlink:`QC_DNA`       & :varlink:`a_QC_DNA`       & 9.41E-4     & molC / molC                & constant part of DNA in carbon
+   :math:`\QNstomax`    & :varlink:`QN_sto_max`   & :varlink:`a_QN_sto_max`   & 0.035       & molN / molC                & maximum nitrogen storage
+                        &                         & :varlink:`b_QN_sto_max`   & 0           &                            &
+   :math:`\Qpmax`       & :varlink:`Qp_max`       & :varlink:`a_Qp_max`       & 0.0052      & molP / molC                & maximum phosphorus quota
+                        &                         & :varlink:`b_Qp_max`       & 0           &                            &
+   :math:`\Qfemax`      & :varlink:`Qfe_max`      & :varlink:`a_Qfe_max`      & 2.436E-4    & molFe / molC               & maximum iron quota
+                        &                         & :varlink:`b_Qfe_max`      & 0           &                            &
+   :math:`\YCPPlip`     & :varlink:`Y_CP_Plip`    & :varlink:`a_Y_CP_Plip`    & 40.0        & molC / molP                & C/P molar ratio of thylacoid membrane
+   :math:`\YCNprotein`  & :varlink:`Y_CN_protein` & :varlink:`a_Y_CN_protein` & 5.3/1.4     & molC / molN                & C/N molar ratio in protein
+   :math:`\YNCchl`      & :varlink:`Y_NC_chl`     & :varlink:`a_Y_NC_chl`     & 4.0/55.0    & molN / molC                & N/C molar ratio in chlorophyll
+   :math:`\YCNcyano`    & :varlink:`Y_CN_cyano`   & :varlink:`a_Y_CN_cyano`   & 2.0         & molC / molN                & C/N molar ratio of cyanophycin
+   :math:`\YPNnucacid`  & :varlink:`Y_PN_nucacid` & :varlink:`a_Y_PN_nucacid` & 1/3.75      & molP / molN                & P/N molar ratio of RNA
+   :math:`\YCNDNA`      & :varlink:`Y_CN_DNA`     & :varlink:`a_Y_CN_DNA`     & 9.75/3.75   & molC / molN                & C/N molar ratio of DNA
+   :math:`\YCNRNA`      & :varlink:`Y_CN_RNA`     & :varlink:`a_Y_CN_RNA`     & 9.50/3.75   & molC / molN                & C/N molar ratio of RNA
+   :math:`\YTHYP`       & :varlink:`Y_THY_P`      & :varlink:`a_Y_THY_P`      & 0.028163    & molP / (molC in Chl)       & the stoichiometric ratio for cell phosphorus in thylakoid membrane to chlorophyll
+   :math:`\YFeNphoto`   & :varlink:`Y_FeN_photo`  & :varlink:`a_Y_FeN_photo`  & 0.00163     & molFe / molN               & Fe/N ratio in photosystem iron
 
 
 .. csv-table:: Dependent traits of the macromolecular growth model
@@ -490,25 +490,25 @@ and similar for phosphorus and iron.
    :header: symbol, trait, units, description
    :name: tab_phys_pkg_darwin_macromol_deptraits
 
-   :math:`\QNproother` & QN_pro_other & molN / molC              &
-   :math:`\QNRNAmin`   & QN_RNA_min   & molN / molC              & constant part of RNA in nitrogen
-   :math:`\QCRNAmin`   & QC_RNA_min   & molN / molC              & constant part of RNA in carbon
-   :math:`\QNDNA`      & QN_DNA       & molN / molC              & DNA in nitrogen
-   :math:`\QPDNA`      & QP_DNA       & molP / molC              & DNA in phosphorous
-   :math:`\Athy`       & A_thy        & molC / (molC in chl)     &
-   :math:`\ANRNA`      & AN_RNA       & s molN / molN            & constant for Variable part of RNA
-   :math:`\VImin`      & VI_min       & molC/s / (molC in Chl)   & minimum photosynthesis rate
-   :math:`\QCchlMax`   & QC_chlMax    & molC / molC              & maximum chlorophyll concentration at minimum light
-   :math:`\QnNoChl`    & QnNoChl      & molN / molC              & minimum QN at zero growth rate
-   :math:`\QpNoChl`    & QpNoChl      & molP / molC              & minimum QP at zero growth rate
-   :math:`\QfeNoChl`   & QfeNoChl     & molFe / molC             & minimum QFe at zero growth rate
-   :math:`\QCconst`    & QC_const     & molC / molC              & constant portion of the cell
+   :math:`\QNproother` & :varlink:`QN_pro_other` & molN / molC              & nitrogen in essential proteins
+   :math:`\QNRNAmin`   & :varlink:`QN_RNA_min`   & molN / molC              & constant part of RNA in nitrogen
+   :math:`\QCRNAmin`   & :varlink:`QC_RNA_min`   & molN / molC              & constant part of RNA in carbon
+   :math:`\QNDNA`      & :varlink:`QN_DNA`       & molN / molC              & DNA in nitrogen
+   :math:`\QPDNA`      & :varlink:`QP_DNA`       & molP / molC              & DNA in phosphorous
+   :math:`\Athy`       & :varlink:`A_thy`        & molC / (molC in chl)     & ratio of carbon in thylakoid membrane to chlorophyll
+   :math:`\ANRNA`      & :varlink:`AN_RNA`       & s molN / molN            & constant for Variable part of RNA
+   :math:`\VImin`      & :varlink:`VI_min`       & molC/s / (molC in Chl)   & minimum photosynthesis rate
+   :math:`\QCchlMax`   & :varlink:`QC_chlMax`    & molC / molC              & maximum chlorophyll concentration at minimum light
+   :math:`\QnNoChl`    & :varlink:`QnNoChl`      & molN / molC              & minimum QN at zero growth rate
+   :math:`\QpNoChl`    & :varlink:`QpNoChl`      & molP / molC              & minimum QP at zero growth rate
+   :math:`\QfeNoChl`   & :varlink:`QfeNoChl`     & molFe / molC             & minimum QFe at zero growth rate
+   :math:`\QCconst`    & :varlink:`QC_const`     & molC / molC              & constant portion of the cell
 
 .. csv-table:: Parameters of the macromolecular growth model
    :delim: &
-   :widths: auto
+   :widths: 25,11,9,55
    :header: param, default, units, description
    :name: tab_phys_pkg_darwin_macromol_params
 
-   TempAeArrMacromol & --8420 & K & slope for pseudo-Arrhenius for macromolecular (TEMP_VERSION 2)
+   :varlink:`TempAeArrMacromol` & --8420 & K & slope for pseudo-Arrhenius for macromolecular (TEMP_VERSION 2)
 

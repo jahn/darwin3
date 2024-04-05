@@ -15,6 +15,7 @@
 #ifdef ALLOW_DARWIN
 
       NAMELIST/DARWIN_RANDOM_PARAMS/
+     &    darwin_seed,
      &    phymin,
      &    Smallgrow,
      &    Biggrow,
@@ -286,6 +287,7 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 C     DARWIN_RANDOM_PARAMS
 CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 
+      darwin_seed = 0
       phymin = 120 _d -20
       Smallgrow = .7 _d 0
       Biggrow = .4 _d 0

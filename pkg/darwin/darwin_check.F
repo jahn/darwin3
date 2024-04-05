@@ -1666,10 +1666,6 @@ C--   Print parameters from DARWIN_PARAMS.h
       CALL WRITE_0D_L(darwin_read_phos,INDEX_NONE,
      &'darwin_read_phos =',
      &' /* initial conditions for plankton biomass are in mmol P/m3 */')
-      CALL WRITE_0D_I(darwin_seed,INDEX_NONE,
-     &'darwin_seed =',
-     &' /* seed for random number generator (for DARWIN_RANDOM_TRAITS) *
-     &/')
       CALL WRITE_0D_I(iDEBUG,INDEX_NONE,
      &'iDEBUG =',
      &' /* index in x dimension for debug prints */')

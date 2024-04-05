@@ -79,7 +79,6 @@ C----
 #endif
 
       NAMELIST/DARWIN_PARAMS/
-     &    darwin_seed,
      &    darwin_strict_check,
      &    iDEBUG,
      &    jDEBUG,
@@ -361,7 +360,6 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 C     DARWIN_PARAMS
 CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 
-      darwin_seed = 0
       darwin_strict_check = .FALSE.
       iDEBUG = 1
       jDEBUG = 1

@@ -202,7 +202,6 @@ C--   COMMON /DARWIN_PARAMS_l/ General parameters (same for all plankton)
       LOGICAL darwin_read_phos
 
 C--   COMMON /DARWIN_PARAMS_i/ General parameters (same for all plankton)
-C     darwin_seed :: seed for random number generator (for DARWIN_RANDOM_TRAITS)
 C     iDEBUG      :: index in x dimension for debug prints
 C     jDEBUG      :: index in y dimension for debug prints
 C     kDEBUG      :: index in z dimension for debug prints
@@ -211,12 +210,10 @@ C                          :: 0: fixed dissolution rate Kdissc
 C                          :: 1: Keir 1980 power law
 C                          :: 2: Naviaux et al. 2019
       COMMON /DARWIN_PARAMS_i/
-     &    darwin_seed,
      &    darwin_disscSelect,
      &    iDEBUG,
      &    jDEBUG,
      &    kDEBUG
-      INTEGER darwin_seed
       INTEGER darwin_disscSelect
       INTEGER iDEBUG
       INTEGER jDEBUG

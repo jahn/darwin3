@@ -11,6 +11,12 @@ C the parameters in this file are used to generate traits
 C
 C Requires: DARWIN_SIZE.h
 
+C--   COMMON /DARWIN_RANDOM_PARAMS_i/ For darwin_allometric_random
+C     darwin_seed :: seed for random number generator (for DARWIN_RANDOM_TRAITS)
+      COMMON /DARWIN_RANDOM_PARAMS_i/
+     &    darwin_seed
+      INTEGER darwin_seed
+
 C--   COMMON /DARWIN_RANDOM_PARAMS_l/ For darwin_allometric_random
 C     oldTwoGrazers :: old defaults for 2 grazers
       COMMON /DARWIN_RANDOM_PARAMS_l/

@@ -27,6 +27,7 @@ C     !USES:
 #include "DARWIN_SIZE.h"
 #include "DARWIN_RADTRANS.h"
 #include "DARWIN_PARAMS.h"
+#include "DARWIN_TRAITPARAMS.h"
 #include "DARWIN_TRAITS.h"
 #endif
 
@@ -358,9 +359,9 @@ C initialize CDOM absorption coefficient
 #endif /* ALLOW_RADTRANS */
 
 C ======================================================================
-      CALL DARWIN_RANDOM_INIT(darwin_seed, myThid)
 
 #ifdef DARWIN_RANDOM_TRAITS
+      CALL DARWIN_RANDOM_INIT(darwin_seed, myThid)
       CALL DARWIN_GENERATE_RANDOM(myThid)
 #else
       CALL DARWIN_GENERATE_ALLOMETRIC(myThid)

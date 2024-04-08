@@ -13,6 +13,8 @@ C !INTERFACE: ==========================================================
 C !DESCRIPTION:
 
 C !USES: ===============================================================
+      use darwin_param_mod
+      use darwin_param_data_mod
       IMPLICIT NONE
 #include "SIZE.h"
 #include "GRID.h"
@@ -403,15 +405,19 @@ C     scavenging
       DO i=iMin,iMax
 C       compute POM in mg/L
 #ifdef DARWIN_PART_SCAV_POP
-        scav_pom = MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iPOP))/scav_R_POPPOC
-        scv = scav_rat*scav_inter*(scav_pom**scav_exp)
+        scav_pom = MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iPOP))
+     &             /params%scav_R_POPPOC
+        scv = params%scav_rat*params%scav_inter
+     &        *(scav_pom**params%scav_exp)
 #elif defined(DARWIN_PART_SCAV)
-        scav_pom = scav_POC_wgt*MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iPOC))
-     &           + scav_POSi_wgt*MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iPOSi))
-     &           + scav_PIC_wgt*MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iPIC))
-        scv = scav_tau*scav_inter*(scav_pom**scav_exp)
+        scav_pom =
+     &      params%scav_POC_wgt*MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iPOC))
+     &    + params%scav_POSi_wgt*MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iPOSi))
+     &    + params%scav_PIC_wgt*MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iPIC))
+        scv = params%scav_tau*params%scav_inter
+     &        *(scav_pom**params%scav_exp)
 #else
-        scv = scav
+        scv = params%scav
 #endif
         scavRate(i,j,k) = scv
         scavLoss(i,j,k) = scv*MAX(0 _d 0, freefe(i,j,k))
@@ -430,7 +436,7 @@ C     iron dust input
       CALL TIMER_START('DARWIN_FE_DUST [DARWIN_FORCING]',myThid)
       DO j=jMin,jMax
        DO i=iMin,iMax
-        tmp3d(i,j,1) = alpfe * inputFe(i,j,bi,bj)
+        tmp3d(i,j,1) = params%alpfe * inputFe(i,j,bi,bj)
      &               * recip_drF(1) * recip_hFacC(i,j,1,bi,bj)
        ENDDO
       ENDDO
@@ -467,16 +473,17 @@ C     iron sediment source (in bottom grid cell above kMaxFeSed)
 #ifdef DARWIN_IRON_SED_SOURCE_VARIABLE
 # ifdef DARWIN_IRON_SED_SOURCE_POP
 C         mask is needed to make sure k-1 isn't an ice shelf
-          flx = fesedflux_pcm*wp_sink*R_CP_fesed*
+          flx = params%fesedflux_pcm*wp_sink*params%R_CP_fesed*
      &            MAX(0 _d 0, Ptracer(i,j,k-1,bi,bj,iPOP))
      &            *maskC(i,j,k-1,bi,bj)
 # else
           POCl = MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iPOC))
-          flx = fesedflux_pcm*wc_sink*POCl - fesedflux_min
+          flx = params%fesedflux_pcm*params%wC_sink*POCl
+     &          - params%fesedflux_min
           flx = MAX(0. _d 0, flx)
 # endif
 #else
-          flx = fesedflux
+          flx = params%fesedflux
 #endif
           sedFlxFe(i,j) = flx
           sedFe(i,j,k) = flx/(drF(k)*hFacC(i,j,k,bi,bj))
@@ -524,7 +531,7 @@ C     kMinFeVents (ventHe3 flux is mmol.m-2.s-1)
         DO i=iMin,iMax
          k = kLowC(i,j,bi,bj)
          IF (k .GE. kMinFeVent) THEN
-          flx = solFeVent*R_FeHe3_vent*ventHe3(i,j,bi,bj)
+          flx = params%solFeVent*params%R_FeHe3_vent*ventHe3(i,j,bi,bj)
           ventFe(i,j,k) = flx*recip_drF(k)*recip_hFacC(i,j,k,bi,bj)
 # ifdef DARWIN_ALLOW_CONS
           ironVentFlx(i,j,bi,bj)=ironVentFlx(i,j,bi,bj) + dTsub(k)*flx
@@ -628,6 +635,7 @@ C-      default (face fit into global-IO-array)
      I                 mortTempFunc, mort2TempFunc,
      I                 uptakeTempFunc,
      I                 omegaCl,
+     I                 params, traits, deptraits,
      I                 k_debug,
      I                 subTime, myIter, myThid )
         DO l=1,darwin_nDiag
@@ -697,8 +705,8 @@ C       resolve sediment fluxes at coastal regions
         TcorrALK(i,j) = (0.015179 _d 0+0.000795 _d 0*absT)/0.016292 _d 0
 
 C       Dependent variables
-        fluxPIC(i,j) = wPIC_sink*MAX(0.0,Ptracer(i,j,k,bi,bj,iPIC))
-        fluxPOC(i,j) = wC_sink*MAX(0.0,Ptracer(i,j,k,bi,bj,iPOC))
+        fluxPIC(i,j)=params%wPIC_sink*MAX(0.0,Ptracer(i,j,k,bi,bj,iPIC))
+        fluxPOC(i,j)=params%wC_sink*MAX(0.0,Ptracer(i,j,k,bi,bj,iPOC))
 
         OmegaC0(i,j) = omegaC(i,j,k,bi,bj)
 
@@ -1013,7 +1021,7 @@ C      diags(iCons*) for convenience
           IF (hFacC(i,j,1,bi,bj) .EQ. 0.) THEN
            surfFe(i,j) = 0 _d 0
           ELSE
-           surfFe(i,j) = alpfe * inputFe(i,j,bi,bj)
+           surfFe(i,j) = params%alpfe * inputFe(i,j,bi,bj)
           ENDIF
          ENDDO
         ENDDO

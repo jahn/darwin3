@@ -9,6 +9,8 @@ C !DESCRIPTION:
 C     Check conservation in the model
 
 C !USES: ===============================================================
+      use darwin_param_mod
+      use darwin_param_data_mod
       IMPLICIT NONE
 #include "SIZE.h"
 #include "EEPARAMS.h"
@@ -280,7 +282,7 @@ C Carbon budget
         DO np=1,nplank
          iTr=ic+np-1
          tiletotC(bi,bj)=tiletotC(bi,bj)+Ptracer(i,j,k,bi,bj,iTr)
-     &                                  *(1+R_PICPOC(np))*vol
+     &                                  *(1+traits%R_PICPOC(np))*vol
         ENDDO
 #ifdef DARWIN_ALLOW_CSTORE
         DO np=1,nPhoto
@@ -294,7 +296,7 @@ C Carbon budget
      &                                 *vol
 # else
         tiletotC(bi,bj)=tiletotC(bi,bj)+Ptracer(i,j,k,bi,bj,iCDOM)
-     &                                 *R_CP_CDOM*vol
+     &                                 *params%R_CP_CDOM*vol
 # endif
 #endif
 
@@ -311,16 +313,16 @@ c Nitrogen budget
 #else
          iTr=ic+np-1
          tiletotN(bi,bj)=tiletotN(bi,bj)+Ptracer(i,j,k,bi,bj,iTr)
-     &                                  *R_NC(np)*vol
+     &                                  *traits%R_NC(np)*vol
 #endif
         ENDDO
 #ifdef DARWIN_ALLOW_CDOM
 # ifdef DARWIN_CDOM_UNITS_CARBON
         tiletotN(bi,bj)=tiletotN(bi,bj)+Ptracer(i,j,k,bi,bj,iCDOM)
-     &                                 *R_NC_CDOM*vol
+     &                                 *params%R_NC_CDOM*vol
 # else
         tiletotN(bi,bj)=tiletotN(bi,bj)+Ptracer(i,j,k,bi,bj,iCDOM)
-     &                                 *R_NP_CDOM*vol
+     &                                 *params%R_NP_CDOM*vol
 # endif
 #endif
 
@@ -335,13 +337,13 @@ c Phosphorus budget
 #else
          iTr=ic+np-1
          tiletotP(bi,bj)=tiletotP(bi,bj)+Ptracer(i,j,k,bi,bj,iTr)
-     &                                  *R_PC(np)*vol
+     &                                  *traits%R_PC(np)*vol
 #endif
         ENDDO
 #ifdef DARWIN_ALLOW_CDOM
 # ifdef DARWIN_CDOM_UNITS_CARBON
         tiletotP(bi,bj)=tiletotP(bi,bj)+Ptracer(i,j,k,bi,bj,iCDOM)
-     &                                 *R_PC_CDOM*vol
+     &                                 *params%R_PC_CDOM*vol
 # else
         tiletotP(bi,bj)=tiletotP(bi,bj)+Ptracer(i,j,k,bi,bj,iCDOM)*vol
 
@@ -359,16 +361,16 @@ c Iron budget
 #else
          iTr=ic+np-1
          tiletotFe(bi,bj)=tiletotFe(bi,bj)+Ptracer(i,j,k,bi,bj,iTr)
-     &                                    *R_FeC(np)*vol
+     &                                    *traits%R_FeC(np)*vol
 #endif
         ENDDO
 #ifdef DARWIN_ALLOW_CDOM
 # ifdef DARWIN_CDOM_UNITS_CARBON
         tiletotFe(bi,bj)=tiletotFe(bi,bj)+Ptracer(i,j,k,bi,bj,iCDOM)
-     &                                   *R_FeC_CDOM*vol
+     &                                   *params%R_FeC_CDOM*vol
 # else
         tiletotFe(bi,bj)=tiletotFe(bi,bj)+Ptracer(i,j,k,bi,bj,iCDOM)
-     &                                   *R_FeP_CDOM*vol
+     &                                   *params%R_FeP_CDOM*vol
 # endif
 #endif
 
@@ -382,7 +384,7 @@ c Silica budget
 #else
          iTr=ic+np-1
          tiletotSi(bi,bj)=tiletotSi(bi,bj)+Ptracer(i,j,k,bi,bj,iTr)
-     &                                    *R_SiC(np)*vol
+     &                                    *traits%R_SiC(np)*vol
 #endif
         ENDDO
 
@@ -449,8 +451,8 @@ C 2-d conservation corrections
         tileBotSnkSi(bi,bj)=tilebotsnkSi(bi,bj)+botSnkSi(i,j,bi,bj)*area
 #endif
         ELSEIF (stage .EQ. 2) THEN
-        tilesfcflxFe(bi,bj)=tilesfcflxFe(bi,bj)+alpfe*inputfe(i,j,bi,bj)
-     &                                         *PTRACERS_dtLev(ks)*area
+        tilesfcflxFe(bi,bj)=tilesfcflxFe(bi,bj)
+     &        +params%alpfe*inputfe(i,j,bi,bj)*PTRACERS_dtLev(ks)*area
 #ifdef DARWIN_NUTRIENT_RUNOFF
         tilerunoffC(bi,bj) = tilerunoffC(bi,bj) + DOCrunoff(i,j,bi,bj)
      &                   *PTRACERS_dtLev(ks)*area
@@ -501,7 +503,7 @@ C Carbon imp.FS corrections
          DO np=1,nplank
           iTr=ic+np-1
           tileFSC(bi,bj)=tileFSC(bi,bj)+Ptracer(i,j,ks,bi,bj,iTr)
-     &                                 *(1+R_PICPOC(np))*dvol
+     &                                 *(1+traits%R_PICPOC(np))*dvol
          ENDDO
 #ifdef DARWIN_ALLOW_CDOM
 # ifdef DARWIN_CDOM_UNITS_CARBON
@@ -509,7 +511,7 @@ C Carbon imp.FS corrections
      &                                *dvol
 # else
          tileFSC(bi,bj)=tileFSC(bi,bj)+Ptracer(i,j,ks,bi,bj,iCDOM)
-     &                                *R_CP_CDOM*dvol
+     &                                *params%R_CP_CDOM*dvol
 # endif
 #endif
 
@@ -526,16 +528,16 @@ C Nitrogen imp.FS corrections
 #else
           iTr=ic+np-1
           tileFSN(bi,bj)=tileFSN(bi,bj)+Ptracer(i,j,ks,bi,bj,iTr)
-     &                                 *R_NC(np)*dvol
+     &                                 *traits%R_NC(np)*dvol
 #endif
          ENDDO
 #ifdef DARWIN_ALLOW_CDOM
 # ifdef DARWIN_CDOM_UNITS_CARBON
          tileFSN(bi,bj)=tileFSN(bi,bj)+Ptracer(i,j,ks,bi,bj,iCDOM)
-     &                                *R_NC_CDOM*dvol
+     &                                *params%R_NC_CDOM*dvol
 # else
          tileFSN(bi,bj)=tileFSN(bi,bj)+Ptracer(i,j,ks,bi,bj,iCDOM)
-     &                                *R_NP_CDOM*dvol
+     &                                *params%R_NP_CDOM*dvol
 # endif
 #endif
 
@@ -550,13 +552,13 @@ C Phosphorus imp.FS corrections
 #else
           iTr=ic+np-1
           tileFSP(bi,bj)=tileFSP(bi,bj)+Ptracer(i,j,ks,bi,bj,iTr)
-     &                                 *R_PC(np)*dvol
+     &                                 *traits%R_PC(np)*dvol
 #endif
          ENDDO
 #ifdef DARWIN_ALLOW_CDOM
 # ifdef DARWIN_CDOM_UNITS_CARBON
          tileFSP(bi,bj)=tileFSP(bi,bj)+Ptracer(i,j,ks,bi,bj,iCDOM)
-     &                                *R_PC_CDOM*dvol
+     &                                *params%R_PC_CDOM*dvol
 # else
          tileFSP(bi,bj)=tileFSP(bi,bj)+Ptracer(i,j,ks,bi,bj,iCDOM)
      &                                *dvol
@@ -578,16 +580,16 @@ C Iron imp.FS corrections
 #else
           iTr=ic+np-1
           tileFSFe(bi,bj)=tileFSFe(bi,bj)+Ptracer(i,j,ks,bi,bj,iTr)
-     &                                   *R_FeC(np)*dvol
+     &                                   *traits%R_FeC(np)*dvol
 #endif
          ENDDO
 #ifdef DARWIN_ALLOW_CDOM
 # ifdef DARWIN_CDOM_UNITS_CARBON
          tileFSFe(bi,bj)=tileFSFe(bi,bj)+Ptracer(i,j,ks,bi,bj,iCDOM)
-     &                                  *R_FeC_CDOM*dvol
+     &                                  *params%R_FeC_CDOM*dvol
 # else
          tileFSFe(bi,bj)=tileFSFe(bi,bj)+Ptracer(i,j,ks,bi,bj,iCDOM)
-     &                                  *R_FeP_CDOM*dvol
+     &                                  *params%R_FeP_CDOM*dvol
 # endif
 #endif
 
@@ -604,7 +606,7 @@ C Silica imp.FS corrections
 #else
           iTr=ic+np-1
           tileFSSi(bi,bj)=tileFSSi(bi,bj)+Ptracer(i,j,ks,bi,bj,iTr)
-     &                                     *R_SiC(np)*dvol
+     &                                     *traits%R_SiC(np)*dvol
 #endif
          ENDDO
 
@@ -640,7 +642,7 @@ C Carbon E-P-R fluxes
           iTr=ic+np-1
           IF (PTRACERS_EvPrRn(iTr).EQ.UNSET_RL)
      &     tileEPRC(bi,bj)=tileEPRC(bi,bj)+Ptracer(i,j,ks,bi,bj,iTr)
-     &                                    *(1+R_PICPOC(np))*dvol
+     &                                    *(1+traits%R_PICPOC(np))*dvol
          ENDDO
 #ifdef DARWIN_ALLOW_CDOM
          IF (PTRACERS_EvPrRn(iCDOM).EQ.UNSET_RL) THEN
@@ -649,7 +651,7 @@ C Carbon E-P-R fluxes
      &                                   *dvol
 # else
           tileEPRC(bi,bj)=tileEPRC(bi,bj)+Ptracer(i,j,ks,bi,bj,iCDOM)
-     &                                   *R_CP_CDOM*dvol
+     &                                   *params%R_CP_CDOM*dvol
 # endif
          ENDIF
 #endif
@@ -674,17 +676,17 @@ C Nitrogen E-P-R fluxes
           iTr=ic+np-1
           IF (PTRACERS_EvPrRn(iTr).EQ.UNSET_RL)
      &     tileEPRN(bi,bj)=tileEPRN(bi,bj)+Ptracer(i,j,ks,bi,bj,iTr)
-     &                                    *R_NC(np)*dvol
+     &                                    *traits%R_NC(np)*dvol
 #endif
          ENDDO
 #ifdef DARWIN_ALLOW_CDOM
          IF (PTRACERS_EvPrRn(iCDOM).EQ.UNSET_RL) THEN
 # ifdef DARWIN_CDOM_UNITS_CARBON
           tileEPRN(bi,bj)=tileEPRN(bi,bj)+Ptracer(i,j,ks,bi,bj,iCDOM)
-     &                                   *R_NC_CDOM*dvol
+     &                                   *params%R_NC_CDOM*dvol
 # else
           tileEPRN(bi,bj)=tileEPRN(bi,bj)+Ptracer(i,j,ks,bi,bj,iCDOM)
-     &                                   *R_NP_CDOM*dvol
+     &                                   *params%R_NP_CDOM*dvol
 # endif
          ENDIF
 #endif
@@ -705,14 +707,14 @@ C Phosphorus E-P-R fluxes
           iTr=ic+np-1
           IF (PTRACERS_EvPrRn(iTr).EQ.UNSET_RL)
      &     tileEPRP(bi,bj)=tileEPRP(bi,bj)+Ptracer(i,j,ks,bi,bj,iTr)
-     &                                    *R_PC(np)*dvol
+     &                                    *traits%R_PC(np)*dvol
 #endif
          ENDDO
 #ifdef DARWIN_ALLOW_CDOM
          IF (PTRACERS_EvPrRn(iCDOM).EQ.UNSET_RL) THEN
 # ifdef DARWIN_CDOM_UNITS_CARBON
           tileEPRP(bi,bj)=tileEPRP(bi,bj)+Ptracer(i,j,ks,bi,bj,iCDOM)
-     &                                   *R_PC_CDOM*dvol
+     &                                   *params%R_PC_CDOM*dvol
 # else
           tileEPRP(bi,bj)=tileEPRP(bi,bj)+Ptracer(i,j,ks,bi,bj,iCDOM)
      &                                   *dvol
@@ -740,17 +742,17 @@ C Iron E-P-R fluxes
           iTr=ic+np-1
           IF (PTRACERS_EvPrRn(iTr).EQ.UNSET_RL)
      &     tileEPRFe(bi,bj)=tileEPRFe(bi,bj)+Ptracer(i,j,ks,bi,bj,iTr)
-     &                                      *R_FeC(np)*dvol
+     &                                      *traits%R_FeC(np)*dvol
 #endif
          ENDDO
 #ifdef DARWIN_ALLOW_CDOM
          IF (PTRACERS_EvPrRn(iCDOM).EQ.UNSET_RL) THEN
 # ifdef DARWIN_CDOM_UNITS_CARBON
           tileEPRFe(bi,bj)=tileEPRFe(bi,bj)+Ptracer(i,j,ks,bi,bj,iCDOM)
-     &                                     *R_FeC_CDOM*dvol
+     &                                     *params%R_FeC_CDOM*dvol
 # else
           tileEPRFe(bi,bj)=tileEPRFe(bi,bj)+Ptracer(i,j,ks,bi,bj,iCDOM)
-     &                                     *R_FeP_CDOM*dvol
+     &                                     *params%R_FeP_CDOM*dvol
 # endif
          ENDIF
 #endif
@@ -772,7 +774,7 @@ C Silica E-P-R fluxes
           iTr=ic+np-1
           IF (PTRACERS_EvPrRn(iTr).EQ.UNSET_RL)
      &     tileEPRSi(bi,bj)=tileEPRSi(bi,bj)+Ptracer(i,j,ks,bi,bj,iTr)
-     &                                      *R_SiC(np)*dvol
+     &                                      *traits%R_SiC(np)*dvol
 #endif
          ENDDO
 
@@ -819,7 +821,7 @@ C Carbon E-P-R fluxes
           iTr=ic+np-1
           IF (PTRACERS_EvPrRn(iTr).NE.UNSET_RL)
      &     tileEPRC(bi,bj)=tileEPRC(bi,bj)-Ptracer(i,j,ks,bi,bj,iTr)
-     &                                    *(1+R_PICPOC(np))*dvol
+     &                                    *(1+traits%R_PICPOC(np))*dvol
          ENDDO
 #ifdef DARWIN_ALLOW_CDOM
          IF (PTRACERS_EvPrRn(iCDOM).NE.UNSET_RL) THEN
@@ -828,7 +830,7 @@ C Carbon E-P-R fluxes
      &                                   *dvol
 # else
           tileEPRC(bi,bj)=tileEPRC(bi,bj)-Ptracer(i,j,ks,bi,bj,iCDOM)
-     &                                   *R_CP_CDOM*dvol
+     &                                   *params%R_CP_CDOM*dvol
 # endif
          ENDIF
 #endif
@@ -853,17 +855,17 @@ C Nitrogen E-P-R fluxes
           iTr=ic+np-1
           IF (PTRACERS_EvPrRn(iTr).NE.UNSET_RL)
      &     tileEPRN(bi,bj)=tileEPRN(bi,bj)-Ptracer(i,j,ks,bi,bj,iTr)
-     &                                    *R_NC(np)*dvol
+     &                                    *traits%R_NC(np)*dvol
 #endif
          ENDDO
 #ifdef DARWIN_ALLOW_CDOM
          IF (PTRACERS_EvPrRn(iCDOM).NE.UNSET_RL) THEN
 # ifdef DARWIN_CDOM_UNITS_CARBON
           tileEPRN(bi,bj)=tileEPRN(bi,bj)-Ptracer(i,j,ks,bi,bj,iCDOM)
-     &                                   *R_NC_CDOM*dvol
+     &                                   *params%R_NC_CDOM*dvol
 # else
           tileEPRN(bi,bj)=tileEPRN(bi,bj)-Ptracer(i,j,ks,bi,bj,iCDOM)
-     &                                   *R_NP_CDOM*dvol
+     &                                   *params%R_NP_CDOM*dvol
 # endif
          ENDIF
 #endif
@@ -884,14 +886,14 @@ C Phosphorus E-P-R fluxes
           iTr=ic+np-1
           IF (PTRACERS_EvPrRn(iTr).NE.UNSET_RL)
      &     tileEPRP(bi,bj)=tileEPRP(bi,bj)-Ptracer(i,j,ks,bi,bj,iTr)
-     &                                    *R_PC(np)*dvol
+     &                                    *traits%R_PC(np)*dvol
 #endif
          ENDDO
 #ifdef DARWIN_ALLOW_CDOM
          IF (PTRACERS_EvPrRn(iCDOM).NE.UNSET_RL) THEN
 # ifdef DARWIN_CDOM_UNITS_CARBON
           tileEPRP(bi,bj)=tileEPRP(bi,bj)-Ptracer(i,j,ks,bi,bj,iCDOM)
-     &                                   *R_PC_CDOM*dvol
+     &                                   *params%R_PC_CDOM*dvol
 # else
           tileEPRP(bi,bj)=tileEPRP(bi,bj)-Ptracer(i,j,ks,bi,bj,iCDOM)
      &                                   *dvol
@@ -919,17 +921,17 @@ C Iron E-P-R fluxes
           iTr=ic+np-1
           IF (PTRACERS_EvPrRn(iTr).NE.UNSET_RL)
      &     tileEPRFe(bi,bj)=tileEPRFe(bi,bj)-Ptracer(i,j,ks,bi,bj,iTr)
-     &                                      *R_FeC(np)*dvol
+     &                                      *traits%R_FeC(np)*dvol
 #endif
          ENDDO
 #ifdef DARWIN_ALLOW_CDOM
          IF (PTRACERS_EvPrRn(iCDOM).NE.UNSET_RL) THEN
 # ifdef DARWIN_CDOM_UNITS_CARBON
           tileEPRFe(bi,bj)=tileEPRFe(bi,bj)-Ptracer(i,j,ks,bi,bj,iCDOM)
-     &                                     *R_FeC_CDOM*dvol
+     &                                     *params%R_FeC_CDOM*dvol
 # else
           tileEPRFe(bi,bj)=tileEPRFe(bi,bj)-Ptracer(i,j,ks,bi,bj,iCDOM)
-     &                                     *R_FeP_CDOM*dvol
+     &                                     *params%R_FeP_CDOM*dvol
 # endif
          ENDIF
 #endif
@@ -951,7 +953,7 @@ C Silica E-P-R fluxes
           iTr=ic+np-1
           IF (PTRACERS_EvPrRn(iTr).NE.UNSET_RL)
      &     tileEPRSi(bi,bj)=tileEPRSi(bi,bj)-Ptracer(i,j,ks,bi,bj,iTr)
-     &                                      *R_SiC(np)*dvol
+     &                                      *traits%R_SiC(np)*dvol
 #endif
          ENDDO
 
@@ -1085,14 +1087,15 @@ C Carbon E-P-R fluxes
         DO np=1,nplank
          iTr=ic+np-1
          IF (PTRACERS_EvPrRn(iTr).NE.UNSET_RL)
-     &    tmpEPRC = tmpEPRC+PTRACERS_EvPrRn(iTr)*(1+R_PICPOC(np))*totPER
+     &    tmpEPRC = tmpEPRC
+     &     + PTRACERS_EvPrRn(iTr)*(1+traits%R_PICPOC(np))*totPER
         ENDDO
 #ifdef DARWIN_ALLOW_CDOM
         IF (PTRACERS_EvPrRn(iCDOM).NE.UNSET_RL) THEN
 # ifdef DARWIN_CDOM_UNITS_CARBON
          tmpEPRC = tmpEPRC + PTRACERS_ref(ks,iCDOM)*totPER
 # else
-         tmpEPRC = tmpEPRC + PTRACERS_ref(ks,iCDOM)*R_CP_CDOM*totPER
+         tmpEPRC=tmpEPRC+PTRACERS_ref(ks,iCDOM)*params%R_CP_CDOM*totPER
 # endif
         ENDIF
 #endif
@@ -1115,7 +1118,7 @@ C Nitrogen E-P-R fluxes
           tmpEPRN = tmpEPRN - PTRACERS_ref(ks,iTr)*totPER
 #else
           iTr=ic+np-1
-          tmpEPRN = tmpEPRN - PTRACERS_ref(ks,iTr)*R_NC(np)*totPER
+          tmpEPRN=tmpEPRN - PTRACERS_ref(ks,iTr)*traits%R_NC(np)*totPER
 #endif
          ENDIF
         ENDDO
@@ -1124,7 +1127,7 @@ C Nitrogen E-P-R fluxes
 # ifdef DARWIN_CDOM_UNITS_CARBON
          tmpEPRN = tmpEPRN - PTRACERS_ref(ks,iCDOM)*totPER
 # else
-         tmpEPRN = tmpEPRN - PTRACERS_ref(ks,iCDOM)*R_NP_CDOM*totPER
+         tmpEPRN=tmpEPRN-PTRACERS_ref(ks,iCDOM)*params%R_NP_CDOM*totPER
 # endif
         ENDIF
 #endif
@@ -1143,14 +1146,15 @@ C Phosphorus E-P-R fluxes
           tmpEPRP = tmpEPRP - PTRACERS_ref(ks,iTr)*totPER
 #else
           iTr=ic+np-1
-          tmpEPRP = tmpEPRP - PTRACERS_ref(ks,iTr)*R_PC(np)*totPER
+          tmpEPRP=tmpEPRP - PTRACERS_ref(ks,iTr)*traits%R_PC(np)*totPER
 #endif
          ENDIF
         ENDDO
 #ifdef DARWIN_ALLOW_CDOM
         IF (PTRACERS_EvPrRn(iCDOM).NE.UNSET_RL) THEN
 # ifdef DARWIN_CDOM_UNITS_CARBON
-         tmpEPRP = tmpEPRP - PTRACERS_ref(ks,iCDOM)*R_PC_CDOM*totPER
+         tmpEPRP = tmpEPRP
+     &         - PTRACERS_ref(ks,iCDOM)*params%R_PC_CDOM*totPER
 # else
          tmpEPRP = tmpEPRP - PTRACERS_ref(ks,iCDOM)*totPER
 # endif
@@ -1171,16 +1175,18 @@ C Iron E-P-R fluxes
           tmpEPRFe = tmpEPRFe - PTRACERS_ref(ks,iTr)*totPER
 #else
           iTr=ic+np-1
-          tmpEPRFe = tmpEPRFe - PTRACERS_ref(ks,iTr)*R_FeC(np)*totPER
+          tmpEPRFe=tmpEPRFe-PTRACERS_ref(ks,iTr)*traits%R_FeC(np)*totPER
 #endif
          ENDIF
         ENDDO
 #ifdef DARWIN_ALLOW_CDOM
         IF (PTRACERS_EvPrRn(iCDOM).NE.UNSET_RL) THEN
 # ifdef DARWIN_CDOM_UNITS_CARBON
-         tmpEPRFe = tmpEPRFe - PTRACERS_ref(ks,iCDOM)*R_FeC_CDOM*totPER
+         tmpEPRFe = tmpEPRFe
+     &         - PTRACERS_ref(ks,iCDOM)*params%R_FeC_CDOM*totPER
 # else
-         tmpEPRFe = tmpEPRFe - PTRACERS_ref(ks,iCDOM)*R_FeP_CDOM*totPER
+         tmpEPRFe = tmpEPRFe
+     &         - PTRACERS_ref(ks,iCDOM)*params%R_FeP_CDOM*totPER
 # endif
         ENDIF
 #endif
@@ -1197,7 +1203,7 @@ C Silica E-P-R fluxes
           tmpEPRSi = tmpEPRSi - PTRACERS_ref(ks,iTr)*totPER
 #else
           iTr=ic+np-1
-          tmpEPRSi = tmpEPRSi - PTRACERS_ref(ks,iTr)*R_SiC(np)*totPER
+          tmpEPRSi=tmpEPRSi-PTRACERS_ref(ks,iTr)*traits%R_SiC(np)*totPER
 #endif
          ENDIF
         ENDDO
@@ -1226,14 +1232,15 @@ C Carbon E-P-R fluxes
         DO np=1,nplank
          iTr=ic+np-1
          IF (PTRACERS_EvPrRn(iTr).NE.UNSET_RL)
-     &    tmpEPRC = tmpEPRC+PTRACERS_EvPrRn(iTr)*(1+R_PICPOC(np))*totPER
+     &    tmpEPRC = tmpEPRC
+     &     + PTRACERS_EvPrRn(iTr)*(1+traits%R_PICPOC(np))*totPER
         ENDDO
 #ifdef DARWIN_ALLOW_CDOM
         IF (PTRACERS_EvPrRn(iCDOM).NE.UNSET_RL) THEN
 # ifdef DARWIN_CDOM_UNITS_CARBON
          tmpEPRC = tmpEPRC + PTRACERS_EvPrRn(iCDOM)*totPER
 # else
-         tmpEPRC = tmpEPRC + PTRACERS_EvPrRn(iCDOM)*R_CP_CDOM*totPER
+         tmpEPRC=tmpEPRC+PTRACERS_EvPrRn(iCDOM)*params%R_CP_CDOM*totPER
 # endif
         ENDIF
 #endif
@@ -1256,7 +1263,7 @@ C Nitrogen E-P-R fluxes
           tmpEPRN = tmpEPRN + PTRACERS_EvPrRn(iTr)*totPER
 #else
           iTr=ic+np-1
-          tmpEPRN = tmpEPRN + PTRACERS_EvPrRn(iTr)*R_NC(np)*totPER
+          tmpEPRN=tmpEPRN + PTRACERS_EvPrRn(iTr)*traits%R_NC(np)*totPER
 #endif
          ENDIF
         ENDDO
@@ -1265,7 +1272,7 @@ C Nitrogen E-P-R fluxes
 # ifdef DARWIN_CDOM_UNITS_CARBON
          tmpEPRN = tmpEPRN + PTRACERS_EvPrRn(iCDOM)*totPER
 # else
-         tmpEPRN = tmpEPRN + PTRACERS_EvPrRn(iCDOM)*R_NP_CDOM*totPER
+         tmpEPRN=tmpEPRN+PTRACERS_EvPrRn(iCDOM)*params%R_NP_CDOM*totPER
 # endif
         ENDIF
 #endif
@@ -1284,14 +1291,15 @@ C Phosphorus E-P-R fluxes
           tmpEPRP = tmpEPRP + PTRACERS_EvPrRn(iTr)*totPER
 #else
           iTr=ic+np-1
-          tmpEPRP = tmpEPRP + PTRACERS_EvPrRn(iTr)*R_PC(np)*totPER
+          tmpEPRP=tmpEPRP + PTRACERS_EvPrRn(iTr)*traits%R_PC(np)*totPER
 #endif
          ENDIF
         ENDDO
 #ifdef DARWIN_ALLOW_CDOM
         IF (PTRACERS_EvPrRn(iCDOM).NE.UNSET_RL) THEN
 # ifdef DARWIN_CDOM_UNITS_CARBON
-         tmpEPRP = tmpEPRP + PTRACERS_EvPrRn(iCDOM)*R_PC_CDOM*totPER
+         tmpEPRP = tmpEPRP
+     &         + PTRACERS_EvPrRn(iCDOM)*params%R_PC_CDOM*totPER
 # else
          tmpEPRP = tmpEPRP + PTRACERS_EvPrRn(iCDOM)*totPER
 # endif
@@ -1312,16 +1320,18 @@ C Iron E-P-R fluxes
           tmpEPRFe = tmpEPRFe + PTRACERS_EvPrRn(iTr)*totPER
 #else
           iTr=ic+np-1
-          tmpEPRFe = tmpEPRFe + PTRACERS_EvPrRn(iTr)*R_FeC(np)*totPER
+          tmpEPRFe=tmpEPRFe+PTRACERS_EvPrRn(iTr)*traits%R_FeC(np)*totPER
 #endif
          ENDIF
         ENDDO
 #ifdef DARWIN_ALLOW_CDOM
         IF (PTRACERS_EvPrRn(iCDOM).NE.UNSET_RL) THEN
 # ifdef DARWIN_CDOM_UNITS_CARBON
-         tmpEPRFe = tmpEPRFe + PTRACERS_EvPrRn(iCDOM)*R_FeC_CDOM*totPER
+         tmpEPRFe = tmpEPRFe
+     &         + PTRACERS_EvPrRn(iCDOM)*params%R_FeC_CDOM*totPER
 # else
-         tmpEPRFe = tmpEPRFe + PTRACERS_EvPrRn(iCDOM)*R_FeP_CDOM*totPER
+         tmpEPRFe = tmpEPRFe
+     &         + PTRACERS_EvPrRn(iCDOM)*params%R_FeP_CDOM*totPER
 # endif
         ENDIF
 #endif
@@ -1338,7 +1348,8 @@ C Silica E-P-R fluxes
           tmpEPRSi = tmpEPRSi + PTRACERS_EvPrRn(iTr)*totPER
 #else
           iTr=ic+np-1
-          tmpEPRSi = tmpEPRSi + PTRACERS_EvPrRn(iTr)*R_SiC(np)*totPER
+          tmpEPRSi = tmpEPRSi
+     &          + PTRACERS_EvPrRn(iTr)*traits%R_SiC(np)*totPER
 #endif
          ENDIF
         ENDDO

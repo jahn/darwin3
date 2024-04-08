@@ -1,0 +1,14 @@
+#include "DARWIN_OPTIONS.h"
+#ifdef ALLOW_DARWIN
+
+      MODULE DARWIN_PARAM_DATA_MOD
+
+      use DARWIN_PARAM_MOD
+
+      TYPE(DARWIN_PARAMS_TYPE) :: params
+      TYPE(DARWIN_TRAITS_TYPE) :: traits
+      TYPE(DARWIN_DEP_TRAITS_TYPE) :: deptraits
+
+      END MODULE
+
+#endif /* ALLOW_DARWIN */

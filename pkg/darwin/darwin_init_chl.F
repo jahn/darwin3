@@ -6,7 +6,7 @@ C !INTERFACE: ==========================================================
       SUBROUTINE DARWIN_INIT_CHL( bi, bj, myTime, myIter, myThid )
 
 C !DESCRIPTION:
-C     Make sure Chl/C is bounded by chl2cmin and chl2cmax.
+C     Make sure Chl/C is bounded by deptraits%chl2cmin and traits%chl2cmax.
 C     If not DARWIN_ALLOW_CHLQUOTA, assign ChlPrev.
 C     If darwin_chlInitBalanced is true, initialize Chl from c assuming
 C     balanced growth following Geider, Macintyre, Kana 1997.
@@ -21,6 +21,8 @@ C     For backwards compatibility, ice is taken into account only
 C     without radtrans and without DARWIN_CHL_INIT_LEGACY.
 
 C !USES: ===============================================================
+      use darwin_param_mod
+      use darwin_param_data_mod
       IMPLICIT NONE
 #include "SIZE.h"
 #include "GRID.h"
@@ -72,9 +74,9 @@ C compute light
          atten = 0 _d 0
          DO k=1,nR
           IF (HFacC(i,j,k,bi,bj).GT.0. _d 0) THEN
-           atten= atten + katten_w*5. _d -1*drF(k)
+           atten= atten + params%katten_w*5. _d -1*drF(k)
            IF (k.gt.1)THEN
-            atten = atten + katten_w*5. _d -1*drF(k-1)
+            atten = atten + params%katten_w*5. _d -1*drF(k-1)
            ENDIF
            PAR(i,j,k,1) = lite*EXP(-atten)
           ENDIF
@@ -94,9 +96,9 @@ C!!!!!  do not take ice into account for backwards compatibility
           atten = 0 _d 0
           DO k=1,nR
            IF (HFacC(i,j,k,bi,bj).GT.0. _d 0) THEN
-            atten= atten + katten_w*5. _d -1*drF(k)
+            atten= atten + params%katten_w*5. _d -1*drF(k)
             IF (k.gt.1)THEN
-             atten = atten + katten_w*5. _d -1*drF(k-1)
+             atten = atten + params%katten_w*5. _d -1*drF(k-1)
             ENDIF
             PAR(i,j,k,1) = lite*EXP(-atten)
            ENDIF
@@ -151,20 +153,22 @@ C compute Chlorophyll
 #endif
           IF (darwin_chlInitBalanced) THEN
 #if defined(ALLOW_RADTRANS) && defined(DARWIN_CHL_INIT_LEGACY)
-           alpha_I = alpha_mean(jp) * PAR(i,j,k,1)
+           alpha_I = deptraits%alpha_mean(jp) * PAR(i,j,k,1)
            alpha_I = 0 _d 0
 #else
            alpha_I = 0.0
            DO l = 1, nlam
-            alpha_I = alpha_I + alphachl(jp,l) * PAR(i,j,k,l)
+            alpha_I = alpha_I + deptraits%alphachl(jp,l) * PAR(i,j,k,l)
            ENDDO
 #endif
            chltmp = Ptracer(i,j,k,bi,bj,ic+jp-1)*
-     &              chl2cmax(jp)/(1+chl2cmax(jp)*alpha_I/(2*PCmax(jp)))
+     &              traits%chl2cmax(jp)
+     &             /(1+traits%chl2cmax(jp)*alpha_I/(2*traits%PCmax(jp)))
           ENDIF
-          chltmp = MAX(Ptracer(i,j,k,bi,bj,ic+jp-1)*chl2cmin(jp),
+          chltmp = MAX(Ptracer(i,j,k,bi,bj,ic+jp-1)
+     &                 *deptraits%chl2cmin(jp),
      &                 chltmp)
-          chltmp = MIN(Ptracer(i,j,k,bi,bj,ic+jp-1)*chl2cmax(jp),
+          chltmp = MIN(Ptracer(i,j,k,bi,bj,ic+jp-1)*traits%chl2cmax(jp),
      &                 chltmp)
 #ifdef DARWIN_ALLOW_CHLQUOTA
           Ptracer(i,j,k,bi,bj,iChl+jp-1) = chltmp

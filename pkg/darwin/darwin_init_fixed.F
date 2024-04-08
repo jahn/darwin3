@@ -12,6 +12,8 @@ C     !DESCRIPTION:
 C     Initialize wavebands and read in absorption/scattering spectra
 
 C     !USES:
+      use darwin_param_mod
+      use darwin_param_data_mod
       IMPLICIT NONE
 #include "SIZE.h"
 #include "EEPARAMS.h"
@@ -66,13 +68,13 @@ C     !LOCAL VARIABLES:
 #endif
       kMaxFeSed = 0
       DO k=1,Nr
-        IF (RF(k) .GT. -depthFeSed) kMaxFeSed = k
+        IF (RF(k) .GT. -params%depthFeSed) kMaxFeSed = k
       ENDDO
 
 #ifdef DARWIN_ALLOW_HYDROTHERMAL_VENTS
       kMinFeVent = Nr + 1
       DO k=Nr,1,-1
-        IF (RC(k) .LE. -depthFeVent) kMinFeVent = k
+        IF (RC(k) .LE. -params%depthFeVent) kMinFeVent = k
       ENDDO
 #endif
 
@@ -407,7 +409,7 @@ C deprecation checks
 
 #ifndef DARWIN_ALLOW_EXUDE
       DO jp = 1, nPlank
-       IF (ExportFracExude(jp) .NE. DARWIN_UNINIT_RL) THEN
+       IF (traits%ExportFracExude(jp) .NE. DARWIN_UNINIT_RL) THEN
         WRITE(msgBuf,'(2A)')'ExportFracExude can only be used with ',
      &     'DARWIN_ALLOW_EXUDE.'
         CALL PRINT_ERROR( msgBuf, myThid )

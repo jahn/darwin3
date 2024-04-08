@@ -10,6 +10,8 @@ C !DESCRIPTION:
 C  Calculate first guess of pH
 
 C !USES: ===============================================================
+      use darwin_param_mod
+      use darwin_param_data_mod
       IMPLICIT NONE
 #include "SIZE.h"
 #include "DYNVARS.h"
@@ -79,10 +81,12 @@ C set guess of pH for first step here
 C determine inorganic carbon chem coefficients
           DO j=jMin,jMax
            DO i=iMin,iMax
-            surfsalt(i,j) = MAX(surfSaltMinInit,
-     &                      MIN(surfSaltMaxInit, salt(i,j,k,bi,bj)))
-            surftemp(i,j) = MAX(surfTempMinInit,
-     &                      MIN(surfTempMaxInit, theta(i,j,k,bi,bj)))
+            surfsalt(i,j) = MAX(params%surfSaltMinInit,
+     &                      MIN(params%surfSaltMaxInit,
+     &                          salt(i,j,k,bi,bj)))
+            surftemp(i,j) = MAX(params%surfTempMinInit,
+     &                      MIN(params%surfTempMaxInit,
+     &                          theta(i,j,k,bi,bj)))
            ENDDO
           ENDDO
 
@@ -144,29 +148,29 @@ C$TAF LOOP = parallel
            DO i=iMin,iMax
             IF ( maskC(i,j,k,bi,bj) .NE. 0. _d 0) THEN
 c put bounds on tracers so pH solver doesn't blow up
-             surfdic  = ptr2mol * MAX(surfDICMinInit,
-     &                  MIN(surfDICMaxInit, Ptracer(i,j,k,bi,bj,iDIC)))
-     &                  * maskC(i,j,k,bi,bj)
-             surfalk  = ptr2mol * MAX(surfALKMinInit,
-     &                  MIN(surfALKMaxInit, Ptracer(i,j,k,bi,bj,iALK)))
-     &                  * maskC(i,j,k,bi,bj)
-             surfphos = ptr2mol * MAX(surfPO4MinInit,
-     &                  MIN(surfPO4MaxInit, Ptracer(i,j,k,bi,bj,iPO4)))
-     &                  * maskC(i,j,k,bi,bj)
-             surfsi   = ptr2mol * MAX(surfSiMinInit,
-     &                  MIN(surfSiMaxInit, Ptracer(i,j,k,bi,bj,iSiO2)))
-     &                  * maskC(i,j,k,bi,bj)
+             surfdic  = ptr2mol * MAX(params%surfDICMinInit,
+     &            MIN(params%surfDICMaxInit, Ptracer(i,j,k,bi,bj,iDIC)))
+     &            * maskC(i,j,k,bi,bj)
+             surfalk  = ptr2mol * MAX(params%surfALKMinInit,
+     &            MIN(params%surfALKMaxInit, Ptracer(i,j,k,bi,bj,iALK)))
+     &            * maskC(i,j,k,bi,bj)
+             surfphos = ptr2mol * MAX(params%surfPO4MinInit,
+     &            MIN(params%surfPO4MaxInit, Ptracer(i,j,k,bi,bj,iPO4)))
+     &            * maskC(i,j,k,bi,bj)
+             surfsi   = ptr2mol * MAX(params%surfSiMinInit,
+     &            MIN(params%surfSiMaxInit, Ptracer(i,j,k,bi,bj,iSiO2)))
+     &            * maskC(i,j,k,bi,bj)
 C$TAF init dic_surf = static, 10
 #ifdef DARWIN_SOLVESAPHE
-             IF ( selectPHsolver.GT.0 ) THEN
+             IF ( params%selectPHsolver.GT.0 ) THEN
 C Use Munhoven (2013) Solvesaphe routine to initialize pH
 #ifdef ALLOW_DEBUG
               IF (debugPrt) CALL DEBUG_CALL('AHINI_FOR_AT',myThid)
 #endif
 C call AHINI_FOR_AT to get better initial guess of pH
               CALL AHINI_FOR_AT(
-     I           surfalk*m3perkg,
-     I           surfdic*m3perkg,
+     I           surfalk*params%m3perkg,
+     I           surfdic*params%m3perkg,
      I           bt(i,j,bi,bj),
      U           pH(i,j,k,bi,bj),
      I           i,j,k,bi,bj,nIter0,myThid )

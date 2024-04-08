@@ -9,6 +9,8 @@ C !DESCRIPTION:
 C     Fix conservation violation due to linear free surface
 
 C !USES: ===============================================================
+      use darwin_param_mod
+      use darwin_param_data_mod
       IMPLICIT NONE
 #include "SIZE.h"
 #include "EEPARAMS.h"
@@ -65,7 +67,7 @@ c carbon budget
       totflxC=totflxC+totSurfCorPtr(iPIC)
       DO np=1,nplank
         iTr=ic+np-1
-        totflxC=totflxC+totSurfCorPtr(iTr)*(1+R_PICPOC(np))
+        totflxC=totflxC+totSurfCorPtr(iTr)*(1+traits%R_PICPOC(np))
       ENDDO
 #ifdef DARWIN_ALLOW_CSTORE
       DO np=1,nPhoto
@@ -77,7 +79,7 @@ c carbon budget
 # ifdef DARWIN_CDOM_UNITS_CARBON
       totflxC=totflxC+totSurfCorPtr(iCDOM)
 # else
-      totflxC=totflxC+totSurfCorPtr(iCDOM)*R_CP_CDOM
+      totflxC=totflxC+totSurfCorPtr(iCDOM)*params%R_CP_CDOM
 # endif
 #endif
 
@@ -91,12 +93,12 @@ c Phosphorus budget
         totflxP=totflxP+totSurfCorPtr(iTr)
 #else
         iTr=ic+np-1
-        totflxP=totflxP+totSurfCorPtr(iTr)*R_PC(np)
+        totflxP=totflxP+totSurfCorPtr(iTr)*traits%R_PC(np)
 #endif
       ENDDO
 #ifdef DARWIN_ALLOW_CDOM
 # ifdef DARWIN_CDOM_UNITS_CARBON
-      totflxP=totflxP+totSurfCorPtr(iCDOM)*R_PC_CDOM
+      totflxP=totflxP+totSurfCorPtr(iCDOM)*params%R_PC_CDOM
 # else
       totflxP=totflxP+totSurfCorPtr(iCDOM)
 # endif
@@ -114,14 +116,14 @@ c Nitrogen budget
         totflxN=totflxN+totSurfCorPtr(iTr)
 #else
         iTr=ic+np-1
-        totflxN=totflxN+totSurfCorPtr(iTr)*R_NC(np)
+        totflxN=totflxN+totSurfCorPtr(iTr)*traits%R_NC(np)
 #endif
       ENDDO
 #ifdef DARWIN_ALLOW_CDOM
 # ifdef DARWIN_CDOM_UNITS_CARBON
-      totflxN=totflxN+totSurfCorPtr(iCDOM)*R_NC_CDOM
+      totflxN=totflxN+totSurfCorPtr(iCDOM)*params%R_NC_CDOM
 # else
-      totflxN=totflxN+totSurfCorPtr(iCDOM)*R_NP_CDOM
+      totflxN=totflxN+totSurfCorPtr(iCDOM)*params%R_NP_CDOM
 # endif
 #endif
 
@@ -135,14 +137,14 @@ c Iron budget
         totflxFe=totflxFe+totSurfCorPtr(iTr)
 #else
         iTr=ic+np-1
-        totflxFe=totflxFe+totSurfCorPtr(iTr)*R_FeC(np)
+        totflxFe=totflxFe+totSurfCorPtr(iTr)*traits%R_FeC(np)
 #endif
       ENDDO
 #ifdef DARWIN_ALLOW_CDOM
 # ifdef DARWIN_CDOM_UNITS_CARBON
-      totflxFe=totflxFe+totSurfCorPtr(iCDOM)*R_FeC_CDOM
+      totflxFe=totflxFe+totSurfCorPtr(iCDOM)*params%R_FeC_CDOM
 # else
-      totflxFe=totflxFe+totSurfCorPtr(iCDOM)*R_FeP_CDOM
+      totflxFe=totflxFe+totSurfCorPtr(iCDOM)*params%R_FeP_CDOM
 # endif
 #endif
 
@@ -155,7 +157,7 @@ c Silica budget
         totflxSi=totflxSi+totSurfCorPtr(iTr)
 #else
         iTr=ic+np-1
-        totflxSi=totflxSi+totSurfCorPtr(iTr)*R_SiC(np)
+        totflxSi=totflxSi+totSurfCorPtr(iTr)*traits%R_SiC(np)
 #endif
       ENDDO
 c------------------------------------------------------------

@@ -12,6 +12,8 @@ C     !DESCRIPTION:
 C     Initialize DARWIN constants
 
 C     !USES:
+      use darwin_param_mod
+      use darwin_param_data_mod
       IMPLICIT NONE
 #include "EEPARAMS.h"
 #include "SIZE.h"
@@ -72,27 +74,27 @@ C     !LOCAL VARIABLES:
        DO bj=myByLo(mythid),myByHi(myThid)
        DO bi=myBxLo(mythid),myBxHi(myThid)
         DO jp=1,nplank
-        IF (diazo(jp) .EQ. 1) THEN
+        IF (traits%diazo(jp) .EQ. 1) THEN
          DO k=1,Nr
          DO j=1-OLy,sNy+OLy
          DO i=1-OLx,sNx+OLx
           Ptracer(i,j,k,bi,bj,ic+jp-1)=Ptracer(i,j,k,bi,bj,ic+jp-1)*
-     &                                 diaz_ini_fac
+     &                                 params%diaz_ini_fac
 #ifdef DARWIN_ALLOW_NQUOTA
           Ptracer(i,j,k,bi,bj,in+jp-1)=Ptracer(i,j,k,bi,bj,in+jp-1)*
-     &                                 diaz_ini_fac
+     &                                 params%diaz_ini_fac
 #endif
 #ifdef DARWIN_ALLOW_PQUOTA
           Ptracer(i,j,k,bi,bj,ip+jp-1)=Ptracer(i,j,k,bi,bj,ip+jp-1)*
-     &                                 diaz_ini_fac
+     &                                 params%diaz_ini_fac
 #endif
 #ifdef DARWIN_ALLOW_FEQUOTA
           Ptracer(i,j,k,bi,bj,ife+jp-1)=Ptracer(i,j,k,bi,bj,ife+jp-1)*
-     &                                  diaz_ini_fac
+     &                                  params%diaz_ini_fac
 #endif
 #ifdef DARWIN_ALLOW_SIQUOTA
           Ptracer(i,j,k,bi,bj,isi+jp-1)=Ptracer(i,j,k,bi,bj,isi+jp-1)*
-     &                                  diaz_ini_fac
+     &                                  params%diaz_ini_fac
 #endif
          ENDDO
          ENDDO
@@ -105,12 +107,12 @@ C     !LOCAL VARIABLES:
        DO bj=myByLo(mythid),myByHi(myThid)
        DO bi=myBxLo(mythid),myBxHi(myThid)
         DO jp=1,nPhoto
-        IF (diazo(jp) .EQ. 1) THEN
+        IF (traits%diazo(jp) .EQ. 1) THEN
          DO k=1,Nr
          DO j=1-OLy,sNy+OLy
          DO i=1-OLx,sNx+OLx
           Ptracer(i,j,k,bi,bj,ichl+jp-1)=Ptracer(i,j,k,bi,bj,ichl+jp-1)*
-     &                                   diaz_ini_fac
+     &                                   params%diaz_ini_fac
          ENDDO
          ENDDO
          ENDDO

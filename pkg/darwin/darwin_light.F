@@ -11,6 +11,8 @@ C !INTERFACE: ==========================================================
 C !DESCRIPTION:
 
 C !USES: ===============================================================
+      use darwin_param_mod
+      use darwin_param_data_mod
       IMPLICIT NONE
 #include "SIZE.h"
 #include "GRID.h"
@@ -61,7 +63,8 @@ C ======================================================================
       ELSEIF (DARWIN_useQsw) THEN
        DO j=jMin,jMax
         DO i=iMin,iMax
-         PARF(i,j) = -parfrac*parconv*Qsw(i,j,bi,bj)*maskC(i,j,1,bi,bj)
+         PARF(i,j) = -params%parfrac*params%parconv*Qsw(i,j,bi,bj)
+     &                *maskC(i,j,1,bi,bj)
         ENDDO
        ENDDO
       ELSE
@@ -116,7 +119,7 @@ C        convert W/m2 to uEin/s/m2
         DO j=jMin,jMax
          DO i=iMin,iMax
           Chl(i,j) = Chl(i,j) + MAX(0.0,
-     &                 Ptracer(i,j,k,bi,bj,ic+jp-1)*R_ChlC(jp))
+     &                 Ptracer(i,j,k,bi,bj,ic+jp-1)*traits%R_ChlC(jp))
          ENDDO
         ENDDO
        ENDDO
@@ -125,7 +128,8 @@ C        convert W/m2 to uEin/s/m2
        DO j=jMin,jMax
         DO i=iMin,iMax
 C TODO should include hFacC
-         atten(i,j) = (katten_w + katten_Chl*Chl(i,j))*DRF(k)
+         atten(i,j) = (params%katten_w
+     &                 + params%katten_Chl*Chl(i,j))*DRF(k)
 #ifdef DARWIN_AVPAR
          PAR(i,j,k) = PARF(i,j)*(1.0 - EXP(-atten(i,j)))/atten(i,j)
 #else /* USE_MIDPAR */

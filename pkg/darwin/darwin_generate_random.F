@@ -21,6 +21,8 @@ C      1=diatom, 2=other large, 3=syn, 4=hl pro, 5=ll pro, 6=trich,
 C      7=uni diaz, 8=small euk, 9=cocco
 
 C !USES: ===============================================================
+      use darwin_param_mod
+      use darwin_param_data_mod
       IMPLICIT NONE
 #include "EEPARAMS.h"
 #ifdef ALLOW_RADTRANS
@@ -102,38 +104,38 @@ c length of day (seconds)
       pday = 86400.0 _d 0
 
       DO np = 1, nPlank
-       kexcc(np) = 0.0 _d 0
-       kexcn(np) = 0.0 _d 0
-       kexcp(np) = 0.0 _d 0
-       kexcsi(np) = 0.0 _d 0
-       kexcfe(np) = 0.0 _d 0
+       traits%kexcc(np) = 0.0 _d 0
+       traits%kexcn(np) = 0.0 _d 0
+       traits%kexcp(np) = 0.0 _d 0
+       traits%kexcsi(np) = 0.0 _d 0
+       traits%kexcfe(np) = 0.0 _d 0
 
-       Qnmax(np) = 0.0 _d 0
-       Qnmin(np) = 0.0 _d 0
-       Qpmax(np) = 0.0 _d 0
-       Qpmin(np) = 0.0 _d 0
-       Qsimax(np) = 0.0 _d 0
-       Qsimin(np) = 0.0 _d 0
-       Qfemax(np) = 0.0 _d 0
-       Qfemin(np) = 0.0 _d 0
+       traits%Qnmax(np) = 0.0 _d 0
+       traits%Qnmin(np) = 0.0 _d 0
+       traits%Qpmax(np) = 0.0 _d 0
+       traits%Qpmin(np) = 0.0 _d 0
+       traits%Qsimax(np) = 0.0 _d 0
+       traits%Qsimin(np) = 0.0 _d 0
+       traits%Qfemax(np) = 0.0 _d 0
+       traits%Qfemin(np) = 0.0 _d 0
 
-       vmaxFeT(np) = 0.0 _d 0
-       vmaxNH4(np) = 0.0 _d 0
-       vmaxNO2(np) = 0.0 _d 0
-       vmaxNO3(np) = 0.0 _d 0
-       vmaxN(np) = 0.0 _d 0
-       vmaxPO4(np) = 0.0 _d 0
-       vmaxSiO2(np) = 0.0 _d 0
+       traits%VmaxFeT(np) = 0.0 _d 0
+       traits%VmaxNH4(np) = 0.0 _d 0
+       traits%VmaxNO2(np) = 0.0 _d 0
+       traits%VmaxNO3(np) = 0.0 _d 0
+       traits%VmaxN(np) = 0.0 _d 0
+       traits%VmaxPO4(np) = 0.0 _d 0
+       traits%VmaxSiO2(np) = 0.0 _d 0
 
 C      initialize discrete traits to "unset"
        physize(np)    = -1
        diacoc(np)     = -1
-       diazo(np) = -1
+       traits%diazo(np) = -1
        nsource(np)    = -1
 
-       isPhoto(np) = 0
-       isPrey(np) = 0
-       isPred(np) = 0
+       traits%isPhoto(np) = 0
+       traits%isPrey(np) = 0
+       traits%isPred(np) = 0
       ENDDO
 
 C ======================================================================
@@ -142,10 +144,10 @@ C ======================================================================
 
       DO np = 1, nPhoto
 
-      isPhoto(np) = 1
-      isPrey(np) = 1
+      traits%isPhoto(np) = 1
+      traits%isPrey(np) = 1
 
-      Xmin(np) = phymin
+      traits%Xmin(np) = phymin
 
 C ======================================================================
 C RANDOM NUMBERS
@@ -212,35 +214,35 @@ c         ENDIF
       ENDIF
 #endif
 
-c phyto either diazotrophs (diazo=1.0) or not (diazo=0.0)
+c phyto either diazotrophs (traits%diazo=1.0) or not (traits%diazo=0.0)
       RandNoDiazo = darwin_random(myThid)
-      IF (diazo(np) .LT. 0) THEN
+      IF (traits%diazo(np) .LT. 0) THEN
        IF(RandNoDiazo .GT. 0.6700 _d 0)then
-        diazo(np) = 1
+        traits%diazo(np) = 1
        ELSE
-        diazo(np) = 0
+        traits%diazo(np) = 0
        ENDIF
       ENDIF
 c TEST ...........................................
 #ifndef DARWIN_ALLOW_DIAZ
-      diazo(np) = 0
+      traits%diazo(np) = 0
 #endif
 c TEST ...........................................
 #ifdef DARWIN_TWO_SPECIES_SETUP
-      diazo(np) = 0
+      traits%diazo(np) = 0
 #endif
 #ifdef DARWIN_NINE_SPECIES_SETUP
       IF (np.GT.5.AND.np.LT.8) then
-         diazo(np) = 1
+         traits%diazo(np) = 1
       ELSE
-         diazo(np) = 0
+         traits%diazo(np) = 0
       ENDIF
 #endif
 
       RandNoGrow = darwin_random(myThid)
       RandNoMort = darwin_random(myThid)
 c nutrient source 
-      IF(diazo(np) .ne. 1)then
+      IF(traits%diazo(np) .ne. 1)then
          RandNoNsrc = darwin_random(myThid)
          IF (nsource(np) .LT. 0) THEN
           IF (physize(np).EQ.1) then   
@@ -303,7 +305,7 @@ c Diaz will be 0 if not defined, and will have nsource = 0.
        RandNoAPType3 = darwin_random(myThid)
        RandNoAPType2 = darwin_random(myThid)
        RandNoAPType1 = darwin_random(myThid)
-       IF (nsource(np).EQ.0) then   !if diazo
+       IF (nsource(np).EQ.0) then   !if traits%diazo
         IF (physize(np).EQ.1.0d0) then !if BIG
         aptype(np) = 1                !euk (assume diatom association)
         ELSE                           !or
@@ -343,7 +345,7 @@ c Diaz will be 0 if not defined, and will have nsource = 0.
 c
       IF (nOpt.EQ.12) then
        RandNoAPType4 = darwin_random(myThid)
-       IF (nsource(np).EQ.0) then   !if diazo
+       IF (nsource(np).EQ.0) then   !if traits%diazo
         IF (physize(np).EQ.1.0d0) then !if BIG
          IF (diacoc(np).EQ.1.0d0) then
            aptype(np) = 5                !diatom association
@@ -482,7 +484,7 @@ c big/small phyto growth rates..
       ENDIF
 #endif
 c but diazotrophs always slower due to energetics
-      IF(diazo(np) .EQ. 1) then
+      IF(traits%diazo(np) .EQ. 1) then
           growthdays = growthdays * diaz_growfac
       ENDIF
 c cocco have slower growth than other large
@@ -495,30 +497,30 @@ c diatom has faster thatn other large
       ENDIF
 c now convert to a growth rate
       IF (growthdays.GT.0. _d 0) then
-       PCmax(np) = 1.0 _d 0/(growthdays*pday)
+       traits%PCmax(np) = 1.0 _d 0/(growthdays*pday)
       ELSE
-       PCmax(np) = 0. _d 0
+       traits%PCmax(np) = 0. _d 0
       ENDIF
 
 c mortality and export fraction rates
 c big/small phyto mortality rates..
       IF(physize(np) .EQ. 1)then
         mortdays = Bigmort +RandnoMort*Bigmortrange
-        ExportFracMort(np)=Bigexport
-        ExportFracMort2(np)=Bigexport
+        traits%ExportFracMort(np)=Bigexport
+        traits%ExportFracMort2(np)=Bigexport
 #ifdef DARWIN_ALLOW_EXUDE
-        ExportFracExude(np)=Bigexport
+        traits%ExportFracExude(np)=Bigexport
 #else
-        ExportFracExude(np)=DARWIN_UNINIT_RL
+        traits%ExportFracExude(np)=DARWIN_UNINIT_RL
 #endif
       ELSE
         mortdays = Smallmort +RandNoMort*Smallmortrange
-        ExportFracMort(np)=Smallexport
-        ExportFracMort2(np)=Smallexport
+        traits%ExportFracMort(np)=Smallexport
+        traits%ExportFracMort2(np)=Smallexport
 #ifdef DARWIN_ALLOW_EXUDE
-        ExportFracExude(np)=Smallexport
+        traits%ExportFracExude(np)=Smallexport
 #else
-        ExportFracExude(np)=DARWIN_UNINIT_RL
+        traits%ExportFracExude(np)=DARWIN_UNINIT_RL
 #endif
       ENDIF
 #ifdef DARWIN_TWO_SPECIES_SETUP
@@ -538,165 +540,169 @@ c big/small phyto mortality rates..
 
 c now convert to a mortality rate
       IF (mortdays.GT.0. _d 0) then
-        mort(np) = 1.0 _d 0/(mortdays*pday)
+        traits%mort(np) = 1.0 _d 0/(mortdays*pday)
       ELSE
-        mort(np) = 0. _d 0
+        traits%mort(np) = 0. _d 0
       ENDIF
-      mort2(np) = 0.0 _d 0
+      traits%mort2(np) = 0.0 _d 0
 
 C phytoplankton do not have temperature-dependent mortality
-      tempMort(np) = 0
-      tempMort2(np) = 0
+      traits%tempMort(np) = 0
+      traits%tempMort2(np) = 0
 
-      respRate(np) = 0.0 _d 0
+      traits%respRate(np) = 0.0 _d 0
 
 
 c..........................................................
 c generate phyto Temperature Function parameters  
 c.......................................................
-      phytoTempCoeff(np) = tempcoeff1
-      phytoTempExp1(np) = tempcoeff3
+      traits%phytoTempCoeff(np) = tempcoeff1
+      traits%phytoTempExp1(np) = tempcoeff3
       IF(physize(np) .EQ. 1)then
-        phytoTempExp2(np) = tempcoeff2_big
+        traits%phytoTempExp2(np) = tempcoeff2_big
       ELSE
-        phytoTempExp2(np) = tempcoeff2_small
+        traits%phytoTempExp2(np) = tempcoeff2_small
       ENDIF
 
 #ifdef DARWIN_TEMP_RANGE
-cswd    phytoTempOptimum(np) = 30.0 _d 0 - RandNo*28.0 _d 0 
-      phytoTempOptimum(np) = tempmax - RandNoTemp*temprange
-      phytoDecayPower(np) = tempdecay
+cswd    traits%phytoTempOptimum(np) = 30.0 _d 0 - RandNo*28.0 _d 0 
+      traits%phytoTempOptimum(np) = tempmax - RandNoTemp*temprange
+      traits%phytoDecayPower(np) = tempdecay
 #else
-      phytoTempOptimum(np) = 0. _d 0
-      phytoDecayPower(np) = 0. _d 0
+      traits%phytoTempOptimum(np) = 0. _d 0
+      traits%phytoDecayPower(np) = 0. _d 0
 #endif
       
 c stoichiometric ratios for each functional group of phyto 
 c relative to phosphorus  - the base currency nutrient
 c set Si:P
       IF(diacoc(np) .EQ. 1)then
-        R_SiC(np) =  val_R_SiC_diatom
+        traits%R_SiC(np) =  val_R_SiC_diatom
       ELSE
-        R_SiC(np) = 0.0 _d 0
+        traits%R_SiC(np) = 0.0 _d 0
       ENDIF
       IF(diacoc(np) .EQ. 2)then
-        R_PICPOC(np) =  val_R_PICPOC
+        traits%R_PICPOC(np) =  val_R_PICPOC
       ELSE
-        R_PICPOC(np) = 0.0 _d 0
+        traits%R_PICPOC(np) = 0.0 _d 0
       ENDIF
 c set N:P and iron requirement according to diazotroph status
-      IF(diazo(np) .EQ. 1)then
-        R_NC(np) = val_R_NC_diaz
-        R_FeC(np) =  val_R_FeC_diaz
+      IF(traits%diazo(np) .EQ. 1)then
+        traits%R_NC(np) = val_R_NC_diaz
+        traits%R_FeC(np) =  val_R_FeC_diaz
       ELSE
-        R_NC(np) = val_R_NC
-        R_FeC(np) = val_R_FeC
+        traits%R_NC(np) = val_R_NC
+        traits%R_FeC(np) = val_R_FeC
       ENDIF
 c set C:P ratio
-        R_PC(np) = val_R_PC
+        traits%R_PC(np) = val_R_PC
 c set sinking rates according to allometry
       IF(physize(np) .EQ. 1)then
-         biosink(np) = BigSink
+         traits%biosink(np) = BigSink
       ELSE 
-         biosink(np) = SmallSink
+         traits%biosink(np) = SmallSink
       ENDIF 
-      bioswim(np) = 0.0 _d 0
+      traits%bioswim(np) = 0.0 _d 0
 c half-saturation coeffs 
 
       IF(physize(np) .EQ. 1)then
-         ksatPO4(np) = BigPsat + RandNoKsat*BigPsatrange
+         traits%ksatPO4(np) = BigPsat + RandNoKsat*BigPsatrange
       ELSE
-c          ksatPO4(np) = SmallPsat + RandNoKsat*SmallPsatrange
+c          traits%ksatPO4(np) = SmallPsat + RandNoKsat*SmallPsatrange
 c          if (nsource(np).LT.3) then
-c            ksatPO4(np) = ksatPO4(np)*prochlPsat
+c            traits%ksatPO4(np) = traits%ksatPO4(np)*prochlPsat
 c           ENDIF
          IF (nsource(np).EQ.3) then
-           ksatPO4(np) = SmallPsat + RandNoKsat*SmallPsatrange
+           traits%ksatPO4(np) = SmallPsat + RandNoKsat*SmallPsatrange
          ENDIF
          IF (nsource(np).EQ..0) then
-c            ksatPO4(np) = SmallPsat + RandNoKsat*SmallPsatrange
-           ksatPO4(np) = UniDzPsat + RandNoKsat*UniDzPsatrange 
+c            traits%ksatPO4(np) = SmallPsat + RandNoKsat*SmallPsatrange
+           traits%ksatPO4(np) = UniDzPsat + RandNoKsat*UniDzPsatrange 
          ENDIF
          IF (nsource(np).EQ.2.or.nsource(np).EQ.1) then
-           ksatPO4(np) = ProcPsat + RandNoKsat*ProcPsatrange
+           traits%ksatPO4(np) = ProcPsat + RandNoKsat*ProcPsatrange
          ENDIF
       ENDIF
       IF (diacoc(np) .EQ. 2) THEN
-         ksatPO4(np) = CoccoPsat + RandNoKsat*CoccoPsatrange
+         traits%ksatPO4(np) = CoccoPsat + RandNoKsat*CoccoPsatrange
       ENDIF
 #ifdef DARWIN_TWO_SPECIES_SETUP
       IF(physize(np) .EQ. 1)then
-         ksatPO4(np) = BigPsat 
+         traits%ksatPO4(np) = BigPsat 
       ELSE
-         ksatPO4(np) = SmallPsat
+         traits%ksatPO4(np) = SmallPsat
       ENDIF
 #endif
 #ifdef DARWIN_NINE_SPECIES_SETUP
       IF(physize(np) .EQ. 1)then
-         ksatPO4(np) = BigPsat
+         traits%ksatPO4(np) = BigPsat
       ELSE
-         ksatPO4(np) = SmallPsat
+         traits%ksatPO4(np) = SmallPsat
       ENDIF
       IF (nsource(np).EQ.2.or.nsource(np).EQ.1) then
-         ksatPO4(np) = ProcPsat 
+         traits%ksatPO4(np) = ProcPsat 
       ENDIF
       IF (diacoc(np) .EQ. 2) then
-         ksatPO4(np) = ksatPO4(np)/0.8 _d 0 
+         traits%ksatPO4(np) = traits%ksatPO4(np)/0.8 _d 0 
       ENDIF
 #endif
 
-      ksatNO3(np) = ksatPO4(np)*R_NC(np)/R_PC(np)
-      ksatNO2(np) = ksatNO3(np)*ksatNO2fac 
-c Made ksatNH4 smaller since it is the preferred source
-      ksatNH4(np) = ksatNO3(np)*ksatNH4fac
-      ksatFeT(np) = ksatPO4(np)*R_FeC(np)/R_PC(np)
-      ksatSiO2(np) = val_ksatsio2
-      amminhib(np) = val_amminhib
+      traits%ksatNO3(np) = traits%ksatPO4(np)*traits%R_NC(np)
+     &                                       /traits%R_PC(np)
+      traits%ksatNO2(np) = traits%ksatNO3(np)*ksatNO2fac 
+c Made traits%ksatNH4 smaller since it is the preferred source
+      traits%ksatNH4(np) = traits%ksatNO3(np)*ksatNH4fac
+      traits%ksatFeT(np) = traits%ksatPO4(np)*traits%R_FeC(np)
+     &                                       /traits%R_PC(np)
+      traits%ksatSiO2(np) = val_ksatsio2
+      traits%amminhib(np) = val_amminhib
 
-      acclimtimescl(np) = val_acclimtimescl
+      traits%acclimtimescl(np) = val_acclimtimescl
 
 #ifndef DARWIN_ALLOW_GEIDER
-      R_ChlC(np) = val_R_ChlC
+      traits%R_ChlC(np) = val_R_ChlC
 
 cNEW Light parameters:
-c     ksatPAR {0.1 - 1.3}
+c     traits%ksatPAR {0.1 - 1.3}
 c     0.35=Av High Light Adapted, 0.8=Av Low Light Adapted
-c     kinhPAR  {0.0 - 3.0}
+c     traits%kinhPAR  {0.0 - 3.0}
 c     0.5 =Av High Light Adapted, 2.0=Av Low Light Adapted
 c High Light Groups for Large size:
       IF(physize(np) .EQ. 1)then
-         ksatPAR(np) = abs(Bigksatpar+Bigksatparstd*RandNoKsatPAR)
+         traits%ksatPAR(np)=abs(Bigksatpar+Bigksatparstd*RandNoKsatPAR)
 
-         kinhPAR(np) = abs(BigkinhPAR+BigkinhPARstd*RandNoKinhPAR)
+         traits%kinhPAR(np)=abs(BigkinhPAR+BigkinhPARstd*RandNoKinhPAR)
       ELSE
 c QQ remove someday
 c Low Light Groups for Small size:
-         ksatPAR(np) = abs(smallksatpar+smallksatparstd*RandNoKsatPAR)
+         traits%ksatPAR(np) = abs(smallksatpar
+     &                            +smallksatparstd*RandNoKsatPAR)
 
-         kinhPAR(np) = abs(smallkinhPAR+smallkinhPARstd*RandNoKinhPAR)
+         traits%kinhPAR(np) = abs(smallkinhPAR
+     &                            +smallkinhPARstd*RandNoKinhPAR)
       ENDIF
 #ifdef DARWIN_TWO_SPECIES_SETUP
       IF(physize(np) .EQ. 1)then
-         ksatPAR(np) = abs(Bigksatpar)
-         kinhPAR(np) = abs(Bigkinhpar)
+         traits%ksatPAR(np) = abs(Bigksatpar)
+         traits%kinhPAR(np) = abs(Bigkinhpar)
       ELSE
-         ksatPAR(np) = abs(smallksatpar)
-         kinhPAR(np) = abs(smallkinhpar)
+         traits%ksatPAR(np) = abs(smallksatpar)
+         traits%kinhPAR(np) = abs(smallkinhpar)
       ENDIF
 #endif
 #ifdef DARWIN_NINE_SPECIES_SETUP
       IF(physize(np) .EQ. 1)then
-         ksatPAR(np) = abs(Bigksatpar)
-         kinhPAR(np) = abs(BigkinhPAR)
+         traits%ksatPAR(np) = abs(Bigksatpar)
+         traits%kinhPAR(np) = abs(BigkinhPAR)
       ELSE
-         ksatPAR(np) = abs(smallksatpar)
-         kinhPAR(np) = abs(smallkinhPAR)
+         traits%ksatPAR(np) = abs(smallksatpar)
+         traits%kinhPAR(np) = abs(smallkinhPAR)
       ENDIF
       IF (np.EQ.5) then
-        kinhPAR(np) = abs(LLProkinhPAR)
+        traits%kinhPAR(np) = abs(LLProkinhPAR)
       ENDIF
       IF (np.EQ.9) then
-        kinhPAR(np) = abs(CoccokinhPAR)
+        traits%kinhPAR(np) = abs(CoccokinhPAR)
       ENDIF
 #endif
 #endif
@@ -723,7 +729,7 @@ c big/small phyto growth rates..
       ENDIF
 #endif
 c but diazotrophs always slower due to energetics
-      IF(diazo(np) .EQ. 1) then
+      IF(traits%diazo(np) .EQ. 1) then
           growthdays = growthdays * diaz_growfac
       ENDIF
 c cocco have slower growth than other large
@@ -736,150 +742,151 @@ c diatom has faster thatn other large
       ENDIF
 c now convert to a growth rate
       IF (growthdays.GT.0. _d 0) then
-       pcmax(np) = 1.0 _d 0/(growthdays*pday)
+       traits%PCmax(np) = 1.0 _d 0/(growthdays*pday)
       ELSE
-       pcmax(np) = 0. _d 0
+       traits%PCmax(np) = 0. _d 0
       ENDIF
 c
 c photo-inhibition 
 #ifdef ALLOW_RADTRANS
 c only LL Pro are inhibited
        IF (aptype(np).EQ.4) then
-          inhibGeider(np) = inhibcoef_geid_val
+          traits%inhibGeider(np) = inhibcoef_geid_val
        ELSE
-          inhibGeider(np) = 0. _d 0
+          traits%inhibGeider(np) = 0. _d 0
        ENDIF
 #else
 c no inhibition
        IF(physize(np) .EQ. 1)then
-         inhibGeider(np) = 0. _d 0
+         traits%inhibGeider(np) = 0. _d 0
        ELSE
-         inhibGeider(np) = 0. _d 0  !inhibcoef_geid_val
+         traits%inhibGeider(np) = 0. _d 0  !inhibcoef_geid_val
        ENDIF
 #endif
 c
 
 c big/small phyto PI slope (chl specific)
 c        IF(physize(np) .EQ. 1)then
-c          alphachl(np) = Bigalphachl +Randno*Bigalphachlrange
+c          deptraits%alphachl(np) = Bigalphachl +Randno*Bigalphachlrange
 c        ELSE
-c          alphachl(np) = Smallalphachl +RandNo*Smallalphachlrange
+c          deptraits%alphachl(np) = Smallalphachl +RandNo*Smallalphachlrange
 c        ENDIF
 
-c ANNA gieder via mQyield instead of alpha
+c ANNA gieder via traits%mQyield instead of alpha
 c big/small phyto Maximum Quantum Yield
       IF(physize(np) .EQ. 1)then
-        mQyield(np) = BigmQyield +RandNoYield*BigmQyieldrange
+        traits%mQyield(np) = BigmQyield +RandNoYield*BigmQyieldrange
       ELSE
-        mQyield(np) = SmallmQyield +RandNoYield*SmallmQyieldrange
+        traits%mQyield(np) = SmallmQyield +RandNoYield*SmallmQyieldrange
       ENDIF
 #ifdef DARWIN_TWO_SPECIES_SETUP
       IF(physize(np) .EQ. 1)then
-        mQyield(np) = BigmQyield
+        traits%mQyield(np) = BigmQyield
       ELSE
-        mQyield(np) = SmallmQyield
+        traits%mQyield(np) = SmallmQyield
       ENDIF
 #endif
 #ifdef DARWIN_NINE_SPECIES_SETUP
       IF(physize(np) .EQ. 1)then
-        mQyield(np) = BigmQyield
+        traits%mQyield(np) = BigmQyield
       ELSE
-        mQyield(np) = SmallmQyield
+        traits%mQyield(np) = SmallmQyield
       ENDIF
 #endif
 #ifdef ALLOW_RADTRANS
-c ANNA for wavebands only, re-set mQyield to be constant for all np's
+c ANNA for wavebands only, re-set traits%mQyield to be constant for all np's
 c ANNA i.e. let alpha vary only with aphy_chl_ps
 c ANNA value is mean of vals for big and small.
-        mQyield(np) = 4.0 _d -5
+        traits%mQyield(np) = 4.0 _d -5
 #endif
 
 
 c big/small phyto C:Chl max
       IF(physize(np) .EQ. 1)then
-        chl2cmax(np) = Bigchl2cmax +RandnoChl2C*Bigchl2cmaxrange
+        traits%chl2cmax(np) = Bigchl2cmax +RandnoChl2C*Bigchl2cmaxrange
       ELSE
-        chl2cmax(np) = Smallchl2cmax +RandNoChl2C*Smallchl2cmaxrange
+        traits%chl2cmax(np) = Smallchl2cmax
+     &                        + RandNoChl2C*Smallchl2cmaxrange
       ENDIF
 #ifdef DARWIN_TWO_SPECIES_SETUP
       IF(physize(np) .EQ. 1)then
-        chl2cmax(np) = Bigchl2cmax 
+        traits%chl2cmax(np) = Bigchl2cmax 
       ELSE
-        chl2cmax(np) = Smallchl2cmax 
+        traits%chl2cmax(np) = Smallchl2cmax 
       ENDIF
 #endif
 #ifdef DARWIN_NINE_SPECIES_SETUP
       IF(physize(np) .EQ. 1)then
-        chl2cmax(np) = Bigchl2cmax
+        traits%chl2cmax(np) = Bigchl2cmax
       ELSE
-        chl2cmax(np) = Smallchl2cmax
+        traits%chl2cmax(np) = Smallchl2cmax
       ENDIF
 #endif
-c ANNA chl2cmin added
-c       chl2cmin(np) = 0.003  _d 0 * 12. _d 0  ! mg Chl a/mmol C
+c ANNA deptraits%chl2cmin added
+c       deptraits%chl2cmin(np) = 0.003  _d 0 * 12. _d 0  ! mg Chl a/mmol C
 
 #endif /* DARWIN_ALLOW_GEIDER */
 
       print*,'nsource',np,nsource(np)
       IF (nsource(np) .EQ. 3) THEN
-        useNH4(np) = 1
-        useNO2(np) = 1
-        useNO3(np) = 1
-        combNO(np) = 1
+        traits%useNH4(np) = 1
+        traits%useNO2(np) = 1
+        traits%useNO3(np) = 1
+        traits%combNO(np) = 1
       ELSEIF (nsource(np) .EQ. 2) THEN
-        useNH4(np) = 1
-        useNO2(np) = 0
-        useNO3(np) = 0
-        combNO(np) = 0
+        traits%useNH4(np) = 1
+        traits%useNO2(np) = 0
+        traits%useNO3(np) = 0
+        traits%combNO(np) = 0
       ELSEIF (nsource(np) .EQ. 1) THEN
-        useNH4(np) = 1
-        useNO2(np) = 1
-        useNO3(np) = 0
-        combNO(np) = 0
+        traits%useNH4(np) = 1
+        traits%useNO2(np) = 1
+        traits%useNO3(np) = 0
+        traits%combNO(np) = 0
       ELSE
-        useNH4(np) = 0
-        useNO2(np) = 0
-        useNO3(np) = 0
-        combNO(np) = 0
+        traits%useNH4(np) = 0
+        traits%useNO2(np) = 0
+        traits%useNO3(np) = 0
+        traits%combNO(np) = 0
       ENDIF
 
       IF (diacoc(np) .NE. 1) THEN
-        ksatSiO2(np) = 0.0
-        vmaxSiO2(np) = 0.0
-        R_SiC(np) = 0.0
+        traits%ksatSiO2(np) = 0.0
+        traits%VmaxSiO2(np) = 0.0
+        traits%R_SiC(np) = 0.0
       ENDIF
 
       IF (diacoc(np) .EQ. 1) THEN
-        hasSi(np) = 1
-        hasPIC(np) = 0
+        traits%hasSi(np) = 1
+        traits%hasPIC(np) = 0
       ELSEIF (diacoc(np) .EQ. 2) THEN
-        hasSi(np) = 0
-        hasPIC(np) = 1
+        traits%hasSi(np) = 0
+        traits%hasPIC(np) = 1
       ELSE
-        hasSi(np) = 0
-        hasPIC(np) = 0
+        traits%hasSi(np) = 0
+        traits%hasPIC(np) = 0
       ENDIF
 
       ENDDO  ! np
 
       DO np = 1, nplank
 
-        bactType(np) = 0
-        isAerobic(np) = 0
-        isDenit(np) = 0
+        traits%bactType(np) = 0
+        traits%isAerobic(np) = 0
+        traits%isDenit(np) = 0
 
-        yield(np) = 1.0 _d 0
-        yieldO2(np) = 1.0 _d 0
-        yieldNO3(np) = 1.0 _d 0
+        traits%yield(np) = 1.0 _d 0
+        traits%yieldO2(np) = 1.0 _d 0
+        traits%yieldNO3(np) = 1.0 _d 0
 
-        ksatPON(np) = 1.0 _d 0
-        ksatPOC(np) = 1.0 _d 0
-        ksatPOP(np) = 1.0 _d 0
-        ksatPOFe(np) = 1.0 _d 0
-        ksatDON(np) = 1.0 _d 0
-        ksatDOC(np) = 1.0 _d 0
-        ksatDOP(np) = 1.0 _d 0
-        ksatDOFe(np) = 1.0 _d 0
+        traits%ksatPON(np) = 1.0 _d 0
+        traits%ksatPOC(np) = 1.0 _d 0
+        traits%ksatPOP(np) = 1.0 _d 0
+        traits%ksatPOFe(np) = 1.0 _d 0
+        traits%ksatDON(np) = 1.0 _d 0
+        traits%ksatDOC(np) = 1.0 _d 0
+        traits%ksatDOP(np) = 1.0 _d 0
+        traits%ksatDOFe(np) = 1.0 _d 0
 
       ENDDO  ! np
 
@@ -899,9 +906,9 @@ C ======================================================================
 
       DO nz = 1, nplank
        DO np = 1, nplank
-        palat(np,nz) = 0 _d 0
-        asseff(np,nz) = 0 _d 0
-        ExportFracPreyPred(np,nz) = 0 _d 0
+        traits%palat(np,nz) = 0 _d 0
+        traits%asseff(np,nz) = 0 _d 0
+        traits%ExportFracPreyPred(np,nz) = 0 _d 0
        ENDDO
       ENDDO
 
@@ -910,7 +917,7 @@ C ======================================================================
       iMinPred = nPhoto + 1
       iMaxPred = nplank
       DO nz = iMinPred, iMaxPred
-       isPred(nz) = 1
+       traits%isPred(nz) = 1
       ENDDO
 
       IF ( oldTwoGrazers ) THEN
@@ -924,26 +931,26 @@ c assume zoo(1) = small, zoo(2) = big
        ENDIF
        physize(iMinPred) = 0
        physize(iMaxPred) = 1
-       grazemax(iMinPred) = GrazeFast
-       grazemax(iMaxPred) = GrazeFast
-       ExportFracMort(iMinPred) = ZooexfacSmall
-       ExportFracMort(iMaxPred) = ZooexfacBig
-       ExportFracMort2(iMinPred) = ZooexfacSmall
-       ExportFracMort2(iMaxPred) = ZooexfacBig
+       traits%grazemax(iMinPred) = GrazeFast
+       traits%grazemax(iMaxPred) = GrazeFast
+       traits%ExportFracMort(iMinPred) = ZooexfacSmall
+       traits%ExportFracMort(iMaxPred) = ZooexfacBig
+       traits%ExportFracMort2(iMinPred) = ZooexfacSmall
+       traits%ExportFracMort2(iMaxPred) = ZooexfacBig
 #ifdef DARWIN_ALLOW_EXUDE
-       ExportFracExude(iMinPred) = ZooexfacSmall
-       ExportFracExude(iMaxPred) = ZooexfacBig
+       traits%ExportFracExude(iMinPred) = ZooexfacSmall
+       traits%ExportFracExude(iMaxPred) = ZooexfacBig
 #else
-       ExportFracExude(iMinPred) = DARWIN_UNINIT_RL
-       ExportFracExude(iMaxPred) = DARWIN_UNINIT_RL
+       traits%ExportFracExude(iMinPred) = DARWIN_UNINIT_RL
+       traits%ExportFracExude(iMaxPred) = DARWIN_UNINIT_RL
 #endif
-       mort(iMinPred) = ZoomortSmall
-       mort(iMaxPred) = ZoomortBig
-       mort2(iMinPred) = ZoomortSmall2
-       mort2(iMaxPred) = ZoomortBig2
+       traits%mort(iMinPred) = ZoomortSmall
+       traits%mort(iMaxPred) = ZoomortBig
+       traits%mort2(iMinPred) = ZoomortSmall2
+       traits%mort2(iMaxPred) = ZoomortBig2
        DO np = iMinPrey, iMaxPrey
-        ExportFracPreyPred(np,iMinPred) = ExGrazFracSmall
-        ExportFracPreyPred(np,iMaxPred) = ExGrazFracBig
+        traits%ExportFracPreyPred(np,iMinPred) = ExGrazFracSmall
+        traits%ExportFracPreyPred(np,iMaxPred) = ExGrazFracBig
        ENDDO
        dmzoo(iMinPred) = 30. _d 0   ! diameter (micrometer)
        dmzoo(iMaxPred) = 300. _d 0  ! diameter (micrometer)
@@ -952,27 +959,27 @@ c big grazers preferentially eat big phyto etc...
        DO nz = iMinPred, iMaxPred
         DO np = iMinPrey, iMaxPrey
           IF (physize(nz).EQ.physize(np)) then
-            palat(np,nz) = palathi
-            asseff(np,nz) = GrazeEffmod
+            traits%palat(np,nz) = palathi
+            traits%asseff(np,nz) = GrazeEffmod
           ELSE
-            palat(np,nz) = palatlo
+            traits%palat(np,nz) = palatlo
             IF (physize(np).EQ.0. _d 0) then
-              asseff(np,nz) = GrazeEffhi
+              traits%asseff(np,nz) = GrazeEffhi
             ELSE
-              asseff(np,nz) = GrazeEfflow
+              traits%asseff(np,nz) = GrazeEfflow
             ENDIF
           ENDIF
 c diatoms even less palatible
           IF (diacoc(np).EQ.1. _d 0) then
-            palat(np,nz)= palat(np,nz)*diatomgraz
+            traits%palat(np,nz)= traits%palat(np,nz)*diatomgraz
           ENDIF
 c coccolithophes less palatible
           IF (diacoc(np).EQ.2. _d 0) then
-            palat(np,nz)= palat(np,nz)*coccograz
+            traits%palat(np,nz)= traits%palat(np,nz)*coccograz
           ENDIF
 c other large phyto less palatible
           IF (diacoc(np).EQ.0. _d 0 .AND.physize(np).EQ.1. _d 0) then
-            palat(np,nz)= palat(np,nz)*olargegraz
+            traits%palat(np,nz)= traits%palat(np,nz)*olargegraz
           ENDIF
 c need something in here for tricho
         ENDDO
@@ -982,21 +989,21 @@ c     not oldTwoGrazers
       ELSE
 
        DO nz = iMinPred, iMaxPred
-        grazemax(nz) = GrazeRate
-        ExportFracMort(nz) = Zooexfac
-        ExportFracMort2(nz) = Zooexfac
+        traits%grazemax(nz) = GrazeRate
+        traits%ExportFracMort(nz) = Zooexfac
+        traits%ExportFracMort2(nz) = Zooexfac
 #ifdef DARWIN_ALLOW_EXUDE
-        ExportFracExude(nz) = Zooexfac
+        traits%ExportFracExude(nz) = Zooexfac
 #else
-        ExportFracExude(nz) = DARWIN_UNINIT_RL
+        traits%ExportFracExude(nz) = DARWIN_UNINIT_RL
 #endif
-        mort(nz) = Zoomort
-        mort2(nz) = Zoomort2
+        traits%mort(nz) = Zoomort
+        traits%mort2(nz) = Zoomort2
         dmzoo(nz) = ZooDM
         DO np = iMinPrey, iMaxPrey
-         palat(np,nz) = val_palat
-         asseff(np,nz) = val_ass_eff
-         ExportFracPreyPred(np,nz) = ExGrazFrac
+         traits%palat(np,nz) = val_palat
+         traits%asseff(np,nz) = val_ass_eff
+         traits%ExportFracPreyPred(np,nz) = ExGrazFrac
         ENDDO
        ENDDO
 
@@ -1005,24 +1012,24 @@ c     oldTwoGrazers
 
 c
       DO nz = iMinPred, iMaxPred
-        R_NC(nz) = val_R_NC_zoo
-        R_PC(nz) = val_R_PC_zoo
-        R_SiC(nz) = val_R_SiC_zoo
-        R_FeC(nz) = val_R_FeC_zoo
-        R_ChlC(nz) = val_R_ChlC_zoo
-        R_PICPOC(nz) = val_R_PICPOC_zoo
+        traits%R_NC(nz) = val_R_NC_zoo
+        traits%R_PC(nz) = val_R_PC_zoo
+        traits%R_SiC(nz) = val_R_SiC_zoo
+        traits%R_FeC(nz) = val_R_FeC_zoo
+        traits%R_ChlC(nz) = val_R_ChlC_zoo
+        traits%R_PICPOC(nz) = val_R_PICPOC_zoo
 
-        Xmin(nz) = 0.0 _d 0
+        traits%Xmin(nz) = 0.0 _d 0
 
-        kgrazesat(nz) = kgrazesat_val
+        traits%kgrazesat(nz) = kgrazesat_val
 C zooplankton do have temperature-dependent mortality
-        tempMort(nz) = 0
-        tempMort2(nz) = 0
-        tempGraz(nz) = 0
+        traits%tempMort(nz) = 0
+        traits%tempMort2(nz) = 0
+        traits%tempGraz(nz) = 0
 
-        respRate(nz) = 0.0 _d 0
-        biosink(nz) = 0.0 _d 0
-        bioswim(nz) = 0.0 _d 0
+        traits%respRate(nz) = 0.0 _d 0
+        traits%biosink(nz) = 0.0 _d 0
+        traits%bioswim(nz) = 0.0 _d 0
 
 c zooplankton volume in micrometers cubed
         volp = 4. _d 0/3. _d 0 *PI*(dmzoo(nz)/2. _d 0)**3 _d 0

@@ -15,6 +15,8 @@ C Update tendency terms for alkalinity, oxygen and DIC from air-sea
 C exchanges
 
 C !USES: ===============================================================
+      use darwin_param_mod
+      use darwin_param_data_mod
       IMPLICIT NONE
 #include "SIZE.h"
 #include "DYNVARS.h"
@@ -226,10 +228,10 @@ C determine inorganic carbon chem coefficients
        DO j=jmin,jmax
         DO i=imin,imax
 c put bounds on tracers so pH solver doesn't blow up
-         surfsalt(i,j) = MAX(surfSaltMin,
-     &                   MIN(surfSaltMax, salt(i,j,k,bi,bj)))
-         surftemp(i,j) = MAX(surfTempMin,
-     &                   MIN(surfTempMax, theta(i,j,k,bi,bj)))
+         surfsalt(i,j) = MAX(params%surfSaltMin,
+     &                   MIN(params%surfSaltMax, salt(i,j,k,bi,bj)))
+         surftemp(i,j) = MAX(params%surfTempMin,
+     &                   MIN(params%surfTempMax, theta(i,j,k,bi,bj)))
         ENDDO
        ENDDO
 
@@ -266,21 +268,21 @@ c pCO2 solver...
          IF ( maskC(i,j,k,bi,bj).NE.0. _d 0 ) THEN
 
 c put bounds on tracers so pH solver doesn't blow up
-          surfdic  = ptr2mol * MAX(surfDICMin,
-     &               MIN(surfDICMax, Ptracer(i,j,k,bi,bj,iDIC)))
+          surfdic  = ptr2mol * MAX(params%surfDICMin,
+     &               MIN(params%surfDICMax, Ptracer(i,j,k,bi,bj,iDIC)))
      &               * maskC(i,j,k,bi,bj)
-          surfalk  = ptr2mol * MAX(surfALKMin,
-     &               MIN(surfALKMax, Ptracer(i,j,k,bi,bj,iALK)))
+          surfalk  = ptr2mol * MAX(params%surfALKMin,
+     &               MIN(params%surfALKMax, Ptracer(i,j,k,bi,bj,iALK)))
      &               * maskC(i,j,k,bi,bj)
-          surfphos = ptr2mol * MAX(surfPO4Min,
-     &               MIN(surfPO4Max, Ptracer(i,j,k,bi,bj,iPO4)))
+          surfphos = ptr2mol * MAX(params%surfPO4Min,
+     &               MIN(params%surfPO4Max, Ptracer(i,j,k,bi,bj,iPO4)))
      &               * maskC(i,j,k,bi,bj)
-          surfsi   = ptr2mol * MAX(surfSiMin,
-     &               MIN(surfSiMax, Ptracer(i,j,k,bi,bj,iSiO2)))
+          surfsi   = ptr2mol * MAX(params%surfSiMin,
+     &               MIN(params%surfSiMax, Ptracer(i,j,k,bi,bj,iSiO2)))
      &               * maskC(i,j,k,bi,bj)
 
 #ifdef DARWIN_SOLVESAPHE
-          IF ( selectPHsolver.GT.0 ) THEN
+          IF ( params%selectPHsolver.GT.0 ) THEN
 C Use Munhoven (2013) Solvesaphe routine to calculate pH and pCO2
 #ifdef ALLOW_DEBUG
             IF (debugPrt) CALL DEBUG_CALL('CALC_PCO2_SOLVESAPHE',myThid)
@@ -373,7 +375,7 @@ c Flux = kw*rho*(ff*pCO2atm-k0*FugFac*pCO2ocean)
            FluxCO2(i,j) = 0. _d 0
           ENDIF
 C convert flux (mol kg-1 m s-1) to (mmol m-2 s-1)
-          FluxCO2(i,j) = FluxCO2(i,j)/m3perkg/ptr2mol
+          FluxCO2(i,j) = FluxCO2(i,j)/params%m3perkg/ptr2mol
 #ifdef DARWIN_ALLOW_CONS
           carbSfcFlx(i,j,bi,bj) = carbSfcFlx(i,j,bi,bj)
      &                          + FluxCO2(i,j)*dTsub(ks)

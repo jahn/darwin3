@@ -36,8 +36,8 @@ C
 C    JMLauderdale Summer 2018:
 C    - Modified for MITGCM style, just keeping the "general" equations from
 C        MOD_PHSOLVERS SOLVE_AT_GENERAL SOLVE_AT_GENERAL_SEC and SOLVE_AT_FAST.
-C        Use runtime flags in data.dic to use GENERAL (selectPHsolver=1,
-C        default), SEC (selectPHsolver=2) or FAST (selectPHsolver=3).
+C        Use runtime flags in data.dic to use GENERAL (params%selectPHsolver=1,
+C        default), SEC (params%selectPHsolver=2) or FAST (params%selectPHsolver=3).
 C
 C    - MOD_CHEMCONST is included here as DARWIN_COEFFS_SURF, with the
 C        style brought in line with S/R CARBON_COEFF (i.e all ak values are
@@ -50,29 +50,29 @@ C
 C    - Different coefficients can be accessed using runtime flags in data.dic:
 C
 C    Borate concentration from salinity:
-C     selectBTconst=1 for the default formulation of Uppström (1974)
+C     params%selectBTconst=1 for the default formulation of Uppström (1974)
 C                     i.e. the same as S/R CARBON_COEFFS
-C     selectBTconst=2 for the new formulation from Lee et al (2010)
+C     params%selectBTconst=2 for the new formulation from Lee et al (2010)
 C
 C    Fluoride concentration from salinity:
-C     selectFTconst=1 for the default formulation of Riley (1965)
+C     params%selectFTconst=1 for the default formulation of Riley (1965)
 C                     i.e. the same as S/R CARBON_COEFFS
-C     selectFTconst=2 for the new formulation from Culkin (1965)
+C     params%selectFTconst=2 for the new formulation from Culkin (1965)
 C
 C    First dissociation constant for hydrogen fluoride:
-C     selectHFconst=1 for the default  Dickson and Riley (1979)
+C     params%selectHFconst=1 for the default  Dickson and Riley (1979)
 C                     i.e. the same as S/R CARBON_COEFFS
-C     selectHFconst=2 for the formulation of Perez and Fraga (1987)
+C     params%selectHFconst=2 for the formulation of Perez and Fraga (1987)
 C
 C    First and second dissociation constants of carbonic acid:
-C     selectK1K2const=1 for the default formulation of Millero (1995) with data
+C     params%selectK1K2const=1 for the default formulation of Millero (1995) with data
 C              from Mehrbach et al. (1973),  i.e. the same as S/R CARBON_COEFFS
-C     selectK1K2const=2 for the formulation of Roy et al. (1993)
-C     selectK1K2const=3 for the "combination" formulation of Millero (1995)
-C     selectK1K2const=4 for the formulation of Luecker et al. (2000)
-C     selectK1K2const=5 for the formulation of Millero
+C     params%selectK1K2const=2 for the formulation of Roy et al. (1993)
+C     params%selectK1K2const=3 for the "combination" formulation of Millero (1995)
+C     params%selectK1K2const=4 for the formulation of Luecker et al. (2000)
+C     params%selectK1K2const=5 for the formulation of Millero
 C                                              (2010, Mar. Fresh Wat. Res.)
-C     selectK1K2const=6 for the formulation of Waters, Millero, Woosley
+C     params%selectK1K2const=6 for the formulation of Waters, Millero, Woosley
 C                                              (2014, Mar. Chem.)
 C      =========================================================================
       SUBROUTINE AHINI_FOR_AT(p_alkcb, p_dictot, p_bortot, p_hini,
@@ -232,6 +232,8 @@ C      =========================================================================
      U                    pHlocal,z_pco2,z_co3,
      I                    i,j,k,bi,bj,debugPrt,myIter,myThid )
 
+      use darwin_param_mod
+      use darwin_param_data_mod
       IMPLICIT NONE
 
 C     MITgcm GLobal variables
@@ -282,10 +284,10 @@ c Note: mol/kg are actually what the body of this routine uses
 c for calculations.  Units are reconverted back to mol/m^3 at the
 c end of this routine.
 c To convert input in mol/m^3 -> mol/kg
-      z_po4tot=z_po4tot*m3perkg
-      z_siltot=z_siltot*m3perkg
-      z_alktot=z_alktot*m3perkg
-      z_dictot=z_dictot*m3perkg
+      z_po4tot=z_po4tot*params%m3perkg
+      z_siltot=z_siltot*params%m3perkg
+      z_alktot=z_alktot*params%m3perkg
+      z_dictot=z_dictot*params%m3perkg
 
 C Load from the carbon_chem common block
       z_so4tot = st(i,j,bi,bj)
@@ -299,7 +301,7 @@ C Load from the carbon_chem common block
 
       at_maxniter  = 50
 
-      IF ( selectPHsolver.EQ.1 ) THEN
+      IF ( params%selectPHsolver.EQ.1 ) THEN
 #ifdef ALLOW_DEBUG
         IF (debugPrt) CALL DEBUG_CALL('SOLVE_AT_GENERAL',myThid)
 #endif
@@ -308,7 +310,7 @@ C Load from the carbon_chem common block
      &                z_so4tot, z_flutot, z_hini,   z_val,
      &                z_h,
      &                i, j, k, bi, bj, debugPrt, myIter, myThid )
-      ELSEIF ( selectPHsolver.EQ.2 ) THEN
+      ELSEIF ( params%selectPHsolver.EQ.2 ) THEN
 #ifdef ALLOW_DEBUG
         IF (debugPrt) CALL DEBUG_CALL('SOLVE_AT_GENERAL_SEC',myThid)
 #endif
@@ -317,7 +319,7 @@ C Load from the carbon_chem common block
      &                z_so4tot, z_flutot, z_hini,   z_val,
      &                z_h,
      &                i, j, k, bi, bj, debugPrt, myIter, myThid )
-      ELSEIF ( selectPHsolver.EQ.3 ) THEN
+      ELSEIF ( params%selectPHsolver.EQ.3 ) THEN
 #ifdef ALLOW_DEBUG
         IF (debugPrt) CALL DEBUG_CALL('SOLVE_AT_FAST',myThid)
 #endif
@@ -366,15 +368,15 @@ c bug fix by Bennington
 
 C ----------------------------------------------------------------
 C Reconvert from mol/kg -> mol/m^3
-      z_po4tot = z_po4tot/m3perkg
-      z_siltot = z_siltot/m3perkg
-      z_alktot = z_alktot/m3perkg
-      z_dictot = z_dictot/m3perkg
-      z_hco3   = z_hco3/m3perkg
+      z_po4tot = z_po4tot/params%m3perkg
+      z_siltot = z_siltot/params%m3perkg
+      z_alktot = z_alktot/params%m3perkg
+      z_dictot = z_dictot/params%m3perkg
+      z_hco3   = z_hco3/params%m3perkg
 C     keep co3 in mol/kg just like Follows et al solver
-C      z_co3    = z_co3/m3perkg
+C      z_co3    = z_co3/params%m3perkg
 C     note: this is not passed back
-      z_co2aq  = z_co2s/m3perkg
+      z_co2aq  = z_co2s/params%m3perkg
 
 #endif /* DARWIN_SOLVESAPHE */
       RETURN
@@ -391,6 +393,8 @@ C      =========================================================================
 C     Determine coefficients for surface carbon chemistry,
 C     loaded into common block
 
+      use darwin_param_mod
+      use darwin_param_data_mod
       IMPLICIT NONE
 
 C     MITgcm GLobal variables
@@ -458,7 +462,7 @@ C salinity
 
            log_fw2sw = LOG( 1. _d 0 - 0.001005 _d 0*s )
 
-      IF ( selectBTconst.EQ.1 ) THEN
+      IF ( params%selectBTconst.EQ.1 ) THEN
 C -----------------------------------------------------------------------
 C       Calculate the total borate concentration in mol/kg-SW
 C       given the salinity of a sample
@@ -466,7 +470,7 @@ C       Ref: Uppström (1974), cited by  Dickson et al. (2007, chapter 5, p 10)
 C            Millero (1982) cited in Millero (1995)
 C       pH scale  : N/A
            bt(i,j,bi,bj) = 0.000232 _d 0* scl/10.811 _d 0
-      ELSEIF ( selectBTconst.EQ.2 ) THEN
+      ELSEIF ( params%selectBTconst.EQ.2 ) THEN
 C -----------------------------------------------------------------------
 C       Calculate the total borate concentration in mol/kg-SW
 C       given the salinity of a sample
@@ -475,14 +479,14 @@ C       pH scale  : N/A
            bt(i,j,bi,bj) = 0.0002414 _d 0* scl/10.811 _d 0
       ENDIF
 
-      IF ( selectFTconst.EQ.1 ) THEN
+      IF ( params%selectFTconst.EQ.1 ) THEN
 C -----------------------------------------------------------------------
 C       Calculate the total fluoride concentration in mol/kg-SW
 C       given the salinity of a sample
 C       References: Riley (1965)
 C       pH scale  : N/A
            ft(i,j,bi,bj) = 0.000067 _d 0 * scl/18.9984 _d 0
-      ELSEIF ( selectFTconst.EQ.2 ) THEN
+      ELSEIF ( params%selectFTconst.EQ.2 ) THEN
 C -----------------------------------------------------------------------
 C       Calculate the total fluoride concentration in mol/kg-SW
 C       given the salinity of a sample
@@ -541,7 +545,7 @@ C   "x2" term often neglected (assumed=1) in applications of Weiss's (1974) eq.9
 C    x2 = 1 - x1 = 1 - xCO2 (it is very close to 1, but not quite)
            fugf(i,j,bi,bj) = exp( (B+2. _d 0*delta) * P1atm / RT)
 
-      IF ( selectK1K2const.EQ.1 ) THEN
+      IF ( params%selectK1K2const.EQ.1 ) THEN
 C -----------------------------------------------------------------------
 C       Calculate first dissociation constant of carbonic acid
 C       in mol/kg-SW on the Seawater pH-scale.
@@ -560,7 +564,7 @@ C       pH scale:   Seawater
            ak2(i,j,bi,bj)=10.**(-1. _d 0*(1394.7 _d 0*inv_t_k
      &           + 4.777 _d 0 - 0.0184 _d 0*s + 0.000118 _d 0*s_2))
 
-      ELSEIF ( selectK1K2const.EQ.2 ) THEN
+      ELSEIF ( params%selectK1K2const.EQ.2 ) THEN
 C -----------------------------------------------------------------------
 C       Calculate first dissociation constant of carbonic acid
 C       in mol/kg-SW on the Total pH-scale.
@@ -585,7 +589,7 @@ C       Note      : converted here from mol/kg-H2O to mol/kg-SW
      &              + 0.1130822*s - 0.00846934 _d 0*s_15
      &              + log_fw2sw )
 
-      ELSEIF ( selectK1K2const.EQ.3 ) THEN
+      ELSEIF ( params%selectK1K2const.EQ.3 ) THEN
 C -----------------------------------------------------------------------
 C       Calculate first dissociation constant of carbonic acid
 C       in mol/kg-SW on the Seawater pH-scale.
@@ -605,7 +609,7 @@ C       pH scale:   Seawater
      &              + (-0.128417 _d 0 - 24.41239 _d 0*inv_t_k)*sqrts
      &              +  0.1195308 _d 0*s - 0.00912840 _d 0*s_15)
 
-      ELSEIF ( selectK1K2const.EQ.4 ) THEN
+      ELSEIF ( params%selectK1K2const.EQ.4 ) THEN
 C -----------------------------------------------------------------------
 C       Calculate first dissociation constant of carbonic acid
 C       in mol/kg-SW on the Total pH-scale.
@@ -625,7 +629,7 @@ C       pH scale:   Total
      &                 - 471.78 _d 0*inv_t_k + 3.16967 _d 0*dlog_t_k
      &                 + s*(0.01781 _d 0 - s*0.0001122 _d 0))
 
-      ELSEIF ( selectK1K2const.EQ.5 ) THEN
+      ELSEIF ( params%selectK1K2const.EQ.5 ) THEN
 C -----------------------------------------------------------------------
 C       Calculate first dissociation constant of carbonic acid
 C       in mol/kg-SW on the Seawater pH-scale.
@@ -651,7 +655,7 @@ C       pH scale:   Seawater
      &     + (-788.289 _d 0*sqrts - 19.189 _d 0*s)*inv_t_k
      &     -3.374 _d 0*sqrts*dlog_t_k))
 
-      ELSEIF ( selectK1K2const.EQ.6 ) THEN
+      ELSEIF ( params%selectK1K2const.EQ.6 ) THEN
 C -----------------------------------------------------------------------
 C       Calculate first dissociation constant of carbonic acid
 C       in mol/kg-SW on the Seawater pH-scale.
@@ -678,7 +682,7 @@ C       pH scale:   Seawater
      &      + (-779.3444 _d 0*sqrts - 19.91739 _d 0*s)*inv_t_k
      &      - 3.3534679 _d 0*sqrts*dlog_t_k ) )
 
-      ENDIF /* selectK1K2const */
+      ENDIF /* params%selectK1K2const */
 
 C -----------------------------------------------------------------------
 C       Calculate boric acid dissociation constant KB
@@ -774,7 +778,7 @@ C       Note      : converted here from mol/kg-H2O to mol/kg-SW
      &                + 1776. _d 0*inv_t_k*ion_st*ion_st
      &                + log_fw2sw )
 
-      IF ( selectHFconst.EQ.1 ) THEN
+      IF ( params%selectHFconst.EQ.1 ) THEN
 C -----------------------------------------------------------------------
 C       Calculate the dissociation constant \beta_{HF} [(mol/kg-SW)^{-1}]
 C       in (mol/kg-SW)^{-1}, where
@@ -785,7 +789,7 @@ C       Note      : converted here from mol/kg-H2O to mol/kg-SW
            akf(i,j,bi,bj) = EXP(1590.2 _d 0*inv_t_k - 12.641 _d 0
      &                 + 1.525 _d 0*sqrtis
      &                 + log_fw2sw )
-      ELSEIF ( selectHFconst.EQ.2 ) THEN
+      ELSEIF ( params%selectHFconst.EQ.2 ) THEN
 C -----------------------------------------------------------------------
 C       Calculate the dissociation constant for hydrogen fluoride
 C       in mol/kg-SW
@@ -824,7 +828,8 @@ C pH scale conversion factors and conversions. Everything on total pH scale
 
            aphscale(i,j,bi,bj) = 1. _d 0 + st(i,j,bi,bj)/aks(i,j,bi,bj)
 
-      IF ( selectK1K2const.NE.2 .AND. selectK1K2const.NE.4 ) THEN
+      IF ( params%selectK1K2const.NE.2 .AND.
+     &     params%selectK1K2const.NE.4 ) THEN
 C Convert to the total pH scale
            ak1(i,j,bi,bj)  = ak1(i,j,bi,bj)*sw2total
            ak2(i,j,bi,bj)  = ak2(i,j,bi,bj)*sw2total
@@ -836,7 +841,7 @@ C Convert to the total pH scale
            akn (i,j,bi,bj) = akn (i,j,bi,bj)*sw2total
            akhs(i,j,bi,bj) = akhs(i,j,bi,bj)*sw2total
            aks (i,j,bi,bj) = aks (i,j,bi,bj)*free2total
-      IF ( selectHFconst.EQ.1 ) THEN
+      IF ( params%selectHFconst.EQ.1 ) THEN
            akf (i,j,bi,bj) = akf (i,j,bi,bj)*free2total
       ENDIF
            akw (i,j,bi,bj) = akw (i,j,bi,bj)*sw2total
@@ -1391,6 +1396,8 @@ C      =========================================================================
 C      =========================================================================
 C      Fast version of SOLVE_AT_GENERAL, without any bounds checking.
 
+      use darwin_param_mod
+      use darwin_param_data_mod
       IMPLICIT NONE
 
 C     MITgcm GLobal variables
@@ -1550,6 +1557,8 @@ C      =========================================================================
 C      Universal pH solver that converges from any given initial value,
 C      determines upper an lower bounds for the solution if required
 
+      use darwin_param_mod
+      use darwin_param_data_mod
       IMPLICIT NONE
 
 C     MITgcm GLobal variables
@@ -1818,6 +1827,8 @@ C      =========================================================================
 
 C      Universal pH solver that converges from any given initial value,
 C      determines upper an lower bounds for the solution if required
+      use darwin_param_mod
+      use darwin_param_data_mod
       IMPLICIT NONE
 
 C     MITgcm GLobal variables

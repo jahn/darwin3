@@ -21,6 +21,8 @@ C     DARWIN_TEMP_RANGE gives all phyto a  specific temperature range
 C                if undefined, then full Eppley/Arrenhius curve used
 
 C !USES: ===============================================================
+      use darwin_param_mod
+      use darwin_param_data_mod
       IMPLICIT NONE
 #include "DARWIN_SIZE.h"
 #include "DARWIN_INDICES.h"
@@ -67,15 +69,16 @@ c steph s version 1 (pseudo-Eppley)
 c plankton growth function (unitless)
       DO j = 1, nPhoto
 cswd -- this gives Eppley curve only
-        photoFun(j) = phytoTempExp1(j)**Temp
+        photoFun(j) = traits%phytoTempExp1(j)**Temp
 # ifdef DARWIN_TEMP_RANGE
 cswd -- temperature range
         photoFun(j) = photoFun(j) *
-     &      exp(-phytoTempExp2(j)*
-     &           abs(Temp - phytoTempOptimum(j))**phytoDecayPower(j))
+     &      exp(-traits%phytoTempExp2(j)*
+     &           abs(Temp - traits%phytoTempOptimum(j))
+     &           **traits%phytoDecayPower(j))
 # endif
-        photoFun(j) = photoFun(j) - tempnorm
-        photoFun(j) = phytoTempCoeff(j)*
+        photoFun(j) = photoFun(j) - params%tempnorm
+        photoFun(j) = traits%phytoTempCoeff(j)*
      &                  max(photoFun(j), 1. _d -10)
         photoFun(j) = min(photoFun(j),1. _d 0)
       ENDDO
@@ -101,22 +104,23 @@ c steph s version 2 (pseudo-Arrenhius)
 !      TempCoeff =     0.5882 _d 0
       DO j = 1, nPhoto
 cswd -- this gives Arrenhius curve only
-        photoFun(j) = exp(TempAeArr*(1. _d 0/(Temp+Tkel) -
-     &                                  1. _d 0/(TemprefArr) ) )
+        photoFun(j) = exp(params%TempAeArr*(1. _d 0/(Temp+Tkel) -
+     &                                  1. _d 0/(params%TemprefArr) ) )
 # ifdef DARWIN_TEMP_RANGE
 cswd -- temperature range
         photoFun(j) = photoFun(j) *
-     &      exp(-phytoTempExp2(j)*
-     &           abs(Temp - phytoTempOptimum(j))**phytoDecayPower(j))
+     &      exp(-traits%phytoTempExp2(j)*
+     &           abs(Temp - traits%phytoTempOptimum(j))
+     &           **traits%phytoDecayPower(j))
 # endif
         photoFun(j) = photoFun(j)
-        photoFun(j) = TempCoeffArr*
+        photoFun(j) = params%TempCoeffArr*
      &               max(photoFun(j), 1. _d -10)
 C
       ENDDO
-      reminFun = exp(TempAeArr*(1.0 _d 0/(Temp+Tkel) -
-     &                       1.0 _d 0/(TemprefArr) ) )
-      reminFun = TempCoeffArr*
+      reminFun = exp(params%TempAeArr*(1.0 _d 0/(Temp+Tkel) -
+     &                       1.0 _d 0/(params%TemprefArr) ) )
+      reminFun = params%TempCoeffArr*
      &               max(reminFun, 1. _d -10)
       DO j = 1, nplank
         hetFun(j) = reminFun
@@ -155,32 +159,35 @@ c exponential set so mumax is at 20C
 c plankton growth function (unitless)
       Tempref = 20 _d 0
       DO j = 1, nPhoto
-        photoFun(j) = EXP(phytoTempAe(j)*(Temp - Tempref))
+        photoFun(j) = EXP(traits%phytoTempAe(j)*(Temp - Tempref))
 # ifdef DARWIN_TEMP_RANGE
 cswd -- temperature range
         photoFun(j) = photoFun(j) *
-     &      EXP(-phytoTempExp2(j)*
-     &           ABS(Temp - phytoTempOptimum(j))**phytoDecayPower(j))
+     &      EXP(-traits%phytoTempExp2(j)*
+     &           ABS(Temp - traits%phytoTempOptimum(j))
+     &           **traits%phytoDecayPower(j))
 # endif
       ENDDO
       DO j = 1, nplank
-        hetFun(j) = EXP(hetTempAe(j)*(Temp - Tempref))
+        hetFun(j) = EXP(traits%hetTempAe(j)*(Temp - Tempref))
 # ifdef DARWIN_TEMP_RANGE
         hetFun(j) = hetFun(j) *
-     &      EXP(-hetTempExp2(j)*
-     &           ABS(Temp - hetTempOptimum(j))**hetDecayPower(j))
+     &      EXP(-traits%hetTempExp2(j)*
+     &           ABS(Temp - traits%hetTempOptimum(j))
+     &           **traits%hetDecayPower(j))
 # endif
-        grazFun(j) = EXP(grazTempAe(j)*(Temp - Tempref))
+        grazFun(j) = EXP(traits%grazTempAe(j)*(Temp - Tempref))
 # ifdef DARWIN_TEMP_RANGE
         grazFun(j) = grazFun(j) *
-     &      EXP(-grazTempExp2(j)*
-     &           ABS(Temp - grazTempOptimum(j))**grazDecayPower(j))
+     &      EXP(-traits%grazTempExp2(j)*
+     &           ABS(Temp - traits%grazTempOptimum(j))
+     &           **traits%grazDecayPower(j))
 # endif
       ENDDO
-      reminFun  = EXP(reminTempAe*(Temp - Tempref))
-      mortFun   = EXP(mortTempAe*(Temp - Tempref))
-      mort2Fun  = EXP(mort2TempAe*(Temp - Tempref))
-      uptakeFun = EXP(uptakeTempAe*(Temp - Tempref))
+      reminFun  = EXP(params%reminTempAe*(Temp - Tempref))
+      mortFun   = EXP(params%mortTempAe*(Temp - Tempref))
+      mort2Fun  = EXP(params%mort2TempAe*(Temp - Tempref))
+      uptakeFun = EXP(params%uptakeTempAe*(Temp - Tempref))
 c ++++++++++++++ END VERSION 4 +++++++++++++++++++++++++++++++++++++++
 
 #else

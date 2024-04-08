@@ -17,6 +17,8 @@ C     Stephanie Dutkiewicz, 2004
 C        following from code by Payal Parekh
 
 C !USES: ===============================================================
+      use darwin_param_mod
+      use darwin_param_data_mod
       IMPLICIT NONE
 #include "SIZE.h"
 #include "GRID.h"
@@ -48,20 +50,20 @@ c !LOCAL VARIABLES: ====================================================
        DO j=jMin,jMax
         DO i=iMin,iMax
          IF (maskC(i, j, k, bi, bj) .GT. 0.0 _d 0) THEN
-          lig = (-ligand_stab*FeT(i,j,k) +
-     &            ligand_stab*ligand_tot - 
+          lig = (-params%ligand_stab*FeT(i,j,k) +
+     &            params%ligand_stab*params%ligand_tot - 
      &            1. _d 0 +
-     &            ( ( ligand_stab*FeT(i,j,k) -
-     &                ligand_stab*ligand_tot+1. _d 0
+     &            ( ( params%ligand_stab*FeT(i,j,k) -
+     &                params%ligand_stab*params%ligand_tot+1. _d 0
      &              )**2 +
-     &              4. _d 0*ligand_stab*ligand_tot
+     &              4. _d 0*params%ligand_stab*params%ligand_tot
      &            )**0.5 _d 0
-     &          )/(2. _d 0*ligand_stab)
+     &          )/(2. _d 0*params%ligand_stab)
 
-          FeL = ligand_tot - lig
+          FeL = params%ligand_tot - lig
           freefe(i,j,k) = FeT(i,j,k) - FeL
 #ifdef DARWIN_MINFE
-          freefe(i,j,k) = MIN(freefe(i,j,k), freefemax)
+          freefe(i,j,k) = MIN(freefe(i,j,k), params%freefemax)
           IF (maskInC(i,j,bi,bj) .GT. 0.0) THEN
            FeLoss(i,j,k) = FeLoss(i,j,k) + FeT(i,j,k) - FeL
      &                                   - freefe(i,j,k)

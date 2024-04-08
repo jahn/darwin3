@@ -12,6 +12,8 @@ C !INTERFACE: ==========================================================
 C !DESCRIPTION:
 
 C !USES: ===============================================================
+      use darwin_param_mod
+      use darwin_param_data_mod
       IMPLICIT NONE
 #include "SIZE.h"
 #include "GRID.h"
@@ -110,7 +112,7 @@ c use cdom-like tracer
          CDOM = MAX(Ptracer(i,j,k,bi,bj,iCDOM), 0.0 _d 0)
          CDOM = CDOM + darwin_rCDOM
          DO l = 1,nlam
-          aCDOM(i,j,k,l) = CDOMcoeff*CDOM*exCDOM(l)
+          aCDOM(i,j,k,l) = params%CDOMcoeff*CDOM*exCDOM(l)
          ENDDO
 #else
          actotref = 0.0 _d 0

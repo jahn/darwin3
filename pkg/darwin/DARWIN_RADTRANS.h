@@ -162,11 +162,5 @@ C     bbphy_mgC   :: [m^2 (mg C)^-1]    carbon-specific backscattering coefficie
 
 #endif /* ALLOW_RADTRANS */
 
-C     COMMON /DARWIN_RT_DEPTRAITS_r/
-C     alphachl :: [mmol C m^2 (uEin mg Chl)^-1]  Chlorophyll-specific initial slope for photosynthesis
-      COMMON /DARWIN_RT_DEPTRAITS_r/
-     &    alphachl
-      _RL alphachl(nplank,nlam)
-
 CEOP
 #endif /* ALLOW_DARWIN */

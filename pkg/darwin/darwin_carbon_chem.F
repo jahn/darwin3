@@ -32,6 +32,8 @@ C  Mick Follows, MIT, Oct 1999.
 C Apr 2011: fix vapour bug (following Bennington)
 
 C !USES: ===============================================================
+      use darwin_param_mod
+      use darwin_param_data_mod
       IMPLICIT NONE
 #include "SIZE.h"
 #include "DYNVARS.h"
@@ -134,10 +136,10 @@ c for calculations.  Units are reconverted back to mol/m^3 at the
 c end of this routine.
 c ---------------------------------------------------------------------
 c To convert input in mol/m^3 -> mol/kg
-        pt=pt*m3perkg
-        sit=sit*m3perkg
-        ta=ta*m3perkg
-        diclocal=diclocal*m3perkg
+        pt=pt*params%m3perkg
+        sit=sit*params%m3perkg
+        ta=ta*params%m3perkg
+        diclocal=diclocal*params%m3perkg
 c ---------------------------------------------------------------------
 c set first guess and brackets for [H+] solvers
 c first guess (for newton-raphson)
@@ -314,10 +316,10 @@ C Reconvert units back to original values for input arguments
 C no longer necessary????
 C ----------------------------------------------------------------
 c       Reconvert from mol/kg -> mol/m^3
-        pt=pt/m3perkg
-        sit=sit/m3perkg
-        ta=ta/m3perkg
-        diclocal=diclocal/m3perkg
+        pt=pt/params%m3perkg
+        sit=sit/params%m3perkg
+        ta=ta/params%m3perkg
+        diclocal=diclocal/params%m3perkg
 
 #endif
 
@@ -356,6 +358,8 @@ C      Apr 2011: fix vapour bug (following Bennington)
 C      Oct 2011: add CO3 extimation and pass out
 
 C !USES: ===============================================================
+      use darwin_param_mod
+      use darwin_param_data_mod
       IMPLICIT NONE
 
 C     == GLobal variables ==
@@ -406,10 +410,10 @@ c Note: mol/kg are actually what the body of this routine uses
 c for calculations.  Units are reconverted back to mol/m^3 at the
 c end of this routine.
 c To convert input in mol/m^3 -> mol/kg
-        pt=pt*m3perkg
-        sit=sit*m3perkg
-        ta=ta*m3perkg
-        diclocal=diclocal*m3perkg
+        pt=pt*params%m3perkg
+        sit=sit*params%m3perkg
+        ta=ta*params%m3perkg
+        diclocal=diclocal*params%m3perkg
 c ---------------------------------------------------------------------
 c set first guess and brackets for [H+] solvers
 c first guess (for newton-raphson)
@@ -466,10 +470,10 @@ c surface pCO2 (following Dickson and Goyet, DOE...)
 
 C ----------------------------------------------------------------
 c Reconvert from mol/kg -> mol/m^3
-        pt=pt/m3perkg
-        sit=sit/m3perkg
-        ta=ta/m3perkg
-        diclocal=diclocal/m3perkg
+        pt=pt/params%m3perkg
+        sit=sit/params%m3perkg
+        ta=ta/params%m3perkg
+        diclocal=diclocal/params%m3perkg
 
 #endif
 
@@ -522,6 +526,8 @@ c based on Takahashi, GEOSECS Atlantic Report, Vol. 1 (1981)
 C--------------------------------------------------------------------------
 
 C !USES: ===============================================================
+      use darwin_param_mod
+      use darwin_param_data_mod
         IMPLICIT NONE
 C     == GLobal variables ==
 #include "SIZE.h"

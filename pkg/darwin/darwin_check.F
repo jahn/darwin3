@@ -26,6 +26,8 @@ C     o Print darwin indices (iDIC,...) and ptracer names
 C     o to allow for manual check
 
 C     !USES:
+      use darwin_param_mod
+      use darwin_param_data_mod
       IMPLICIT NONE
 #include "SIZE.h"
 #include "EEPARAMS.h"
@@ -328,9 +330,9 @@ C check exf is compiled and used
       ENDIF
 #endif
 
-C check we are not using hollexp and also inhib_graz or DARWIN_GRAZING_SWITCH
-      IF (hollexp .NE. 1.0 _d 0) THEN
-        IF (inhib_graz_exp .NE. 0) THEN
+C check we are not using params%hollexp and also params%inhib_graz or DARWIN_GRAZING_SWITCH
+      IF (params%hollexp .NE. 1.0 _d 0) THEN
+        IF (params%inhib_graz_exp .NE. 0) THEN
           WRITE(msgBuf,'(2A)') 'DARWIN_CHECK: ERROR: ',
      &    'hollexp.NE.1 and inhib_graz_exp should not be used together'
           CALL PRINT_ERROR( msgBuf , 1)
@@ -363,7 +365,7 @@ C check we are not using hollexp and also inhib_graz or DARWIN_GRAZING_SWITCH
 C Bacteria have fixed elemental ratios even when quotas are turned on
 #if defined(DARWIN_ALLOW_NQUOTA) || defined(DARWIN_ALLOW_PQUOTA) || defined(DARWIN_ALLOW_FEQUOTA) || defined(DARWIN_ALLOW_SIQUOTA)
       DO j=1,nplank
-       IF (bactType(j) .NE. 0) THEN
+       IF (traits%bactType(j) .NE. 0) THEN
         WRITE(msgBuf,'(2A)') 'DARWIN_CHECK: Warning: ',
      &   'Bacteria have fixed elemental quotas'
         CALL PRINT_ERROR( msgBuf , 1)
@@ -400,7 +402,7 @@ C Carbon store is only implemented without quotas
 #endif
 
 #ifndef DARWIN_ALLOW_CARBON
-      IF (darwin_disscSelect .NE. 0) THEN
+      IF (params%darwin_disscSelect .NE. 0) THEN
        WRITE(msgBuf,'(2A)') 'DARWIN_CHECK: ERROR: ',
      &  'darwin_disscSelect.NE.0 requires DARWIN_ALLOW_CARBON'
        CALL PRINT_ERROR( msgBuf , 1)
@@ -1675,409 +1677,409 @@ C--   Print parameters from DARWIN_PARAMS.h
       CALL WRITE_0D_I(kDEBUG,INDEX_NONE,
      &'kDEBUG =',
      &' /* index in z dimension for debug prints */')
-      CALL WRITE_0D_RL(katten_w,INDEX_NONE,
+      CALL WRITE_0D_RL(params%katten_w,INDEX_NONE,
      &'katten_w =',
      &' /* atten coefficient water (1/m) */')
-      CALL WRITE_0D_RL(katten_chl,INDEX_NONE,
+      CALL WRITE_0D_RL(params%katten_chl,INDEX_NONE,
      &'katten_chl =',
      &' /* atten coefficient chl (m2/mg Chl) */')
-      CALL WRITE_0D_RL(parfrac,INDEX_NONE,
+      CALL WRITE_0D_RL(params%parfrac,INDEX_NONE,
      &'parfrac =',
      &' /* fraction Qsw that is PAR */')
-      CALL WRITE_0D_RL(parconv,INDEX_NONE,
+      CALL WRITE_0D_RL(params%parconv,INDEX_NONE,
      &'parconv =',
      &' /* conversion from W/m2 to uEin/m2/s (uEin/s/W) */')
-      CALL WRITE_0D_RL(tempnorm,INDEX_NONE,
+      CALL WRITE_0D_RL(params%tempnorm,INDEX_NONE,
      &'tempnorm =',
      &' /* set temperature function (was 1.0) */')
-      CALL WRITE_0D_RL(TempAeArr,INDEX_NONE,
+      CALL WRITE_0D_RL(params%TempAeArr,INDEX_NONE,
      &'TempAeArr =',
      &' /* slope for pseudo-Arrhenius (TEMP_VERSION 2) (K) */')
-      CALL WRITE_0D_RL(TemprefArr,INDEX_NONE,
+      CALL WRITE_0D_RL(params%TemprefArr,INDEX_NONE,
      &'TemprefArr =',
      &' /* reference temp for pseudo-Arrhenius (TEMP_VERSION 2) (K) */')
-      CALL WRITE_0D_RL(TempCoeffArr,INDEX_NONE,
+      CALL WRITE_0D_RL(params%TempCoeffArr,INDEX_NONE,
      &'TempCoeffArr =',
      &' /* pre-factor for pseudo-Arrhenius (TEMP_VERSION 2) */')
-      CALL WRITE_0D_RL(reminTempAe,INDEX_NONE,
+      CALL WRITE_0D_RL(params%reminTempAe,INDEX_NONE,
      &'reminTempAe =',
      &' /* temperature coefficient for remineralization (TEMP_VERSION 4)
      & (1/K) */')
-      CALL WRITE_0D_RL(mortTempAe,INDEX_NONE,
+      CALL WRITE_0D_RL(params%mortTempAe,INDEX_NONE,
      &'mortTempAe =',
      &' /* temperature coefficient for linear mortality (TEMP_VERSION 4)
      & (1/K) */')
-      CALL WRITE_0D_RL(mort2TempAe,INDEX_NONE,
+      CALL WRITE_0D_RL(params%mort2TempAe,INDEX_NONE,
      &'mort2TempAe =',
      &' /* temperature coefficient for quadr. mortality (TEMP_VERSION 4)
      & (1/K) */')
-      CALL WRITE_0D_RL(uptakeTempAe,INDEX_NONE,
+      CALL WRITE_0D_RL(params%uptakeTempAe,INDEX_NONE,
      &'uptakeTempAe =',
      &' /* temperature coefficient for uptake (TEMP_VERSION 4) (1/K) */'
      &)
-      CALL WRITE_0D_RL(alpfe,INDEX_NONE,
+      CALL WRITE_0D_RL(params%alpfe,INDEX_NONE,
      &'alpfe =',
      &' /* solubility of Fe dust */')
-      CALL WRITE_0D_RL(ligand_tot,INDEX_NONE,
+      CALL WRITE_0D_RL(params%ligand_tot,INDEX_NONE,
      &'ligand_tot =',
      &' /* total ligand concentration (mol/m3) */')
-      CALL WRITE_0D_RL(ligand_stab,INDEX_NONE,
+      CALL WRITE_0D_RL(params%ligand_stab,INDEX_NONE,
      &'ligand_stab =',
      &' /* ligand stability rate ratio (m3/mol) */')
-      CALL WRITE_0D_RL(freefemax,INDEX_NONE,
+      CALL WRITE_0D_RL(params%freefemax,INDEX_NONE,
      &'freefemax =',
      &' /* max concentration of free iron (mol/m3) */')
 #ifdef DARWIN_PART_SCAV_POP
-      CALL WRITE_0D_RL(scav_rat,INDEX_NONE,
+      CALL WRITE_0D_RL(params%scav_rat,INDEX_NONE,
      &'scav_rat =',
      &' /* rate conversion Th to iron (1/s) */')
-      CALL WRITE_0D_RL(scav_inter,INDEX_NONE,
+      CALL WRITE_0D_RL(params%scav_inter,INDEX_NONE,
      &'scav_inter =',
      &' /* intercept of scavenging power law (L^e mg^-e) */')
-      CALL WRITE_0D_RL(scav_exp,INDEX_NONE,
+      CALL WRITE_0D_RL(params%scav_exp,INDEX_NONE,
      &'scav_exp =',
      &' /* exponent e of scavenging power law */')
-      CALL WRITE_0D_RL(scav_R_POPPOC,INDEX_NONE,
+      CALL WRITE_0D_RL(params%scav_R_POPPOC,INDEX_NONE,
      &'scav_R_POPPOC =',
      &' /* POP:POC ratio for scavenging (mmol P / g) */')
 #elif defined(DARWIN_PART_SCAV)
-      CALL WRITE_0D_RL(scav_tau,INDEX_NONE,
+      CALL WRITE_0D_RL(params%scav_tau,INDEX_NONE,
      &'scav_tau =',
      &' /* factor to go from Th scavenging rate to iron */')
-      CALL WRITE_0D_RL(scav_inter,INDEX_NONE,
+      CALL WRITE_0D_RL(params%scav_inter,INDEX_NONE,
      &'scav_inter =',
      &' /* intercept of scavenging power law (L^e mg^-e s^-1) */')
-      CALL WRITE_0D_RL(scav_exp,INDEX_NONE,
+      CALL WRITE_0D_RL(params%scav_exp,INDEX_NONE,
      &'scav_exp =',
      &' /* exponent e of scavenging power law */')
-      CALL WRITE_0D_RL(scav_POC_wgt,INDEX_NONE,
+      CALL WRITE_0D_RL(params%scav_POC_wgt,INDEX_NONE,
      &'scav_POC_wgt =',
      &' /* weight of POC in POM for scavenging (g / mmol C) */')
-      CALL WRITE_0D_RL(scav_POSi_wgt,INDEX_NONE,
+      CALL WRITE_0D_RL(params%scav_POSi_wgt,INDEX_NONE,
      &'scav_POSi_wgt =',
      &' /* weight of POSi in POM for scavenging (g / mmol Si) */')
-      CALL WRITE_0D_RL(scav_PIC_wgt,INDEX_NONE,
+      CALL WRITE_0D_RL(params%scav_PIC_wgt,INDEX_NONE,
      &'scav_PIC_wgt =',
      &' /* weight of PIC in POM for scavenging (g / mmol C) */')
 #else
-      CALL WRITE_0D_RL(scav,INDEX_NONE,
+      CALL WRITE_0D_RL(params%scav,INDEX_NONE,
      &'scav =',
      &' /* fixed iron scavenging rate (1/s) */')
 #endif
-      CALL WRITE_0D_RL(depthfesed,INDEX_NONE,
+      CALL WRITE_0D_RL(params%depthfesed,INDEX_NONE,
      &'depthfesed =',
      &' /* depth above which to add sediment source (was -1000) (m) */')
-      CALL WRITE_0D_RL(fesedflux,INDEX_NONE,
+      CALL WRITE_0D_RL(params%fesedflux,INDEX_NONE,
      &'fesedflux =',
      &' /* fixed iron flux from sediment (mmol Fe /m2/s) */')
-      CALL WRITE_0D_RL(fesedflux_pcm,INDEX_NONE,
+      CALL WRITE_0D_RL(params%fesedflux_pcm,INDEX_NONE,
      &'fesedflux_pcm =',
      &' /* iron input per POC sinking into bottom for DARWIN_IRON_SED_SO
      &URCE_VARIABLE (mmol Fe / mmol C) */')
-      CALL WRITE_0D_RL(fesedflux_min,INDEX_NONE,
+      CALL WRITE_0D_RL(params%fesedflux_min,INDEX_NONE,
      &'fesedflux_min =',
      &' /* min iron input rate subtracted from fesedflux_pcm*wc_sink*POC
      & (mmol Fe /s) */')
-      CALL WRITE_0D_RL(R_CP_fesed,INDEX_NONE,
+      CALL WRITE_0D_RL(params%R_CP_fesed,INDEX_NONE,
      &'R_CP_fesed =',
      &' /* POC:POP conversion for DARWIN_IRON_SED_SOURCE_POP (mmol C / m
      &mol P) */')
-      CALL WRITE_0D_RL(depthFeVent,INDEX_NONE,
+      CALL WRITE_0D_RL(params%depthFeVent,INDEX_NONE,
      &'depthFeVent =',
      &' /* depth below which iron from hydrothermal vents is added (m) '
      &'*/')
-      CALL WRITE_0D_RL(solFeVent,INDEX_NONE,
+      CALL WRITE_0D_RL(params%solFeVent,INDEX_NONE,
      &'solFeVent = ',
      &' /* solubility of iron from hydrothermal vents */')
-      CALL WRITE_0D_RL(R_FeHe3_vent,INDEX_NONE,
+      CALL WRITE_0D_RL(params%R_FeHe3_vent,INDEX_NONE,
      &'R_FeHe3_vent =',
      &' /* Fe:He3 ratio for hydrothermal vents (mol Fe / mol He3) */')
-      CALL WRITE_0D_RL(Knita,INDEX_NONE,
+      CALL WRITE_0D_RL(params%Knita,INDEX_NONE,
      &'Knita =',
      &' /* ammonia oxidation rate (1/s) */')
-      CALL WRITE_0D_RL(Knitb,INDEX_NONE,
+      CALL WRITE_0D_RL(params%Knitb,INDEX_NONE,
      &'Knitb =',
      &' /* nitrite oxidation rate (1/s) */')
-      CALL WRITE_0D_RL(PAR_oxi,INDEX_NONE,
+      CALL WRITE_0D_RL(params%PAR_oxi,INDEX_NONE,
      &'PAR_oxi =',
      &' /* critical light level after which oxidation starts (uEin/m2/s)
      & */')
-      CALL WRITE_0D_RL(Kdoc,INDEX_NONE,
+      CALL WRITE_0D_RL(params%Kdoc,INDEX_NONE,
      &'Kdoc =',
      &' /* DOC remineralization rate (1/s) */')
-      CALL WRITE_0D_RL(Kdop,INDEX_NONE,
+      CALL WRITE_0D_RL(params%Kdop,INDEX_NONE,
      &'Kdop =',
      &' /* DON remineralization rate (1/s) */')
-      CALL WRITE_0D_RL(Kdon,INDEX_NONE,
+      CALL WRITE_0D_RL(params%Kdon,INDEX_NONE,
      &'Kdon =',
      &' /* DOP remineralization rate (1/s) */')
-      CALL WRITE_0D_RL(KdoFe,INDEX_NONE,
+      CALL WRITE_0D_RL(params%KdoFe,INDEX_NONE,
      &'KdoFe =',
      &' /* DOFe remineralization rate (1/s) */')
-      CALL WRITE_0D_RL(KPOC,INDEX_NONE,
+      CALL WRITE_0D_RL(params%KPOC,INDEX_NONE,
      &'KPOC =',
      &' /* POC remineralization rate (1/s) */')
-      CALL WRITE_0D_RL(KPON,INDEX_NONE,
+      CALL WRITE_0D_RL(params%KPON,INDEX_NONE,
      &'KPON =',
      &' /* PON remineralization rate (1/s) */')
-      CALL WRITE_0D_RL(KPOP,INDEX_NONE,
+      CALL WRITE_0D_RL(params%KPOP,INDEX_NONE,
      &'KPOP =',
      &' /* POP remineralization rate (1/s) */')
-      CALL WRITE_0D_RL(KPOFe,INDEX_NONE,
+      CALL WRITE_0D_RL(params%KPOFe,INDEX_NONE,
      &'KPOFe =',
      &' /* POFe remineralization rate (1/s) */')
-      CALL WRITE_0D_RL(KPOSi,INDEX_NONE,
+      CALL WRITE_0D_RL(params%KPOSi,INDEX_NONE,
      &'KPOSi =',
      &' /* POSi remineralization rate (1/s) */')
-      CALL WRITE_0D_RL(wC_sink,INDEX_NONE,
+      CALL WRITE_0D_RL(params%wC_sink,INDEX_NONE,
      &'wC_sink =',
      &' /* sinking velocity for POC (m/s) */')
-      CALL WRITE_0D_RL(wN_sink,INDEX_NONE,
+      CALL WRITE_0D_RL(params%wN_sink,INDEX_NONE,
      &'wN_sink =',
      &' /* sinking velocity for PON (m/s) */')
-      CALL WRITE_0D_RL(wP_sink,INDEX_NONE,
+      CALL WRITE_0D_RL(params%wP_sink,INDEX_NONE,
      &'wP_sink =',
      &' /* sinking velocity for POP (m/s) */')
-      CALL WRITE_0D_RL(wFe_sink,INDEX_NONE,
+      CALL WRITE_0D_RL(params%wFe_sink,INDEX_NONE,
      &'wFe_sink =',
      &' /* sinking velocity for POFe (m/s) */')
-      CALL WRITE_0D_RL(wSi_sink,INDEX_NONE,
+      CALL WRITE_0D_RL(params%wSi_sink,INDEX_NONE,
      &'wSi_sink =',
      &' /* sinking velocity for POSi (m/s) */')
-      CALL WRITE_0D_RL(wPIC_sink,INDEX_NONE,
+      CALL WRITE_0D_RL(params%wPIC_sink,INDEX_NONE,
      &'wPIC_sink =',
      &' /* sinking velocity for PIC (m/s) */')
-      CALL WRITE_0D_I(darwin_disscSelect,INDEX_NONE,
+      CALL WRITE_0D_I(params%darwin_disscSelect,INDEX_NONE,
      &'darwin_disscSelect = ',
      &' /* Switch for PIC dissolution rate formulation */')
-      IF (darwin_disscSelect .EQ. 0) THEN
-       CALL WRITE_0D_RL(Kdissc,INDEX_NONE,
+      IF (params%darwin_disscSelect .EQ. 0) THEN
+       CALL WRITE_0D_RL(params%Kdissc,INDEX_NONE,
      & 'Kdissc =',
      & ' /* dissolution rate for PIC (1/s) */')
-      ELSEIF (darwin_disscSelect .EQ. 1) THEN
-       CALL WRITE_0D_RL(darwin_KeirCoeff,INDEX_NONE,
+      ELSEIF (params%darwin_disscSelect .EQ. 1) THEN
+       CALL WRITE_0D_RL(params%darwin_KeirCoeff,INDEX_NONE,
      & 'darwin_KeirCoeff =',
      & ' /* Keir PIC dissolution rate coefficient (1/s) */')
-       CALL WRITE_0D_RL(darwin_KeirExp,INDEX_NONE,
+       CALL WRITE_0D_RL(params%darwin_KeirExp,INDEX_NONE,
      & 'darwin_KeirExp =',
      & ' /* Keir PIC dissolution rate exponent */')
       ENDIF
 #ifdef DARWIN_ALLOW_CARBON
-      CALL WRITE_0D_RL(R_OP,INDEX_NONE,
+      CALL WRITE_0D_RL(params%R_OP,INDEX_NONE,
      &'R_OP =',
      &' /* O:P ratio for respiration and consumption (mmol O2 / mmol P)'
      &' */')
-      CALL WRITE_0D_RL(R_OC,INDEX_NONE,
+      CALL WRITE_0D_RL(params%R_OC,INDEX_NONE,
      &'R_OC =',
      &' /* NOT USED (mmol O2 / mmol C) */')
-      CALL WRITE_0D_RL(m3perkg,INDEX_NONE,
+      CALL WRITE_0D_RL(params%m3perkg,INDEX_NONE,
      &'m3perkg =',
      &' /* constant for converting per kg to per m^3 (m3/kg) */')
-      CALL WRITE_0D_RL(surfSaltMinInit,INDEX_NONE,
+      CALL WRITE_0D_RL(params%surfSaltMinInit,INDEX_NONE,
      &'surfSaltMinInit =',
      &' /* minimum salt for carbon solver at initialization (ppt) */')
-      CALL WRITE_0D_RL(surfSaltMaxInit,INDEX_NONE,
+      CALL WRITE_0D_RL(params%surfSaltMaxInit,INDEX_NONE,
      &'surfSaltMaxInit =',
      &' /* maximum salt for carbon solver at initialization (ppt) */')
-      CALL WRITE_0D_RL(surfTempMinInit,INDEX_NONE,
+      CALL WRITE_0D_RL(params%surfTempMinInit,INDEX_NONE,
      &'surfTempMinInit =',
      &' /* minimum temp for carbon solver at initialization (degrees C)'
      &' */')
-      CALL WRITE_0D_RL(surfTempMaxInit,INDEX_NONE,
+      CALL WRITE_0D_RL(params%surfTempMaxInit,INDEX_NONE,
      &'surfTempMaxInit =',
      &' /* maximum temp for carbon solver at initialization (degrees C)'
      &' */')
-      CALL WRITE_0D_RL(surfDICMinInit,INDEX_NONE,
+      CALL WRITE_0D_RL(params%surfDICMinInit,INDEX_NONE,
      &'surfDICMinInit =',
      &' /* minimum DIC for carbon solver at initialization (mmol C m^-3)
      & */')
-      CALL WRITE_0D_RL(surfDICMaxInit,INDEX_NONE,
+      CALL WRITE_0D_RL(params%surfDICMaxInit,INDEX_NONE,
      &'surfDICMaxInit =',
      &' /* maximum DIC for carbon solver at initialization (mmol C m^-3)
      & */')
-      CALL WRITE_0D_RL(surfALKMinInit,INDEX_NONE,
+      CALL WRITE_0D_RL(params%surfALKMinInit,INDEX_NONE,
      &'surfALKMinInit =',
      &' /* minimum alkalinity for carbon solver at initialization (meq m
      &^-3) */')
-      CALL WRITE_0D_RL(surfALKMaxInit,INDEX_NONE,
+      CALL WRITE_0D_RL(params%surfALKMaxInit,INDEX_NONE,
      &'surfALKMaxInit =',
      &' /* maximum alkalinity for carbon solver at initialization (meq m
      &^-3) */')
-      CALL WRITE_0D_RL(surfPO4MinInit,INDEX_NONE,
+      CALL WRITE_0D_RL(params%surfPO4MinInit,INDEX_NONE,
      &'surfPO4MinInit =',
      &' /* minimum PO4 for carbon solver at initialization (mmol P m^-3)
      & */')
-      CALL WRITE_0D_RL(surfPO4MaxInit,INDEX_NONE,
+      CALL WRITE_0D_RL(params%surfPO4MaxInit,INDEX_NONE,
      &'surfPO4MaxInit =',
      &' /* maximum PO4 for carbon solver at initialization (mmol P m^-3)
      & */')
-      CALL WRITE_0D_RL(surfSiMinInit,INDEX_NONE,
+      CALL WRITE_0D_RL(params%surfSiMinInit,INDEX_NONE,
      &'surfSiMinInit =',
      &' /* minimum SiO2 for carbon solver at initialization (mmol Si m^-
      &3) */')
-      CALL WRITE_0D_RL(surfSiMaxInit,INDEX_NONE,
+      CALL WRITE_0D_RL(params%surfSiMaxInit,INDEX_NONE,
      &'surfSiMaxInit =',
      &' /* maximum SiO2 for carbon solver at initialization (mmol Si m^-
      &3) */')
-      CALL WRITE_0D_RL(surfSaltMin,INDEX_NONE,
+      CALL WRITE_0D_RL(params%surfSaltMin,INDEX_NONE,
      &'surfSaltMin =',
      &' /* minimum salt for carbon solver during run (ppt) */')
-      CALL WRITE_0D_RL(surfSaltMax,INDEX_NONE,
+      CALL WRITE_0D_RL(params%surfSaltMax,INDEX_NONE,
      &'surfSaltMax =',
      &' /* maximum salt for carbon solver during run (ppt) */')
-      CALL WRITE_0D_RL(surfTempMin,INDEX_NONE,
+      CALL WRITE_0D_RL(params%surfTempMin,INDEX_NONE,
      &'surfTempMin =',
      &' /* minimum temp for carbon solver during run (degrees C) */')
-      CALL WRITE_0D_RL(surfTempMax,INDEX_NONE,
+      CALL WRITE_0D_RL(params%surfTempMax,INDEX_NONE,
      &'surfTempMax =',
      &' /* maximum temp for carbon solver during run (degrees C) */')
-      CALL WRITE_0D_RL(surfDICMin,INDEX_NONE,
+      CALL WRITE_0D_RL(params%surfDICMin,INDEX_NONE,
      &'surfDICMin =',
      &' /* minimum DIC for carbon solver during run (mmol C m^-3) */')
-      CALL WRITE_0D_RL(surfDICMax,INDEX_NONE,
+      CALL WRITE_0D_RL(params%surfDICMax,INDEX_NONE,
      &'surfDICMax =',
      &' /* maximum DIC for carbon solver during run (mmol C m^-3) */')
-      CALL WRITE_0D_RL(surfALKMin,INDEX_NONE,
+      CALL WRITE_0D_RL(params%surfALKMin,INDEX_NONE,
      &'surfALKMin =',
      &' /* minimum alkalinity for carbon solver during run (meq m^-3) */
      &')
-      CALL WRITE_0D_RL(surfALKMax,INDEX_NONE,
+      CALL WRITE_0D_RL(params%surfALKMax,INDEX_NONE,
      &'surfALKMax =',
      &' /* maximum alkalinity for carbon solver during run (meq m^-3) */
      &')
-      CALL WRITE_0D_RL(surfPO4Min,INDEX_NONE,
+      CALL WRITE_0D_RL(params%surfPO4Min,INDEX_NONE,
      &'surfPO4Min =',
      &' /* minimum PO4 for carbon solver during run (mmol P m^-3) */')
-      CALL WRITE_0D_RL(surfPO4Max,INDEX_NONE,
+      CALL WRITE_0D_RL(params%surfPO4Max,INDEX_NONE,
      &'surfPO4Max =',
      &' /* maximum PO4 for carbon solver during run (mmol P m^-3) */')
-      CALL WRITE_0D_RL(surfSiMin,INDEX_NONE,
+      CALL WRITE_0D_RL(params%surfSiMin,INDEX_NONE,
      &'surfSiMin =',
      &' /* minimum SiO2 for carbon solver during run (mmol Si m^-3) */')
-      CALL WRITE_0D_RL(surfSiMax,INDEX_NONE,
+      CALL WRITE_0D_RL(params%surfSiMax,INDEX_NONE,
      &'surfSiMax =',
      &' /* maximum SiO2 for carbon solver during run (mmol Si m^-3) */')
 #endif
-      CALL WRITE_0D_RL(diaz_ini_fac,INDEX_NONE,
+      CALL WRITE_0D_RL(params%diaz_ini_fac,INDEX_NONE,
      &'diaz_ini_fac =',
      &' /* reduce tracer concentrations by this factor on initialization
      & */')
-      CALL WRITE_0D_RL(O2crit,INDEX_NONE,
+      CALL WRITE_0D_RL(params%O2crit,INDEX_NONE,
      &'O2crit =',
      &' /* critical oxygen for O2/NO3 remineralization (mmol O2 m-3) */'
      &)
-      CALL WRITE_0D_RL(denit_NP,INDEX_NONE,
+      CALL WRITE_0D_RL(params%denit_NP,INDEX_NONE,
      &'denit_NP =',
      &' /* ratio of n to p in denitrification process (mmol N / mmol P)'
      &' */')
-      CALL WRITE_0D_RL(denit_NO3,INDEX_NONE,
+      CALL WRITE_0D_RL(params%denit_NO3,INDEX_NONE,
      &'denit_NO3 =',
      &' /* ratio of NO3 uptake to phos remineralization in denitrificati
      &on (mmol N / mmol P) */')
-      CALL WRITE_0D_RL(NO3crit,INDEX_NONE,
+      CALL WRITE_0D_RL(params%NO3crit,INDEX_NONE,
      &'NO3crit =',
      &' /* critical nitrate below which no denit (or remin) happens (mmo
      &l N m-3) */')
-      CALL WRITE_0D_RL(PARmin,INDEX_NONE,
+      CALL WRITE_0D_RL(params%PARmin,INDEX_NONE,
      &'PARmin =',
      &' /* minimum light for photosynthesis; for non-Geider: 1.0 (uEin/m
      &2/s) */')
-      CALL WRITE_0D_RL(aphy_chl_ave,INDEX_NONE,
+      CALL WRITE_0D_RL(params%aphy_chl_ave,INDEX_NONE,
      &'aphy_chl_ave =',
      &' /* Chl-specific absorption coefficient (m2/mg Chl) */')
-      CALL WRITE_0D_RL(Chl2Nmax,INDEX_NONE,
+      CALL WRITE_0D_RL(params%Chl2Nmax,INDEX_NONE,
      &'Chl2Nmax =',
      &' /* max Chl:N ratio for Chl synthesis following Moore 2002 (mg Ch
      &l / mmol N) */')
-      CALL WRITE_0D_RL(synthcost,INDEX_NONE,
+      CALL WRITE_0D_RL(params%synthcost,INDEX_NONE,
      &'synthcost =',
      &' /* cost of biosynthesis (mmol C / mmol N) */')
-      CALL WRITE_0D_RL(inhib_graz,INDEX_NONE,
+      CALL WRITE_0D_RL(params%inhib_graz,INDEX_NONE,
      &'inhib_graz =',
      &' /* inverse decay scale for grazing inhibition ((mmol C m-3)-1) *
      &/')
-      CALL WRITE_0D_RL(inhib_graz_exp,INDEX_NONE,
+      CALL WRITE_0D_RL(params%inhib_graz_exp,INDEX_NONE,
      &'inhib_graz_exp =',
      &' /* exponent for grazing inhibition (0 to turn off inhibition) */
      &')
-      CALL WRITE_0D_RL(hillnumUptake,INDEX_NONE,
+      CALL WRITE_0D_RL(params%hillnumUptake,INDEX_NONE,
      &'hillnumUptake =',
      &' /* exponent for limiting quota uptake in nutrient uptake */')
-      CALL WRITE_0D_RL(hillnumGraz,INDEX_NONE,
+      CALL WRITE_0D_RL(params%hillnumGraz,INDEX_NONE,
      &'hillnumGraz =',
      &' /* exponent for limiting quota uptake in grazing */')
-      CALL WRITE_0D_RL(hollexp,INDEX_NONE,
+      CALL WRITE_0D_RL(params%hollexp,INDEX_NONE,
      &'hollexp =',
      &' /* grazing exponential 1= "Holling 2", 2= "Holling 3" */')
-      CALL WRITE_0D_RL(phygrazmin,INDEX_NONE,
+      CALL WRITE_0D_RL(params%phygrazmin,INDEX_NONE,
      &'phygrazmin =',
      &' /* minimum total prey conc for grazing to occur (mmol C m-3) */'
      &)
-      CALL WRITE_0D_RL(pcoefO2,INDEX_NONE,
+      CALL WRITE_0D_RL(params%pcoefO2,INDEX_NONE,
      &'pcoefO2 =',
      &' /* max O2-specific O2 uptake rate for aerobic bacteria (m3/mmol'
      &' O2/s) */')
-      CALL WRITE_0D_RL(pmaxDIN,INDEX_NONE,
+      CALL WRITE_0D_RL(params%pmaxDIN,INDEX_NONE,
      &'pmaxDIN =',
      &' /* max DIN uptake rate for denitrifying bacteria (1/s) */')
-      CALL WRITE_0D_RL(ksatDIN,INDEX_NONE,
+      CALL WRITE_0D_RL(params%ksatDIN,INDEX_NONE,
      &'ksatDIN =',
      &' /* half-saturation conc of dissolved inorganic nitrogen (mmol N'
      &' m-3) */')
-      CALL WRITE_0D_RL(alpha_hydrol,INDEX_NONE,
+      CALL WRITE_0D_RL(params%alpha_hydrol,INDEX_NONE,
      &'alpha_hydrol =',
      &' /* increase in POM needed due to hydrolysis */')
-      CALL WRITE_0D_RL(yod,INDEX_NONE,
+      CALL WRITE_0D_RL(params%yod,INDEX_NONE,
      &'yod =',
      &' /* organic matter yield of aerobic bacteria */')
-      CALL WRITE_0D_RL(yoe,INDEX_NONE,
+      CALL WRITE_0D_RL(params%yoe,INDEX_NONE,
      &'yoe =',
      &' /* energy yield of aerobic bacteria */')
-      CALL WRITE_0D_RL(ynd,INDEX_NONE,
+      CALL WRITE_0D_RL(params%ynd,INDEX_NONE,
      &'ynd =',
      &' /* organic matter yield of denitrifying bacteria */')
-      CALL WRITE_0D_RL(yne,INDEX_NONE,
+      CALL WRITE_0D_RL(params%yne,INDEX_NONE,
      &'yne =',
      &' /* energy yield of denitrifying bacteria */')
-      CALL WRITE_0D_RL(depthdenit,INDEX_NONE,
+      CALL WRITE_0D_RL(params%depthdenit,INDEX_NONE,
      &'depthdenit =',
      &' /* not implemented (depth for denitrification relaxation to star
      &t) (m) */')
 #ifdef DARWIN_ALLOW_CDOM
-      CALL WRITE_0D_RL(fracCDOM,INDEX_NONE,
+      CALL WRITE_0D_RL(params%fracCDOM,INDEX_NONE,
      &'fracCDOM =',
      &' /* fraction of remineralized POP contributing to CDOM */')
-      CALL WRITE_0D_RL(CDOMdegrd,INDEX_NONE,
+      CALL WRITE_0D_RL(params%CDOMdegrd,INDEX_NONE,
      &'CDOMdegrd =',
      &' /* CDOM degradation rate (1/s) */')
-      CALL WRITE_0D_RL(CDOMbleach,INDEX_NONE,
+      CALL WRITE_0D_RL(params%CDOMbleach,INDEX_NONE,
      &'CDOMbleach =',
      &' /* CDOM bleaching rate (1/s) */')
-      CALL WRITE_0D_RL(PARCDOM,INDEX_NONE,
+      CALL WRITE_0D_RL(params%PARCDOM,INDEX_NONE,
      &'PARCDOM =',
      &' /* PAR where CDOM bleaching becomes maximal (uEin/m2/s) */')
 # ifdef DARWIN_CDOM_UNITS_CARBON
-      CALL WRITE_0D_RL(R_NC_CDOM,INDEX_NONE,
+      CALL WRITE_0D_RL(params%R_NC_CDOM,INDEX_NONE,
      &'R_NC_CDOM =',
      &' /* CDOM N:C ratio (mmol N / mmol C) */')
-      CALL WRITE_0D_RL(R_FeC_CDOM,INDEX_NONE,
+      CALL WRITE_0D_RL(params%R_FeC_CDOM,INDEX_NONE,
      &'R_FeC_CDOM =',
      &' /* CDOM Fe:C ratio (mmol Fe / mmol C) */')
-      CALL WRITE_0D_RL(R_PC_CDOM,INDEX_NONE,
+      CALL WRITE_0D_RL(params%R_PC_CDOM,INDEX_NONE,
      &'R_PC_CDOM =',
      &' /* CDOM P:C ratio (mmol P / mmol C) */')
 # else
-      CALL WRITE_0D_RL(R_NP_CDOM,INDEX_NONE,
+      CALL WRITE_0D_RL(params%R_NP_CDOM,INDEX_NONE,
      &'R_NP_CDOM =',
      &' /* CDOM N:P ratio (mmol N / mmol P) */')
-      CALL WRITE_0D_RL(R_FeP_CDOM,INDEX_NONE,
+      CALL WRITE_0D_RL(params%R_FeP_CDOM,INDEX_NONE,
      &'R_FeP_CDOM =',
      &' /* CDOM Fe:P ratio (mmol Fe / mmol P) */')
-      CALL WRITE_0D_RL(R_CP_CDOM,INDEX_NONE,
+      CALL WRITE_0D_RL(params%R_CP_CDOM,INDEX_NONE,
      &'R_CP_CDOM =',
      &' /* CDOM C:P ratio (mmol C / mmol P) */')
 # endif
-      CALL WRITE_0D_RL(CDOMcoeff,INDEX_NONE,
+      CALL WRITE_0D_RL(params%CDOMcoeff,INDEX_NONE,
      &'CDOMcoeff =',
      &' /* P-specific absorption coefficient of CDOM (m2 / mmol P) */')
 #endif /* DARWIN_ALLOW_CDOM */
@@ -2101,346 +2103,346 @@ C--   Print parameters from DARWIN_PARAMS.h
 C---+----1----+----2----+----3----+----4----+----5----+----6----+----7-|--+----|
 C--   Print traits from DARWIN_TRAITS.h
 
-      CALL WRITE_1D_I(isPhoto,nplank,INDEX_NONE,
+      CALL WRITE_1D_I(traits%isPhoto,nplank,INDEX_NONE,
      &'isPhoto =',
      &' /* 1: does photosynthesis, 0: not */')
-      CALL WRITE_1D_I(bactType,nplank,INDEX_NONE,
+      CALL WRITE_1D_I(traits%bactType,nplank,INDEX_NONE,
      &'bactType =',
      &' /* 1: particle associated, 2: free living bacteria, 0: not bacte
      &ria */')
-      CALL WRITE_1D_I(isAerobic,nplank,INDEX_NONE,
+      CALL WRITE_1D_I(traits%isAerobic,nplank,INDEX_NONE,
      &'isAerobic =',
      &' /* 1: is aerobic bacteria (also set bactType), 0: not */')
-      CALL WRITE_1D_I(isDenit,nplank,INDEX_NONE,
+      CALL WRITE_1D_I(traits%isDenit,nplank,INDEX_NONE,
      &'isDenit =',
      &' /* 1: is dentrifying bacteria (also set (bactType), 0: not */')
-      CALL WRITE_1D_I(hasSi,nplank,INDEX_NONE,
+      CALL WRITE_1D_I(traits%hasSi,nplank,INDEX_NONE,
      &'hasSi =',
      &' /* 1: uses silica (Diatom), 0: not */')
-      CALL WRITE_1D_I(hasPIC,nplank,INDEX_NONE,
+      CALL WRITE_1D_I(traits%hasPIC,nplank,INDEX_NONE,
      &'hasPIC =',
      &' /* 1: calcifying, 0: set R_PICPOC to zero */')
-      CALL WRITE_1D_I(diazo,nplank,INDEX_NONE,
+      CALL WRITE_1D_I(traits%diazo,nplank,INDEX_NONE,
      &'diazo =',
      &' /* 1: use molecular instead of mineral nitrogen, 0: not */')
-      CALL WRITE_1D_I(useNH4,nplank,INDEX_NONE,
+      CALL WRITE_1D_I(traits%useNH4,nplank,INDEX_NONE,
      &'useNH4 =',
      &' /* 1: can use ammonia, 0: not */')
-      CALL WRITE_1D_I(useNO2,nplank,INDEX_NONE,
+      CALL WRITE_1D_I(traits%useNO2,nplank,INDEX_NONE,
      &'useNO2 =',
      &' /* 1: can use nitrite, 0: not */')
-      CALL WRITE_1D_I(useNO3,nplank,INDEX_NONE,
+      CALL WRITE_1D_I(traits%useNO3,nplank,INDEX_NONE,
      &'useNO3 =',
      &' /* 1: can use nitrate, 0: not */')
-      CALL WRITE_1D_I(combNO,nplank,INDEX_NONE,
+      CALL WRITE_1D_I(traits%combNO,nplank,INDEX_NONE,
      &'combNO =',
      &' /* 1: combined nitrite/nitrate limitation, 0: not */')
-      CALL WRITE_1D_I(isPrey,nplank,INDEX_NONE,
+      CALL WRITE_1D_I(traits%isPrey,nplank,INDEX_NONE,
      &'isPrey =',
      &' /* 1: can be grazed, 0: not */')
-      CALL WRITE_1D_I(isPred,nplank,INDEX_NONE,
+      CALL WRITE_1D_I(traits%isPred,nplank,INDEX_NONE,
      &'isPred =',
      &' /* 1: can graze, 0: not */')
-      CALL WRITE_1D_I(tempMort,nplank,INDEX_NONE,
+      CALL WRITE_1D_I(traits%tempMort,nplank,INDEX_NONE,
      &'tempMort =',
      &' /* 1: mortality is temperature dependent, 0: turn dependence off
      & */')
-      CALL WRITE_1D_I(tempMort2,nplank,INDEX_NONE,
+      CALL WRITE_1D_I(traits%tempMort2,nplank,INDEX_NONE,
      &'tempMort2 =',
      &' /* 1: quadratic mortality is temperature dependent, 0: turn depe
      &ndence off */')
-      CALL WRITE_1D_I(tempGraz,nplank,INDEX_NONE,
+      CALL WRITE_1D_I(traits%tempGraz,nplank,INDEX_NONE,
      &'tempGraz =',
      &' /* 1: grazing is temperature dependent, 0: turn dependence off *
      &/')
-      CALL WRITE_1D_RL(Xmin,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%Xmin,nplank,INDEX_NONE,
      &'Xmin =',
      &' /* minimum abundance for mortality, respiration and exudation (m
      &mol C m^-3) */')
-      CALL WRITE_1D_RL(amminhib,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%amminhib,nplank,INDEX_NONE,
      &'amminhib =',
      &' /* coefficient for NH4 inhibition of NO uptake ((mmol N m^-3)^-1
      &) */')
-      CALL WRITE_1D_RL(acclimtimescl,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%acclimtimescl,nplank,INDEX_NONE,
      &'acclimtimescl =',
      &' /* rate of chlorophyll acclimation (s^-1) */')
-      CALL WRITE_1D_RL(mort,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%mort,nplank,INDEX_NONE,
      &'mort =',
      &' /* linear mortality rate (s^-1) */')
-      CALL WRITE_1D_RL(mort2,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%mort2,nplank,INDEX_NONE,
      &'mort2 =',
      &' /* quadratic mortality coefficient ((mmol C m^-3)^-1 s^-1) */')
-      CALL WRITE_1D_RL(ExportFracMort,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%ExportFracMort,nplank,INDEX_NONE,
      &'ExportFracMort =',
      &' /* fraction of linear mortality to POM */')
-      CALL WRITE_1D_RL(ExportFracMort2,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%ExportFracMort2,nplank,INDEX_NONE,
      &'ExportFracMort2 =',
      &' /* fraction of quadratic mortality to POM */')
-      CALL WRITE_1D_RL(ExportFracExude,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%ExportFracExude,nplank,INDEX_NONE,
      &'ExportFracExude =',
      &' /* fraction of exudation to POM */')
-      CALL WRITE_1D_RL(FracExudeC,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%FracExudeC,nplank,INDEX_NONE,
      &'FracExudeC =',
      &' /* fraction of excess C exuded */')
-      CALL WRITE_1D_RL(phytoTempCoeff,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%phytoTempCoeff,nplank,INDEX_NONE,
      &'phytoTempCoeff =',
      &' /* coefficient for DARWIN_TEMP_VERSION 1 */')
-      CALL WRITE_1D_RL(phytoTempExp1,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%phytoTempExp1,nplank,INDEX_NONE,
      &'phytoTempExp1 =',
      &' /* coefficient for DARWIN_TEMP_VERSION 1 (exp(1/degrees C)) */')
-      CALL WRITE_1D_RL(phytoTempExp2,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%phytoTempExp2,nplank,INDEX_NONE,
      &'phytoTempExp2 =',
      &' /* coefficient for DARWIN_TEMP_RANGE */')
-      CALL WRITE_1D_RL(phytoTempOptimum,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%phytoTempOptimum,nplank,INDEX_NONE,
      &'phytoTempOptimum =',
      &' /* coefficient for DARWIN_TEMP_RANGE (degrees C) */')
-      CALL WRITE_1D_RL(phytoDecayPower,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%phytoDecayPower,nplank,INDEX_NONE,
      &'phytoDecayPower =',
      &' /* coefficient for DARWIN_TEMP_RANGE */')
-      CALL WRITE_1D_RL(phytoTempAe,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%phytoTempAe,nplank,INDEX_NONE,
      &'phytoTempAe =',
      &' /* coefficient for DARWIN_TEMP_VERSION 4 (1/degrees C) */')
-      CALL WRITE_1D_RL(hetTempAe,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%hetTempAe,nplank,INDEX_NONE,
      &'hetTempAe =',
      &' /* coefficient for DARWIN_TEMP_VERSION 4 (1/degrees C) */')
-      CALL WRITE_1D_RL(hetTempExp2,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%hetTempExp2,nplank,INDEX_NONE,
      &'hetTempExp2 =',
      &' /* coefficient for DARWIN_TEMP_VERSION 4 */')
-      CALL WRITE_1D_RL(hetTempOptimum,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%hetTempOptimum,nplank,INDEX_NONE,
      &'hetTempOptimum =',
      &' /* coefficient for DARWIN_TEMP_VERSION 4 (degrees C) */')
-      CALL WRITE_1D_RL(hetDecayPower,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%hetDecayPower,nplank,INDEX_NONE,
      &'hetDecayPower =',
      &' /* coefficient for DARWIN_TEMP_VERSION 4 */')
-      CALL WRITE_1D_RL(grazTempAe,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%grazTempAe,nplank,INDEX_NONE,
      &'grazTempAe =',
      &' /* coefficient for DARWIN_TEMP_VERSION 4 (1/degrees C) */')
-      CALL WRITE_1D_RL(grazTempExp2,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%grazTempExp2,nplank,INDEX_NONE,
      &'grazTempExp2 =',
      &' /* coefficient for DARWIN_TEMP_VERSION 4 */')
-      CALL WRITE_1D_RL(grazTempOptimum,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%grazTempOptimum,nplank,INDEX_NONE,
      &'grazTempOptimum =',
      &' /* coefficient for DARWIN_TEMP_VERSION 4 (degrees C) */')
-      CALL WRITE_1D_RL(grazDecayPower,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%grazDecayPower,nplank,INDEX_NONE,
      &'grazDecayPower =',
      &' /* coefficient for DARWIN_TEMP_VERSION 4 */')
-      CALL WRITE_1D_RL(R_NC,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%R_NC,nplank,INDEX_NONE,
      &'R_NC =',
      &' /* nitrogen-carbon ratio (not used with DARWIN_ALLOW_NQUOTA) (mm
      &ol N (mmol C)^-1) */')
-      CALL WRITE_1D_RL(R_PC,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%R_PC,nplank,INDEX_NONE,
      &'R_PC =',
      &' /* phosphorus-carbon ratio (not used with DARWIN_ALLOW_PQUOTA) (
      &mmol P (mmol C)^-1) */')
-      CALL WRITE_1D_RL(R_SiC,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%R_SiC,nplank,INDEX_NONE,
      &'R_SiC =',
      &' /* silica-carbon ratio (not used with DARWIN_ALLOW_SIQUOTA) (mmo
      &l Si (mmol C)^-1) */')
-      CALL WRITE_1D_RL(R_FeC,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%R_FeC,nplank,INDEX_NONE,
      &'R_FeC =',
      &' /* iron-carbon ratio (not used with DARWIN_ALLOW_FEQUOTA) (mmol'
      &' Fe (mmol C)^-1) */')
-      CALL WRITE_1D_RL(R_ChlC,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%R_ChlC,nplank,INDEX_NONE,
      &'R_ChlC =',
      &' /* chlorophyll-carbon ratio (not used with DARWIN_ALLOW_CHLQUOTA
      &) (mg Chl (mmol C)^-1) */')
-      CALL WRITE_1D_RL(R_PICPOC,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%R_PICPOC,nplank,INDEX_NONE,
      &'R_PICPOC =',
      &' /* inorganic-organic carbon ratio (mmol PIC (mmol POC)^-1) */')
-      CALL WRITE_1D_RL(biosink,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%biosink,nplank,INDEX_NONE,
      &'biosink =',
      &' /* sinking velocity (positive downwards) (m s^-1) */')
-      CALL WRITE_1D_RL(bioswim,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%bioswim,nplank,INDEX_NONE,
      &'bioswim =',
      &' /* upward swimming velocity (positive upwards) (m s^-1) */')
-      CALL WRITE_1D_RL(respRate,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%respRate,nplank,INDEX_NONE,
      &'respRate =',
      &' /* respiration rate (s^-1) */')
-      CALL WRITE_1D_RL(PCmax,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%PCmax,nplank,INDEX_NONE,
      &'PCmax =',
      &' /* maximum carbon-specific growth rate (s^-1) */')
-      CALL WRITE_1D_RL(Qnmax,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%Qnmax,nplank,INDEX_NONE,
      &'Qnmax =',
      &' /* maximum nitrogen quota (only with DARWIN_ALLOW_NQUOTA) (mmol'
      &' N (mmol C)^-1) */')
-      CALL WRITE_1D_RL(Qnmin,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%Qnmin,nplank,INDEX_NONE,
      &'Qnmin =',
      &' /* minimum nitrogen quota (only with DARWIN_ALLOW_NQUOTA) (mmol'
      &' N (mmol C)^-1) */')
-      CALL WRITE_1D_RL(Qpmax,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%Qpmax,nplank,INDEX_NONE,
      &'Qpmax =',
      &' /* maximum phosphorus quota (only with DARWIN_ALLOW_PQUOTA) (mmo
      &l P (mmol C)^-1) */')
-      CALL WRITE_1D_RL(Qpmin,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%Qpmin,nplank,INDEX_NONE,
      &'Qpmin =',
      &' /* minimum phosphorus quota (only with DARWIN_ALLOW_PQUOTA) (mmo
      &l P (mmol C)^-1) */')
-      CALL WRITE_1D_RL(Qsimax,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%Qsimax,nplank,INDEX_NONE,
      &'Qsimax =',
      &' /* maximum silica quota (only with DARWIN_ALLOW_SIQUOTA) (mmol S
      &i (mmol C)^-1) */')
-      CALL WRITE_1D_RL(Qsimin,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%Qsimin,nplank,INDEX_NONE,
      &'Qsimin =',
      &' /* minimum silica quota (only with DARWIN_ALLOW_SIQUOTA) (mmol S
      &i (mmol C)^-1) */')
-      CALL WRITE_1D_RL(Qfemax,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%Qfemax,nplank,INDEX_NONE,
      &'Qfemax =',
      &' /* maximum iron quota (only with DARWIN_ALLOW_FEQUOTA) (mmol Fe'
      &' (mmol C)^-1) */')
-      CALL WRITE_1D_RL(Qfemin,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%Qfemin,nplank,INDEX_NONE,
      &'Qfemin =',
      &' /* minimum iron quota (only with DARWIN_ALLOW_FEQUOTA) (mmol Fe'
      &' (mmol C)^-1) */')
-      CALL WRITE_1D_RL(VmaxNH4,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%VmaxNH4,nplank,INDEX_NONE,
      &'VmaxNH4 =',
      &' /* maximum ammonia uptake rate (only with DARWIN_ALLOW_NQUOTA) (
      &mmol N (mmol C)^-1 s^-1) */')
-      CALL WRITE_1D_RL(VmaxNO2,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%VmaxNO2,nplank,INDEX_NONE,
      &'VmaxNO2 =',
      &' /* maximum nitrite uptake rate (only with DARWIN_ALLOW_NQUOTA) (
      &mmol N (mmol C)^-1 s^-1) */')
-      CALL WRITE_1D_RL(VmaxNO3,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%VmaxNO3,nplank,INDEX_NONE,
      &'VmaxNO3 =',
      &' /* maximum nitrate uptake rate (only with DARWIN_ALLOW_NQUOTA) (
      &mmol N (mmol C)^-1 s^-1) */')
-      CALL WRITE_1D_RL(VmaxN,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%VmaxN,nplank,INDEX_NONE,
      &'VmaxN =',
      &' /* maximum nitrogen uptake rate for diazotrophs (only with DARWI
      &N_ALLOW_NQUOTA) (mmol N (mmol C)^-1 s^-1) */')
-      CALL WRITE_1D_RL(VmaxPO4,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%VmaxPO4,nplank,INDEX_NONE,
      &'VmaxPO4 =',
      &' /* maximum phosphate uptake rate (only with DARWIN_ALLOW_PQUOTA)
      & (mmol P (mmol C)^-1 s^-1) */')
-      CALL WRITE_1D_RL(VmaxSiO2,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%VmaxSiO2,nplank,INDEX_NONE,
      &'VmaxSiO2 =',
      &' /* maximum silica uptake rate (only with DARWIN_ALLOW_SIQUOTA) (
      &mmol Si (mmol C)^-1 s^-1) */')
-      CALL WRITE_1D_RL(VmaxFeT,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%VmaxFeT,nplank,INDEX_NONE,
      &'VmaxFeT =',
      &' /* maximum iron uptake rate (only with DARWIN_ALLOW_FEQUOTA) (mm
      &ol Fe (mmol C)^-1 s^-1) */')
-      CALL WRITE_1D_RL(ksatNH4,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%ksatNH4,nplank,INDEX_NONE,
      &'ksatNH4 =',
      &' /* half-saturation conc. for ammonia uptake/limitation (mmol N m
      &^-3) */')
-      CALL WRITE_1D_RL(ksatNO2,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%ksatNO2,nplank,INDEX_NONE,
      &'ksatNO2 =',
      &' /* half-saturation conc. for nitrite uptake/limitation (mmol N m
      &^-3) */')
-      CALL WRITE_1D_RL(ksatNO3,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%ksatNO3,nplank,INDEX_NONE,
      &'ksatNO3 =',
      &' /* half-saturation conc. for nitrate uptake/limitation (mmol N m
      &^-3) */')
-      CALL WRITE_1D_RL(ksatPO4,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%ksatPO4,nplank,INDEX_NONE,
      &'ksatPO4 =',
      &' /* half-saturation conc. for phosphate uptake/limitation (mmol P
      & m^-3) */')
-      CALL WRITE_1D_RL(ksatSiO2,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%ksatSiO2,nplank,INDEX_NONE,
      &'ksatSiO2 =',
      &' /* half-saturation conc. for silica uptake/limitation (mmol Si m
      &^-3) */')
-      CALL WRITE_1D_RL(ksatFeT,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%ksatFeT,nplank,INDEX_NONE,
      &'ksatFeT =',
      &' /* half-saturation conc. for iron uptake/limitation (mmol Fe m^-
      &3) */')
-      CALL WRITE_1D_RL(kexcc,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%kexcc,nplank,INDEX_NONE,
      &'kexcc =',
      &' /* exudation rate for carbon (s^-1) */')
-      CALL WRITE_1D_RL(kexcn,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%kexcn,nplank,INDEX_NONE,
      &'kexcn =',
      &' /* exudation rate for nitrogen (s^-1) */')
-      CALL WRITE_1D_RL(kexcp,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%kexcp,nplank,INDEX_NONE,
      &'kexcp =',
      &' /* exudation rate for phosphorus (s^-1) */')
-      CALL WRITE_1D_RL(kexcsi,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%kexcsi,nplank,INDEX_NONE,
      &'kexcsi =',
      &' /* exudation rate for silica (s^-1) */')
-      CALL WRITE_1D_RL(kexcfe,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%kexcfe,nplank,INDEX_NONE,
      &'kexcfe =',
      &' /* exudation rate for iron (s^-1) */')
 #ifdef DARWIN_ALLOW_GEIDER
-      CALL WRITE_1D_RL(inhibGeider,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%inhibGeider,nplank,INDEX_NONE,
      &'inhibGeider =',
      &' /* photo-inhibition coefficient for Geider growth */')
 #else
-      CALL WRITE_1D_RL(ksatPAR,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%ksatPAR,nplank,INDEX_NONE,
      &'ksatPAR =',
      &' /* saturation coefficient for PAR (w/o GEIDER) ((uEin m^-2 s^-1)
      &^-1) */')
-      CALL WRITE_1D_RL(kinhPAR,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%kinhPAR,nplank,INDEX_NONE,
      &'kinhPAR =',
      &' /* inhibition coefficient for PAR (w/o GEIDER) ((uEin m^-2 s^-1)
      &^-1) */')
 #endif
-      CALL WRITE_1D_RL(mQyield,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%mQyield,nplank,INDEX_NONE,
      &'mQyield =',
      &' /* maximum quantum yield (mmol C (uEin)^-1) */')
-      CALL WRITE_1D_RL(chl2cmax,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%chl2cmax,nplank,INDEX_NONE,
      &'chl2cmax =',
      &' /* maximum Chlorophyll-carbon ratio (mg Chl (mmol C)^-1) */')
-      CALL WRITE_1D_RL(grazemax,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%grazemax,nplank,INDEX_NONE,
      &'grazemax =',
      &' /* maximum grazing rate (s^-1) */')
-      CALL WRITE_1D_RL(kgrazesat,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%kgrazesat,nplank,INDEX_NONE,
      &'kgrazesat =',
      &' /* grazing half-saturation concentration (mmol C m^-3) */')
       DO l=1,nplank
       WRITE(msgBuf,'(A,I4,A)')'palat(:,', l, ') ='
-      CALL WRITE_1D_RL(palat(1,l),nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%palat(1,l),nplank,INDEX_NONE,
      &msgBuf,
      &' /* palatability matrix */')
       ENDDO
       DO l=1,nplank
       WRITE(msgBuf,'(A,I4,A)')'asseff(:,', l, ') ='
-      CALL WRITE_1D_RL(asseff(1,l),nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%asseff(1,l),nplank,INDEX_NONE,
      &msgBuf,
      &' /* assimilation efficiency matrix */')
       ENDDO
       DO l=1,nplank
       WRITE(msgBuf,'(A,I4,A)')'ExportFracPreyPred(:,', l, ') ='
-      CALL WRITE_1D_RL(ExportFracPreyPred(1,l),nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%ExportFracPreyPred(1,l),nplank,INDEX_NONE,
      &msgBuf,
      &' /* fraction of unassimilated prey becoming particulate organic m
      &atter */')
       ENDDO
-      CALL WRITE_1D_RL(yield,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%yield,nplank,INDEX_NONE,
      &'yield =',
      &' /* bacterial growth yield for all organic matter */')
-      CALL WRITE_1D_RL(yieldO2,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%yieldO2,nplank,INDEX_NONE,
      &'yieldO2 =',
      &' /* bacterial growth yield for oxygen */')
-      CALL WRITE_1D_RL(yieldNO3,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%yieldNO3,nplank,INDEX_NONE,
      &'yieldNO3 =',
      &' /* bacterial growth yield for nitrate */')
-      CALL WRITE_1D_RL(ksatPON,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%ksatPON,nplank,INDEX_NONE,
      &'ksatPON =',
      &' /* half-saturation of PON for bacterial growth (mmol N m^-3) */'
      &)
-      CALL WRITE_1D_RL(ksatPOC,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%ksatPOC,nplank,INDEX_NONE,
      &'ksatPOC =',
      &' /* half-saturation of POC for bacterial growth (mmol C m^-3) */'
      &)
-      CALL WRITE_1D_RL(ksatPOP,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%ksatPOP,nplank,INDEX_NONE,
      &'ksatPOP =',
      &' /* half-saturation of POP for bacterial growth (mmol P m^-3) */'
      &)
-      CALL WRITE_1D_RL(ksatPOFe,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%ksatPOFe,nplank,INDEX_NONE,
      &'ksatPOFe =',
      &' /* half-saturation of POFe for bacterial growth (mmol Fe m^-3) *
      &/')
-      CALL WRITE_1D_RL(ksatDON,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%ksatDON,nplank,INDEX_NONE,
      &'ksatDON =',
      &' /* half-saturation of DON for bacterial growth (mmol N m^-3) */'
      &)
-      CALL WRITE_1D_RL(ksatDOC,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%ksatDOC,nplank,INDEX_NONE,
      &'ksatDOC =',
      &' /* half-saturation of DOC for bacterial growth (mmol C m^-3) */'
      &)
-      CALL WRITE_1D_RL(ksatDOP,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%ksatDOP,nplank,INDEX_NONE,
      &'ksatDOP =',
      &' /* half-saturation of DOP for bacterial growth (mmol P m^-3) */'
      &)
-      CALL WRITE_1D_RL(ksatDOFe,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(traits%ksatDOFe,nplank,INDEX_NONE,
      &'ksatDOFe =',
      &' /* half-saturation of DOFe for bacterial growth (mmol Fe m^-3) *
      &/')
@@ -2464,15 +2466,15 @@ C--   Print traits from DARWIN_TRAITS.h
      &' /* optical type (for absorption/scattering spectra) */')
 #endif
 #ifndef DARWIN_ALLOW_GEIDER
-      CALL WRITE_1D_RL(normI,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(deptraits%normI,nplank,INDEX_NONE,
      &'normI =',
      &' /* normalization factor for non-Geider light curve */')
 #endif
-      CALL WRITE_1D_RL(alpha_mean,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(deptraits%alpha_mean,nplank,INDEX_NONE,
      &'alpha_mean =',
      &' /* mean initial slope of light curve (over wavebands) (mmol C s-
      &1 (uEin m^-2 s^-1)^-1 (mg Chl)^-1) */')
-      CALL WRITE_1D_RL(chl2cmin,nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(deptraits%chl2cmin,nplank,INDEX_NONE,
      &'chl2cmin =',
      &' /* minimum Chl:C ratio (function of chl2cmax and alpha_mean) (mg
      & Chl (mmol C)^-1) */')
@@ -2601,7 +2603,7 @@ C--   Print parameters and traits from DARWIN_RADTRANS.h
 #endif /* ALLOW_RADTRANS */
       DO l=1,nlam
       WRITE(msgBuf,'(A,I4,A)')'alphachl(:,', l, ') ='
-      CALL WRITE_1D_RL(alphachl(1,l),nplank,INDEX_NONE,
+      CALL WRITE_1D_RL(deptraits%alphachl(1,l),nplank,INDEX_NONE,
      &msgBuf,
      &' /* Chlorophyll-specific initial slope for photosynthesis */')
       ENDDO

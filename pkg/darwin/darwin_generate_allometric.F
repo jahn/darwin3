@@ -10,6 +10,8 @@ C !DESCRIPTION:
 C     Generate parameters for plankton types using an allometric approach
 
 C !USES: ===============================================================
+      use darwin_param_mod
+      use darwin_param_data_mod
       IMPLICIT NONE
 #include "SIZE.h"
 #include "EEPARAMS.h"
@@ -201,119 +203,122 @@ C ----------------------------------------------------------------------
 C non-allometric traits (same within group)
 
 C flags
-        isPhoto(jp)    = grp_photo(g)
-        isPrey(jp)     = grp_prey(g)
-        isPred(jp)     = grp_pred(g)
-        hasSi(jp)      = grp_hasSi(g)
-        hasPIC(jp)     = grp_hasPIC(g)
-        diazo(jp)      = grp_diazo(g)
-        useNH4(jp)     = grp_useNH4(g)
-        useNO2(jp)     = grp_useNO2(g)
-        useNO3(jp)     = grp_useNO3(g)
-        combNO(jp)     = grp_combNO(g)
-        tempMort(jp)   = grp_tempMort(g)
-        tempMort2(jp)  = grp_tempMort2(g)
-        tempGraz(jp)   = grp_tempGraz(g)
+        traits%isPhoto(jp)    = grp_photo(g)
+        traits%isPrey(jp)     = grp_prey(g)
+        traits%isPred(jp)     = grp_pred(g)
+        traits%hasSi(jp)      = grp_hasSi(g)
+        traits%hasPIC(jp)     = grp_hasPIC(g)
+        traits%diazo(jp)      = grp_diazo(g)
+        traits%useNH4(jp)     = grp_useNH4(g)
+        traits%useNO2(jp)     = grp_useNO2(g)
+        traits%useNO3(jp)     = grp_useNO3(g)
+        traits%combNO(jp)     = grp_combNO(g)
+        traits%tempMort(jp)   = grp_tempMort(g)
+        traits%tempMort2(jp)  = grp_tempMort2(g)
+        traits%tempGraz(jp)   = grp_tempGraz(g)
 
 C traits
-        Xmin(jp)       = a_Xmin(g)
-        amminhib(jp)   = a_amminhib(g)
-        acclimtimescl(jp) = a_acclimtimescl(g)
+        traits%Xmin(jp)       = a_Xmin(g)
+        traits%amminhib(jp)   = a_amminhib(g)
+        traits%acclimtimescl(jp) = a_acclimtimescl(g)
 
 C mortality
-        mort(jp) = a_mort(g)
-        mort2(jp) = a_mort2(g)
+        traits%mort(jp) = a_mort(g)
+        traits%mort2(jp) = a_mort2(g)
 C       if 0, temperature dependent, if 1, not.
-        ExportFracMort(jp) = a_ExportFracMort(g)
-        ExportFracMort2(jp) = a_ExportFracMort2(g)
-        ExportFracExude(jp) = a_ExportFracExude(g)
-        FracExudeC(jp) = a_FracExudeC(g)
+        traits%ExportFracMort(jp) = a_ExportFracMort(g)
+        traits%ExportFracMort2(jp) = a_ExportFracMort2(g)
+        traits%ExportFracExude(jp) = a_ExportFracExude(g)
+        traits%FracExudeC(jp) = a_FracExudeC(g)
 
 C temperature function parameters
-        phytoTempCoeff(jp)   = a_phytoTempCoeff(g)
-        phytoTempExp1(jp)    = a_phytoTempExp1(g)
-        phytoTempAe(jp)      = a_phytoTempAe(g)
-        phytoTempExp2(jp)    = a_phytoTempExp2(g)
-        phytoTempOptimum(jp) = a_phytoTempOptimum(g)
-        phytoDecayPower(jp)  = a_phytoDecayPower(g)
+        traits%phytoTempCoeff(jp)   = a_phytoTempCoeff(g)
+        traits%phytoTempExp1(jp)    = a_phytoTempExp1(g)
+        traits%phytoTempAe(jp)      = a_phytoTempAe(g)
+        traits%phytoTempExp2(jp)    = a_phytoTempExp2(g)
+        traits%phytoTempOptimum(jp) = a_phytoTempOptimum(g)
+        traits%phytoDecayPower(jp)  = a_phytoDecayPower(g)
 
-        hetTempAe(jp)        = a_hetTempAe(g)
-        hetTempExp2(jp)      = a_hetTempExp2(g)
-        hetTempOptimum(jp)   = a_hetTempOptimum(g)
-        hetDecayPower(jp)    = a_hetDecayPower(g)
+        traits%hetTempAe(jp)        = a_hetTempAe(g)
+        traits%hetTempExp2(jp)      = a_hetTempExp2(g)
+        traits%hetTempOptimum(jp)   = a_hetTempOptimum(g)
+        traits%hetDecayPower(jp)    = a_hetDecayPower(g)
 
-        grazTempAe(jp)       = a_grazTempAe(g)
-        grazTempExp2(jp)     = a_grazTempExp2(g)
-        grazTempOptimum(jp)  = a_grazTempOptimum(g)
-        grazDecayPower(jp)   = a_grazDecayPower(g)
+        traits%grazTempAe(jp)       = a_grazTempAe(g)
+        traits%grazTempExp2(jp)     = a_grazTempExp2(g)
+        traits%grazTempOptimum(jp)  = a_grazTempOptimum(g)
+        traits%grazDecayPower(jp)   = a_grazDecayPower(g)
 
 C plankton elemental ratios
-        R_NC(jp)       = a_R_NC(g)
-        R_PC(jp)       = a_R_PC(g)
-        R_SiC(jp)      = a_R_SiC(g)
-        R_FeC(jp)      = a_R_FeC(g)
-        R_ChlC(jp)     = a_R_ChlC(g)
-        R_PICPOC(jp)   = a_R_PICPOC(g)
+        traits%R_NC(jp)       = a_R_NC(g)
+        traits%R_PC(jp)       = a_R_PC(g)
+        traits%R_SiC(jp)      = a_R_SiC(g)
+        traits%R_FeC(jp)      = a_R_FeC(g)
+        traits%R_ChlC(jp)     = a_R_ChlC(g)
+        traits%R_PICPOC(jp)   = a_R_PICPOC(g)
 
 C plankton sinking and swimming
-        biosink(jp) = a_biosink(g) * biovol(jp)**b_biosink(g)
-        bioswim(jp) = a_bioswim(g) * biovol(jp)**b_bioswim(g)
+        traits%biosink(jp) = a_biosink(g) * biovol(jp)**b_biosink(g)
+        traits%bioswim(jp) = a_bioswim(g) * biovol(jp)**b_bioswim(g)
 
-C respRate rate is given in terms of carbon content
+C traits%respRate rate is given in terms of carbon content
         qcarbon(jp) = a_qcarbon(g) * biovol(jp)**b_qcarbon(g)
-        respRate(jp) = a_respRate_c(g)
+        traits%respRate(jp) = a_respRate_c(g)
      &                 * (12. _d 9 * qcarbon(jp))**b_respRate_c(g)
      &                 / qcarbon(jp)
 
 C parameters relating to inorganic nutrients
-        PCmax(jp)= a_PCmax(g) * biovol(jp)**b_PCmax(g)
+        traits%PCmax(jp)= a_PCmax(g) * biovol(jp)**b_PCmax(g)
 
-        vmaxNH4(jp)  = a_vmaxNH4(g)  * biovol(jp)**b_vmaxNH4(g)
-        vmaxNO2(jp)  = a_vmaxNO2(g)  * biovol(jp)**b_vmaxNO2(g)
-        vmaxNO3(jp)  = a_vmaxNO3(g)  * biovol(jp)**b_vmaxNO3(g)
-        vmaxN(jp)    = a_vmaxN(g)    * biovol(jp)**b_vmaxN(g)
-        vmaxPO4(jp)  = a_vmaxPO4(g)  * biovol(jp)**b_vmaxPO4(g)
-        vmaxSiO2(jp) = a_vmaxSiO2(g) * biovol(jp)**b_vmaxSiO2(g)
-        vmaxFeT(jp)  = a_vmaxFeT(g)  * biovol(jp)**b_vmaxFeT(g)
+        traits%VmaxNH4(jp)  = a_vmaxNH4(g)  * biovol(jp)**b_vmaxNH4(g)
+        traits%VmaxNO2(jp)  = a_vmaxNO2(g)  * biovol(jp)**b_vmaxNO2(g)
+        traits%VmaxNO3(jp)  = a_vmaxNO3(g)  * biovol(jp)**b_vmaxNO3(g)
+        traits%VmaxN(jp)    = a_vmaxN(g)    * biovol(jp)**b_vmaxN(g)
+        traits%VmaxPO4(jp)  = a_vmaxPO4(g)  * biovol(jp)**b_vmaxPO4(g)
+        traits%VmaxSiO2(jp) = a_vmaxSiO2(g) * biovol(jp)**b_vmaxSiO2(g)
+        traits%VmaxFeT(jp)  = a_vmaxFeT(g)  * biovol(jp)**b_vmaxFeT(g)
 
-        Qnmin(jp)    = a_Qnmin(g)  * biovol(jp)**b_Qnmin(g)
-        Qnmax(jp)    = a_Qnmax(g)  * biovol(jp)**b_Qnmax(g)
+        traits%Qnmin(jp)    = a_Qnmin(g)  * biovol(jp)**b_Qnmin(g)
+        traits%Qnmax(jp)    = a_Qnmax(g)  * biovol(jp)**b_Qnmax(g)
                                                       
-        Qpmin(jp)    = a_Qpmin(g)  * biovol(jp)**b_Qpmin(g)
-        Qpmax(jp)    = a_Qpmax(g)  * biovol(jp)**b_Qpmax(g)
+        traits%Qpmin(jp)    = a_Qpmin(g)  * biovol(jp)**b_Qpmin(g)
+        traits%Qpmax(jp)    = a_Qpmax(g)  * biovol(jp)**b_Qpmax(g)
                                                       
-        Qsimin(jp)   = a_Qsimin(g) * biovol(jp)**b_Qsimin(g)
-        Qsimax(jp)   = a_Qsimax(g) * biovol(jp)**b_Qsimax(g)
+        traits%Qsimin(jp)   = a_Qsimin(g) * biovol(jp)**b_Qsimin(g)
+        traits%Qsimax(jp)   = a_Qsimax(g) * biovol(jp)**b_Qsimax(g)
                                                       
-        Qfemin(jp)   = a_Qfemin(g) * biovol(jp)**b_Qfemin(g)
-        Qfemax(jp)   = a_Qfemax(g) * biovol(jp)**b_Qfemax(g)
+        traits%Qfemin(jp)   = a_Qfemin(g) * biovol(jp)**b_Qfemin(g)
+        traits%Qfemax(jp)   = a_Qfemax(g) * biovol(jp)**b_Qfemax(g)
 
-        ksatNH4(jp)  = a_ksatNH4(g)  * biovol(jp)**b_ksatNH4(g)
-        ksatNO2(jp)  = a_ksatNO2(g)  * biovol(jp)**b_ksatNO2(g)
-        ksatNO3(jp)  = a_ksatNO3(g)  * biovol(jp)**b_ksatNO3(g)
-        ksatPO4(jp)  = a_ksatPO4(g)  * biovol(jp)**b_ksatPO4(g)
-        ksatSiO2(jp) = a_ksatSiO2(g) * biovol(jp)**b_ksatSiO2(g)
-        ksatFeT(jp)  = a_ksatFeT(g)  * biovol(jp)**b_ksatFeT(g)
+        traits%ksatNH4(jp)  = a_ksatNH4(g)  * biovol(jp)**b_ksatNH4(g)
+        traits%ksatNO2(jp)  = a_ksatNO2(g)  * biovol(jp)**b_ksatNO2(g)
+        traits%ksatNO3(jp)  = a_ksatNO3(g)  * biovol(jp)**b_ksatNO3(g)
+        traits%ksatPO4(jp)  = a_ksatPO4(g)  * biovol(jp)**b_ksatPO4(g)
+        traits%ksatSiO2(jp) = a_ksatSiO2(g) * biovol(jp)**b_ksatSiO2(g)
+        traits%ksatFeT(jp)  = a_ksatFeT(g)  * biovol(jp)**b_ksatFeT(g)
 
 C parameters relating to quota nutrients
 c EXCRETION
-        kexcc(jp)  = a_kexcc(g)  * biovol(jp)**b_kexcc(g)
-        kexcn(jp)  = a_kexcn(g)  * biovol(jp)**b_kexcn(g)
-        kexcp(jp)  = a_kexcp(g)  * biovol(jp)**b_kexcp(g)
-        kexcsi(jp) = a_kexcsi(g) * biovol(jp)**b_kexcsi(g)
-        kexcfe(jp) = a_kexcfe(g) * biovol(jp)**b_kexcfe(g)
+        traits%kexcc(jp)  = a_kexcc(g)  * biovol(jp)**b_kexcc(g)
+        traits%kexcn(jp)  = a_kexcn(g)  * biovol(jp)**b_kexcn(g)
+        traits%kexcp(jp)  = a_kexcp(g)  * biovol(jp)**b_kexcp(g)
+        traits%kexcsi(jp) = a_kexcsi(g) * biovol(jp)**b_kexcsi(g)
+        traits%kexcfe(jp) = a_kexcfe(g) * biovol(jp)**b_kexcfe(g)
 
         IF (darwin_effective_ksat) THEN
 c        compute effective half sat for uptake of non-quota elements
 C        we compute it for NO3 and scale for others
          IF (darwin_select_kn_allom.EQ.1) THEN
 C         following Ward et al.
-          kappa=(ksatNO3(jp)*PCmax(jp)*Qnmin(jp)*(Qnmax(jp)-Qnmin(jp)))/
-     &          (vmaxNO3(jp)*Qnmax(jp) +
-     &                       PCmax(jp)*Qnmin(jp)*(Qnmax(jp)-Qnmin(jp)))
+          kappa=(traits%ksatNO3(jp)*traits%PCmax(jp)*traits%Qnmin(jp)
+     &           *(traits%Qnmax(jp)-traits%Qnmin(jp)))/
+     &          (traits.VmaxNO3(jp)*traits%Qnmax(jp) +
+     &                       traits%PCmax(jp)*traits%Qnmin(jp)
+     &                       *(traits%Qnmax(jp)-traits%Qnmin(jp)))
          ELSEIF (darwin_select_kn_allom.EQ.2) THEN
 C         following Follett et al.
-          kappa = (ksatNO3(jp)*PCmax(jp)*Qnmin(jp))/vmaxNO3(jp)
+          kappa = (traits%ksatNO3(jp)*traits%PCmax(jp)*traits%Qnmin(jp))
+     &          /traits.VmaxNO3(jp)
          ELSE
           WRITE(msgBuf,'(2A)')'DARWIN_GENERATE_ALLOMETRIC: ',
      &      'illegal value for darwin_select_kn_allom'
@@ -321,55 +326,59 @@ C         following Follett et al.
           STOP 'ABNORMAL END: S/R DARWIN_GENERATE_ALLOMETRIC'
          ENDIF
 #ifndef DARWIN_ALLOW_NQUOTA
-         ksatNO3(jp) = kappa
-         ksatNO2(jp) = kappa*a_ksatNO2fac(g)
-         ksatNH4(jp) = kappa*a_ksatNH4fac(g)
+         traits%ksatNO3(jp) = kappa
+         traits%ksatNO2(jp) = kappa*a_ksatNO2fac(g)
+         traits%ksatNH4(jp) = kappa*a_ksatNH4fac(g)
 #endif
 #ifndef DARWIN_ALLOW_PQUOTA
-         ksatPO4(jp) = kappa/R_NC(jp)*R_PC(jp)
+         traits%ksatPO4(jp) = kappa/traits%R_NC(jp)*traits%R_PC(jp)
 #endif
 #ifndef DARWIN_ALLOW_SIQUOTA
-         ksatSiO2(jp) = kappa/R_NC(jp)*R_SiC(jp)
+         traits%ksatSiO2(jp) = kappa/traits%R_NC(jp)*traits%R_SiC(jp)
 #endif
 #ifndef DARWIN_ALLOW_FEQUOTA
-         ksatFeT(jp) = kappa/R_NC(jp)*R_FeC(jp)
+         traits%ksatFeT(jp) = kappa/traits%R_NC(jp)*traits%R_FeC(jp)
 #endif
         ENDIF
 
 C parameters for bacteria
 
 C flags
-        bactType(jp)  = grp_bacttype(g)
-        isAerobic(jp) = grp_aerobic(g)
-        isDenit(jp)   = grp_denit(g)
+        traits%bactType(jp)  = grp_bacttype(g)
+        traits%isAerobic(jp) = grp_aerobic(g)
+        traits%isDenit(jp)   = grp_denit(g)
 
 C real parameters
-        yieldO2(jp) = 1.0
-        yieldNO3(jp) = 1.0
-        IF (isAerobic(jp) .NE. 0) THEN
-          yield(jp) = yod
-          yieldO2(jp) = yoe
-        ELSEIF (isDenit(jp) .NE. 0) THEN
-          yield(jp) = ynd
-          yieldNO3(jp) = yne
+        traits%yieldO2(jp) = 1.0
+        traits%yieldNO3(jp) = 1.0
+        IF (traits%isAerobic(jp) .NE. 0) THEN
+          traits%yield(jp) = params%yod
+          traits%yieldO2(jp) = params%yoe
+        ELSEIF (traits%isDenit(jp) .NE. 0) THEN
+          traits%yield(jp) = params%ynd
+          traits%yieldNO3(jp) = params%yne
         ENDIF
 
-        ksatPON(jp)  = a_ksatPON(g)
-        ksatDON(jp)  = a_ksatDON(g)
-        ksatPOC(jp)  = ksatPON(jp)/R_NC(jp)
-        ksatPOP(jp)  = ksatPON(jp)/R_NC(jp)*R_PC(jp)
-        ksatPOFe(jp) = ksatPON(jp)/R_NC(jp)*R_FeC(jp)
-        ksatDOC(jp)  = ksatDON(jp)/R_NC(jp)
-        ksatDOP(jp)  = ksatDON(jp)/R_NC(jp)*R_PC(jp)
-        ksatDOFe(jp) = ksatDON(jp)/R_NC(jp)*R_FeC(jp)
+        traits%ksatPON(jp)  = a_ksatPON(g)
+        traits%ksatDON(jp)  = a_ksatDON(g)
+        traits%ksatPOC(jp)  = traits%ksatPON(jp)/traits%R_NC(jp)
+        traits%ksatPOP(jp)  = traits%ksatPON(jp)/traits%R_NC(jp)
+     &                                          *traits%R_PC(jp)
+        traits%ksatPOFe(jp) = traits%ksatPON(jp)/traits%R_NC(jp)
+     &                                          *traits%R_FeC(jp)
+        traits%ksatDOC(jp)  = traits%ksatDON(jp)/traits%R_NC(jp)
+        traits%ksatDOP(jp)  = traits%ksatDON(jp)/traits%R_NC(jp)
+     &                                          *traits%R_PC(jp)
+        traits%ksatDOFe(jp) = traits%ksatDON(jp)/traits%R_NC(jp)
+     &                                          *traits%R_FeC(jp)
 
 #ifdef DARWIN_ALLOW_GEIDER
-        mQyield(jp) = a_mQyield(g)
-        chl2cmax(jp) = a_chl2cmax(g)
-        inhibGeider(jp) = a_inhibGeider(g)
+        traits%mQyield(jp) = a_mQyield(g)
+        traits%chl2cmax(jp) = a_chl2cmax(g)
+        traits%inhibGeider(jp) = a_inhibGeider(g)
 #else
-        ksatPAR(jp) = a_ksatPAR(g)
-        kinhPAR(jp) = a_kinhPAR(g)
+        traits%ksatPAR(jp) = a_ksatPAR(g)
+        traits%kinhPAR(jp) = a_kinhPAR(g)
 #endif /* DARWIN_ALLOW_GEIDER */
 
 #ifdef ALLOW_RADTRANS
@@ -464,9 +473,10 @@ C grazing
       DO jz=1,nplank
         gz = group(jz)
 C       maximum grazing rate
-        grazemax(jz) = a_grazemax(gz) * biovol(jz)**b_grazemax(gz)
+        traits%grazemax(jz) = a_grazemax(gz)*biovol(jz)**b_grazemax(gz)
 C       grazing half-saturation
-        kgrazesat(jz) = a_kgrazesat(gz) * biovol(jz)**b_kgrazesat(gz)
+        traits%kgrazesat(jz) = a_kgrazesat(gz)
+     &                         * biovol(jz)**b_kgrazesat(gz)
         DO jp=1,nplank
           g = group(jp)
           IF (grp_pred(gz).GT.0 .AND. grp_prey(g).GT.0) THEN
@@ -477,21 +487,22 @@ C           grazing size preference ratio
 C           standard deviation of size preference
             pp_sig = a_ppSig(gz)
             prd_pry = biovol(jz) / biovol(jp)
-            palat(jp,jz) =
+            traits%palat(jp,jz) =
      &        EXP(-(LOG(prd_pry/pp_opt)**2) / (2*pp_sig**2))
      &        / pp_sig/2. _d 0
-            IF (palat(jp,jz).LT.palat_min) THEN
-              palat(jp,jz) = 0. _d 0
+            IF (traits%palat(jp,jz).LT.palat_min) THEN
+              traits%palat(jp,jz) = 0. _d 0
             ENDIF
 #else
-            palat(jp,jz) = 0.0 _d 0
+            traits%palat(jp,jz) = 0.0 _d 0
 #endif
-            asseff(jp,jz) = grp_ass_eff(g,gz)
-            ExportFracPreyPred(jp,jz) = grp_ExportFracPreyPred(g,gz)
+            traits%asseff(jp,jz) = grp_ass_eff(g,gz)
+            traits%ExportFracPreyPred(jp,jz) =
+     &            grp_ExportFracPreyPred(g,gz)
           ELSE
-            palat(jp,jz) = 0. _d 0
-            asseff(jp,jz) = 0. _d 0
-            ExportFracPreyPred(jp,jz) = 0. _d 0
+            traits%palat(jp,jz) = 0. _d 0
+            traits%asseff(jp,jz) = 0. _d 0
+            traits%ExportFracPreyPred(jp,jz) = 0. _d 0
           ENDIF
         ENDDO
       ENDDO

@@ -94,6 +94,7 @@ C     data.pkg namelists
      &          useMNC,
      &          useRunClock,
      &          useEMBED_FILES,
+     &          useTIDES,
      &          useSAL,
      &          useMYPACKAGE
 
@@ -160,6 +161,7 @@ c     useGAD          =.FALSE.
       useMNC          =.FALSE.
       useRunClock     =.FALSE.
       useEMBED_FILES  =.FALSE.
+      useTIDES        =.FALSE.
       useSAL          =.FALSE.
       useMYPACKAGE    =.FALSE.
 
@@ -407,6 +409,9 @@ C----- pkgs with a standard "usePKG" On/Off switch in "data.pkg":
 #endif
 #ifdef ALLOW_EMBED_FILES
       CALL PACKAGES_PRINT_MSG( useEMBED_FILES,'EMBED_FILES', ' ' )
+#endif
+#ifdef ALLOW_TIDES
+      CALL PACKAGES_PRINT_MSG( useTIDES,      'TIDES',       ' ' )
 #endif
 #ifdef ALLOW_SAL
       CALL PACKAGES_PRINT_MSG( useSAL,        'SAL',         ' ' )

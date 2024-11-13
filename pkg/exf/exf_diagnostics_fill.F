@@ -78,6 +78,9 @@ CEOP
 #ifdef ALLOW_SALTFLX
         CALL DIAGNOSTICS_FILL( saltflx,   'EXFsalfx',0,1,0,1,1,myThid )
 #endif
+#ifdef EXF_ALLOW_TIDES
+        CALL DIAGNOSTICS_FILL( tidePot,   'EXFtidep',0,1,0,1,1,myThid )
+#endif
 
       ENDIF
 #endif /* ALLOW_DIAGNOSTICS */

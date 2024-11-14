@@ -154,6 +154,14 @@ c    &diagTitle = 'Sea Surface Elevation'
       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
      I          diagName, diagCode, diagUnits, diagTitle, 0, myThid )
 
+      diagName  = 'SSHwIceL'
+      diagTitle = DIAGS_MK_TITLE(
+     &    eTitle//rTitle//' Anomaly including seaice loading', myThid )
+      diagUnits = DIAGS_MK_UNITS( rUnit2c, myThid )
+      diagCode  = 'SM      M1      '
+      CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I          diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
       diagName  = 'THETA   '
       diagTitle = 'Potential Temperature'
       diagUnits = DIAGS_MK_UNITS( tUnit4c, myThid )
@@ -560,6 +568,22 @@ c     diagTitle = 'Square of ocean bottom pressure / top. geo-Potential'
       diagTitle = DIAGS_MK_TITLE('Surface Dynamical '//pTitle,myThid)
       diagUnits = 'm^2/s^2         '
       diagCode  = 'SM      M1      '
+      CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I          diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+#ifdef INCLUDE_PHIBOT_FV_CODE
+      diagName  = 'PHIBOTfv'
+      diagTitle = 'finite-volume ocean bottom pressure'
+      diagUnits = 'm^2/s^2         '
+      diagCode  = 'SM      M1      '
+      CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I          diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+#endif
+
+      diagName  = 'phiTid2d'
+      diagTitle = 'Tide-generating geopotential'
+      diagUnits = 'm^2/s^2         '
+      diagCode  = 'SM      U1      '
       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
      I          diagName, diagCode, diagUnits, diagTitle, 0, myThid )
 

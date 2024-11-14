@@ -6,9 +6,9 @@ C-- U DATE            - Returns date and time.
 C--   IFNBLNK         - Returns index of first non-blank string character.
 C--   ILNBLNK         - Returns index of last non-blank string character.
 C--   IO_ERRCOUNT     - Reads IO error counter.
-C--   LCASE           - Translates to lower case.
+C--   EES_LCASE       - Translates to lower case.
 C--UM MACHINE         - Returns character string identifying computer.
-C--   UCASE           - Translates to upper case.
+C--   EES_UCASE       - Translates to upper case.
 C--   Routines marked "M" contain specific machine dependent code.
 C--   Routines marked "U" contain UNIX OS calls.
 
@@ -135,9 +135,9 @@ CEndofinterface
       END
 
 CStartOfInterface
-      SUBROUTINE LCASE ( string )
+      SUBROUTINE EES_LCASE ( string )
 C     /==========================================================\
-C     | SUBROUTINE LCASE                                         |
+C     | SUBROUTINE EES_LCASE                                     |
 C     | o Convert character string to all lower case.            |
 C     \==========================================================/
       IMPLICIT NONE
@@ -232,7 +232,7 @@ C
       RETURN
       END
 C***********************************************************************
-      SUBROUTINE UCASE ( string )
+      SUBROUTINE EES_UCASE ( string )
       IMPLICIT NONE
 C     Translate string to upper case.
       CHARACTER*(*) string

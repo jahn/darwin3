@@ -134,6 +134,10 @@ C       |-- OASIS_READPARMS
 C       |
 C       |-- RUNCLOCK_READPARMS
 C       |
+C       |-- TIDES_READPARMS
+C       |
+C       |-- SAL_READPARMS
+C       |
 C       |-- MYPACKAGE_READPARMS
 
 C     !USES:
@@ -422,6 +426,16 @@ C--   set Coupling parameters
 #ifdef ALLOW_RUNCLOCK
 C--   if useRunClock=T, set RUNCLOCK parameters; otherwise just return
       CALL RUNCLOCK_READPARMS( myThid )
+#endif
+
+#ifdef ALLOW_TIDES
+C--   if useTIDES=T, set tides parameters; otherwise just return
+      CALL TIDES_READPARMS( myThid )
+#endif
+
+#ifdef ALLOW_SAL
+C--   if useSAL=T, set sal parameters; otherwise just return
+      CALL SAL_READPARMS( myThid )
 #endif
 
 #ifdef ALLOW_MYPACKAGE

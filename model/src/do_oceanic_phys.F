@@ -122,6 +122,8 @@ C       |-- OFFLINE_GET_DIFFUS
 C       |
 C       |-- BBL_CALC_RHS
 C       |
+C       |-- TIDES_FORCING
+C       |
 C       |-- MYPACKAGE_CALC_RHS
 C       |
 C       |-- GMREDI_DO_EXCH
@@ -129,6 +131,10 @@ C       |
 C       |-- KPP_DO_EXCH
 C       |
 C       |-- GGL90_EXCHANGES
+C       |
+C       |-- CALC_PHIBOT_FV
+C       |
+C       |-- SAL_APPLY
 C       |
 C       |-- DIAGS_RHO_G
 C       |-- DIAGS_OCEANIC_SURF_FLUX
@@ -144,6 +150,7 @@ C     == Global variables ===
 #include "PARAMS.h"
 #include "GRID.h"
 #include "DYNVARS.h"
+#include "FFIELDS.h"
 #ifdef ALLOW_TIMEAVE
 # include "TIMEAVE_STATV.h"
 #endif
@@ -156,7 +163,6 @@ C     == Global variables ===
 # ifdef ALLOW_AUTODIFF_TAMC
 #  include "tamc.h"
 # endif
-# include "FFIELDS.h"
 # include "SURFACE.h"
 # include "EOS.h"
 # ifdef ALLOW_GMREDI
@@ -1090,6 +1096,12 @@ C---  if fluid Is Water: end
       ENDIF
 #endif /* ALLOW_BBL */
 
+#ifdef ALLOW_TIDES
+      IF (useTIDES) THEN
+        CALL TIDES_FORCING(myTime, myIter, myThid)
+      ENDIF
+#endif /* ALLOW_TIDES */
+
 #ifdef ALLOW_MYPACKAGE
       IF ( useMYPACKAGE ) THEN
        CALL MYPACKAGE_CALC_RHS(
@@ -1114,23 +1126,38 @@ C---  if fluid Is Water: end
      &  CALL GGL90_EXCHANGES( myThid )
 #endif /* ALLOW_GGL90 */
 
+
+#ifdef INCLUDE_PHIBOT_FV_CODE
+      CALL CALC_PHIBOT_FV(myTime, myIter, myThid)
+#endif
+
+#ifdef ALLOW_SAL
+      IF (useSAL) THEN
+# ifdef ALLOW_DEBUG
+        IF (debugMode) CALL DEBUG_CALL('SAL_APPLY',myThid)
+# endif
+        CALL TIMER_START('SAL_APPLY       [DO_OCEANIC_PHYS]', myThid)
+        CALL SAL_APPLY(myTime, myIter, myThid)
+        CALL TIMER_STOP ('SAL_APPLY       [DO_OCEANIC_PHYS]', myThid)
+      ENDIF
+#endif /* ALLOW_SAL */
 #ifdef ALLOW_DIAGNOSTICS
-      IF ( fluidIsWater .AND. useDiagnostics ) THEN
+      IF ( useDiagnostics ) THEN
+       IF ( fluidIsWater ) THEN
         CALL DIAGS_RHO_G(
      I                    rhoInSitu, uVel, vVel, wVel,
      I                    myTime, myIter, myThid )
-      ENDIF
-      IF ( useDiagnostics ) THEN
-        CALL DIAGS_OCEANIC_SURF_FLUX( myTime, myIter, myThid )
-      ENDIF
-      IF ( calcConvect .AND. useDiagnostics ) THEN
+       ENDIF
+       CALL DIAGS_OCEANIC_SURF_FLUX( myTime, myIter, myThid )
+       IF ( calcConvect ) THEN
         CALL DIAGNOSTICS_FILL( IVDConvCount, 'CONVADJ ',
      &                               0, Nr, 0, 1, 1, myThid )
-      ENDIF
+       ENDIF
+       CALL DIAGNOSTICS_FILL(phiTide2d,'phiTid2d',0,1,0,1,1,myThid)
 #ifdef ALLOW_SALT_PLUME
-      IF ( useDiagnostics )
-     &      CALL SALT_PLUME_DIAGNOSTICS_FILL(bi,bj,myThid)
+       CALL SALT_PLUME_DIAGNOSTICS_FILL(bi,bj,myThid)
 #endif
+      ENDIF
 #endif
 
 #ifdef ALLOW_DEBUG

@@ -129,7 +129,16 @@ cswd - end
      &    ksatDON,
      &    ksatDOC,
      &    ksatDOP,
-     &    ksatDOFe
+     &    ksatDOFe,
+cswd - viruse
+     &    isvirus,
+     &    isinfect,
+     &    v_absorp,
+     &    v_abeff,
+     &    v_latent,
+     &    v_burst,
+     &    v_dompomfrac
+cswd - end virus
 
       NAMELIST/DARWIN_DEPENDENT_TRAITS/
 #ifndef DARWIN_ALLOW_GEIDER

@@ -250,7 +250,16 @@ C     ksatDOFe           :: [mmol Fe m^-3]  half-saturation of DOFe for bacteria
      &    ksatDON,
      &    ksatDOC,
      &    ksatDOP,
-     &    ksatDOFe
+     &    ksatDOFe,
+cswd -viruses
+     &    isvirus,
+     &    isinfect,
+     &    v_absorp,
+     &    v_abeff,
+     &    v_latent,
+     &    v_burst,
+     &    v_dompomfrac
+cswd - end
       _RL Xmin(nplank)
       _RL amminhib(nplank)
       _RL acclimtimescl(nplank)
@@ -335,6 +344,15 @@ C     ksatDOFe           :: [mmol Fe m^-3]  half-saturation of DOFe for bacteria
       _RL ksatDOC(nplank)
       _RL ksatDOP(nplank)
       _RL ksatDOFe(nplank)
+cswd - virus
+      INTEGER isvirus(nplank)
+      INTEGER isinfect(nplank, nplank)
+      _RL v_absorp(nplank, nplank)
+      _RL v_abeff(nplank, nplank)
+      _RL v_latent(nplank, nplank)
+      _RL v_burst(nplank, nplank)
+      _RL v_dompomfrac(nplank, nplank)
+cswd - end
 
 C--   COMMON /DARWIN_DEPENDENT_TRAITS_i/ Dependent and constant (not read-in) parameters
 C     group  :: which group this type belongs to

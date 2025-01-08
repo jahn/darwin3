@@ -142,6 +142,10 @@ C     kinhPAR            :: [(uEin m^-2 s^-1)^-1]  inhibition coefficient for PA
 C- always defined
 C     mQyield            :: [mmol C (uEin)^-1]     maximum quantum yield
 C     chl2cmax           :: [mg Chl (mmol C)^-1]   maximum Chlorophyll-carbon ratio
+cswd --start
+C - growth flux from one plankton to another
+C     bioflux            :: [ ]             amount growth fluxing from one plankton to another
+cswd -- end
 C
 C- Grazing
 C     grazemax           :: [s^-1]          maximum grazing rate
@@ -230,6 +234,7 @@ C     ksatDOFe           :: [mmol Fe m^-3]  half-saturation of DOFe for bacteria
 #endif
      &    mQyield,
      &    chl2cmax,
+     &    bioflux,
      &    grazemax,
      &    kgrazesat,
      &    palat,
@@ -313,6 +318,7 @@ C     ksatDOFe           :: [mmol Fe m^-3]  half-saturation of DOFe for bacteria
 #endif
       _RL mQyield(nplank)
       _RL chl2cmax(nplank)
+      _RL bioflux(nplank,nplank)
       _RL grazemax(nplank)
       _RL kgrazesat(nplank)
       _RL palat(nplank,nplank)

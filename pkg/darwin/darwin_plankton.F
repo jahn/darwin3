@@ -304,6 +304,10 @@ C for grazing
       _RL graz2CDOM, exude_CDOM
 #endif
 
+cswd new parameter for trasnfer of biomass - this routine specific
+      _RL GROWvect(nplank)
+
+
       _RL DARWIN_EPS
       PARAMETER(DARWIN_EPS=1 _d -38)
 
@@ -698,6 +702,11 @@ C         only 1 waveband without DARWIN_ALLOW_GEIDER
 #endif /* DARWIN_ALLOW_GEIDER */
 
         photoSyn = PC*X(j)
+
+cswd autotroph growth save for transfering biomass from plankton to
+cswd plankton. This should also be done for zoo and bact, and for mixo
+cswd should be total growth, not just auto part
+       GROWvect(j)=PC
 
 C==== Respiration ======================================================
 C Respiration goes straight back to DIC, so we subtract from DIC uptake.
@@ -1477,6 +1486,34 @@ C==== Apply grazing tendencies =========================================
       ENDIF
       ENDDO
 #endif
+
+cswd transferring biomass from one plankton type to another
+      DO jp = 1, nPlank
+       DO jz = 1, nPlank
+        IF (bioflux(jz,jp).NE.0.0 _d 0.OR.
+     &      bioflux(jp,jz).NE.0.0 _d 0) THEN
+         gTr(ic+jp-1)=gTr(ic+jp-1)+
+     &                bioflux(jz,jp) * GROWvect(jz) * X(jz) -
+     &                bioflux(jp,jz) * GROWvect(jp) * X(jp)
+#ifdef DARWIN_ALLOW_NQUOTA
+         gTr(in+jp-1)=gTr(in+jp-1) +
+     &                bioflux(jz,jp) * GROWvect(jz) * X(jz) * Qn(jz) -
+     &                bioflux(jp,jz) * GROWvect(jp) * X(jp) * Qn(jp)
+#endif
+#ifdef DARWIN_ALLOW_PQUOTA
+         gTr(ip+jp-1)=gTr(ip+jp-1) +
+     &                bioflux(jz,jp) * GROWvect(jz) * X(jz) * Qp(jz) -
+     &                bioflux(jp,jz) * GROWvect(jp) * X(jp) * Qp(jp)
+#endif
+#ifdef DARWIN_ALLOW_FEQUOTA
+         gTr(ife+jp-1)=gTr(ife+jp-1) +
+     &                 bioflux(jz,jp) * GROWvect(jz) * X(jz) * Qfe(jz) -
+     &                 bioflux(jp,jz) * GROWvect(jp) * X(jp) * Qfe(jp)
+#endif
+        ENDIF
+       ENDDO
+      ENDDO
+cswd END CODE TO SHIFT BIOMASS BETWEEN PLANKTON
 
       DO jz = 1, nplank
       IF (isPred(jz).NE.0) THEN

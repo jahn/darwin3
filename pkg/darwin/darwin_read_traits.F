@@ -111,6 +111,9 @@
 #endif
      &    mQyield,
      &    chl2cmax,
+cswd -begin
+     &    bioflux,
+cswd - end
      &    grazemax,
      &    kgrazesat,
      &    palat,

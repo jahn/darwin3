@@ -309,7 +309,7 @@ cswd new parameter for trasnfer of biomass - this routine specific
 
 
 cswd new parameters for viruses - specific to this routine only
-      _RL vloss
+      _RL vloss, rinfect
       _RL qvirus, qplank, qinfect
       _RL qNinfect, qPinfect, qFeinfect, qSiinfect
       _RL vdetloss_abeff, vdetloss_burst
@@ -1548,26 +1548,25 @@ c
           IF (jI.NE.jS) THEN
 C          explicit infected class
 
+C individual infection rate (ind/m3/s)
+           rinfect = v_absorp(jS,jV)*X(jS)*X(jV)/qplank/qvirus
+
 c virus (jV) loses biomass (to infected or DOM if not successful
 c infection) - only if an explicit infected class
-           gTr(ic+jV-1)=gTr(ic+jV-1) -
-     &           v_absorp(jS,jV)*X(jS)*X(jV)/qplank
+           gTr(ic+jV-1)=gTr(ic+jV-1) - rinfect*qvirus
 
 c susceptible (jS) loses biomass due to successful infection
 c (to infected or fraction to virus if no explicit infected class)
-           gTr(ic+jS-1)=gTr(ic+jS-1) -
-     &           v_abeff(jS,jV)*v_absorp(jS,jV)*X(jS)*X(jV)/qvirus
+           gTr(ic+jS-1)=gTr(ic+jS-1) - v_abeff(jS,jV)*rinfect*qplank
 
 c infected (jI) obtains biomass from virus pool
 c and susceptible pool (only if explicit infected class)
            gTr(ic+jI-1)=gTr(ic+jI-1) +
-     &       v_abeff(jS,jV)*v_absorp(jS,jV)*X(jS)*X(jV)/qplank +
-     &       v_abeff(jS,jV)*v_absorp(jS,jV)*X(jS)*X(jV)/qvirus
+     &                  v_abeff(jS,jV)*rinfect*(qvirus + qplank)
 
 c virus biomass loss to detritus from unsuccessful infections
 c (only if explicit infected class)
-           vdetloss_abeff=(1.0 _d 0 - v_abeff(jS,jV)) *
-     &               v_absorp(jS,jV)*X(jS)*X(jV)/qplank
+           vdetloss_abeff=(1 _d 0 - v_abeff(jS,jV))*rinfect*qvirus
 
 c infected loses from lysis (to virus and DOM)
 c CASE where there is explicit infected class

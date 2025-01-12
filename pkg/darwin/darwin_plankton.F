@@ -1538,9 +1538,9 @@ cswd VIRUS CODE
       DO jV=1, nplank
        IF (isvirus(jV).NE.0) THEN
         DO jS=1, nplank
-         IF (v_absorp(jS,jV).GT.0. _d 0) THEN
+         jI=infected(jS,jV)
+         IF (jI.GT.0) THEN
 c explicit infected class jI does not equal jS
-          jI=infected(jS,jV)
           qvirus=QCARBON(jV)
           qplank=QCARBON(jS)
 c NBNBNB

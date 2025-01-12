@@ -1541,67 +1541,79 @@ cswd VIRUS CODE
          IF (v_absorp(jS,jV).GT.0. _d 0) THEN
 c explicit infected class jI does not equal jS
           jI=isinfect(jS,jV)
-c
           qvirus=QCARBON(jV)
           qplank=QCARBON(jS)
 c NBNBNB
 c need to insure this is correct combination of qvirus and qplank
 c         qinfect=QCARBON(jI)
 c
+          IF (jI.NE.jS) THEN
+C          explicit infected class
+
 c calculate C:N:P of infect
 c carbon/cell of infected class (assuming 1 viron infects 1 cell)
-          if (jI.NE.jS) then
-           qinfect=QCARBON(jS)+QCARBON(jV)
-           Qninfect=QCARBON(jS)*Qn(jS)+QCARBON(jV)*Qn(jV)
-           Qninfect=Qninfect/qinfect
-           Qpinfect=QCARBON(jS)*Qp(jS)+QCARBON(jV)*Qp(jV)
-           Qpinfect=Qpinfect/qinfect
-           Qfeinfect=QCARBON(jS)*Qfe(jS)+QCARBON(jV)*Qfe(jV)
-           Qfeinfect=Qfeinfect/qinfect
-           Qsiinfect=QCARBON(jS)*QSi(jS)+QCARBON(jV)*QSi(jV)
-           Qsiinfect=Qsiinfect/qinfect
-          else
+           qinfect = QCARBON(jS)+QCARBON(jV)
+           Qninfect = QCARBON(jS)*Qn(jS) + QCARBON(jV)*Qn(jV)
+           Qninfect = Qninfect/qinfect
+           Qpinfect = QCARBON(jS)*Qp(jS) + QCARBON(jV)*Qp(jV)
+           Qpinfect = Qpinfect/qinfect
+           Qfeinfect = QCARBON(jS)*Qfe(jS) + QCARBON(jV)*Qfe(jV)
+           Qfeinfect = Qfeinfect/qinfect
+           Qsiinfect = QCARBON(jS)*QSi(jS) + QCARBON(jV)*QSi(jV)
+           Qsiinfect = Qsiinfect/qinfect
+
+c virus (jV) loses biomass (to infected or DOM if not successful
+c infection) - only if an explicit infected class
+           gTr(ic+jV-1)=gTr(ic+jV-1) -
+     &           v_absorp(jS,jV)*X(jS)*X(jV)/qplank
+
+c susceptible (jS) loses biomass due to successful infection
+c (to infected or fraction to virus if no explicit infected class)
+           gTr(ic+jS-1)=gTr(ic+jS-1) -
+     &           v_abeff(jS,jV)*v_absorp(jS,jV)*X(jS)*X(jV)/qvirus
+
+c infected (jI) obtains biomass from virus pool
+c and susceptible pool (only if explicit infected class)
+           gTr(ic+jI-1)=gTr(ic+jI-1) +
+     &       v_abeff(jS,jV)*v_absorp(jS,jV)*X(jS)*X(jV)/qplank +
+     &       v_abeff(jS,jV)*v_absorp(jS,jV)*X(jS)*X(jV)/qvirus
+
+c virus biomass loss to detritus from unsuccessful infections
+c (only if explicit infected class)
+           vdetloss_abeff=(1.0 _d 0 - v_abeff(jS,jV)) *
+     &               v_absorp(jS,jV)*X(jS)*X(jV)/qplank
+
+c infected loses from lysis (to virus and DOM)
+c CASE where there is explicit infected class
+           vloss=X(jI)/v_latent(jS,jV)
+           gTr(ic+jI-1)=gTr(ic+jI-1) - vloss
+
+          ELSE
+C          no separate infected class
+
+c calculate C:N:P of infect
+c carbon/cell of infected class (assuming 1 viron infects 1 cell)
            qinfect=QCARBON(jS)
            Qninfect=Qn(jS)
            Qpinfect=Qp(jS)
            Qfeinfect=Qfe(jS)
            Qsiinfect=Qsi(jS)
-          endif
-c
-c virus (jV) loses biomass (to infected or DOM if not successful
-c infection) - only if an explicit infected class
-          if (jI.NE.jS) then
-           gTr(ic+jV-1)=gTr(ic+jV-1) -
-     &           v_absorp(jS,jV)*X(jS)*X(jV)/qplank
-          endif
+
 c susceptible (jS) loses biomass due to successful infection
 c (to infected or fraction to virus if no explicit infected class)
-          gTr(ic+jS-1)=gTr(ic+jS-1) -
+           gTr(ic+jS-1)=gTr(ic+jS-1) -
      &           v_abeff(jS,jV)*v_absorp(jS,jV)*X(jS)*X(jV)/qvirus
-c infected (jI) obtains biomass from virus pool
-c and susceptible pool (only if explicit infected class)
-          if (jI.NE.jS) then
-           gTr(ic+jI-1)=gTr(ic+jI-1) +
-     &       v_abeff(jS,jV)*v_absorp(jS,jV)*X(jS)*X(jV)/qplank +
-     &       v_abeff(jS,jV)*v_absorp(jS,jV)*X(jS)*X(jV)/qvirus
-          endif
+
 c virus biomass loss to detritus from unsuccessful infections
 c (only if explicit infected class)
-          if (jI.NE.jS) then
-           vdetloss_abeff=(1.0 _d 0 - v_abeff(jS,jV)) *
-     &               v_absorp(jS,jV)*X(jS)*X(jV)/qplank
-          else
            vdetloss_abeff=0.0 _d 0
-          endif
+
 c infected loses from lysis (to virus and DOM)
-          if (jI.NE.jS) then
-c CASE where there is explicit infected class
-           vloss=X(jI)/v_latent(jS,jV)
-           gTr(ic+jI-1)=gTr(ic+jI-1) - vloss
-          else
 c CASE where there is no explicit infected class
            vloss=v_abeff(jS,jV)*v_absorp(jS,jV)*X(jS)*X(jV)/qvirus
-          endif
+
+          ENDIF
+
 c virus gains from lysis
            vCgain = vloss * v_burst(jS,jV) *
      &                    qvirus/qinfect

@@ -61,7 +61,7 @@ CEOP
 
 c !LOCAL VARIABLES: ====================================================
       INTEGER j, l
-      INTEGER jz, jp
+      INTEGER jz, jp, jV, jS, jI
 
       _RL DIC
       _RL NH4
@@ -309,7 +309,6 @@ cswd new parameter for trasnfer of biomass - this routine specific
 
 
 cswd new parameters for viruses - specific to this routine only
-      INTEGER ninfect
       _RL vloss
       _RL qvirus, qplank, qinfect
       _RL qNinfect, qPinfect, qFeinfect, qSiinfect
@@ -1536,86 +1535,86 @@ C==== Apply grazing tendencies =========================================
 cswd VIRUS CODE
 
 
-      DO jp=1, nplank
-       IF (isvirus(jp).EQ.1) THEN
-        DO jz=1, nplank
-         IF (v_absorp(jz,jp).GT.0. _d 0) THEN
-c explicit infected class ninfect does not equal jz
-          ninfect=isinfect(jz,jp)
+      DO jV=1, nplank
+       IF (isvirus(jV).NE.0) THEN
+        DO jS=1, nplank
+         IF (v_absorp(jS,jV).GT.0. _d 0) THEN
+c explicit infected class jI does not equal jS
+          jI=isinfect(jS,jV)
 c
-          qvirus=QCARBON(jp)
-          qplank=QCARBON(jz)
+          qvirus=QCARBON(jV)
+          qplank=QCARBON(jS)
 c NBNBNB
 c need to insure this is correct combination of qvirus and qplank
-c         qinfect=QCARBON(ninfect)
+c         qinfect=QCARBON(jI)
 c
 c calculate C:N:P of infect
 c carbon/cell of infected class (assuming 1 viron infects 1 cell)
-          if (ninfect.NE.jz) then
-           qinfect=QCARBON(jz)+QCARBON(jp)
-           Qninfect=QCARBON(jz)*Qn(jz)+QCARBON(jp)*Qn(jp)
+          if (jI.NE.jS) then
+           qinfect=QCARBON(jS)+QCARBON(jV)
+           Qninfect=QCARBON(jS)*Qn(jS)+QCARBON(jV)*Qn(jV)
            Qninfect=Qninfect/qinfect
-           Qpinfect=QCARBON(jz)*Qp(jz)+QCARBON(jp)*Qp(jp)
+           Qpinfect=QCARBON(jS)*Qp(jS)+QCARBON(jV)*Qp(jV)
            Qpinfect=Qpinfect/qinfect
-           Qfeinfect=QCARBON(jz)*Qfe(jz)+QCARBON(jp)*Qfe(jp)
+           Qfeinfect=QCARBON(jS)*Qfe(jS)+QCARBON(jV)*Qfe(jV)
            Qfeinfect=Qfeinfect/qinfect
-           Qsiinfect=QCARBON(jz)*QSi(jz)+QCARBON(jp)*QSi(jp)
+           Qsiinfect=QCARBON(jS)*QSi(jS)+QCARBON(jV)*QSi(jV)
            Qsiinfect=Qsiinfect/qinfect
           else
-           qinfect=QCARBON(jz)
-           Qninfect=Qn(jz)
-           Qpinfect=Qp(jz)
-           Qfeinfect=Qfe(jz)
-           Qsiinfect=Qsi(jz)
+           qinfect=QCARBON(jS)
+           Qninfect=Qn(jS)
+           Qpinfect=Qp(jS)
+           Qfeinfect=Qfe(jS)
+           Qsiinfect=Qsi(jS)
           endif
 c
-c virus (jp) loses biomass (to infected or DOM if not successful
+c virus (jV) loses biomass (to infected or DOM if not successful
 c infection) - only if an explicit infected class
-          if (ninfect.NE.jz) then
-           gTr(ic+jp-1)=gTr(ic+jp-1) -
-     &           v_absorp(jz,jp)*X(jz)*X(jp)/qplank
+          if (jI.NE.jS) then
+           gTr(ic+jV-1)=gTr(ic+jV-1) -
+     &           v_absorp(jS,jV)*X(jS)*X(jV)/qplank
           endif
-c susceptible (jz) loses biomass due to successful infection
+c susceptible (jS) loses biomass due to successful infection
 c (to infected or fraction to virus if no explicit infected class)
-          gTr(ic+jz-1)=gTr(ic+jz-1) -
-     &           v_abeff(jz,jp)*v_absorp(jz,jp)*X(jz)*X(jp)/qvirus
-c infected (ninfect) obtains biomass from virus pool
+          gTr(ic+jS-1)=gTr(ic+jS-1) -
+     &           v_abeff(jS,jV)*v_absorp(jS,jV)*X(jS)*X(jV)/qvirus
+c infected (jI) obtains biomass from virus pool
 c and susceptible pool (only if explicit infected class)
-          if (ninfect.NE.jz) then
-           gTr(ic+ninfect-1)=gTr(ic+ninfect-1) +
-     &       v_abeff(jz,jp)*v_absorp(jz,jp)*X(jz)*X(jp)/qplank +
-     &       v_abeff(jz,jp)*v_absorp(jz,jp)*X(jz)*X(jp)/qvirus
+          if (jI.NE.jS) then
+           gTr(ic+jI-1)=gTr(ic+jI-1) +
+     &       v_abeff(jS,jV)*v_absorp(jS,jV)*X(jS)*X(jV)/qplank +
+     &       v_abeff(jS,jV)*v_absorp(jS,jV)*X(jS)*X(jV)/qvirus
           endif
 c virus biomass loss to detritus from unsuccessful infections
 c (only if explicit infected class)
-          if (ninfect.NE.jz) then
-           vdetloss_abeff=(1.0 _d 0 - v_abeff(jz,jp)) *
-     &               v_absorp(jz,jp)*X(jz)*X(jp)/qplank
+          if (jI.NE.jS) then
+           vdetloss_abeff=(1.0 _d 0 - v_abeff(jS,jV)) *
+     &               v_absorp(jS,jV)*X(jS)*X(jV)/qplank
           else
            vdetloss_abeff=0.0 _d 0
           endif
 c infected loses from lysis (to virus and DOM)
-          if (ninfect.NE.jz) then
+          if (jI.NE.jS) then
 c CASE where there is explicit infected class
-           vloss=X(ninfect)/v_latent(jz,jp)
-           gTr(ic+ninfect-1)=gTr(ic+ninfect-1) - vloss
+           vloss=X(jI)/v_latent(jS,jV)
+           gTr(ic+jI-1)=gTr(ic+jI-1) - vloss
           else
 c CASE where there is no explicit infected class
-           vloss=v_abeff(jz,jp)*v_absorp(jz,jp)*X(jz)*X(jp)/qvirus
+           vloss=v_abeff(jS,jV)*v_absorp(jS,jV)*X(jS)*X(jV)/qvirus
           endif
 c virus gains from lysis
-           vCgain = vloss * v_burst(jz,jp) *
+           vCgain = vloss * v_burst(jS,jV) *
      &                    qvirus/qinfect
-           gTr(ic+jp-1)=gTr(ic+jp-1) + vCgain
+           gTr(ic+jV-1)=gTr(ic+jV-1) + vCgain
 c calculate how much N,P,Fe does to virus
-           vNgain = vCgain* Qn(jp)
-           vPgain = vCgain* Qp(jp)
-           vFegain = vCgain* Qfe(jp)
-           vSigain = vCgain* Qsi(jp)
+           vNgain = vCgain* Qn(jV)
+           vPgain = vCgain* Qp(jV)
+           vFegain = vCgain* Qfe(jV)
+           vSigain = vCgain* Qsi(jV)
 c NBNBN check that this isn't more N,P,Fe,Si than is in infect NBNBN
 c
 c rest of dead infected cells going to detritus (POM+DOM)
-c          vdetloss_burst = vloss* (1.0 _d 0 - v_burst(jz,jp) *
+c          vdetloss_burst = vloss* (1.0 _d 0 - v_burst(jS,jV) *
 c    &                     qvirus/qinfect)
            vdetloss_burst = vloss - vCgain
 c calculate how much N,P,Fe,Si does to detritus
@@ -1626,22 +1625,22 @@ c calculate how much N,P,Fe,Si does to detritus
 
 c rest goes to detritus
 c fraction of lysis and all non-successful virons going to DOM
-          tmp = v_dompomfrac(jz,jp)
+          tmp = v_dompomfrac(jS,jV)
           vdocloss=vdocloss + tmp*vdetloss_burst + vdetloss_abeff
           vdonloss=vdonloss + tmp * vNdetloss_burst +
-     &             vdetloss_abeff * Qn(jp)
+     &             vdetloss_abeff * Qn(jV)
           vdoploss=vdoploss + tmp * vPdetloss_burst +
-     &             vdetloss_abeff * Qp(jp)
+     &             vdetloss_abeff * Qp(jV)
           vdofeloss=vdofeloss + tmp * vFedetloss_burst +
-     &              vdetloss_abeff * Qfe(jp)
+     &              vdetloss_abeff * Qfe(jV)
 c rest of lysis and non-successful cells going to POM
-          tmp = (1. _d 0 - v_dompomfrac(jz,jp))
+          tmp = (1. _d 0 - v_dompomfrac(jS,jV))
           vpocloss=vpocloss + tmp * vdetloss_burst
           vponloss=vponloss + tmp * vNdetloss_burst
           vpoploss=vpoploss + tmp * vPdetloss_burst
           vpofeloss=vpofeloss + tmp * vFedetloss_burst
 c for silica
-          tmp = vdetloss_abeff * Qsi(jp) +
+          tmp = vdetloss_abeff * Qsi(jV) +
      &          vSidetloss_burst
           vposiloss=vposiloss + tmp
         ENDIF

@@ -1543,24 +1543,10 @@ cswd VIRUS CODE
 c explicit infected class jI does not equal jS
           qvirus=QCARBON(jV)
           qplank=QCARBON(jS)
-c NBNBNB
-c need to insure this is correct combination of qvirus and qplank
-c         qinfect=QCARBON(jI)
+          qinfect=QCARBON(jI)
 c
           IF (jI.NE.jS) THEN
 C          explicit infected class
-
-c calculate C:N:P of infect
-c carbon/cell of infected class (assuming 1 viron infects 1 cell)
-           qinfect = QCARBON(jS)+QCARBON(jV)
-           Qninfect = QCARBON(jS)*Qn(jS) + QCARBON(jV)*Qn(jV)
-           Qninfect = Qninfect/qinfect
-           Qpinfect = QCARBON(jS)*Qp(jS) + QCARBON(jV)*Qp(jV)
-           Qpinfect = Qpinfect/qinfect
-           Qfeinfect = QCARBON(jS)*Qfe(jS) + QCARBON(jV)*Qfe(jV)
-           Qfeinfect = Qfeinfect/qinfect
-           Qsiinfect = QCARBON(jS)*QSi(jS) + QCARBON(jV)*QSi(jV)
-           Qsiinfect = Qsiinfect/qinfect
 
 c virus (jV) loses biomass (to infected or DOM if not successful
 c infection) - only if an explicit infected class
@@ -1590,14 +1576,6 @@ c CASE where there is explicit infected class
 
           ELSE
 C          no separate infected class
-
-c calculate C:N:P of infect
-c carbon/cell of infected class (assuming 1 viron infects 1 cell)
-           qinfect=QCARBON(jS)
-           Qninfect=Qn(jS)
-           Qpinfect=Qp(jS)
-           Qfeinfect=Qfe(jS)
-           Qsiinfect=Qsi(jS)
 
 c susceptible (jS) loses biomass due to successful infection
 c (to infected or fraction to virus if no explicit infected class)
@@ -1630,10 +1608,10 @@ c          vdetloss_burst = vloss* (1.0 _d 0 - v_burst(jS,jV) *
 c    &                     qvirus/qinfect)
            vdetloss_burst = vloss - vCgain
 c calculate how much N,P,Fe,Si does to detritus
-           vNdetloss_burst = vloss* Qninfect - vNgain
-           vPdetloss_burst = vloss* Qpinfect - vPgain
-           vFedetloss_burst = vloss* Qfeinfect - vFegain
-           vSidetloss_burst = vloss* Qsiinfect - vSigain
+           vNdetloss_burst = vloss* Qn(jI) - vNgain
+           vPdetloss_burst = vloss* Qp(jI) - vPgain
+           vFedetloss_burst = vloss* Qfe(jI) - vFegain
+           vSidetloss_burst = vloss* Qsi(jI) - vSigain
 
 c rest goes to detritus
 c fraction of lysis and all non-successful virons going to DOM

@@ -1676,27 +1676,28 @@ cswd END VIRUS CODE
 cswd transferring biomass from one plankton type to another
 c NBNBN need to make sure that quota and stoichometry are the same
 c for both plankton if fixed stoichometry
-      DO jp = 1, nPlank
-       DO jz = 1, nPlank
-        IF (bioflux(jz,jp).NE.0.0 _d 0.OR.
-     &      bioflux(jp,jz).NE.0.0 _d 0) THEN
-         gTr(ic+jp-1)=gTr(ic+jp-1)+
-     &                bioflux(jz,jp) * GROWvect(jz) * X(jz) -
-     &                bioflux(jp,jz) * GROWvect(jp) * X(jp)
+      DO jz = 1, nPlank
+       DO jp = 1, nPlank
+        IF (bioflux(jp,jz).NE.0.0 _d 0) THEN
+C        biomass flux if a fraction of growth of source type
+         tmp = bioflux(jp,jz)*GROWvect(jp)*X(jp)
+         gTr(ic+jz-1)=gTr(ic+jz-1) + tmp
+         gTr(ic+jp-1)=gTr(ic+jp-1) - tmp
 #ifdef DARWIN_ALLOW_NQUOTA
-         gTr(in+jp-1)=gTr(in+jp-1) +
-     &                bioflux(jz,jp) * GROWvect(jz) * X(jz) * Qn(jz) -
-     &                bioflux(jp,jz) * GROWvect(jp) * X(jp) * Qn(jp)
+         gTr(in+jz-1)=gTr(in+jz-1) + tmp*Qn(jp)
+         gTr(in+jp-1)=gTr(in+jp-1) - tmp*Qn(jp)
 #endif
 #ifdef DARWIN_ALLOW_PQUOTA
-         gTr(ip+jp-1)=gTr(ip+jp-1) +
-     &                bioflux(jz,jp) * GROWvect(jz) * X(jz) * Qp(jz) -
-     &                bioflux(jp,jz) * GROWvect(jp) * X(jp) * Qp(jp)
+         gTr(ip+jz-1)=gTr(ip+jz-1) + tmp*Qp(jp)
+         gTr(ip+jp-1)=gTr(ip+jp-1) - tmp*Qp(jp)
 #endif
 #ifdef DARWIN_ALLOW_FEQUOTA
-         gTr(ife+jp-1)=gTr(ife+jp-1) +
-     &                 bioflux(jz,jp) * GROWvect(jz) * X(jz) * Qfe(jz) -
-     &                 bioflux(jp,jz) * GROWvect(jp) * X(jp) * Qfe(jp)
+         gTr(ife+jz-1)=gTr(ife+jz-1) + tmp*Qfe(jp)
+         gTr(ife+jp-1)=gTr(ife+jp-1) - tmp*Qfe(jp)
+#endif
+#ifdef DARWIN_ALLOW_SIQUOTA
+         gTr(isi+jz-1)=gTr(isi+jz-1) + tmp*Qsi(jp)
+         gTr(isi+jp-1)=gTr(isi+jp-1) - tmp*Qsi(jp)
 #endif
         ENDIF
        ENDDO

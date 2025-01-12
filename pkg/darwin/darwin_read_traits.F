@@ -75,6 +75,7 @@
      &    R_PICPOC,
      &    biosink,
      &    bioswim,
+     &    qcarbon,
      &    respRate,
      &    PCmax,
      &    Qnmax,
@@ -150,7 +151,6 @@ cswd - end virus
      &    biovol,
      &    group,
      &    igroup,
-     &    qcarbon,
      &    biovol_bygroup,
      &    alpha_mean,
      &    chl2cmin

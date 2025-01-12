@@ -185,6 +185,7 @@
      &    a_acclimtimescl_denom,
      &    a_ksatPON,
      &    a_ksatDON,
+     &    a_bioflux,
      &    a_grazemax,
      &    a_grazemax_denom,
      &    b_grazemax,
@@ -560,6 +561,8 @@ C     [Mongin 2006]
       b_kexcFe = 0.00 _d 0
       grp_ExportFracPreyPred = 0.5 _d 0
       grp_ass_eff = 0.7 _d 0
+C     growth transfer fraction
+      a_bioflux = 0 _d 0
 
       READ(UNIT=iUnit, NML=DARWIN_TRAIT_PARAMS)
 

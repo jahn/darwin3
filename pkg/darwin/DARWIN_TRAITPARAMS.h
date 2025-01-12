@@ -365,6 +365,7 @@ C
      &    a_acclimtimescl_denom,
      &    a_ksatPON,
      &    a_ksatDON,
+     &    a_bioflux,
      &    a_grazemax,
      &    a_grazemax_denom,
      &    b_grazemax,

@@ -459,6 +459,17 @@ C     jp
       ENDDO
 
 C ======================================================================
+C growth transfer
+
+      DO jp2=1,nplank
+       g2 = group(jp2)
+       DO jp=1,nplank
+        g = group(jp)
+        bioflux(jp,jp2) = a_bioflux(g,g2)
+       ENDDO
+      ENDDO
+
+C ======================================================================
 C grazing
 
       DO jz=1,nplank

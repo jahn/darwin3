@@ -1532,8 +1532,33 @@ C==== Apply grazing tendencies =========================================
       ENDDO
 #endif
 
-cswd VIRUS CODE
+      DO jz = 1, nplank
+      IF (isPred(jz).NE.0) THEN
+       gTr(ic+jz-1)=gTr(ic+jz-1) + predgrazc(jz)
+#ifdef DARWIN_ALLOW_NQUOTA
+       gTr(in+jz-1)=gTr(in+jz-1) + predgrazn(jz)
+#endif
+#ifdef DARWIN_ALLOW_PQUOTA
+       gTr(ip+jz-1)=gTr(ip+jz-1) + predgrazp(jz)
+#endif
+#ifdef DARWIN_ALLOW_FEQUOTA
+       gTr(ife+jz-1)=gTr(ife+jz-1) + predgrazfe(jz)
+#endif
+      ENDIF
+      ENDDO
 
+#ifdef DARWIN_DIAG_PERTYPE
+      DO jp = 1, nplank
+        diags(iGRplank+jp-1) = preygraz(jp)
+      ENDDO
+      DO jz = 1, nplank
+        diags(iGrGn+jz-1) = predgrazc(jz)
+        diags(iGrGC+jz-1) = grazrate(jz)
+      ENDDO
+#endif
+
+C=======================================================================
+cswd VIRUS CODE
 
       DO jV=1, nplank
        IF (isvirus(jV).NE.0) THEN
@@ -1672,7 +1697,7 @@ c NBNBNB need to think if we use same cdom fraction as for other sources
 
 cswd END VIRUS CODE
 
-
+C=======================================================================
 cswd transferring biomass from one plankton type to another
 c NBNBN need to make sure that quota and stoichometry are the same
 c for both plankton if fixed stoichometry
@@ -1703,31 +1728,6 @@ C        biomass flux if a fraction of growth of source type
        ENDDO
       ENDDO
 cswd END CODE TO SHIFT BIOMASS BETWEEN PLANKTON
-
-      DO jz = 1, nplank
-      IF (isPred(jz).NE.0) THEN
-       gTr(ic+jz-1)=gTr(ic+jz-1) + predgrazc(jz)
-#ifdef DARWIN_ALLOW_NQUOTA
-       gTr(in+jz-1)=gTr(in+jz-1) + predgrazn(jz)
-#endif
-#ifdef DARWIN_ALLOW_PQUOTA
-       gTr(ip+jz-1)=gTr(ip+jz-1) + predgrazp(jz)
-#endif
-#ifdef DARWIN_ALLOW_FEQUOTA
-       gTr(ife+jz-1)=gTr(ife+jz-1) + predgrazfe(jz)
-#endif
-      ENDIF
-      ENDDO
-
-#ifdef DARWIN_DIAG_PERTYPE
-      DO jp = 1, nplank
-        diags(iGRplank+jp-1) = preygraz(jp)
-      ENDDO
-      DO jz = 1, nplank
-        diags(iGrGn+jz-1) = predgrazc(jz)
-        diags(iGrGC+jz-1) = grazrate(jz)
-      ENDDO
-#endif
 
 C=======================================================================
 C==== Mortality and parameterized exudation ============================

@@ -1540,7 +1540,7 @@ cswd VIRUS CODE
         DO jS=1, nplank
          IF (v_absorp(jS,jV).GT.0. _d 0) THEN
 c explicit infected class jI does not equal jS
-          jI=isinfect(jS,jV)
+          jI=infected(jS,jV)
           qvirus=QCARBON(jV)
           qplank=QCARBON(jS)
 c NBNBNB

@@ -253,7 +253,7 @@ C     ksatDOFe           :: [mmol Fe m^-3]  half-saturation of DOFe for bacteria
      &    ksatDOFe,
 cswd -viruses
      &    isvirus,
-     &    isinfect,
+     &    infected,
      &    v_absorp,
      &    v_abeff,
      &    v_latent,
@@ -346,7 +346,7 @@ cswd - end
       _RL ksatDOFe(nplank)
 cswd - virus
       INTEGER isvirus(nplank)
-      INTEGER isinfect(nplank, nplank)
+      INTEGER infected(nplank, nplank)
       _RL v_absorp(nplank, nplank)
       _RL v_abeff(nplank, nplank)
       _RL v_latent(nplank, nplank)

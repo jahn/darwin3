@@ -132,7 +132,7 @@ cswd - end
      &    ksatDOFe,
 cswd - viruse
      &    isvirus,
-     &    isinfect,
+     &    infected,
      &    v_absorp,
      &    v_abeff,
      &    v_latent,

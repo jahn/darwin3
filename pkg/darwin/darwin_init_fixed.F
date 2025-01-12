@@ -38,8 +38,9 @@ CEOP
 
 C     !LOCAL VARIABLES:
       CHARACTER*(MAX_LEN_MBUF) msgBuf
-      integer iUnit, oUnit1, oUnit2, k, jp
+      integer iUnit, oUnit1, oUnit2, k, jp, jV, jS, jI, nerror
       integer idummy
+      _RL qinfect, Qninfect, Qpinfect, Qfeinfect, Qsiinfect
 #ifdef ALLOW_RADTRANS
       character*80 title
       integer ios, i, l, ilambda
@@ -400,6 +401,93 @@ C read (overrides generated) and write trait namelists
       WRITE(msgBuf,'(A)') ' ==================================='
       CALL PRINT_MESSAGE( msgBuf, standardMessageUnit,
      &                    SQUEEZE_RIGHT, myThid )
+
+C ======================================================================
+C compute infected type quotas (including qcarbon) from virus and host
+
+#ifdef DARWIN_SET_INFECTED_QUOTAS
+      DO jV=1,nplank
+       IF (isvirus(jV).NE.0) THEN
+        DO jS=1,nplank
+         jI = infected(jS,jV)
+         IF (jI.NE.0 .AND. jI.NE.jS) THEN
+c explicit infected class jI does not equal jS
+          qinfect = QCARBON(jS) + QCARBON(jV)
+          QCARBON(jI) = qinfect
+#ifdef DARWIN_ALLOW_NQUOTA
+          Qninfect = QCARBON(jS)*R_NC(jS) + QCARBON(jV)*R_NC(jV)
+          R_NC(jI) = Qninfect/qinfect
+#endif
+#ifdef DARWIN_ALLOW_PQUOTA
+          Qpinfect = QCARBON(jS)*R_PC(jS) + QCARBON(jV)*R_PC(jV)
+          R_PC(jI) = Qpinfect/qinfect
+#endif
+#ifdef DARWIN_ALLOW_FEQUOTA
+          Qfeinfect = QCARBON(jS)*R_FeC(jS) + QCARBON(jV)*R_FeC(jV)
+          R_FeC(jI) = Qfeinfect/qinfect
+#endif
+#ifdef DARWIN_ALLOW_SIQUOTA
+          Qsiinfect = QCARBON(jS)*R_SiC(jS) + QCARBON(jV)*R_SiC(jV)
+          R_SiC(jI) = Qsiinfect/qinfect
+#endif
+         ENDIF
+        ENDDO
+       ENDIF
+      ENDDO
+#endif
+
+C ======================================================================
+C check infected type quotas against virus and host
+
+      DO jV=1,nplank
+       DO jS=1,nplank
+        jI = infected(jS,jV)
+        IF (jI.NE.0) THEN
+         IF (isvirus(jV).EQ.0) THEN
+          WRITE(msgBuf,'(2A,I4)')'DARWIN_INIT_FIXED: ',
+     &     'infected(jS,jV) nonzero for non-virus jV', jV
+          CALL PRINT_ERROR( msgBuf, myThid )
+          STOP 'ABNORMAL END: S/R DARWIN_INIT_FIXED'
+         ENDIF
+         IF (jI.NE.jS) THEN
+          nerror = 0
+          qinfect = QCARBON(jS) + QCARBON(jV)
+          IF (qinfect .NE. QCARBON(jI)) nerror = nerror + 1
+#ifdef DARWIN_ALLOW_NQUOTA
+          Qninfect = QCARBON(jS)*R_NC(jS) + QCARBON(jV)*R_NC(jV)
+          Qninfect = Qninfect/qinfect
+          IF (qninfect .NE. R_NC(jI)) nerror = nerror + 1
+#endif
+#ifdef DARWIN_ALLOW_PQUOTA
+          Qpinfect = QCARBON(jS)*R_PC(jS) + QCARBON(jV)*R_PC(jV)
+          Qpinfect = Qpinfect/qinfect
+          IF (qpinfect .NE. R_PC(jI)) nerror = nerror + 1
+#endif
+#ifdef DARWIN_ALLOW_FEQUOTA
+          Qfeinfect = QCARBON(jS)*R_FeC(jS) + QCARBON(jV)*R_FeC(jV)
+          Qfeinfect = Qfeinfect/qinfect
+          IF (qfeinfect .NE. R_FeC(jI)) nerror = nerror + 1
+#endif
+#ifdef DARWIN_ALLOW_SIQUOTA
+          Qsiinfect = QCARBON(jS)*R_SiC(jS) + QCARBON(jV)*R_SiC(jV)
+          Qsiinfect = Qsiinfect/qinfect
+          IF (qsiinfect .NE. R_SiC(jI)) nerror = nerror + 1
+#endif
+          IF (nerror .GT. 0) THEN
+           WRITE(msgBuf,'(2A)')'DARWIN_INIT_FIXED: ',
+     &      'infected stoichiometry not matching host+virus at'
+           CALL PRINT_ERROR( msgBuf, myThid )
+           WRITE(msgBuf,'(2A,I4,A,I4,A,I4)')'DARWIN_INIT_FIXED: ',
+     &      'infected(',jS,',', jV,')=',jI
+           CALL PRINT_ERROR( msgBuf, myThid )
+           STOP 'ABNORMAL END: S/R DARWIN_INIT_FIXED'
+          ENDIF
+C        jI.NE.jS
+         ENDIF
+C       infected(jS,jV) .NE. 0
+        ENDIF
+       ENDDO
+      ENDDO
 
 C ======================================================================
 C deprecation checks

@@ -116,6 +116,11 @@ C turn off grazing temperature dependence
 #undef  DARWIN_NOZOOTEMP
 
 
+C virus
+
+#undef DARWIN_SET_INFECTED_QUOTAS
+
+
 C temperature
 
 C turn off all temperature dependence

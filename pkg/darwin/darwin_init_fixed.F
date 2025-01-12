@@ -40,7 +40,7 @@ C     !LOCAL VARIABLES:
       CHARACTER*(MAX_LEN_MBUF) msgBuf
       integer iUnit, oUnit1, oUnit2, k, jp, jp2, jV, jS, jI, nerror
       integer idummy
-      _RL qinfect, Qninfect, Qpinfect, Qfeinfect, Qsiinfect
+      _RL qinfect, Qninfect, Qpinfect, Qfeinfect, Qsiinfect, qVoverI
 #ifdef ALLOW_RADTRANS
       character*80 title
       integer ios, i, l, ilambda
@@ -484,6 +484,42 @@ C check infected type quotas against virus and host
           ENDIF
 C        jI.NE.jS
          ENDIF
+C
+C check infected losses can cover virus gains for non-quota elements
+         qVoverI = QCARBON(jV)/QCARBON(jI)
+#ifndef DARWIN_ALLOW_NQUOTA
+         IF (v_burst(jS,jV)*qVoverI*R_NC(jV) .GT. R_NC(jI)) THEN
+          WRITE(msgBuf,'(2A,I4,A,I4,A,I4,A)')'DARWIN_INIT_FIXED: ',
+     &     'infected R_NC(',jI,') too low for v_burst(',jS,',',jV,')'
+          CALL PRINT_ERROR( msgBuf, myThid )
+          STOP 'ABNORMAL END: S/R DARWIN_INIT_FIXED'
+         ENDIF
+#endif
+#ifndef DARWIN_ALLOW_PQUOTA
+         IF (v_burst(jS,jV)*qVoverI*R_PC(jV) .GT. R_PC(jI)) THEN
+          WRITE(msgBuf,'(2A,I4,A,I4,A,I4,A)')'DARWIN_INIT_FIXED: ',
+     &     'infected R_PC(',jI,') too low for v_burst(',jS,',',jV,')'
+          CALL PRINT_ERROR( msgBuf, myThid )
+          STOP 'ABNORMAL END: S/R DARWIN_INIT_FIXED'
+         ENDIF
+#endif
+#ifndef DARWIN_ALLOW_FEQUOTA
+         IF (v_burst(jS,jV)*qVoverI*R_FeC(jV) .GT. R_FeC(jI)) THEN
+          WRITE(msgBuf,'(2A,I4,A,I4,A,I4,A)')'DARWIN_INIT_FIXED: ',
+     &     'infected R_FeC(',jI,') too low for v_burst(',jS,',',jV,')'
+          CALL PRINT_ERROR( msgBuf, myThid )
+          STOP 'ABNORMAL END: S/R DARWIN_INIT_FIXED'
+         ENDIF
+#endif
+#ifndef DARWIN_ALLOW_SIQUOTA
+         IF (v_burst(jS,jV)*qVoverI*R_SiC(jV) .GT. R_SiC(jI)) THEN
+          WRITE(msgBuf,'(2A,I4,A,I4,A,I4,A)')'DARWIN_INIT_FIXED: ',
+     &     'infected R_SiC(',jI,') too low for v_burst(',jS,',',jV,')'
+          CALL PRINT_ERROR( msgBuf, myThid )
+          STOP 'ABNORMAL END: S/R DARWIN_INIT_FIXED'
+         ENDIF
+#endif
+
 C       infected(jS,jV) .NE. 0
         ENDIF
        ENDDO

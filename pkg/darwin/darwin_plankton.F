@@ -1592,25 +1592,24 @@ c CASE where there is no explicit infected class
           ENDIF
 
 c virus gains from lysis
-           vCgain = vloss * v_burst(jS,jV) *
-     &                    qvirus/qinfect
-           gTr(ic+jV-1)=gTr(ic+jV-1) + vCgain
+          vCgain = vloss * v_burst(jS,jV)*qvirus/qinfect
+          gTr(ic+jV-1)=gTr(ic+jV-1) + vCgain
 c calculate how much N,P,Fe does to virus
-           vNgain = vCgain* Qn(jV)
-           vPgain = vCgain* Qp(jV)
-           vFegain = vCgain* Qfe(jV)
-           vSigain = vCgain* Qsi(jV)
+          vNgain = vCgain* Qn(jV)
+          vPgain = vCgain* Qp(jV)
+          vFegain = vCgain* Qfe(jV)
+          vSigain = vCgain* Qsi(jV)
 c NBNBN check that this isn't more N,P,Fe,Si than is in infect NBNBN
 c
 c rest of dead infected cells going to detritus (POM+DOM)
 c          vdetloss_burst = vloss* (1.0 _d 0 - v_burst(jS,jV) *
 c    &                     qvirus/qinfect)
-           vdetloss_burst = vloss - vCgain
+          vdetloss_burst = vloss - vCgain
 c calculate how much N,P,Fe,Si does to detritus
-           vNdetloss_burst = vloss* Qn(jI) - vNgain
-           vPdetloss_burst = vloss* Qp(jI) - vPgain
-           vFedetloss_burst = vloss* Qfe(jI) - vFegain
-           vSidetloss_burst = vloss* Qsi(jI) - vSigain
+          vNdetloss_burst = vloss* Qn(jI) - vNgain
+          vPdetloss_burst = vloss* Qp(jI) - vPgain
+          vFedetloss_burst = vloss* Qfe(jI) - vFegain
+          vSidetloss_burst = vloss* Qsi(jI) - vSigain
 
 c rest goes to detritus
 c fraction of lysis and all non-successful virons going to DOM
@@ -1632,23 +1631,23 @@ c for silica
           tmp = vdetloss_abeff * Qsi(jV) +
      &          vSidetloss_burst
           vposiloss=vposiloss + tmp
-        ENDIF
+         ENDIF
         ENDDO
        ENDIF
       ENDDO
 
 c Change to detrital pools
 c fraction to DOM
-          gTr(iDOC) = gTr(iDOC) + vdocloss
-          gTr(iDON) = gTr(iDON) + vdonloss
-          gTr(iDOP) = gTr(iDOP) + vdoploss
-          gTr(iDOFe) = gTr(iDOFe) + vdofeloss
+      gTr(iDOC) = gTr(iDOC) + vdocloss
+      gTr(iDON) = gTr(iDON) + vdonloss
+      gTr(iDOP) = gTr(iDOP) + vdoploss
+      gTr(iDOFe) = gTr(iDOFe) + vdofeloss
 c fraction to POM
-          gTr(iPOC) = gTr(iPOC) + vpocloss
-          gTr(iPON) = gTr(iPON) + vponloss
-          gTr(iPOP) = gTr(iPOP) + vpoploss
-          gTr(iPOFe) = gTr(iPOFe) + vpofeloss
-          gTr(iPOSi) = gTr(iPOSi) + vposiloss
+      gTr(iPOC) = gTr(iPOC) + vpocloss
+      gTr(iPON) = gTr(iPON) + vponloss
+      gTr(iPOP) = gTr(iPOP) + vpoploss
+      gTr(iPOFe) = gTr(iPOFe) + vpofeloss
+      gTr(iPOSi) = gTr(iPOSi) + vposiloss
 c fraction to CDOM
 #ifdef DARWIN_ALLOW_CDOM
 # ifdef DARWIN_CDOM_UNITS_CARBON

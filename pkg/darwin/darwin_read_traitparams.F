@@ -271,9 +271,14 @@
      &    a_kexcFe,
      &    b_kexcFe,
      &    grp_ExportFracPreyPred,
-     &    grp_ass_eff
-
-
+     &    grp_ass_eff,
+     &    grp_virus,
+     &    grp_infected,
+     &    a_v_absorp,
+     &    a_v_abeff,
+     &    a_v_latent,
+     &    a_v_burst,
+     &    a_v_dompomfrac
 
       _RL pday
 
@@ -422,6 +427,8 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       grp_tempMort = 1
       grp_tempMort2 = 1
       grp_tempGraz = 1
+      grp_virus = 0
+      grp_infected = 0
 C     used to be 120D-20 for phyto
       a_Xmin = 0 _d 0
       a_R_NC = 16.0 _d 0/120.0 _d 0
@@ -563,6 +570,13 @@ C     [Mongin 2006]
       grp_ass_eff = 0.7 _d 0
 C     growth transfer fraction
       a_bioflux = 0 _d 0
+C     virus parameters
+      a_v_absorp = 1.7 _d -19
+      a_v_abeff = 1 _d 0
+      a_v_latent = 86400 _d 0
+      a_v_burst = 20 _d 0
+      a_v_dompomfrac = 0.5 _d 0
+
 
       READ(UNIT=iUnit, NML=DARWIN_TRAIT_PARAMS)
 

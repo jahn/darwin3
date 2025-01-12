@@ -272,7 +272,9 @@ C     grp_tempGraz           :: -> tempGraz
      &    grp_aptype,
      &    grp_tempMort,
      &    grp_tempMort2,
-     &    grp_tempGraz
+     &    grp_tempGraz,
+     &    grp_virus,
+     &    grp_infected
       INTEGER darwin_select_kn_allom
       INTEGER logvol0ind(nGroup)
       INTEGER grp_nplank(nGroup)
@@ -293,6 +295,8 @@ C     grp_tempGraz           :: -> tempGraz
       INTEGER grp_tempMort(nGroup)
       INTEGER grp_tempMort2(nGroup)
       INTEGER grp_tempGraz(nGroup)
+      INTEGER grp_virus(nGroup)
+      INTEGER grp_infected(nGroup,nGroup)
 
 C--   COMMON /DARWIN_TRAIT_PARAMS_r/ Used in darwin_generate_allometric
 C     logvolbase             :: []    log-10 base for list of volumes
@@ -451,7 +455,12 @@ C
      &    a_kexcFe,
      &    b_kexcFe,
      &    grp_ExportFracPreyPred,
-     &    grp_ass_eff
+     &    grp_ass_eff,
+     &    a_v_absorp,
+     &    a_v_abeff,
+     &    a_v_latent,
+     &    a_v_burst,
+     &    a_v_dompomfrac
       _RL logvolbase
       _RL logvolinc
       _RL biovol0(nGroup)
@@ -584,6 +593,12 @@ C
       _RL b_kexcFe(nGroup)
       _RL grp_ExportFracPreyPred(nGroup,nGroup)
       _RL grp_ass_eff(nGroup,nGroup)
+      _RL a_bioflux(nGroup,nGroup)
+      _RL a_v_absorp(nGroup,nGroup)
+      _RL a_v_abeff(nGroup,nGroup)
+      _RL a_v_latent(nGroup,nGroup)
+      _RL a_v_burst(nGroup,nGroup)
+      _RL a_v_dompomfrac(nGroup,nGroup)
 
 #endif /* ALLOW_DARWIN */
 

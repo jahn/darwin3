@@ -36,7 +36,7 @@ C !LOCAL VARIABLES: ====================================================
 C     msgBuf   :: Informational/error meesage buffer
       CHARACTER*(MAX_LEN_MBUF) msgBuf
       INTEGER jpg(nGroup)
-      INTEGER jp,jp2,jz,g,gz,l,gmin,iopt
+      INTEGER jp,jp2,jz,jS,jI,jV,g,g2,gz,gS,gI,gV,l,gmin,iopt
       _RL logvol, vol, volmin
       _RL pp_opt, pp_sig, prd_pry
       _RL kappa
@@ -466,6 +466,25 @@ C growth transfer
        DO jp=1,nplank
         g = group(jp)
         bioflux(jp,jp2) = a_bioflux(g,g2)
+       ENDDO
+      ENDDO
+
+C ======================================================================
+C virus
+
+      DO jV=1,nplank
+       gV = group(jV)
+       isvirus(jV) = grp_virus(gV)
+       DO jS=1,nplank
+        gS = group(jS)
+        infected(jS,jV) = grp_infected(gS,gV)
+        IF (infected(jS,jV) .NE. 0) THEN
+         v_absorp(jS,jV)     = a_v_absorp(gS,gV)
+         v_abeff(jS,jV)      = a_v_abeff(gS,gV)
+         v_latent(jS,jV)     = a_v_latent(gS,gV)
+         v_burst(jS,jV)      = a_v_burst(gS,gV)
+         v_dompomfrac(jS,jV) = a_v_dompomfrac(gS,gV)
+        ENDIF
        ENDDO
       ENDDO
 

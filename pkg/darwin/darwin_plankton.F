@@ -1699,8 +1699,7 @@ cswd END VIRUS CODE
 
 C=======================================================================
 cswd transferring biomass from one plankton type to another
-c NBNBN need to make sure that quota and stoichometry are the same
-c for both plankton if fixed stoichometry
+
       DO jz = 1, nPlank
        DO jp = 1, nPlank
         IF (bioflux(jp,jz).NE.0.0 _d 0) THEN
@@ -1727,7 +1726,6 @@ C        biomass flux if a fraction of growth of source type
         ENDIF
        ENDDO
       ENDDO
-cswd END CODE TO SHIFT BIOMASS BETWEEN PLANKTON
 
 C=======================================================================
 C==== Mortality and parameterized exudation ============================

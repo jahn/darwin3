@@ -38,7 +38,7 @@ CEOP
 
 C     !LOCAL VARIABLES:
       CHARACTER*(MAX_LEN_MBUF) msgBuf
-      integer iUnit, oUnit1, oUnit2, k, jp, jV, jS, jI, nerror
+      integer iUnit, oUnit1, oUnit2, k, jp, jp2, jV, jS, jI, nerror
       integer idummy
       _RL qinfect, Qninfect, Qpinfect, Qfeinfect, Qsiinfect
 #ifdef ALLOW_RADTRANS
@@ -485,6 +485,36 @@ C check infected type quotas against virus and host
 C        jI.NE.jS
          ENDIF
 C       infected(jS,jV) .NE. 0
+        ENDIF
+       ENDDO
+      ENDDO
+
+C ======================================================================
+C check growth flux between types occurs only with same stoich
+
+      DO jp=1,nplank
+       DO jp2=1,nplank
+        IF (bioflux(jp,jp2) .NE. 0 _d 0) THEN
+         nerror = 0
+#ifndef DARWIN_ALLOW_NQUOTA
+         IF (R_NC(jp) .NE. R_NC(jp2)) nerror = nerror + 1
+#endif
+#ifndef DARWIN_ALLOW_PQUOTA
+         IF (R_PC(jp) .NE. R_PC(jp2)) nerror = nerror + 1
+#endif
+#ifndef DARWIN_ALLOW_FEQUOTA
+         IF (R_FeC(jp) .NE. R_FeC(jp2)) nerror = nerror + 1
+#endif
+#ifndef DARWIN_ALLOW_SIQUOTA
+         IF (R_SiC(jp) .NE. R_SiC(jp2)) nerror = nerror + 1
+#endif
+         IF (nerror .GT. 0) THEN
+          WRITE(msgBuf,'(2A,2I5)')'DARWIN_INIT_FIXED: ',
+     &     'stoichiometry mismatch between types with nonzero bioflux',
+     &     jp, jp2
+          CALL PRINT_ERROR( msgBuf, myThid )
+          STOP 'ABNORMAL END: S/R DARWIN_INIT_FIXED'
+         ENDIF
         ENDIF
        ENDDO
       ENDDO

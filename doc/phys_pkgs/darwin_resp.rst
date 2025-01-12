@@ -43,6 +43,8 @@ NO\ :sub:`3`,
 For non-phototrophs, all nitrogen goes to NO\ :sub:`3`.
 
 
+.. _RespParams:
+
 Parameters
 ''''''''''
 

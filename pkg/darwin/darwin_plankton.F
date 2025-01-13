@@ -1564,12 +1564,12 @@ cswd VIRUS CODE
        IF (isvirus(jV).NE.0) THEN
         DO jS=1, nplank
          jI=infected(jS,jV)
+C is this a susceptible host-virus pair?
          IF (jI.GT.0) THEN
-c explicit infected class jI does not equal jS
           qvirus=QCARBON(jV)
           qplank=QCARBON(jS)
           qinfect=QCARBON(jI)
-c
+
           IF (jI.NE.jS) THEN
 C          explicit infected class
 
@@ -1577,49 +1577,39 @@ C individual infection rate (ind/m3/s)
            rinfect = v_absorp(jS,jV)*X(jS)*X(jV)/qplank/qvirus
 
 c virus (jV) loses biomass (to infected or DOM if not successful
-c infection) - only if an explicit infected class
+c infection)
            gTr(ic+jV-1)=gTr(ic+jV-1) - rinfect*qvirus
 
 c susceptible (jS) loses biomass due to successful infection
-c (to infected or fraction to virus if no explicit infected class)
            gTr(ic+jS-1)=gTr(ic+jS-1) - v_abeff(jS,jV)*rinfect*qplank
 
-c infected (jI) obtains biomass from virus pool
-c and susceptible pool (only if explicit infected class)
+c infected (jI) obtains biomass from virus pool and susceptible pool
            gTr(ic+jI-1)=gTr(ic+jI-1) +
      &                  v_abeff(jS,jV)*rinfect*(qvirus + qplank)
 
 c virus biomass loss to detritus from unsuccessful infections
-c (only if explicit infected class)
            vdetloss_abeff=(1 _d 0 - v_abeff(jS,jV))*rinfect*qvirus
 
 c infected loses from lysis (to virus and DOM)
-c CASE where there is explicit infected class
            vloss=X(jI)/v_latent(jS,jV)
            gTr(ic+jI-1)=gTr(ic+jI-1) - vloss
 
           ELSE
 C          no separate infected class
 
-c susceptible (jS) loses biomass due to successful infection
-c (to infected or fraction to virus if no explicit infected class)
-           gTr(ic+jS-1)=gTr(ic+jS-1) -
-     &           v_abeff(jS,jV)*v_absorp(jS,jV)*X(jS)*X(jV)/qvirus
-
-c virus biomass loss to detritus from unsuccessful infections
-c (only if explicit infected class)
-           vdetloss_abeff=0.0 _d 0
-
-c infected loses from lysis (to virus and DOM)
-c CASE where there is no explicit infected class
+c lysis products taken from susceptible, will go to virus and OM
            vloss=v_abeff(jS,jV)*v_absorp(jS,jV)*X(jS)*X(jV)/qvirus
+           gTr(ic+jS-1)=gTr(ic+jS-1) - vloss
+
+c unsuccessful infection is implicit without explicit infected class
+           vdetloss_abeff=0.0 _d 0
 
           ENDIF
 
 c virus gains from lysis
           vCgain = vloss * v_burst(jS,jV)*qvirus/qinfect
           gTr(ic+jV-1)=gTr(ic+jV-1) + vCgain
-c calculate how much N,P,Fe does to virus
+c calculate how much N,P,Fe goes to virus
           vNgain = vCgain* Qn(jV)
           vPgain = vCgain* Qp(jV)
           vFegain = vCgain* Qfe(jV)
@@ -1630,7 +1620,8 @@ c rest of dead infected cells going to detritus (POM+DOM)
 c          vdetloss_burst = vloss* (1.0 _d 0 - v_burst(jS,jV) *
 c    &                     qvirus/qinfect)
           vdetloss_burst = vloss - vCgain
-c calculate how much N,P,Fe,Si does to detritus
+c calculate how much N,P,Fe,Si goes to detritus
+c (stoich will be of susceptible if no explicit infected class since jI=jS)
           vNdetloss_burst = vloss* Qn(jI) - vNgain
           vPdetloss_burst = vloss* Qp(jI) - vPgain
           vFedetloss_burst = vloss* Qfe(jI) - vFegain

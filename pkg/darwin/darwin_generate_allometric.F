@@ -465,12 +465,16 @@ C growth transfer
        g2 = group(jp2)
        DO jp=1,nplank
         g = group(jp)
-        bioflux(jp,jp2) = a_bioflux(g,g2)
+C set up flux from first type in group g to first type in group g2, etc.
+        IF (igroup(jp) .EQ. igroup(jp2)) THEN
+         bioflux(jp,jp2) = a_bioflux(g,g2)
+        ENDIF
        ENDDO
       ENDDO
 
 C ======================================================================
 C virus
+C assume one size virus infect all sizes of hosts in a group
 
       DO jV=1,nplank
        gV = group(jV)

@@ -39,7 +39,7 @@ CEOP
 C     !LOCAL VARIABLES:
       CHARACTER*(MAX_LEN_MBUF) msgBuf
       integer iUnit, oUnit1, oUnit2, k, jp, jp2, jV, jS, jI, nerror
-      integer idummy
+      integer idummy, cnt
       _RL qinfect, Qninfect, Qpinfect, Qfeinfect, Qsiinfect, qVoverI
 #ifdef ALLOW_RADTRANS
       character*80 title
@@ -440,15 +440,19 @@ C ======================================================================
 C check infected type quotas against virus and host
 
       DO jV=1,nplank
+       cnt = 0
        DO jS=1,nplank
         jI = infected(jS,jV)
         IF (jI.NE.0) THEN
+         cnt = cnt + 1
+
          IF (isvirus(jV).EQ.0) THEN
           WRITE(msgBuf,'(2A,I4)')'DARWIN_INIT_FIXED: ',
      &     'infected(jS,jV) nonzero for non-virus jV', jV
           CALL PRINT_ERROR( msgBuf, myThid )
           STOP 'ABNORMAL END: S/R DARWIN_INIT_FIXED'
          ENDIF
+
          IF (jI.NE.jS) THEN
           nerror = 0
           qinfect = QCARBON(jS) + QCARBON(jV)
@@ -519,6 +523,12 @@ C check infected losses can cover virus gains for non-quota elements
           STOP 'ABNORMAL END: S/R DARWIN_INIT_FIXED'
          ENDIF
 #endif
+
+         IF (cnt .EQ. 0) THEN
+          WRITE(msgBuf,'(2A,I4,A)')'DARWIN_INIT_FIXED: WARNING: ',
+     &     'virus ', jV, ' cannot infect any hosts'
+          CALL PRINT_ERROR( msgBuf, myThid )
+         ENDIF
 
 C       infected(jS,jV) .NE. 0
         ENDIF

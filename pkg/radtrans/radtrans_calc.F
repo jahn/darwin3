@@ -93,6 +93,9 @@ C  k                    :: vertical level
       _RL r2(1-OLx:sNx+OLx, 1-OLy:sNy+OLy, Nr, nlam)
       _RL kap1(1-OLx:sNx+OLx, 1-OLy:sNy+OLy, Nr, nlam)
       _RL kap2(1-OLx:sNx+OLx, 1-OLy:sNy+OLy, Nr, nlam)
+      _RL KD(1-OLx:sNx+OLx, 1-OLy:sNy+OLy, Nr, nlam)
+      _RL ODEPbot(1-OLx:sNx+OLx, 1-OLy:sNy+OLy, Nr, nlam)
+      _RL Edownkp1,dodep,odep
 #endif
 #endif
 
@@ -232,7 +235,24 @@ C convert to scalar irradiance in quanta
          ELSE
           Rirr(i,j,l) = 0 _d 0
          ENDIF
+
 #ifdef RADTRANS_DIAG_SOLUTION
+         Edown = Edwsf + Eswsf
+         odep = 0 _d 0
+         DO k=1,Nr
+          Edownkp1 = Edbot(k) + Esbot(k)
+          IF (Edown .GT. zeroRL .AND. Edownkp1 .GT. zeroRL) THEN
+           dodep = LOG(Edown/Edownkp1)
+           KD(i,j,k,l) = dodep/dz_k(k)
+          ELSE
+           dodep = zeroRL
+           KD(i,j,k,l) = zeroRL
+          ENDIF
+          odep = odep + dodep
+          ODEPbot(i,j,k,l) = odep
+          Edown = Edownkp1
+         ENDDO
+
          Eub(i,j,1,l) = 0.0 _d 0
 #endif
          DO k=1,Nr-1
@@ -314,6 +334,12 @@ C ======================================================================
         CALL DIAGNOSTICS_FILL(
      &             kap2(1-OLx,1-OLy,1,l),diagname,0,Nr,2,bi,bj,myThid)
 #endif
+        WRITE(diagname, '(A,I3.3)') 'KD_', l
+        CALL DIAGNOSTICS_FILL(
+     &             KD(1-OLx,1-OLy,1,l),diagname,0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I3.3)') 'ODEP_', l
+        CALL DIAGNOSTICS_FILL(
+     &           ODEPbot(1-OLx,1-OLy,1,l),diagname,0,Nr,2,bi,bj,myThid)
        ENDDO
       ENDIF
 #endif

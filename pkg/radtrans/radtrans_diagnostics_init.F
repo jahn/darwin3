@@ -180,6 +180,22 @@ C---+----1----+----2----+----3----+----4----+----5----+----6----+----7-|--+----|
         diagCode  = 'SMRP    MR      '
         CALL DIAGNOSTICS_ADDTOLIST( diagNum,
      I             diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+        WRITE(diagName,'(A,I3.3)')'KD_',j
+        WRITE(diagTitle,'(A,I3)')
+     &        'diffuse attenuation coefficient for waveband ',j
+        diagUnits = '1/m             '
+        diagCode  = 'SMRP    MR      '
+        CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I             diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+        WRITE(diagName,'(A,I3.3)')'ODEP_',j
+        WRITE(diagTitle,'(A,I3)')
+     &        'optical depth at lower layer bndry for waveband ',j
+        diagUnits = '1               '
+        diagCode  = 'SMRP    UR      '
+        CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I             diagName, diagCode, diagUnits, diagTitle, 0, myThid )
 #endif
       ENDDO
 

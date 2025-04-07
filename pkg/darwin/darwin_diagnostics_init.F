@@ -453,6 +453,14 @@ C-      use units & names from data.ptracers :
         diagCode  = 'SMRP    MR      '
         CALL DIAGNOSTICS_ADDTOLIST( diagNum,
      I             diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+        WRITE(diagName,'(A,I4.4)')'VL',j
+        WRITE(diagTitle,'(A,I4)')
+     &        'Loss to viral infection,lysis of plankton ',j
+        diagUnits = '1/s             '
+        diagCode  = 'SMRP    MR      '
+        CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I             diagName, diagCode, diagUnits, diagTitle, 0, myThid )
       ENDDO
 #endif
 

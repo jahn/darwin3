@@ -1008,6 +1008,9 @@ C      diags(iCons*) for convenience
         WRITE(diagname, '(A,I4.4)') 'GrGC', iTr
         CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iGrGC+iTr-1),
      &        diagname,0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'VL', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iVLplank+iTr-1),
+     &        diagname,0,Nr,2,bi,bj,myThid)
        ENDDO
 #endif
 #ifdef DARWIN_ALLOW_CSTORE

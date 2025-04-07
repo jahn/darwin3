@@ -36,6 +36,7 @@ C Contains indices into diagnostics array
       integer iGrGC
       integer iHPplank
       integer iHCplank
+      integer iVLplank
 #ifdef DARWIN_ALLOW_CSTORE
       integer iEX
       integer iGW
@@ -107,7 +108,8 @@ C Contains indices into diagnostics array
       PARAMETER(iGrGC=iGrGn+nplank)
       PARAMETER(iHPplank=iGrGC+nplank)
       PARAMETER(iHCplank=iHPplank+nplank)
-      PARAMETER(darwin_nDiag=iHCplank+nplank-1)
+      PARAMETER(iVLplank=iHCplank+nplank)
+      PARAMETER(darwin_nDiag=iVLplank+nplank-1)
 #else
       PARAMETER(iPCplank=iPPplank)
       PARAMETER(iGRplank=iPPplank)
@@ -115,6 +117,7 @@ C Contains indices into diagnostics array
       PARAMETER(iGrGC=iPPplank)
       PARAMETER(iHPplank=iPPplank)
       PARAMETER(iHCplank=iPPplank)
+      PARAMETER(iVLplank=iPPplank)
       PARAMETER(darwin_nDiag=iPPplank-1)
 #endif
 

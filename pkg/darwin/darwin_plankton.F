@@ -1581,7 +1581,9 @@ c infection)
            gTr(ic+jV-1)=gTr(ic+jV-1) - rinfect*qvirus
 
 c susceptible (jS) loses biomass due to successful infection
-           gTr(ic+jS-1)=gTr(ic+jS-1) - v_abeff(jS,jV)*rinfect*qplank
+           vloss = v_abeff(jS,jV)*rinfect*qplank
+           gTr(ic+jS-1)=gTr(ic+jS-1) - vloss
+           diags(iVLplank+jS-1)=diags(iVLplank+jS-1) + vloss
 
 c infected (jI) obtains biomass from virus pool and susceptible pool
            gTr(ic+jI-1)=gTr(ic+jI-1) +
@@ -1593,6 +1595,7 @@ c virus biomass loss to detritus from unsuccessful infections
 c infected loses from lysis (to virus and DOM)
            vloss=X(jI)/v_latent(jS,jV)
            gTr(ic+jI-1)=gTr(ic+jI-1) - vloss
+           diags(iVLplank+jI-1)=diags(iVLplank+jI-1) + vloss
 
           ELSE
 C          no separate infected class
@@ -1600,6 +1603,7 @@ C          no separate infected class
 c lysis products taken from susceptible, will go to virus and OM
            vloss=v_abeff(jS,jV)*v_absorp(jS,jV)*X(jS)*X(jV)/qvirus
            gTr(ic+jS-1)=gTr(ic+jS-1) - vloss
+           diags(iVLplank+jS-1)=diags(iVLplank+jS-1) + vloss
 
 c unsuccessful infection is implicit without explicit infected class
            vdetloss_abeff=0.0 _d 0

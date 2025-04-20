@@ -1548,23 +1548,28 @@ C==== Add parameterized remineralization ===============================
 #else
       IF (.TRUE.) THEN
 #endif
+      IF (ksatO2remin .GT. 0 _d 0) THEN
+       tmp = O2/(O2 + ksatO2remin)
+      ELSE
+       tmp = 1 _d 0
+      ENDIF
 C parameterized remineralization; want to set all K except KPOSi to zero
 C if running with bacteria
 C shlomit: add O2-dependece respiration
-      respDOC  = reminTempFunc*KDOC *DOC*O2/(O2+10)
-      respDON  = reminTempFunc*KDON *DON*O2/(O2+10)
-      respDOP  = reminTempFunc*KDOP *DOP*O2/(O2+10)
-      respDOFe = reminTempFunc*KDOFe*DOFe*O2/(O2+10)
-      respPOC  = reminTempFunc*KPOC *POC*O2/(O2+10)
-      respPON  = reminTempFunc*KPON *PON*O2/(O2+10)
-      respPOP  = reminTempFunc*KPOP *POP*O2/(O2+10)
-      respPOSi = reminTempFunc*KPOSi*POSi*O2/(O2+10)
-      respPOFe = reminTempFunc*KPOFe*POFe*O2/(O2+10)
+      respDOC  = reminTempFunc*KDOC *DOC*tmp
+      respDON  = reminTempFunc*KDON *DON*tmp
+      respDOP  = reminTempFunc*KDOP *DOP*tmp
+      respDOFe = reminTempFunc*KDOFe*DOFe*tmp
+      respPOC  = reminTempFunc*KPOC *POC*tmp
+      respPON  = reminTempFunc*KPON *PON*tmp
+      respPOP  = reminTempFunc*KPOP *POP*tmp
+      respPOSi = reminTempFunc*KPOSi*POSi*tmp
+      respPOFe = reminTempFunc*KPOFe*POFe*tmp
 #ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-      respPOO = reminTempFunc*KPOC*POO*O2/(O2+10)
-      respPOH = reminTempFunc*KPOC*POH*O2/(O2+10)
-      respDOO = reminTempFunc*KDOC*DOO*O2/(O2+10)
-      respDOH = reminTempFunc*KDOC*DOH*O2/(O2+10)
+      respPOO = reminTempFunc*KPOC*POO*tmp
+      respPOH = reminTempFunc*KPOC*POH*tmp
+      respDOO = reminTempFunc*KDOC*DOO*tmp
+      respDOH = reminTempFunc*KDOC*DOH*tmp
       gTr(iPOO) = gTr(iPOO)  - respPOO
       gTr(iPOH) = gTr(iPOH)  - respPOH
       gTr(iDOO) = gTr(iDOO)  - respDOO

@@ -140,6 +140,7 @@ C----
      &    KPON,
      &    KPOFe,
      &    KPOSi,
+     &    ksatO2remin,
      &    wC_sink,
      &    wP_sink,
      &    wN_sink,
@@ -423,6 +424,7 @@ C
       KPON = KPOC
       KPOFe = KPOC
       KPOSi = 1 _d 0/(300 _d 0*pday)
+      ksatO2remin = 0 _d 0
       wC_sink = 10 _d 0/pday
       wP_sink = wC_sink
       wN_sink = wC_sink

@@ -273,6 +273,7 @@ C     KPON              :: [1/s]  PON remineralization rate
 C     KPOP              :: [1/s]  POP remineralization rate
 C     KPOFe             :: [1/s]  POFe remineralization rate
 C     KPOSi             :: [1/s]  POSi remineralization rate
+C     ksatO2remin       :: [mmol O2/m3]  half-saturation conc. of O2 for remineralization
 C
 C     wC_sink           :: [m/s]  sinking velocity for POC
 C     wN_sink           :: [m/s]  sinking velocity for PON
@@ -439,6 +440,7 @@ C     depthdenit        :: [m]             not implemented (depth for denitrific
      &    KPOP,
      &    KPOFe,
      &    KPOSi,
+     &    ksatO2remin,
      &    wC_sink,
      &    wN_sink,
      &    wP_sink,
@@ -557,6 +559,7 @@ C     &    yono2,
       _RL KPOP
       _RL KPOFe
       _RL KPOSi
+      _RL ksatO2remin
       _RL wC_sink
       _RL wN_sink
       _RL wP_sink

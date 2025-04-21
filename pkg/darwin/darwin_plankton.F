@@ -844,6 +844,12 @@ C==== Photosynthesis ===================================================
          mmX = 0 _d 0
         ENDIF
 
+        LIMP = 0 _d 0
+        LIMN = 0 _d 0
+        LIMF = 0 _d 0
+        LIMC = 0 _d 0
+        LIML = 0 _d 0
+
 C       set up Chl and N requirements as a function of growth rate PC
 C       then solve for PC
 

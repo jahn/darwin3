@@ -1001,7 +1001,7 @@ C       when Qn<QnNoChl, then Qn_exc=0, PC=0, QC_chlN<0, QC_chl=0
         
 C Storage calculation -----------------
         IF (mmQn.EQ.QnNoChl(j) .OR.
-     &      (QC_Chl.GT.0 _d 0 .AND. QC_chl.EQ.QC_chlN)) THEN
+     &   (PC.EQ.0 .AND. QC_Chl.GT.0 _d 0 .AND. QC_chl.EQ.QC_chlN)) THEN
          QN_essential = mmQn
         ENDIF
 

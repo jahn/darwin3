@@ -317,11 +317,11 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL uptakeFe
       INTEGER MODE
       REAL, DIMENSION(4) :: PC_all
-      _RL LIMP
-      _RL LIMN
-      _RL LIMF
-      _RL LIMC
-      _RL LIML
+      _RL limP
+      _RL limN
+      _RL limF
+      _RL limC
+      _RL limL
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -844,11 +844,11 @@ C==== Photosynthesis ===================================================
          mmX = 0 _d 0
         ENDIF
 
-        LIMP = 0 _d 0
-        LIMN = 0 _d 0
-        LIMF = 0 _d 0
-        LIMC = 0 _d 0
-        LIML = 0 _d 0
+        limP = 0 _d 0
+        limN = 0 _d 0
+        limF = 0 _d 0
+        limC = 0 _d 0
+        limL = 0 _d 0
 
 C       set up Chl and N requirements as a function of growth rate PC
 C       then solve for PC
@@ -923,13 +923,13 @@ C        Calculate the growth rate as a function of macromolecular composition
          PC_all = (/ PC_p, PC_n, PC_fe, PCc /)
          MODE = MINLOC (PC_all, DIM=1)
          IF (MODE .EQ. 1. _d 0) THEN
-           LIMP = 1 _d 0
+           liMP = 1 _d 0
          ELSEIF (MODE .EQ. 2. _d 0) THEN
-           LIMN = 1 _d 0
+           limN = 1 _d 0
          ELSEIF (MODE .EQ. 3. _d 0) THEN
-           LIMF = 1 _d 0
+           limF = 1 _d 0
          ELSEIF (MODE .EQ. 4. _d 0) THEN
-           LIMC = 1 _d 0
+           limC = 1 _d 0
          ENDIF
 
          PC = MINVAL (PC_all)
@@ -938,7 +938,7 @@ C        Calculate the growth rate as a function of macromolecular composition
 C       Case 2: Light limitation, growth rate is zero, QC_chl is calculated based on cellular mass balance
         ELSE
          MODE = 4 _d 0
-         LIML = 1 _d 0
+         limL = 1 _d 0
          PC = 0. _d 0
          PCc= 0. _d 0 
         ENDIF
@@ -1134,11 +1134,11 @@ c        RQ_OC = 1.5
         diags(iFEXC+j-1) = Qfe_excess
         diags(iY_RQ+j-1) = RQ(j)
         diags(idROP+j-1) = dROP
-        diags(iLIMP+j-1) = LIMP
-        diags(iLIMN+j-1) = LIMN
-        diags(iLIMF+j-1) = LIMF
-        diags(iLIMC+j-1) = LIMC
-        diags(iLIML+j-1) = LIML
+        diags(ilimP+j-1) = limP
+        diags(ilimN+j-1) = limN
+        diags(ilimF+j-1) = limF
+        diags(ilimC+j-1) = limC
+        diags(ilimL+j-1) = limL
 
 
 #else /* DARWIN_MACROMOLECULAR_GROWTH */

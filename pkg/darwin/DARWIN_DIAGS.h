@@ -36,7 +36,7 @@ C Contains indices into diagnostics array
       integer iPRNA, iPDNA, iPTHY, iPCON, iPSTO, iPEXC
       integer iFPHO, iFSTO, iFEXC, iY_RQ, idROP
       integer iMODE, iFe_C, iexQc, iPCg
-      integer iLIMP, iLIMN, iLIMF, iLIMC, iLIML
+      integer ilimC, ilimL
 #endif
 #ifdef DARWIN_ALLOW_VARIABLE_CHNOP
       integer iRQ_POC, iRQ_DOC
@@ -133,12 +133,9 @@ C Contains indices into diagnostics array
       PARAMETER(iFEXC=   iFSTO+nPhoto)
       PARAMETER(iY_RQ=   iFEXC+nPhoto)
       PARAMETER(idROP=   iY_RQ+nPhoto)
-      PARAMETER(iLIMP=   idROP+nPhoto)
-      PARAMETER(iLIMN=   iLIMP+nPhoto)
-      PARAMETER(iLIMF=   iLIMN+nPhoto)
-      PARAMETER(iLIMC=   iLIMF+nPhoto)
-      PARAMETER(iLIML=   iLIMC+nPhoto)
-      PARAMETER(iaMacro= iLIML+nPhoto)
+      PARAMETER(ilimC=   idROP+nPhoto)
+      PARAMETER(ilimL=   ilimC+nPhoto)
+      PARAMETER(iaMacro= ilimL+nPhoto)
 #else
       PARAMETER(iaMacro= 22)
 #endif

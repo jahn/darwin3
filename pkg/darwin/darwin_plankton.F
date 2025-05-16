@@ -670,8 +670,10 @@ C       carbon-specific PO4 uptake rate
         VP = vmaxPO4(j) * MM_PO4 * regQp * uptakeTempFunc
         uptakePO4 = VP*X(j)
 c       normalized Droop limitation
+#ifndef DARWIN_MACROMOLECULAR_GROWTH
         limitp = MIN(1., (1.0-Qpmin(j)/MAX(Qpmin(j), Qp(j)))/
      &                   (1.0-Qpmin(j)/Qpmax(j)))
+#endif
 #else /* no PQUOTA */
 # ifdef DARWIN_ALLOW_CSTORE
         IF (R_PC(j) .GT. 0 _d 0) THEN
@@ -726,8 +728,10 @@ c iron
         VFe = vmaxFeT(j) * MM_FeT * regQfe * uptakeTempFunc
         uptakeFeT = VFe*X(j)
 c       normalized Droop limitation
+#ifndef DARWIN_MACROMOLECULAR_GROWTH
         limitfe = MIN(1., (1.0-Qfemin(j)/MAX(Qfemin(j), Qfe(j)))/
      &                    (1.0-Qfemin(j)/Qfemax(j)))
+#endif
 #else /* no FEQUOTA */
 C iron limit is applied in Geider
 # ifdef DARWIN_ALLOW_CSTORE

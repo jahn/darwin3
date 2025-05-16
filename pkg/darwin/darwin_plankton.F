@@ -814,6 +814,7 @@ C if diazo, all fracN* == 0 but want no N limitation
         ENDIF
 #endif /* DARWIN_ALLOW_NQUOTA */
 
+#ifndef DARWIN_MACROMOLECULAR_GROWTH
 #ifdef DARWIN_ALLOW_CSTORE
 C       will apply limits for quota elements to growth rate instead
         limitnut = 1 _d 0
@@ -821,6 +822,7 @@ C       will apply limits for quota elements to growth rate instead
         limitnut = MIN(limitn, limitp, limitsi)
 #if !(defined DARWIN_ALLOW_GEIDER && defined DARWIN_ALLOW_FEQUOTA)
         limitnut = MIN(limitnut, limitfe)
+#endif
 #endif
 #endif
 

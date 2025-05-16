@@ -178,7 +178,7 @@ C     ksatDOFe           :: [mmol Fe m^-3]  half-saturation of DOFe for bacteria
      &    phytoTempAe,
      &    phytoTempExp2,
      &    phytoTempOptimum,
-     &    phytoMMTemp,
+C     &    phytoMMTemp,
      &    phytoDecayPower,
      &    hetTempAe,
      &    hetTempExp2,
@@ -308,7 +308,7 @@ C     ksatDOFe           :: [mmol Fe m^-3]  half-saturation of DOFe for bacteria
       _RL phytoTempAe(nplank)
       _RL phytoTempExp2(nplank)
       _RL phytoTempOptimum(nplank)
-      _RL phytoMMTemp(nplank)
+C      _RL phytoMMTemp(nplank)
       _RL phytoDecayPower(nplank)
       _RL hetTempAe(nplank)
       _RL hetTempExp2(nplank)

@@ -1688,11 +1688,11 @@ C--   Print parameters from DARWIN_PARAMS.h
      &'oC0 =',
      &' /* Coefficient for determining saturation O2 */')
 #endif
-#ifdef DARWIN_MACROMOLECULAR_GROWTH
-      CALL WRITE_0D_RL(phytoMMTemp,INDEX_NONE,
-     &'phytoMMTemp =',
-     &' /* temp effect on protein biosyn (MACROMOL GROWTH) (K) */')
-#endif
+C#ifdef DARWIN_MACROMOLECULAR_GROWTH
+C      CALL WRITE_0D_RL(phytoMMTemp,INDEX_NONE,
+C     &'phytoMMTemp =',
+C     &' /* temp effect on protein biosyn (MACROMOL GROWTH) (K) */')
+C#endif
 
       CALL WRITE_0D_C(darwin_pickupSuff,-1,INDEX_NONE,
      &'darwin_pickupSuff =',

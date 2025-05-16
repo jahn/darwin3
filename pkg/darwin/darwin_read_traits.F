@@ -58,7 +58,7 @@
      &    phytoTempAe,
      &    phytoTempExp2,
      &    phytoTempOptimum,
-     &    phytoMMTemp,
+C     &    phytoMMTemp,
      &    phytoDecayPower,
      &    hetTempAe,
      &    hetTempExp2,
@@ -481,7 +481,7 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
         phytoTempAe(jp) = DARWIN_UNUSED
         phytoTempExp2(jp) = DARWIN_UNUSED
         phytoTempOptimum(jp) = DARWIN_UNUSED
-        phytoMMTemp(jp) = DARWIN_UNUSED
+C        phytoMMTemp(jp) = DARWIN_UNUSED
         phytoDecayPower(jp) = DARWIN_UNUSED
 
         vmaxNH4(jp) = DARWIN_UNUSED

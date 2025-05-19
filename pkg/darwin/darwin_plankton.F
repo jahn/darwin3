@@ -492,10 +492,10 @@ C==== Make all bio fields non-negative and compute quotas ==============
       POSi = MAX(0 _d 0, Ptr(iPOSi))
       POFe = MAX(0 _d 0, Ptr(iPOFe))
 #ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-      POO  = MAX(0., Ptr(iPOO))
-      POH  = MAX(0., Ptr(iPOH))
-      DOO  = MAX(0., Ptr(iDOO))
-      DOH  = MAX(0., Ptr(iDOH))
+      POO  = MAX(0 _d 0, Ptr(iPOO))
+      POH  = MAX(0 _d 0, Ptr(iPOH))
+      DOO  = MAX(0 _d 0, Ptr(iDOO))
+      DOH  = MAX(0 _d 0, Ptr(iDOH))
       IF (POC .NE. 0 _d 0) THEN
       RQ_POC = (POC+0.25*POH+1.25*PON+1.25*POP-0.5*POO)/(POC)
       ELSE

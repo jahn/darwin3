@@ -8,7 +8,7 @@
 (PID.TID 0000.0001) // MITgcmUV version:  checkpoint68o
 (PID.TID 0000.0001) // Build user:        jahn
 (PID.TID 0000.0001) // Build host:        node623
-(PID.TID 0000.0001) // Build date:        Mon May 19 11:39:32 EDT 2025
+(PID.TID 0000.0001) // Build date:        Mon May 19 11:34:38 EDT 2025
 (PID.TID 0000.0001) 
 (PID.TID 0000.0001) // =======================================================
 (PID.TID 0000.0001) // Execution Environment parameter file "eedata"
@@ -148,6 +148,7 @@
 (PID.TID 0000.0001) > nIter0=0,
 (PID.TID 0000.0001) ># pickupSuff='darwin',
 (PID.TID 0000.0001) ># nEndIter=25920,
+(PID.TID 0000.0001) ># nEndIter=103680,
 (PID.TID 0000.0001) > nTimeSteps=4,
 (PID.TID 0000.0001) > deltaTmom=3600.,
 (PID.TID 0000.0001) > deltaTtracer=3600.,
@@ -465,13 +466,6 @@
 (PID.TID 0000.0001) >       PTRACERS_names(16)= 'POSi',
 (PID.TID 0000.0001) >       PTRACERS_names(15)= 'POFe',
 (PID.TID 0000.0001) >       PTRACERS_names(17)= 'PIC',
-(PID.TID 0000.0001) >
-(PID.TID 0000.0001) ># renumber shlomit
-(PID.TID 0000.0001) >       PTRACERS_names(17)= 'POO',
-(PID.TID 0000.0001) >       PTRACERS_names(17)= 'POH',
-(PID.TID 0000.0001) >       PTRACERS_names(17)= 'DOO',
-(PID.TID 0000.0001) >       PTRACERS_names(17)= 'DOH',
-(PID.TID 0000.0001) >
 (PID.TID 0000.0001) >       PTRACERS_names(18)= 'ALK',
 (PID.TID 0000.0001) >       PTRACERS_names(19)= 'O2',
 (PID.TID 0000.0001) >       PTRACERS_names(20)= 'CDOM01',
@@ -573,7 +567,6 @@
 (PID.TID 0000.0001) > darwin_seed= 56,
 (PID.TID 0000.0001) > darwin_read_phos= F,
 (PID.TID 0000.0001) > tempCoeffArr= 0.8,
-(PID.TID 0000.0001) ># phytoMMTemp= 0.0,
 (PID.TID 0000.0001) > PARmin= 0.1,
 (PID.TID 0000.0001) > alpfe= 1.0,
 (PID.TID 0000.0001) > freefemax = .1E-3,
@@ -691,12 +684,9 @@
 (PID.TID 0000.0001) > a_grazemax(9)= 3.4722000000000000E-05,  ! prowe values
 (PID.TID 0000.0001) > b_grazemax(9)= -0.16,
 (PID.TID 0000.0001) >#
-(PID.TID 0000.0001) >
 (PID.TID 0000.0001) > a_mort(:)= 8*6e-07, 2e-7  ! 1/7days, 1/50days
 (PID.TID 0000.0001) > a_mort2(:)= 8*6.e-7, 8.e-7,  ! 16*.6/120/day
 (PID.TID 0000.0001) > a_phytoTempExp2= 8*.0003,
-(PID.TID 0000.0001) > a_phytoMMTemp(1)= -8437.0,
-(PID.TID 0000.0001) > a_phytoMMTemp(2)= -8437.0,
 (PID.TID 0000.0001) > a_R_PC(:)= 9*0.008333333333333333,
 (PID.TID 0000.0001) > a_R_FeC(:)= 4*0.008333333333333333E-3, 2*0.03333333333333333E-3, 2*0.008333333333333333E-3, 1*0.001333333333333333E-3
 (PID.TID 0000.0001) > a_R_NC(:)= 4*0.13333333333333333, 2*0.3333333333333333, 3*0.13333333333333333,
@@ -769,13 +759,12 @@
 (PID.TID 0000.0001) >#
 (PID.TID 0000.0001) > &diagnostics_list
 (PID.TID 0000.0001) > dumpatlast= .TRUE.,
-(PID.TID 0000.0001) >#
+(PID.TID 0000.0001) >
 (PID.TID 0000.0001) >  filename( 1) = '3d',
-(PID.TID 0000.0001) >  frequency(1) = 3600.,
+(PID.TID 0000.0001) >#  frequency(1) = 2592000.,
 (PID.TID 0000.0001) >#  frequency(1) = 3600.,
-(PID.TID 0000.0001) >#  timephase(1) = 0
-(PID.TID 0000.0001) >  fileflags(1) = 'D       ',
-(PID.TID 0000.0001) ># frequency(1) = 31104000.,
+(PID.TID 0000.0001) >#  fileflags(1) = 'D       ',
+(PID.TID 0000.0001) >  frequency(1) = 3600.,
 (PID.TID 0000.0001) >  fields( 1,1) = 'TRAC01  ',
 (PID.TID 0000.0001) >  fields( 2,1) = 'TRAC02  ',
 (PID.TID 0000.0001) >  fields( 3,1) = 'TRAC03  ',
@@ -823,62 +812,62 @@
 (PID.TID 0000.0001) >  fields(45,1) = 'VN0001  ',
 (PID.TID 0000.0001) >  fields(46,1) = 'MODE0001',
 (PID.TID 0000.0001) >  fields(47,1) = 'Fe_C0001',
-(PID.TID 0000.0001) >  fields(48,1) = 'exQc0001',
-(PID.TID 0000.0001) >  fields(49,1) = 'PCg0001 ',
-(PID.TID 0000.0001) >  fields(50,1) = 'CChl0001',
-(PID.TID 0000.0001) >  fields(51,1) = 'NChl0001',
-(PID.TID 0000.0001) >  fields(52,1) = 'NPho0001',
-(PID.TID 0000.0001) >  fields(53,1) = 'NSyn0001',
-(PID.TID 0000.0001) >  fields(54,1) = 'NPrn0001',
-(PID.TID 0000.0001) >  fields(55,1) = 'NRNA0001',
-(PID.TID 0000.0001) >  fields(56,1) = 'NDNA0001',
-(PID.TID 0000.0001) >  fields(57,1) = 'NSTO0001',
-(PID.TID 0000.0001) >  fields(58,1) = 'NEXC0001',
-(PID.TID 0000.0001) >  fields(59,1) = 'PRNA0001',
-(PID.TID 0000.0001) >  fields(60,1) = 'PDNA0001',
-(PID.TID 0000.0001) >  fields(61,1) = 'PTHY0001',
-(PID.TID 0000.0001) >  fields(62,1) = 'PCON0001',
-(PID.TID 0000.0001) >  fields(63,1) = 'PSTO0001',
-(PID.TID 0000.0001) >  fields(64,1) = 'PEXC0001',
-(PID.TID 0000.0001) >  fields(65,1) = 'FPHO0001',
-(PID.TID 0000.0001) >  fields(66,1) = 'FSTO0001',
-(PID.TID 0000.0001) >  fields(67,1) = 'FEXC0001',
-(PID.TID 0000.0001) >  fields(68,1) = 'Y_RQ0001',
-(PID.TID 0000.0001) >  fields(69,1) = 'CChl0002',
-(PID.TID 0000.0001) >  fields(70,1) = 'NChl0002',
-(PID.TID 0000.0001) >  fields(71,1) = 'NPho0002',
-(PID.TID 0000.0001) >  fields(72,1) = 'NSyn0002',
-(PID.TID 0000.0001) >  fields(73,1) = 'NPrn0002',
-(PID.TID 0000.0001) >  fields(74,1) = 'NRNA0002',
-(PID.TID 0000.0001) >  fields(75,1) = 'NDNA0002',
-(PID.TID 0000.0001) >  fields(76,1) = 'NSTO0002',
-(PID.TID 0000.0001) >  fields(77,1) = 'NEXC0002',
-(PID.TID 0000.0001) >  fields(78,1) = 'PRNA0002',
-(PID.TID 0000.0001) >  fields(79,1) = 'PDNA0002',
-(PID.TID 0000.0001) >  fields(80,1) = 'PTHY0002',
-(PID.TID 0000.0001) >  fields(81,1) = 'PCON0002',
-(PID.TID 0000.0001) >  fields(82,1) = 'PSTO0002',
-(PID.TID 0000.0001) >  fields(83,1) = 'PEXC0002',
-(PID.TID 0000.0001) >  fields(84,1) = 'FPHO0002',
-(PID.TID 0000.0001) >  fields(85,1) = 'FSTO0002',
-(PID.TID 0000.0001) >  fields(86,1) = 'FEXC0002',
-(PID.TID 0000.0001) >  fields(87,1) = 'Y_RQ0002',
-(PID.TID 0000.0001) >  fields(88,1) = 'PC0002  ',
-(PID.TID 0000.0001) >  fields(89,1) = 'PChl0002',
-(PID.TID 0000.0001) >  fields(90,1) = 'VN0002  ',
-(PID.TID 0000.0001) >  fields(91,1) = 'MODE0002',
-(PID.TID 0000.0001) >  fields(92,1) = 'Fe_C0002',
-(PID.TID 0000.0001) >  fields(93,1) = 'exQc0002',
-(PID.TID 0000.0001) >  fields(94,1) = 'PCg0002 ',
-(PID.TID 0000.0001) >  fields(95,1) = 'THETA   ',
+(PID.TID 0000.0001) >  fields(48,1) = 'PCg0001 ',
+(PID.TID 0000.0001) >  fields(49,1) = 'CChl0001',
+(PID.TID 0000.0001) >  fields(50,1) = 'NChl0001',
+(PID.TID 0000.0001) >  fields(51,1) = 'NPho0001',
+(PID.TID 0000.0001) >  fields(52,1) = 'NSyn0001',
+(PID.TID 0000.0001) >  fields(53,1) = 'NPrn0001',
+(PID.TID 0000.0001) >  fields(54,1) = 'NRNA0001',
+(PID.TID 0000.0001) >  fields(55,1) = 'NDNA0001',
+(PID.TID 0000.0001) >  fields(56,1) = 'NSTO0001',
+(PID.TID 0000.0001) >  fields(57,1) = 'PRNA0001',
+(PID.TID 0000.0001) >  fields(58,1) = 'PDNA0001',
+(PID.TID 0000.0001) >  fields(59,1) = 'PTHY0001',
+(PID.TID 0000.0001) >  fields(60,1) = 'PCON0001',
+(PID.TID 0000.0001) >  fields(61,1) = 'PSTO0001',
+(PID.TID 0000.0001) >  fields(62,1) = 'FPHO0001',
+(PID.TID 0000.0001) >  fields(63,1) = 'FSTO0001',
+(PID.TID 0000.0001) >  fields(64,1) = 'Y_RQ0001',
+(PID.TID 0000.0001) >  fields(65,1) = 'CChl0002',
+(PID.TID 0000.0001) >  fields(66,1) = 'NChl0002',
+(PID.TID 0000.0001) >  fields(67,1) = 'NPho0002',
+(PID.TID 0000.0001) >  fields(68,1) = 'NSyn0002',
+(PID.TID 0000.0001) >  fields(69,1) = 'NPrn0002',
+(PID.TID 0000.0001) >  fields(70,1) = 'NRNA0002',
+(PID.TID 0000.0001) >  fields(71,1) = 'NDNA0002',
+(PID.TID 0000.0001) >  fields(72,1) = 'NSTO0002',
+(PID.TID 0000.0001) >  fields(73,1) = 'PRNA0002',
+(PID.TID 0000.0001) >  fields(74,1) = 'PDNA0002',
+(PID.TID 0000.0001) >  fields(75,1) = 'PTHY0002',
+(PID.TID 0000.0001) >  fields(76,1) = 'PCON0002',
+(PID.TID 0000.0001) >  fields(77,1) = 'PSTO0002',
+(PID.TID 0000.0001) >  fields(78,1) = 'FPHO0002',
+(PID.TID 0000.0001) >  fields(79,1) = 'FSTO0002',
+(PID.TID 0000.0001) >  fields(80,1) = 'Y_RQ0002',
+(PID.TID 0000.0001) >  fields(81,1) = 'PC0002  ',
+(PID.TID 0000.0001) >  fields(82,1) = 'PChl0002',
+(PID.TID 0000.0001) >  fields(83,1) = 'VN0002  ',
+(PID.TID 0000.0001) >  fields(84,1) = 'MODE0002',
+(PID.TID 0000.0001) >  fields(85,1) = 'Fe_C0002',
+(PID.TID 0000.0001) >  fields(86,1) = 'PCg0002 ',
+(PID.TID 0000.0001) >  fields(87,1) = 'THETA   ',
+(PID.TID 0000.0001) >#  fields(48,1) = 'exQc0001',
+(PID.TID 0000.0001) >#  fields(58,1) = 'NEXC0001',
+(PID.TID 0000.0001) >#  fields(64,1) = 'PEXC0001',
+(PID.TID 0000.0001) >#  fields(67,1) = 'FEXC0001',
+(PID.TID 0000.0001) >#  fields(77,1) = 'NEXC0002',
+(PID.TID 0000.0001) >#  fields(83,1) = 'PEXC0002',
+(PID.TID 0000.0001) >#  fields(86,1) = 'FEXC0002',
+(PID.TID 0000.0001) >#  fields(94,1) = 'exQc0002',
 (PID.TID 0000.0001) >
 (PID.TID 0000.0001) >
 (PID.TID 0000.0001) >#
 (PID.TID 0000.0001) >  filename( 2) = 'GC',
-(PID.TID 0000.0001) >  frequency(2) = 3600.,
+(PID.TID 0000.0001) >#  frequency(2) = 2592000.,
 (PID.TID 0000.0001) >#  frequency(2) = 3600.,
-(PID.TID 0000.0001) >  fileflags(2) = 'D       ',
-(PID.TID 0000.0001) ># frequency(2) = 31104000.,
+(PID.TID 0000.0001) >#  fileflags(2) = 'D       ',
+(PID.TID 0000.0001) >  frequency(2) = 3600.,
 (PID.TID 0000.0001) >  fields( 1,2) = 'GC_Tr01 ',
 (PID.TID 0000.0001) >  fields( 2,2) = 'GC_Tr02 ',
 (PID.TID 0000.0001) >  fields( 3,2) = 'GC_Tr03 ',
@@ -918,8 +907,8 @@
 (PID.TID 0000.0001) >#
 (PID.TID 0000.0001) >#
 (PID.TID 0000.0001) >  filename( 6) = 'iops',
+(PID.TID 0000.0001) >#  frequency(6) = 2592000.,
 (PID.TID 0000.0001) >  frequency(6) = 3600.,
-(PID.TID 0000.0001) ># frequency(6) = 31104000.,
 (PID.TID 0000.0001) >  fields(  1,6) = 'a001    ',
 (PID.TID 0000.0001) >  fields(  2,6) = 'a002    ',
 (PID.TID 0000.0001) >  fields(  3,6) = 'a003    ',
@@ -974,8 +963,8 @@
 (PID.TID 0000.0001) >  fields( 52,6) = 'aCDOM013',
 (PID.TID 0000.0001) >#
 (PID.TID 0000.0001) >  filename( 7) = 'par',
+(PID.TID 0000.0001) >#  frequency(7) = 2592000.,
 (PID.TID 0000.0001) >  frequency(7) = 3600.,
-(PID.TID 0000.0001) ># frequency(7) = 31104000.,
 (PID.TID 0000.0001) ># levels(1:10,7) = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
 (PID.TID 0000.0001) >  fields(  1,7) = 'Ed001   ',
 (PID.TID 0000.0001) >  fields(  2,7) = 'Ed002   ',
@@ -1031,8 +1020,8 @@
 (PID.TID 0000.0001) >  fields( 52,7) = 'PAR013  ',
 (PID.TID 0000.0001) >#
 (PID.TID 0000.0001) >  filename( 8) = '2d',
+(PID.TID 0000.0001) >#  frequency(8) = 2592000.,
 (PID.TID 0000.0001) >  frequency(8) = 3600.,
-(PID.TID 0000.0001) ># frequency(8) = 31104000.,
 (PID.TID 0000.0001) >  fields( 1,8) = 'fluxCO2 ',
 (PID.TID 0000.0001) >  fields( 2,8) = 'gDICsurf',
 (PID.TID 0000.0001) >  fields( 3,8) = 'gALKsurf',
@@ -1095,22 +1084,21 @@
 (PID.TID 0000.0001) Creating Output Stream: 3d
 (PID.TID 0000.0001) Output Frequency:       3600.000000 ; Phase:           0.000000
 (PID.TID 0000.0001)  Averaging Freq.:       3600.000000 , Phase:           0.000000 , Cycle:   1
-(PID.TID 0000.0001)  missing value: -9.990000000000E+02 ; F-Flags="D       "
+(PID.TID 0000.0001)  missing value: -9.990000000000E+02
 (PID.TID 0000.0001)  Levels:    will be set later
 (PID.TID 0000.0001)  Fields:    TRAC01   TRAC02   TRAC03   TRAC04   TRAC05   TRAC06   TRAC07   TRAC08   TRAC09   TRAC10
 (PID.TID 0000.0001)  Fields:    TRAC11   TRAC12   TRAC13   TRAC14   TRAC15   TRAC16   TRAC17   TRAC18   TRAC19   TRAC20
 (PID.TID 0000.0001)  Fields:    TRAC21   TRAC22   TRAC23   TRAC24   TRAC25   TRAC26   TRAC27   TRAC28   TRAC29   TRAC30
 (PID.TID 0000.0001)  Fields:    TRAC31   TRAC32   TRAC33   TRAC34   TRAC35   TRAC36   PAR      PP       Nfix     Denit
-(PID.TID 0000.0001)  Fields:    pH       pCO2     PC0001   PChl0001 VN0001   MODE0001 Fe_C0001 exQc0001 PCg0001  CChl0001
-(PID.TID 0000.0001)  Fields:    NChl0001 NPho0001 NSyn0001 NPrn0001 NRNA0001 NDNA0001 NSTO0001 NEXC0001 PRNA0001 PDNA0001
-(PID.TID 0000.0001)  Fields:    PTHY0001 PCON0001 PSTO0001 PEXC0001 FPHO0001 FSTO0001 FEXC0001 Y_RQ0001 CChl0002 NChl0002
-(PID.TID 0000.0001)  Fields:    NPho0002 NSyn0002 NPrn0002 NRNA0002 NDNA0002 NSTO0002 NEXC0002 PRNA0002 PDNA0002 PTHY0002
-(PID.TID 0000.0001)  Fields:    PCON0002 PSTO0002 PEXC0002 FPHO0002 FSTO0002 FEXC0002 Y_RQ0002 PC0002   PChl0002 VN0002
-(PID.TID 0000.0001)  Fields:    MODE0002 Fe_C0002 exQc0002 PCg0002  THETA
+(PID.TID 0000.0001)  Fields:    pH       pCO2     PC0001   PChl0001 VN0001   MODE0001 Fe_C0001 PCg0001  CChl0001 NChl0001
+(PID.TID 0000.0001)  Fields:    NPho0001 NSyn0001 NPrn0001 NRNA0001 NDNA0001 NSTO0001 PRNA0001 PDNA0001 PTHY0001 PCON0001
+(PID.TID 0000.0001)  Fields:    PSTO0001 FPHO0001 FSTO0001 Y_RQ0001 CChl0002 NChl0002 NPho0002 NSyn0002 NPrn0002 NRNA0002
+(PID.TID 0000.0001)  Fields:    NDNA0002 NSTO0002 PRNA0002 PDNA0002 PTHY0002 PCON0002 PSTO0002 FPHO0002 FSTO0002 Y_RQ0002
+(PID.TID 0000.0001)  Fields:    PC0002   PChl0002 VN0002   MODE0002 Fe_C0002 PCg0002  THETA
 (PID.TID 0000.0001) Creating Output Stream: GC
 (PID.TID 0000.0001) Output Frequency:       3600.000000 ; Phase:           0.000000
 (PID.TID 0000.0001)  Averaging Freq.:       3600.000000 , Phase:           0.000000 , Cycle:   1
-(PID.TID 0000.0001)  missing value: -9.990000000000E+02 ; F-Flags="D       "
+(PID.TID 0000.0001)  missing value: -9.990000000000E+02
 (PID.TID 0000.0001)  Levels:    will be set later
 (PID.TID 0000.0001)  Fields:    GC_Tr01  GC_Tr02  GC_Tr03  GC_Tr04  GC_Tr05  GC_Tr06  GC_Tr07  GC_Tr08  GC_Tr09  GC_Tr10
 (PID.TID 0000.0001)  Fields:    GC_Tr11  GC_Tr12  GC_Tr13  GC_Tr14  GC_Tr15  GC_Tr16  GC_Tr17  GC_Tr18  GC_Tr19  GC_Tr20
@@ -2067,7 +2055,6 @@
 (PID.TID 0000.0001) SETDIAG: Allocate 23 x  1 Levels for Diagnostic #   815 VN0001
 (PID.TID 0000.0001) SETDIAG: Allocate 23 x  1 Levels for Diagnostic #   817 MODE0001
 (PID.TID 0000.0001) SETDIAG: Allocate 23 x  1 Levels for Diagnostic #   818 Fe_C0001
-(PID.TID 0000.0001) SETDIAG: Allocate 23 x  1 Levels for Diagnostic #   819 exQc0001
 (PID.TID 0000.0001) SETDIAG: Allocate 23 x  1 Levels for Diagnostic #   820 PCg0001
 (PID.TID 0000.0001) SETDIAG: Allocate 23 x  1 Levels for Diagnostic #   821 CChl0001
 (PID.TID 0000.0001) SETDIAG: Allocate 23 x  1 Levels for Diagnostic #   822 NChl0001
@@ -2077,16 +2064,13 @@
 (PID.TID 0000.0001) SETDIAG: Allocate 23 x  1 Levels for Diagnostic #   826 NRNA0001
 (PID.TID 0000.0001) SETDIAG: Allocate 23 x  1 Levels for Diagnostic #   827 NDNA0001
 (PID.TID 0000.0001) SETDIAG: Allocate 23 x  1 Levels for Diagnostic #   828 NSTO0001
-(PID.TID 0000.0001) SETDIAG: Allocate 23 x  1 Levels for Diagnostic #   829 NEXC0001
 (PID.TID 0000.0001) SETDIAG: Allocate 23 x  1 Levels for Diagnostic #   830 PRNA0001
 (PID.TID 0000.0001) SETDIAG: Allocate 23 x  1 Levels for Diagnostic #   831 PDNA0001
 (PID.TID 0000.0001) SETDIAG: Allocate 23 x  1 Levels for Diagnostic #   832 PTHY0001
 (PID.TID 0000.0001) SETDIAG: Allocate 23 x  1 Levels for Diagnostic #   833 PCON0001
 (PID.TID 0000.0001) SETDIAG: Allocate 23 x  1 Levels for Diagnostic #   834 PSTO0001
-(PID.TID 0000.0001) SETDIAG: Allocate 23 x  1 Levels for Diagnostic #   835 PEXC0001
 (PID.TID 0000.0001) SETDIAG: Allocate 23 x  1 Levels for Diagnostic #   836 FPHO0001
 (PID.TID 0000.0001) SETDIAG: Allocate 23 x  1 Levels for Diagnostic #   837 FSTO0001
-(PID.TID 0000.0001) SETDIAG: Allocate 23 x  1 Levels for Diagnostic #   838 FEXC0001
 (PID.TID 0000.0001) SETDIAG: Allocate 23 x  1 Levels for Diagnostic #   839 Y_RQ0001
 (PID.TID 0000.0001) SETDIAG: Allocate 23 x  1 Levels for Diagnostic #   853 CChl0002
 (PID.TID 0000.0001) SETDIAG: Allocate 23 x  1 Levels for Diagnostic #   854 NChl0002
@@ -2096,23 +2080,19 @@
 (PID.TID 0000.0001) SETDIAG: Allocate 23 x  1 Levels for Diagnostic #   858 NRNA0002
 (PID.TID 0000.0001) SETDIAG: Allocate 23 x  1 Levels for Diagnostic #   859 NDNA0002
 (PID.TID 0000.0001) SETDIAG: Allocate 23 x  1 Levels for Diagnostic #   860 NSTO0002
-(PID.TID 0000.0001) SETDIAG: Allocate 23 x  1 Levels for Diagnostic #   861 NEXC0002
 (PID.TID 0000.0001) SETDIAG: Allocate 23 x  1 Levels for Diagnostic #   862 PRNA0002
 (PID.TID 0000.0001) SETDIAG: Allocate 23 x  1 Levels for Diagnostic #   863 PDNA0002
 (PID.TID 0000.0001) SETDIAG: Allocate 23 x  1 Levels for Diagnostic #   864 PTHY0002
 (PID.TID 0000.0001) SETDIAG: Allocate 23 x  1 Levels for Diagnostic #   865 PCON0002
 (PID.TID 0000.0001) SETDIAG: Allocate 23 x  1 Levels for Diagnostic #   866 PSTO0002
-(PID.TID 0000.0001) SETDIAG: Allocate 23 x  1 Levels for Diagnostic #   867 PEXC0002
 (PID.TID 0000.0001) SETDIAG: Allocate 23 x  1 Levels for Diagnostic #   868 FPHO0002
 (PID.TID 0000.0001) SETDIAG: Allocate 23 x  1 Levels for Diagnostic #   869 FSTO0002
-(PID.TID 0000.0001) SETDIAG: Allocate 23 x  1 Levels for Diagnostic #   870 FEXC0002
 (PID.TID 0000.0001) SETDIAG: Allocate 23 x  1 Levels for Diagnostic #   871 Y_RQ0002
 (PID.TID 0000.0001) SETDIAG: Allocate 23 x  1 Levels for Diagnostic #  1131 PC0002
 (PID.TID 0000.0001) SETDIAG: Allocate 23 x  1 Levels for Diagnostic #   846 PChl0002
 (PID.TID 0000.0001) SETDIAG: Allocate 23 x  1 Levels for Diagnostic #   847 VN0002
 (PID.TID 0000.0001) SETDIAG: Allocate 23 x  1 Levels for Diagnostic #   849 MODE0002
 (PID.TID 0000.0001) SETDIAG: Allocate 23 x  1 Levels for Diagnostic #   850 Fe_C0002
-(PID.TID 0000.0001) SETDIAG: Allocate 23 x  1 Levels for Diagnostic #   851 exQc0002
 (PID.TID 0000.0001) SETDIAG: Allocate 23 x  1 Levels for Diagnostic #   852 PCg0002
 (PID.TID 0000.0001) SETDIAG: Allocate 23 x  1 Levels for Diagnostic #    26 THETA
 (PID.TID 0000.0001) SETDIAG: Allocate 23 x  1 Levels for Diagnostic #  1188 GC_Tr01
@@ -2259,7 +2239,7 @@
 (PID.TID 0000.0001) SETDIAG: Allocate  1 x  1 Levels for Diagnostic #  1170 gDICsurf
 (PID.TID 0000.0001) SETDIAG: Allocate  1 x  1 Levels for Diagnostic #  1171 gALKsurf
 (PID.TID 0000.0001) SETDIAG: Allocate  1 x  1 Levels for Diagnostic #  1172 gO2surf
-(PID.TID 0000.0001)   space allocated for all diagnostics:    5409 levels
+(PID.TID 0000.0001)   space allocated for all diagnostics:    5225 levels
 (PID.TID 0000.0001) DIAGNOSTICS_SET_POINTERS: Set levels for Outp.Stream: 3d
 (PID.TID 0000.0001)  Levels:       1.   2.   3.   4.   5.   6.   7.   8.   9.  10.  11.  12.  13.  14.  15.  16.  17.  18.  19.  20.
 (PID.TID 0000.0001)  Levels:      21.  22.  23.
@@ -4521,7 +4501,7 @@
 (PID.TID 0000.0001)  -----------------------------------
 (PID.TID 0000.0001)  tracer number :   17
 (PID.TID 0000.0001) PTRACERS_names = /* Tracer short name */
-(PID.TID 0000.0001)               'DOH'
+(PID.TID 0000.0001)               'PIC'
 (PID.TID 0000.0001)     ;
 (PID.TID 0000.0001) PTRACERS_long_names = /* Tracer long name */
 (PID.TID 0000.0001)               ''
@@ -7235,7 +7215,7 @@ Iter.Nb:         0 ; Time(s):  0.0000000000000E+00
 ------------------------------------------------------------------------
 listId=    1 ; file name: 3d
  nFlds, nActive,       freq     &     phase        , nLev               
-   95  |   95  |      3600.000000         0.000000 |  23
+   87  |   87  |      3600.000000         0.000000 |  23
  levels:   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23
  diag# | name   |   ipt  |  iMate | kLev|   count |   mate.C|           
    267 |TRAC01  |      1 |      0 |  23 |       0 |
@@ -7285,222 +7265,214 @@ listId=    1 ; file name: 3d
    815 |VN0001  |   1013 |      0 |  23 |       0 |
    817 |MODE0001|   1036 |      0 |  23 |       0 |
    818 |Fe_C0001|   1059 |      0 |  23 |       0 |
-   819 |exQc0001|   1082 |      0 |  23 |       0 |
-   820 |PCg0001 |   1105 |      0 |  23 |       0 |
-   821 |CChl0001|   1128 |      0 |  23 |       0 |
-   822 |NChl0001|   1151 |      0 |  23 |       0 |
-   823 |NPho0001|   1174 |      0 |  23 |       0 |
-   824 |NSyn0001|   1197 |      0 |  23 |       0 |
-   825 |NPrn0001|   1220 |      0 |  23 |       0 |
-   826 |NRNA0001|   1243 |      0 |  23 |       0 |
-   827 |NDNA0001|   1266 |      0 |  23 |       0 |
-   828 |NSTO0001|   1289 |      0 |  23 |       0 |
-   829 |NEXC0001|   1312 |      0 |  23 |       0 |
-   830 |PRNA0001|   1335 |      0 |  23 |       0 |
-   831 |PDNA0001|   1358 |      0 |  23 |       0 |
-   832 |PTHY0001|   1381 |      0 |  23 |       0 |
-   833 |PCON0001|   1404 |      0 |  23 |       0 |
-   834 |PSTO0001|   1427 |      0 |  23 |       0 |
-   835 |PEXC0001|   1450 |      0 |  23 |       0 |
-   836 |FPHO0001|   1473 |      0 |  23 |       0 |
-   837 |FSTO0001|   1496 |      0 |  23 |       0 |
-   838 |FEXC0001|   1519 |      0 |  23 |       0 |
-   839 |Y_RQ0001|   1542 |      0 |  23 |       0 |
-   853 |CChl0002|   1565 |      0 |  23 |       0 |
-   854 |NChl0002|   1588 |      0 |  23 |       0 |
-   855 |NPho0002|   1611 |      0 |  23 |       0 |
-   856 |NSyn0002|   1634 |      0 |  23 |       0 |
-   857 |NPrn0002|   1657 |      0 |  23 |       0 |
-   858 |NRNA0002|   1680 |      0 |  23 |       0 |
-   859 |NDNA0002|   1703 |      0 |  23 |       0 |
-   860 |NSTO0002|   1726 |      0 |  23 |       0 |
-   861 |NEXC0002|   1749 |      0 |  23 |       0 |
-   862 |PRNA0002|   1772 |      0 |  23 |       0 |
-   863 |PDNA0002|   1795 |      0 |  23 |       0 |
-   864 |PTHY0002|   1818 |      0 |  23 |       0 |
-   865 |PCON0002|   1841 |      0 |  23 |       0 |
-   866 |PSTO0002|   1864 |      0 |  23 |       0 |
-   867 |PEXC0002|   1887 |      0 |  23 |       0 |
-   868 |FPHO0002|   1910 |      0 |  23 |       0 |
-   869 |FSTO0002|   1933 |      0 |  23 |       0 |
-   870 |FEXC0002|   1956 |      0 |  23 |       0 |
-   871 |Y_RQ0002|   1979 |      0 |  23 |       0 |
-  1131 |PC0002  |   2002 |      0 |  23 |       0 |
-   846 |PChl0002|   2025 |      0 |  23 |       0 |
-   847 |VN0002  |   2048 |      0 |  23 |       0 |
-   849 |MODE0002|   2071 |      0 |  23 |       0 |
-   850 |Fe_C0002|   2094 |      0 |  23 |       0 |
-   851 |exQc0002|   2117 |      0 |  23 |       0 |
-   852 |PCg0002 |   2140 |      0 |  23 |       0 |
-    26 |THETA   |   2163 |      0 |  23 |       0 |
+   820 |PCg0001 |   1082 |      0 |  23 |       0 |
+   821 |CChl0001|   1105 |      0 |  23 |       0 |
+   822 |NChl0001|   1128 |      0 |  23 |       0 |
+   823 |NPho0001|   1151 |      0 |  23 |       0 |
+   824 |NSyn0001|   1174 |      0 |  23 |       0 |
+   825 |NPrn0001|   1197 |      0 |  23 |       0 |
+   826 |NRNA0001|   1220 |      0 |  23 |       0 |
+   827 |NDNA0001|   1243 |      0 |  23 |       0 |
+   828 |NSTO0001|   1266 |      0 |  23 |       0 |
+   830 |PRNA0001|   1289 |      0 |  23 |       0 |
+   831 |PDNA0001|   1312 |      0 |  23 |       0 |
+   832 |PTHY0001|   1335 |      0 |  23 |       0 |
+   833 |PCON0001|   1358 |      0 |  23 |       0 |
+   834 |PSTO0001|   1381 |      0 |  23 |       0 |
+   836 |FPHO0001|   1404 |      0 |  23 |       0 |
+   837 |FSTO0001|   1427 |      0 |  23 |       0 |
+   839 |Y_RQ0001|   1450 |      0 |  23 |       0 |
+   853 |CChl0002|   1473 |      0 |  23 |       0 |
+   854 |NChl0002|   1496 |      0 |  23 |       0 |
+   855 |NPho0002|   1519 |      0 |  23 |       0 |
+   856 |NSyn0002|   1542 |      0 |  23 |       0 |
+   857 |NPrn0002|   1565 |      0 |  23 |       0 |
+   858 |NRNA0002|   1588 |      0 |  23 |       0 |
+   859 |NDNA0002|   1611 |      0 |  23 |       0 |
+   860 |NSTO0002|   1634 |      0 |  23 |       0 |
+   862 |PRNA0002|   1657 |      0 |  23 |       0 |
+   863 |PDNA0002|   1680 |      0 |  23 |       0 |
+   864 |PTHY0002|   1703 |      0 |  23 |       0 |
+   865 |PCON0002|   1726 |      0 |  23 |       0 |
+   866 |PSTO0002|   1749 |      0 |  23 |       0 |
+   868 |FPHO0002|   1772 |      0 |  23 |       0 |
+   869 |FSTO0002|   1795 |      0 |  23 |       0 |
+   871 |Y_RQ0002|   1818 |      0 |  23 |       0 |
+  1131 |PC0002  |   1841 |      0 |  23 |       0 |
+   846 |PChl0002|   1864 |      0 |  23 |       0 |
+   847 |VN0002  |   1887 |      0 |  23 |       0 |
+   849 |MODE0002|   1910 |      0 |  23 |       0 |
+   850 |Fe_C0002|   1933 |      0 |  23 |       0 |
+   852 |PCg0002 |   1956 |      0 |  23 |       0 |
+    26 |THETA   |   1979 |      0 |  23 |       0 |
 ------------------------------------------------------------------------
 listId=    2 ; file name: GC
  nFlds, nActive,       freq     &     phase        , nLev               
    36  |   36  |      3600.000000         0.000000 |  23
  levels:   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23
  diag# | name   |   ipt  |  iMate | kLev|   count |   mate.C|           
-  1188 |GC_Tr01 |   2186 |      0 |  23 |       0 |
-  1189 |GC_Tr02 |   2209 |      0 |  23 |       0 |
-  1190 |GC_Tr03 |   2232 |      0 |  23 |       0 |
-  1191 |GC_Tr04 |   2255 |      0 |  23 |       0 |
-  1192 |GC_Tr05 |   2278 |      0 |  23 |       0 |
-  1193 |GC_Tr06 |   2301 |      0 |  23 |       0 |
-  1194 |GC_Tr07 |   2324 |      0 |  23 |       0 |
-  1195 |GC_Tr08 |   2347 |      0 |  23 |       0 |
-  1196 |GC_Tr09 |   2370 |      0 |  23 |       0 |
-  1197 |GC_Tr10 |   2393 |      0 |  23 |       0 |
-  1198 |GC_Tr11 |   2416 |      0 |  23 |       0 |
-  1199 |GC_Tr12 |   2439 |      0 |  23 |       0 |
-  1200 |GC_Tr13 |   2462 |      0 |  23 |       0 |
-  1201 |GC_Tr14 |   2485 |      0 |  23 |       0 |
-  1202 |GC_Tr15 |   2508 |      0 |  23 |       0 |
-  1203 |GC_Tr16 |   2531 |      0 |  23 |       0 |
-  1204 |GC_Tr17 |   2554 |      0 |  23 |       0 |
-  1205 |GC_Tr18 |   2577 |      0 |  23 |       0 |
-  1206 |GC_Tr19 |   2600 |      0 |  23 |       0 |
-  1207 |GC_Tr20 |   2623 |      0 |  23 |       0 |
-  1208 |GC_Tr21 |   2646 |      0 |  23 |       0 |
-  1209 |GC_Tr22 |   2669 |      0 |  23 |       0 |
-  1210 |GC_Tr23 |   2692 |      0 |  23 |       0 |
-  1211 |GC_Tr24 |   2715 |      0 |  23 |       0 |
-  1212 |GC_Tr25 |   2738 |      0 |  23 |       0 |
-  1213 |GC_Tr26 |   2761 |      0 |  23 |       0 |
-  1214 |GC_Tr27 |   2784 |      0 |  23 |       0 |
-  1215 |GC_Tr28 |   2807 |      0 |  23 |       0 |
-  1216 |GC_Tr29 |   2830 |      0 |  23 |       0 |
-  1217 |GC_Tr30 |   2853 |      0 |  23 |       0 |
-  1218 |GC_Tr31 |   2876 |      0 |  23 |       0 |
-  1219 |GC_Tr32 |   2899 |      0 |  23 |       0 |
-  1220 |GC_Tr33 |   2922 |      0 |  23 |       0 |
-  1221 |GC_Tr34 |   2945 |      0 |  23 |       0 |
-  1222 |GC_Tr35 |   2968 |      0 |  23 |       0 |
-  1223 |GC_Tr36 |   2991 |      0 |  23 |       0 |
+  1188 |GC_Tr01 |   2002 |      0 |  23 |       0 |
+  1189 |GC_Tr02 |   2025 |      0 |  23 |       0 |
+  1190 |GC_Tr03 |   2048 |      0 |  23 |       0 |
+  1191 |GC_Tr04 |   2071 |      0 |  23 |       0 |
+  1192 |GC_Tr05 |   2094 |      0 |  23 |       0 |
+  1193 |GC_Tr06 |   2117 |      0 |  23 |       0 |
+  1194 |GC_Tr07 |   2140 |      0 |  23 |       0 |
+  1195 |GC_Tr08 |   2163 |      0 |  23 |       0 |
+  1196 |GC_Tr09 |   2186 |      0 |  23 |       0 |
+  1197 |GC_Tr10 |   2209 |      0 |  23 |       0 |
+  1198 |GC_Tr11 |   2232 |      0 |  23 |       0 |
+  1199 |GC_Tr12 |   2255 |      0 |  23 |       0 |
+  1200 |GC_Tr13 |   2278 |      0 |  23 |       0 |
+  1201 |GC_Tr14 |   2301 |      0 |  23 |       0 |
+  1202 |GC_Tr15 |   2324 |      0 |  23 |       0 |
+  1203 |GC_Tr16 |   2347 |      0 |  23 |       0 |
+  1204 |GC_Tr17 |   2370 |      0 |  23 |       0 |
+  1205 |GC_Tr18 |   2393 |      0 |  23 |       0 |
+  1206 |GC_Tr19 |   2416 |      0 |  23 |       0 |
+  1207 |GC_Tr20 |   2439 |      0 |  23 |       0 |
+  1208 |GC_Tr21 |   2462 |      0 |  23 |       0 |
+  1209 |GC_Tr22 |   2485 |      0 |  23 |       0 |
+  1210 |GC_Tr23 |   2508 |      0 |  23 |       0 |
+  1211 |GC_Tr24 |   2531 |      0 |  23 |       0 |
+  1212 |GC_Tr25 |   2554 |      0 |  23 |       0 |
+  1213 |GC_Tr26 |   2577 |      0 |  23 |       0 |
+  1214 |GC_Tr27 |   2600 |      0 |  23 |       0 |
+  1215 |GC_Tr28 |   2623 |      0 |  23 |       0 |
+  1216 |GC_Tr29 |   2646 |      0 |  23 |       0 |
+  1217 |GC_Tr30 |   2669 |      0 |  23 |       0 |
+  1218 |GC_Tr31 |   2692 |      0 |  23 |       0 |
+  1219 |GC_Tr32 |   2715 |      0 |  23 |       0 |
+  1220 |GC_Tr33 |   2738 |      0 |  23 |       0 |
+  1221 |GC_Tr34 |   2761 |      0 |  23 |       0 |
+  1222 |GC_Tr35 |   2784 |      0 |  23 |       0 |
+  1223 |GC_Tr36 |   2807 |      0 |  23 |       0 |
 ------------------------------------------------------------------------
 listId=    3 ; file name: iops
  nFlds, nActive,       freq     &     phase        , nLev               
    52  |   52  |      3600.000000         0.000000 |  23
  levels:   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23
  diag# | name   |   ipt  |  iMate | kLev|   count |   mate.C|           
-   880 |a001    |   3014 |      0 |  23 |       0 |
-   892 |a002    |   3037 |      0 |  23 |       0 |
-   904 |a003    |   3060 |      0 |  23 |       0 |
-   916 |a004    |   3083 |      0 |  23 |       0 |
-   928 |a005    |   3106 |      0 |  23 |       0 |
-   940 |a006    |   3129 |      0 |  23 |       0 |
-   952 |a007    |   3152 |      0 |  23 |       0 |
-   964 |a008    |   3175 |      0 |  23 |       0 |
-   976 |a009    |   3198 |      0 |  23 |       0 |
-   988 |a010    |   3221 |      0 |  23 |       0 |
-  1000 |a011    |   3244 |      0 |  23 |       0 |
-  1012 |a012    |   3267 |      0 |  23 |       0 |
-  1024 |a013    |   3290 |      0 |  23 |       0 |
-   881 |bt001   |   3313 |      0 |  23 |       0 |
-   893 |bt002   |   3336 |      0 |  23 |       0 |
-   905 |bt003   |   3359 |      0 |  23 |       0 |
-   917 |bt004   |   3382 |      0 |  23 |       0 |
-   929 |bt005   |   3405 |      0 |  23 |       0 |
-   941 |bt006   |   3428 |      0 |  23 |       0 |
-   953 |bt007   |   3451 |      0 |  23 |       0 |
-   965 |bt008   |   3474 |      0 |  23 |       0 |
-   977 |bt009   |   3497 |      0 |  23 |       0 |
-   989 |bt010   |   3520 |      0 |  23 |       0 |
-  1001 |bt011   |   3543 |      0 |  23 |       0 |
-  1013 |bt012   |   3566 |      0 |  23 |       0 |
-  1025 |bt013   |   3589 |      0 |  23 |       0 |
-   882 |bb001   |   3612 |      0 |  23 |       0 |
-   894 |bb002   |   3635 |      0 |  23 |       0 |
-   906 |bb003   |   3658 |      0 |  23 |       0 |
-   918 |bb004   |   3681 |      0 |  23 |       0 |
-   930 |bb005   |   3704 |      0 |  23 |       0 |
-   954 |bb007   |   3727 |      0 |  23 |       0 |
-   966 |bb008   |   3750 |      0 |  23 |       0 |
-   978 |bb009   |   3773 |      0 |  23 |       0 |
-   990 |bb010   |   3796 |      0 |  23 |       0 |
-  1002 |bb011   |   3819 |      0 |  23 |       0 |
-  1014 |bb012   |   3842 |      0 |  23 |       0 |
-  1026 |bb013   |   3865 |      0 |  23 |       0 |
-   889 |aCDOM001|   3888 |      0 |  23 |       0 |
-   901 |aCDOM002|   3911 |      0 |  23 |       0 |
-   913 |aCDOM003|   3934 |      0 |  23 |       0 |
-   925 |aCDOM004|   3957 |      0 |  23 |       0 |
-   937 |aCDOM005|   3980 |      0 |  23 |       0 |
-   949 |aCDOM006|   4003 |      0 |  23 |       0 |
-   961 |aCDOM007|   4026 |      0 |  23 |       0 |
-   973 |aCDOM008|   4049 |      0 |  23 |       0 |
-   985 |aCDOM009|   4072 |      0 |  23 |       0 |
-   997 |aCDOM010|   4095 |      0 |  23 |       0 |
-  1009 |aCDOM011|   4118 |      0 |  23 |       0 |
-  1021 |aCDOM012|   4141 |      0 |  23 |       0 |
-  1033 |aCDOM013|   4164 |      0 |  23 |       0 |
-   942 |bb006   |   4187 |      0 |  23 |       0 |
+   880 |a001    |   2830 |      0 |  23 |       0 |
+   892 |a002    |   2853 |      0 |  23 |       0 |
+   904 |a003    |   2876 |      0 |  23 |       0 |
+   916 |a004    |   2899 |      0 |  23 |       0 |
+   928 |a005    |   2922 |      0 |  23 |       0 |
+   940 |a006    |   2945 |      0 |  23 |       0 |
+   952 |a007    |   2968 |      0 |  23 |       0 |
+   964 |a008    |   2991 |      0 |  23 |       0 |
+   976 |a009    |   3014 |      0 |  23 |       0 |
+   988 |a010    |   3037 |      0 |  23 |       0 |
+  1000 |a011    |   3060 |      0 |  23 |       0 |
+  1012 |a012    |   3083 |      0 |  23 |       0 |
+  1024 |a013    |   3106 |      0 |  23 |       0 |
+   881 |bt001   |   3129 |      0 |  23 |       0 |
+   893 |bt002   |   3152 |      0 |  23 |       0 |
+   905 |bt003   |   3175 |      0 |  23 |       0 |
+   917 |bt004   |   3198 |      0 |  23 |       0 |
+   929 |bt005   |   3221 |      0 |  23 |       0 |
+   941 |bt006   |   3244 |      0 |  23 |       0 |
+   953 |bt007   |   3267 |      0 |  23 |       0 |
+   965 |bt008   |   3290 |      0 |  23 |       0 |
+   977 |bt009   |   3313 |      0 |  23 |       0 |
+   989 |bt010   |   3336 |      0 |  23 |       0 |
+  1001 |bt011   |   3359 |      0 |  23 |       0 |
+  1013 |bt012   |   3382 |      0 |  23 |       0 |
+  1025 |bt013   |   3405 |      0 |  23 |       0 |
+   882 |bb001   |   3428 |      0 |  23 |       0 |
+   894 |bb002   |   3451 |      0 |  23 |       0 |
+   906 |bb003   |   3474 |      0 |  23 |       0 |
+   918 |bb004   |   3497 |      0 |  23 |       0 |
+   930 |bb005   |   3520 |      0 |  23 |       0 |
+   954 |bb007   |   3543 |      0 |  23 |       0 |
+   966 |bb008   |   3566 |      0 |  23 |       0 |
+   978 |bb009   |   3589 |      0 |  23 |       0 |
+   990 |bb010   |   3612 |      0 |  23 |       0 |
+  1002 |bb011   |   3635 |      0 |  23 |       0 |
+  1014 |bb012   |   3658 |      0 |  23 |       0 |
+  1026 |bb013   |   3681 |      0 |  23 |       0 |
+   889 |aCDOM001|   3704 |      0 |  23 |       0 |
+   901 |aCDOM002|   3727 |      0 |  23 |       0 |
+   913 |aCDOM003|   3750 |      0 |  23 |       0 |
+   925 |aCDOM004|   3773 |      0 |  23 |       0 |
+   937 |aCDOM005|   3796 |      0 |  23 |       0 |
+   949 |aCDOM006|   3819 |      0 |  23 |       0 |
+   961 |aCDOM007|   3842 |      0 |  23 |       0 |
+   973 |aCDOM008|   3865 |      0 |  23 |       0 |
+   985 |aCDOM009|   3888 |      0 |  23 |       0 |
+   997 |aCDOM010|   3911 |      0 |  23 |       0 |
+  1009 |aCDOM011|   3934 |      0 |  23 |       0 |
+  1021 |aCDOM012|   3957 |      0 |  23 |       0 |
+  1033 |aCDOM013|   3980 |      0 |  23 |       0 |
+   942 |bb006   |   4003 |      0 |  23 |       0 |
 ------------------------------------------------------------------------
 listId=    4 ; file name: par
  nFlds, nActive,       freq     &     phase        , nLev               
    52  |   52  |      3600.000000         0.000000 |  23
  levels:   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23
  diag# | name   |   ipt  |  iMate | kLev|   count |   mate.C|           
-   189 |Ed001   |   4210 |      0 |  23 |       0 |
-   195 |Ed002   |   4233 |      0 |  23 |       0 |
-   201 |Ed003   |   4256 |      0 |  23 |       0 |
-   207 |Ed004   |   4279 |      0 |  23 |       0 |
-   213 |Ed005   |   4302 |      0 |  23 |       0 |
-   219 |Ed006   |   4325 |      0 |  23 |       0 |
-   225 |Ed007   |   4348 |      0 |  23 |       0 |
-   231 |Ed008   |   4371 |      0 |  23 |       0 |
-   237 |Ed009   |   4394 |      0 |  23 |       0 |
-   243 |Ed010   |   4417 |      0 |  23 |       0 |
-   249 |Ed011   |   4440 |      0 |  23 |       0 |
-   255 |Ed012   |   4463 |      0 |  23 |       0 |
-   261 |Ed013   |   4486 |      0 |  23 |       0 |
-   190 |Es001   |   4509 |      0 |  23 |       0 |
-   196 |Es002   |   4532 |      0 |  23 |       0 |
-   202 |Es003   |   4555 |      0 |  23 |       0 |
-   208 |Es004   |   4578 |      0 |  23 |       0 |
-   214 |Es005   |   4601 |      0 |  23 |       0 |
-   220 |Es006   |   4624 |      0 |  23 |       0 |
-   226 |Es007   |   4647 |      0 |  23 |       0 |
-   232 |Es008   |   4670 |      0 |  23 |       0 |
-   238 |Es009   |   4693 |      0 |  23 |       0 |
-   244 |Es010   |   4716 |      0 |  23 |       0 |
-   250 |Es011   |   4739 |      0 |  23 |       0 |
-   256 |Es012   |   4762 |      0 |  23 |       0 |
-   262 |Es013   |   4785 |      0 |  23 |       0 |
-   191 |Eu001   |   4808 |      0 |  23 |       0 |
-   197 |Eu002   |   4831 |      0 |  23 |       0 |
-   203 |Eu003   |   4854 |      0 |  23 |       0 |
-   209 |Eu004   |   4877 |      0 |  23 |       0 |
-   215 |Eu005   |   4900 |      0 |  23 |       0 |
-   221 |Eu006   |   4923 |      0 |  23 |       0 |
-   227 |Eu007   |   4946 |      0 |  23 |       0 |
-   233 |Eu008   |   4969 |      0 |  23 |       0 |
-   239 |Eu009   |   4992 |      0 |  23 |       0 |
-   245 |Eu010   |   5015 |      0 |  23 |       0 |
-   251 |Eu011   |   5038 |      0 |  23 |       0 |
-   257 |Eu012   |   5061 |      0 |  23 |       0 |
-   263 |Eu013   |   5084 |      0 |  23 |       0 |
-   878 |PAR001  |   5107 |      0 |  23 |       0 |
-   890 |PAR002  |   5130 |      0 |  23 |       0 |
-   902 |PAR003  |   5153 |      0 |  23 |       0 |
-   914 |PAR004  |   5176 |      0 |  23 |       0 |
-   926 |PAR005  |   5199 |      0 |  23 |       0 |
-   938 |PAR006  |   5222 |      0 |  23 |       0 |
-   950 |PAR007  |   5245 |      0 |  23 |       0 |
-   962 |PAR008  |   5268 |      0 |  23 |       0 |
-   974 |PAR009  |   5291 |      0 |  23 |       0 |
-   986 |PAR010  |   5314 |      0 |  23 |       0 |
-   998 |PAR011  |   5337 |      0 |  23 |       0 |
-  1010 |PAR012  |   5360 |      0 |  23 |       0 |
-  1022 |PAR013  |   5383 |      0 |  23 |       0 |
+   189 |Ed001   |   4026 |      0 |  23 |       0 |
+   195 |Ed002   |   4049 |      0 |  23 |       0 |
+   201 |Ed003   |   4072 |      0 |  23 |       0 |
+   207 |Ed004   |   4095 |      0 |  23 |       0 |
+   213 |Ed005   |   4118 |      0 |  23 |       0 |
+   219 |Ed006   |   4141 |      0 |  23 |       0 |
+   225 |Ed007   |   4164 |      0 |  23 |       0 |
+   231 |Ed008   |   4187 |      0 |  23 |       0 |
+   237 |Ed009   |   4210 |      0 |  23 |       0 |
+   243 |Ed010   |   4233 |      0 |  23 |       0 |
+   249 |Ed011   |   4256 |      0 |  23 |       0 |
+   255 |Ed012   |   4279 |      0 |  23 |       0 |
+   261 |Ed013   |   4302 |      0 |  23 |       0 |
+   190 |Es001   |   4325 |      0 |  23 |       0 |
+   196 |Es002   |   4348 |      0 |  23 |       0 |
+   202 |Es003   |   4371 |      0 |  23 |       0 |
+   208 |Es004   |   4394 |      0 |  23 |       0 |
+   214 |Es005   |   4417 |      0 |  23 |       0 |
+   220 |Es006   |   4440 |      0 |  23 |       0 |
+   226 |Es007   |   4463 |      0 |  23 |       0 |
+   232 |Es008   |   4486 |      0 |  23 |       0 |
+   238 |Es009   |   4509 |      0 |  23 |       0 |
+   244 |Es010   |   4532 |      0 |  23 |       0 |
+   250 |Es011   |   4555 |      0 |  23 |       0 |
+   256 |Es012   |   4578 |      0 |  23 |       0 |
+   262 |Es013   |   4601 |      0 |  23 |       0 |
+   191 |Eu001   |   4624 |      0 |  23 |       0 |
+   197 |Eu002   |   4647 |      0 |  23 |       0 |
+   203 |Eu003   |   4670 |      0 |  23 |       0 |
+   209 |Eu004   |   4693 |      0 |  23 |       0 |
+   215 |Eu005   |   4716 |      0 |  23 |       0 |
+   221 |Eu006   |   4739 |      0 |  23 |       0 |
+   227 |Eu007   |   4762 |      0 |  23 |       0 |
+   233 |Eu008   |   4785 |      0 |  23 |       0 |
+   239 |Eu009   |   4808 |      0 |  23 |       0 |
+   245 |Eu010   |   4831 |      0 |  23 |       0 |
+   251 |Eu011   |   4854 |      0 |  23 |       0 |
+   257 |Eu012   |   4877 |      0 |  23 |       0 |
+   263 |Eu013   |   4900 |      0 |  23 |       0 |
+   878 |PAR001  |   4923 |      0 |  23 |       0 |
+   890 |PAR002  |   4946 |      0 |  23 |       0 |
+   902 |PAR003  |   4969 |      0 |  23 |       0 |
+   914 |PAR004  |   4992 |      0 |  23 |       0 |
+   926 |PAR005  |   5015 |      0 |  23 |       0 |
+   938 |PAR006  |   5038 |      0 |  23 |       0 |
+   950 |PAR007  |   5061 |      0 |  23 |       0 |
+   962 |PAR008  |   5084 |      0 |  23 |       0 |
+   974 |PAR009  |   5107 |      0 |  23 |       0 |
+   986 |PAR010  |   5130 |      0 |  23 |       0 |
+   998 |PAR011  |   5153 |      0 |  23 |       0 |
+  1010 |PAR012  |   5176 |      0 |  23 |       0 |
+  1022 |PAR013  |   5199 |      0 |  23 |       0 |
 ------------------------------------------------------------------------
 listId=    5 ; file name: 2d
  nFlds, nActive,       freq     &     phase        , nLev               
     4  |    4  |      3600.000000         0.000000 |   1
  levels:   1
  diag# | name   |   ipt  |  iMate | kLev|   count |   mate.C|           
-  1166 |fluxCO2 |   5406 |      0 |   1 |       0 |
-  1170 |gDICsurf|   5407 |      0 |   1 |       0 |
-  1171 |gALKsurf|   5408 |      0 |   1 |       0 |
-  1172 |gO2surf |   5409 |      0 |   1 |       0 |
+  1166 |fluxCO2 |   5222 |      0 |   1 |       0 |
+  1170 |gDICsurf|   5223 |      0 |   1 |       0 |
+  1171 |gALKsurf|   5224 |      0 |   1 |       0 |
+  1172 |gO2surf |   5225 |      0 |   1 |       0 |
 ------------------------------------------------------------------------
 Global & Regional Statistics diagnostics: Number of lists:     3
 ------------------------------------------------------------------------
@@ -8526,7 +8498,6 @@ listId=   3 ; file name: statsDenit
  Computing Diagnostic #    815  VN0001       Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    817  MODE0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    818  Fe_C0001     Counter:       1   Parms: SM P    MR      
- Computing Diagnostic #    819  exQc0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    820  PCg0001      Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    821  CChl0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    822  NChl0001     Counter:       1   Parms: SM P    MR      
@@ -8536,16 +8507,13 @@ listId=   3 ; file name: statsDenit
  Computing Diagnostic #    826  NRNA0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    827  NDNA0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    828  NSTO0001     Counter:       1   Parms: SM P    MR      
- Computing Diagnostic #    829  NEXC0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    830  PRNA0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    831  PDNA0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    832  PTHY0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    833  PCON0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    834  PSTO0001     Counter:       1   Parms: SM P    MR      
- Computing Diagnostic #    835  PEXC0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    836  FPHO0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    837  FSTO0001     Counter:       1   Parms: SM P    MR      
- Computing Diagnostic #    838  FEXC0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    839  Y_RQ0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    853  CChl0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    854  NChl0002     Counter:       1   Parms: SM P    MR      
@@ -8555,23 +8523,19 @@ listId=   3 ; file name: statsDenit
  Computing Diagnostic #    858  NRNA0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    859  NDNA0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    860  NSTO0002     Counter:       1   Parms: SM P    MR      
- Computing Diagnostic #    861  NEXC0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    862  PRNA0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    863  PDNA0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    864  PTHY0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    865  PCON0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    866  PSTO0002     Counter:       1   Parms: SM P    MR      
- Computing Diagnostic #    867  PEXC0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    868  FPHO0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    869  FSTO0002     Counter:       1   Parms: SM P    MR      
- Computing Diagnostic #    870  FEXC0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    871  Y_RQ0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #   1131  PC0002       Counter:       1   Parms: SMRP    MR      
  Computing Diagnostic #    846  PChl0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    847  VN0002       Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    849  MODE0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    850  Fe_C0002     Counter:       1   Parms: SM P    MR      
- Computing Diagnostic #    851  exQc0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    852  PCg0002      Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #     26  THETA        Counter:       1   Parms: SMR     MR      
  Computing Diagnostic #   1188  GC_Tr01      Counter:       1   Parms: SMR     MR      
@@ -9317,7 +9281,6 @@ listId=   3 ; file name: statsDenit
  Computing Diagnostic #    815  VN0001       Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    817  MODE0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    818  Fe_C0001     Counter:       1   Parms: SM P    MR      
- Computing Diagnostic #    819  exQc0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    820  PCg0001      Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    821  CChl0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    822  NChl0001     Counter:       1   Parms: SM P    MR      
@@ -9327,16 +9290,13 @@ listId=   3 ; file name: statsDenit
  Computing Diagnostic #    826  NRNA0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    827  NDNA0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    828  NSTO0001     Counter:       1   Parms: SM P    MR      
- Computing Diagnostic #    829  NEXC0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    830  PRNA0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    831  PDNA0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    832  PTHY0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    833  PCON0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    834  PSTO0001     Counter:       1   Parms: SM P    MR      
- Computing Diagnostic #    835  PEXC0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    836  FPHO0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    837  FSTO0001     Counter:       1   Parms: SM P    MR      
- Computing Diagnostic #    838  FEXC0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    839  Y_RQ0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    853  CChl0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    854  NChl0002     Counter:       1   Parms: SM P    MR      
@@ -9346,23 +9306,19 @@ listId=   3 ; file name: statsDenit
  Computing Diagnostic #    858  NRNA0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    859  NDNA0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    860  NSTO0002     Counter:       1   Parms: SM P    MR      
- Computing Diagnostic #    861  NEXC0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    862  PRNA0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    863  PDNA0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    864  PTHY0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    865  PCON0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    866  PSTO0002     Counter:       1   Parms: SM P    MR      
- Computing Diagnostic #    867  PEXC0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    868  FPHO0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    869  FSTO0002     Counter:       1   Parms: SM P    MR      
- Computing Diagnostic #    870  FEXC0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    871  Y_RQ0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #   1131  PC0002       Counter:       1   Parms: SMRP    MR      
  Computing Diagnostic #    846  PChl0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    847  VN0002       Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    849  MODE0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    850  Fe_C0002     Counter:       1   Parms: SM P    MR      
- Computing Diagnostic #    851  exQc0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    852  PCg0002      Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #     26  THETA        Counter:       1   Parms: SMR     MR      
  Computing Diagnostic #   1188  GC_Tr01      Counter:       1   Parms: SMR     MR      
@@ -10108,7 +10064,6 @@ listId=   3 ; file name: statsDenit
  Computing Diagnostic #    815  VN0001       Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    817  MODE0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    818  Fe_C0001     Counter:       1   Parms: SM P    MR      
- Computing Diagnostic #    819  exQc0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    820  PCg0001      Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    821  CChl0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    822  NChl0001     Counter:       1   Parms: SM P    MR      
@@ -10118,16 +10073,13 @@ listId=   3 ; file name: statsDenit
  Computing Diagnostic #    826  NRNA0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    827  NDNA0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    828  NSTO0001     Counter:       1   Parms: SM P    MR      
- Computing Diagnostic #    829  NEXC0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    830  PRNA0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    831  PDNA0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    832  PTHY0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    833  PCON0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    834  PSTO0001     Counter:       1   Parms: SM P    MR      
- Computing Diagnostic #    835  PEXC0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    836  FPHO0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    837  FSTO0001     Counter:       1   Parms: SM P    MR      
- Computing Diagnostic #    838  FEXC0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    839  Y_RQ0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    853  CChl0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    854  NChl0002     Counter:       1   Parms: SM P    MR      
@@ -10137,23 +10089,19 @@ listId=   3 ; file name: statsDenit
  Computing Diagnostic #    858  NRNA0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    859  NDNA0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    860  NSTO0002     Counter:       1   Parms: SM P    MR      
- Computing Diagnostic #    861  NEXC0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    862  PRNA0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    863  PDNA0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    864  PTHY0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    865  PCON0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    866  PSTO0002     Counter:       1   Parms: SM P    MR      
- Computing Diagnostic #    867  PEXC0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    868  FPHO0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    869  FSTO0002     Counter:       1   Parms: SM P    MR      
- Computing Diagnostic #    870  FEXC0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    871  Y_RQ0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #   1131  PC0002       Counter:       1   Parms: SMRP    MR      
  Computing Diagnostic #    846  PChl0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    847  VN0002       Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    849  MODE0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    850  Fe_C0002     Counter:       1   Parms: SM P    MR      
- Computing Diagnostic #    851  exQc0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    852  PCg0002      Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #     26  THETA        Counter:       1   Parms: SMR     MR      
  Computing Diagnostic #   1188  GC_Tr01      Counter:       1   Parms: SMR     MR      
@@ -10902,7 +10850,6 @@ listId=   3 ; file name: statsDenit
  Computing Diagnostic #    815  VN0001       Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    817  MODE0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    818  Fe_C0001     Counter:       1   Parms: SM P    MR      
- Computing Diagnostic #    819  exQc0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    820  PCg0001      Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    821  CChl0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    822  NChl0001     Counter:       1   Parms: SM P    MR      
@@ -10912,16 +10859,13 @@ listId=   3 ; file name: statsDenit
  Computing Diagnostic #    826  NRNA0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    827  NDNA0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    828  NSTO0001     Counter:       1   Parms: SM P    MR      
- Computing Diagnostic #    829  NEXC0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    830  PRNA0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    831  PDNA0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    832  PTHY0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    833  PCON0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    834  PSTO0001     Counter:       1   Parms: SM P    MR      
- Computing Diagnostic #    835  PEXC0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    836  FPHO0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    837  FSTO0001     Counter:       1   Parms: SM P    MR      
- Computing Diagnostic #    838  FEXC0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    839  Y_RQ0001     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    853  CChl0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    854  NChl0002     Counter:       1   Parms: SM P    MR      
@@ -10931,23 +10875,19 @@ listId=   3 ; file name: statsDenit
  Computing Diagnostic #    858  NRNA0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    859  NDNA0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    860  NSTO0002     Counter:       1   Parms: SM P    MR      
- Computing Diagnostic #    861  NEXC0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    862  PRNA0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    863  PDNA0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    864  PTHY0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    865  PCON0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    866  PSTO0002     Counter:       1   Parms: SM P    MR      
- Computing Diagnostic #    867  PEXC0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    868  FPHO0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    869  FSTO0002     Counter:       1   Parms: SM P    MR      
- Computing Diagnostic #    870  FEXC0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    871  Y_RQ0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #   1131  PC0002       Counter:       1   Parms: SMRP    MR      
  Computing Diagnostic #    846  PChl0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    847  VN0002       Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    849  MODE0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    850  Fe_C0002     Counter:       1   Parms: SM P    MR      
- Computing Diagnostic #    851  exQc0002     Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #    852  PCg0002      Counter:       1   Parms: SM P    MR      
  Computing Diagnostic #     26  THETA        Counter:       1   Parms: SMR     MR      
  Computing Diagnostic #   1188  GC_Tr01      Counter:       1   Parms: SMR     MR      
@@ -11102,207 +11042,207 @@ listId=   3 ; file name: statsDenit
 (PID.TID 0000.0001) DIAGSTATS_CLOSE_IO: close file: statsDenit.0000000000.txt , unit=    16
 (PID.TID 0000.0001) %CHECKPOINT         4 ckptA
 (PID.TID 0000.0001)   Seconds in section "ALL                    [THE_MODEL_MAIN]":
-(PID.TID 0000.0001)           User time:   35.192578561604023
-(PID.TID 0000.0001)         System time:   116.51815776526928
-(PID.TID 0000.0001)     Wall clock time:   153.97516202926636
+(PID.TID 0000.0001)           User time:   35.637463420629501
+(PID.TID 0000.0001)         System time:   128.09118288755417
+(PID.TID 0000.0001)     Wall clock time:   165.57012200355530
 (PID.TID 0000.0001)          No. starts:           1
 (PID.TID 0000.0001)           No. stops:           1
 (PID.TID 0000.0001)   Seconds in section "INITIALISE_FIXED       [THE_MODEL_MAIN]":
-(PID.TID 0000.0001)           User time:   4.4985388889908791
-(PID.TID 0000.0001)         System time:   4.1427701562643051
-(PID.TID 0000.0001)     Wall clock time:   9.1585309505462646
+(PID.TID 0000.0001)           User time:   4.4777981340885162
+(PID.TID 0000.0001)         System time:   3.7579309940338135
+(PID.TID 0000.0001)     Wall clock time:   8.5947430133819580
 (PID.TID 0000.0001)          No. starts:           1
 (PID.TID 0000.0001)           No. stops:           1
 (PID.TID 0000.0001)   Seconds in section "THE_MAIN_LOOP          [THE_MODEL_MAIN]":
-(PID.TID 0000.0001)           User time:   30.690775394439697
-(PID.TID 0000.0001)         System time:   112.36455440521240
-(PID.TID 0000.0001)     Wall clock time:   144.53007817268372
+(PID.TID 0000.0001)           User time:   31.157510280609131
+(PID.TID 0000.0001)         System time:   124.32972335815430
+(PID.TID 0000.0001)     Wall clock time:   156.96811604499817
 (PID.TID 0000.0001)          No. starts:           1
 (PID.TID 0000.0001)           No. stops:           1
 (PID.TID 0000.0001)   Seconds in section "INITIALISE_VARIA    [THE_MAIN_LOOP]":
-(PID.TID 0000.0001)           User time:   3.9409651756286621
-(PID.TID 0000.0001)         System time:   27.455002307891846
-(PID.TID 0000.0001)     Wall clock time:   31.429358005523682
+(PID.TID 0000.0001)           User time:   3.9767870903015137
+(PID.TID 0000.0001)         System time:   24.186965465545654
+(PID.TID 0000.0001)     Wall clock time:   28.386152982711792
 (PID.TID 0000.0001)          No. starts:           1
 (PID.TID 0000.0001)           No. stops:           1
 (PID.TID 0000.0001)   Seconds in section "MAIN LOOP           [THE_MAIN_LOOP]":
-(PID.TID 0000.0001)           User time:   26.749800682067871
-(PID.TID 0000.0001)         System time:   84.909523010253906
-(PID.TID 0000.0001)     Wall clock time:   113.10068798065186
+(PID.TID 0000.0001)           User time:   27.180709838867188
+(PID.TID 0000.0001)         System time:   100.14273834228516
+(PID.TID 0000.0001)     Wall clock time:   128.58191990852356
 (PID.TID 0000.0001)          No. starts:           1
 (PID.TID 0000.0001)           No. stops:           1
 (PID.TID 0000.0001)   Seconds in section "MAIN_DO_LOOP        [THE_MAIN_LOOP]":
-(PID.TID 0000.0001)           User time:   26.749791145324707
-(PID.TID 0000.0001)         System time:   84.909494400024414
-(PID.TID 0000.0001)     Wall clock time:   113.10064721107483
+(PID.TID 0000.0001)           User time:   27.180697441101074
+(PID.TID 0000.0001)         System time:   100.14270210266113
+(PID.TID 0000.0001)     Wall clock time:   128.58187818527222
 (PID.TID 0000.0001)          No. starts:           4
 (PID.TID 0000.0001)           No. stops:           4
 (PID.TID 0000.0001)   Seconds in section "FORWARD_STEP        [MAIN_DO_LOOP]":
-(PID.TID 0000.0001)           User time:   26.749776840209961
-(PID.TID 0000.0001)         System time:   84.909450531005859
-(PID.TID 0000.0001)     Wall clock time:   113.10058593750000
+(PID.TID 0000.0001)           User time:   27.180687904357910
+(PID.TID 0000.0001)         System time:   100.14265251159668
+(PID.TID 0000.0001)     Wall clock time:   128.58181977272034
 (PID.TID 0000.0001)          No. starts:           4
 (PID.TID 0000.0001)           No. stops:           4
 (PID.TID 0000.0001)   Seconds in section "DO_STATEVARS_DIAGS  [FORWARD_STEP]":
-(PID.TID 0000.0001)           User time:   1.9110679626464844E-002
-(PID.TID 0000.0001)         System time:   6.4468383789062500E-004
-(PID.TID 0000.0001)     Wall clock time:   1.9418001174926758E-002
+(PID.TID 0000.0001)           User time:   1.9838333129882812E-002
+(PID.TID 0000.0001)         System time:   8.0108642578125000E-005
+(PID.TID 0000.0001)     Wall clock time:   1.9313335418701172E-002
 (PID.TID 0000.0001)          No. starts:           8
 (PID.TID 0000.0001)           No. stops:           8
 (PID.TID 0000.0001)   Seconds in section "LOAD_FIELDS_DRIVER  [FORWARD_STEP]":
-(PID.TID 0000.0001)           User time:  0.19680786132812500
-(PID.TID 0000.0001)         System time:   1.1019515991210938
-(PID.TID 0000.0001)     Wall clock time:   1.3081772327423096
+(PID.TID 0000.0001)           User time:  0.22042369842529297
+(PID.TID 0000.0001)         System time:   1.1045646667480469
+(PID.TID 0000.0001)     Wall clock time:   1.3325138092041016
 (PID.TID 0000.0001)          No. starts:           4
 (PID.TID 0000.0001)           No. stops:           4
 (PID.TID 0000.0001)   Seconds in section "EXF_GETFORCING     [LOAD_FLDS_DRIVER]":
-(PID.TID 0000.0001)           User time:   1.9010543823242188E-002
-(PID.TID 0000.0001)         System time:  0.29672241210937500
-(PID.TID 0000.0001)     Wall clock time:  0.31602597236633301
+(PID.TID 0000.0001)           User time:   3.2133102416992188E-002
+(PID.TID 0000.0001)         System time:  0.30376815795898438
+(PID.TID 0000.0001)     Wall clock time:  0.33645200729370117
 (PID.TID 0000.0001)          No. starts:           4
 (PID.TID 0000.0001)           No. stops:           4
 (PID.TID 0000.0001)   Seconds in section "EXTERNAL_FLDS_LOAD [LOAD_FLDS_DRIVER]":
-(PID.TID 0000.0001)           User time:   3.2424926757812500E-005
-(PID.TID 0000.0001)         System time:   2.1114349365234375E-003
-(PID.TID 0000.0001)     Wall clock time:   2.1438598632812500E-003
+(PID.TID 0000.0001)           User time:   8.1825256347656250E-004
+(PID.TID 0000.0001)         System time:   1.4057159423828125E-003
+(PID.TID 0000.0001)     Wall clock time:   2.2284984588623047E-003
 (PID.TID 0000.0001)          No. starts:           4
 (PID.TID 0000.0001)           No. stops:           4
 (PID.TID 0000.0001)   Seconds in section "DO_ATMOSPHERIC_PHYS [FORWARD_STEP]":
 (PID.TID 0000.0001)           User time:   6.6757202148437500E-006
-(PID.TID 0000.0001)         System time:   2.2888183593750000E-005
+(PID.TID 0000.0001)         System time:   2.6702880859375000E-005
 (PID.TID 0000.0001)     Wall clock time:   3.0040740966796875E-005
 (PID.TID 0000.0001)          No. starts:           4
 (PID.TID 0000.0001)           No. stops:           4
 (PID.TID 0000.0001)   Seconds in section "DO_OCEANIC_PHYS     [FORWARD_STEP]":
-(PID.TID 0000.0001)           User time:   1.2178421020507812E-002
-(PID.TID 0000.0001)         System time:   5.2604675292968750E-002
-(PID.TID 0000.0001)     Wall clock time:   6.4779043197631836E-002
+(PID.TID 0000.0001)           User time:   1.2928009033203125E-002
+(PID.TID 0000.0001)         System time:   5.4340362548828125E-002
+(PID.TID 0000.0001)     Wall clock time:   6.6611766815185547E-002
 (PID.TID 0000.0001)          No. starts:           4
 (PID.TID 0000.0001)           No. stops:           4
 (PID.TID 0000.0001)   Seconds in section "THERMODYNAMICS      [FORWARD_STEP]":
-(PID.TID 0000.0001)           User time:   3.1724882125854492
-(PID.TID 0000.0001)         System time:  0.23941421508789062
-(PID.TID 0000.0001)     Wall clock time:   3.4119620323181152
+(PID.TID 0000.0001)           User time:   3.1624202728271484
+(PID.TID 0000.0001)         System time:  0.18865585327148438
+(PID.TID 0000.0001)     Wall clock time:   3.3510966300964355
 (PID.TID 0000.0001)          No. starts:           4
 (PID.TID 0000.0001)           No. stops:           4
 (PID.TID 0000.0001)   Seconds in section "OFFLINE_FLDS_LOAD   [FORWARD_STEP]":
 (PID.TID 0000.0001)           User time:   8.0957412719726562E-003
 (PID.TID 0000.0001)         System time:   2.8991699218750000E-004
-(PID.TID 0000.0001)     Wall clock time:   8.3873271942138672E-003
+(PID.TID 0000.0001)     Wall clock time:   8.3901882171630859E-003
 (PID.TID 0000.0001)          No. starts:           4
 (PID.TID 0000.0001)           No. stops:           4
 (PID.TID 0000.0001)   Seconds in section "TRC_CORRECTION_STEP [FORWARD_STEP]":
-(PID.TID 0000.0001)           User time:   8.5830688476562500E-006
-(PID.TID 0000.0001)         System time:   1.1444091796875000E-005
-(PID.TID 0000.0001)     Wall clock time:   2.7418136596679688E-005
+(PID.TID 0000.0001)           User time:   5.7220458984375000E-006
+(PID.TID 0000.0001)         System time:   2.0980834960937500E-005
+(PID.TID 0000.0001)     Wall clock time:   2.7179718017578125E-005
 (PID.TID 0000.0001)          No. starts:           4
 (PID.TID 0000.0001)           No. stops:           4
 (PID.TID 0000.0001)   Seconds in section "GCHEM_FORCING_SEP  [FORWARD_STEP]":
-(PID.TID 0000.0001)           User time:  0.69024085998535156
-(PID.TID 0000.0001)         System time:  0.37549591064453125
-(PID.TID 0000.0001)     Wall clock time:   1.1068911552429199
+(PID.TID 0000.0001)           User time:  0.68757057189941406
+(PID.TID 0000.0001)         System time:  0.38560867309570312
+(PID.TID 0000.0001)     Wall clock time:   1.1097965240478516
 (PID.TID 0000.0001)          No. starts:           4
 (PID.TID 0000.0001)           No. stops:           4
 (PID.TID 0000.0001)   Seconds in section "DARWIN_FORCING [GCHEM_FORCING_SEP]":
-(PID.TID 0000.0001)           User time:  0.59432411193847656
-(PID.TID 0000.0001)         System time:   4.3128967285156250E-002
-(PID.TID 0000.0001)     Wall clock time:  0.67813348770141602
+(PID.TID 0000.0001)           User time:  0.59135913848876953
+(PID.TID 0000.0001)         System time:   6.3343048095703125E-002
+(PID.TID 0000.0001)     Wall clock time:  0.68996214866638184
 (PID.TID 0000.0001)          No. starts:           4
 (PID.TID 0000.0001)           No. stops:           4
 (PID.TID 0000.0001)   Seconds in section "DARWIN_LIGHT [DARWIN_FORCING]":
-(PID.TID 0000.0001)           User time:  0.28491783142089844
-(PID.TID 0000.0001)         System time:   2.5093078613281250E-002
-(PID.TID 0000.0001)     Wall clock time:  0.31875586509704590
+(PID.TID 0000.0001)           User time:  0.28376388549804688
+(PID.TID 0000.0001)         System time:   4.4435501098632812E-002
+(PID.TID 0000.0001)     Wall clock time:  0.33345293998718262
 (PID.TID 0000.0001)          No. starts:           4
 (PID.TID 0000.0001)           No. stops:           4
 (PID.TID 0000.0001)   Seconds in section "DARWIN_SURFFORCING [DARWIN_FORCING]":
-(PID.TID 0000.0001)           User time:   3.0198097229003906E-002
-(PID.TID 0000.0001)         System time:   5.1879882812500000E-004
-(PID.TID 0000.0001)     Wall clock time:   3.0827999114990234E-002
+(PID.TID 0000.0001)           User time:   3.0943870544433594E-002
+(PID.TID 0000.0001)         System time:   4.8828125000000000E-004
+(PID.TID 0000.0001)     Wall clock time:   3.0823945999145508E-002
 (PID.TID 0000.0001)          No. starts:           4
 (PID.TID 0000.0001)           No. stops:           4
 (PID.TID 0000.0001)   Seconds in section "DARWIN_FE_CHEM [DARWIN_FORCING]":
-(PID.TID 0000.0001)           User time:   4.8074722290039062E-003
-(PID.TID 0000.0001)         System time:   0.0000000000000000
-(PID.TID 0000.0001)     Wall clock time:   4.6210289001464844E-003
+(PID.TID 0000.0001)           User time:   3.1690597534179688E-003
+(PID.TID 0000.0001)         System time:   3.3950805664062500E-004
+(PID.TID 0000.0001)     Wall clock time:   4.5900344848632812E-003
 (PID.TID 0000.0001)          No. starts:           8
 (PID.TID 0000.0001)           No. stops:           8
 (PID.TID 0000.0001)   Seconds in section "DARWIN_FE_SCAV [DARWIN_FORCING]":
-(PID.TID 0000.0001)           User time:   3.9310455322265625E-003
+(PID.TID 0000.0001)           User time:   4.0845870971679688E-003
 (PID.TID 0000.0001)         System time:   0.0000000000000000
-(PID.TID 0000.0001)     Wall clock time:   3.7071704864501953E-003
+(PID.TID 0000.0001)     Wall clock time:   3.7460327148437500E-003
 (PID.TID 0000.0001)          No. starts:           4
 (PID.TID 0000.0001)           No. stops:           4
 (PID.TID 0000.0001)   Seconds in section "DARWIN_FE_DUST [DARWIN_FORCING]":
 (PID.TID 0000.0001)           User time:   0.0000000000000000
 (PID.TID 0000.0001)         System time:   0.0000000000000000
-(PID.TID 0000.0001)     Wall clock time:   6.9141387939453125E-005
+(PID.TID 0000.0001)     Wall clock time:   7.0810317993164062E-005
 (PID.TID 0000.0001)          No. starts:           4
 (PID.TID 0000.0001)           No. stops:           4
 (PID.TID 0000.0001)   Seconds in section "DARWIN_FE_SED [DARWIN_FORCING]":
-(PID.TID 0000.0001)           User time:   5.8174133300781250E-005
-(PID.TID 0000.0001)         System time:   0.0000000000000000
-(PID.TID 0000.0001)     Wall clock time:   7.9202651977539062E-004
+(PID.TID 0000.0001)           User time:   6.1035156250000000E-005
+(PID.TID 0000.0001)         System time:   1.1062622070312500E-004
+(PID.TID 0000.0001)     Wall clock time:   8.0323219299316406E-004
 (PID.TID 0000.0001)          No. starts:           4
 (PID.TID 0000.0001)           No. stops:           4
 (PID.TID 0000.0001)   Seconds in section "DARWIN_PLANKTON [DARWIN_FORCING]":
-(PID.TID 0000.0001)           User time:  0.12131023406982422
-(PID.TID 0000.0001)         System time:   0.0000000000000000
-(PID.TID 0000.0001)     Wall clock time:  0.12135219573974609
+(PID.TID 0000.0001)           User time:  0.12022781372070312
+(PID.TID 0000.0001)         System time:   1.5258789062500000E-005
+(PID.TID 0000.0001)     Wall clock time:  0.12019109725952148
 (PID.TID 0000.0001)          No. starts:           4
 (PID.TID 0000.0001)           No. stops:           4
 (PID.TID 0000.0001)   Seconds in section "DIAGS_FILL [DARWIN_FORCING]":
-(PID.TID 0000.0001)           User time:   4.8329353332519531E-002
-(PID.TID 0000.0001)         System time:   6.1035156250000000E-005
-(PID.TID 0000.0001)     Wall clock time:   4.8875093460083008E-002
+(PID.TID 0000.0001)           User time:   4.7420501708984375E-002
+(PID.TID 0000.0001)         System time:   3.4332275390625000E-005
+(PID.TID 0000.0001)     Wall clock time:   4.5372009277343750E-002
 (PID.TID 0000.0001)          No. starts:           8
 (PID.TID 0000.0001)           No. stops:           8
 (PID.TID 0000.0001)   Seconds in section "DARWIN_SINKING [DARWIN_FORCING]":
-(PID.TID 0000.0001)           User time:   2.8048515319824219E-002
-(PID.TID 0000.0001)         System time:   2.6702880859375000E-005
-(PID.TID 0000.0001)     Wall clock time:   2.7945041656494141E-002
+(PID.TID 0000.0001)           User time:   2.7264595031738281E-002
+(PID.TID 0000.0001)         System time:   0.0000000000000000
+(PID.TID 0000.0001)     Wall clock time:   2.7818202972412109E-002
 (PID.TID 0000.0001)          No. starts:           4
 (PID.TID 0000.0001)           No. stops:           4
 (PID.TID 0000.0001)   Seconds in section "DARWIN_STEP [DARWIN_FORCING]":
-(PID.TID 0000.0001)           User time:   3.4606933593750000E-002
-(PID.TID 0000.0001)         System time:   0.0000000000000000
-(PID.TID 0000.0001)     Wall clock time:   3.3504009246826172E-002
+(PID.TID 0000.0001)           User time:   3.3876419067382812E-002
+(PID.TID 0000.0001)         System time:   1.7929077148437500E-004
+(PID.TID 0000.0001)     Wall clock time:   3.3489942550659180E-002
 (PID.TID 0000.0001)          No. starts:           4
 (PID.TID 0000.0001)           No. stops:           4
 (PID.TID 0000.0001)   Seconds in section "BLOCKING_EXCHANGES  [FORWARD_STEP]":
-(PID.TID 0000.0001)           User time:   2.9257020950317383
-(PID.TID 0000.0001)         System time:   59.563468933105469
-(PID.TID 0000.0001)     Wall clock time:   62.489156007766724
+(PID.TID 0000.0001)           User time:   3.6981887817382812
+(PID.TID 0000.0001)         System time:   70.152074813842773
+(PID.TID 0000.0001)     Wall clock time:   73.849107742309570
 (PID.TID 0000.0001)          No. starts:           4
 (PID.TID 0000.0001)           No. stops:           4
 (PID.TID 0000.0001)   Seconds in section "DO_STATEVARS_TAVE   [FORWARD_STEP]":
-(PID.TID 0000.0001)           User time:   7.6293945312500000E-006
-(PID.TID 0000.0001)         System time:   2.2888183593750000E-005
+(PID.TID 0000.0001)           User time:   5.7220458984375000E-006
+(PID.TID 0000.0001)         System time:   3.0517578125000000E-005
 (PID.TID 0000.0001)     Wall clock time:   3.1471252441406250E-005
 (PID.TID 0000.0001)          No. starts:           4
 (PID.TID 0000.0001)           No. stops:           4
 (PID.TID 0000.0001)   Seconds in section "MONITOR             [FORWARD_STEP]":
-(PID.TID 0000.0001)           User time:  0.17535877227783203
-(PID.TID 0000.0001)         System time:   2.6196060180664062
-(PID.TID 0000.0001)     Wall clock time:   2.7950198650360107
+(PID.TID 0000.0001)           User time:  0.47303390502929688
+(PID.TID 0000.0001)         System time:   8.7994804382324219
+(PID.TID 0000.0001)     Wall clock time:   9.2723791599273682
 (PID.TID 0000.0001)          No. starts:           4
 (PID.TID 0000.0001)           No. stops:           4
 (PID.TID 0000.0001)   Seconds in section "DO_THE_MODEL_IO     [FORWARD_STEP]":
-(PID.TID 0000.0001)           User time:   16.871832847595215
-(PID.TID 0000.0001)         System time:   2.0869789123535156
-(PID.TID 0000.0001)     Wall clock time:   19.583343982696533
+(PID.TID 0000.0001)           User time:   16.209714889526367
+(PID.TID 0000.0001)         System time:   2.0119781494140625
+(PID.TID 0000.0001)     Wall clock time:   18.832253932952881
 (PID.TID 0000.0001)          No. starts:           4
 (PID.TID 0000.0001)           No. stops:           4
 (PID.TID 0000.0001)   Seconds in section "PTRACERS_RESET      [FORWARD_STEP]":
-(PID.TID 0000.0001)           User time:   1.0490417480468750E-005
-(PID.TID 0000.0001)         System time:   3.4332275390625000E-005
-(PID.TID 0000.0001)     Wall clock time:   3.5047531127929688E-005
+(PID.TID 0000.0001)           User time:   6.6757202148437500E-006
+(PID.TID 0000.0001)         System time:   2.6702880859375000E-005
+(PID.TID 0000.0001)     Wall clock time:   3.6001205444335938E-005
 (PID.TID 0000.0001)          No. starts:           4
 (PID.TID 0000.0001)           No. stops:           4
 (PID.TID 0000.0001)   Seconds in section "DO_WRITE_PICKUP     [FORWARD_STEP]":
-(PID.TID 0000.0001)           User time:   2.6329021453857422
-(PID.TID 0000.0001)         System time:   18.740837097167969
-(PID.TID 0000.0001)     Wall clock time:   22.140219926834106
+(PID.TID 0000.0001)           User time:   2.6385002136230469
+(PID.TID 0000.0001)         System time:   17.322277069091797
+(PID.TID 0000.0001)     Wall clock time:   20.566385984420776
 (PID.TID 0000.0001)          No. starts:           4
 (PID.TID 0000.0001)           No. stops:           4
 (PID.TID 0000.0001) // ======================================================

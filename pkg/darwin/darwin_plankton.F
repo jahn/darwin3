@@ -637,199 +637,6 @@ C==== Phototrophy ======================================================
       DO j = 1, nPhoto
        IF (isPhoto(j) .NE. 0) THEN
 
-C==== Uptake and nutrient limitation ===================================
-
-C       for quota elements, growth is limiteed by available quota,
-C       for non-quota elements, by available nutrients in medium
-
-C       to not use PO4, ..., set ksatPO4=0 and vmaxPO4=0 (if DARWIN_ALLOW_PQUOTA)
-C       or R_PC=0 (if not)
-C       the result will be limitp = 1, uptakePO4 = 0
-
-C       CSTORE/exudation:
-C       Dmd_XC means the amount of carbon needed for biosynthesis when X
-C       is the limiting nutrient.  To find the lowest demand (maximum
-C       achievable growth rate), start with a large value.  Quota
-C       elements will be handled further down in a dedicatd CSTORE
-C       section.
-#ifdef DARWIN_ALLOW_CSTORE
-        Dmd_min = HUGE(Dmd_min)
-#endif
-
-c phosphorus
-        IF (ksatPO4(j) .GT. 0 _d 0) THEN
-          MM_PO4 = PO4/(PO4 + ksatPO4(j))
-        ELSE
-          MM_PO4 = 1 _d 0
-        ENDIF
-#ifdef DARWIN_ALLOW_PQUOTA
-        regQp = MAX(0 _d 0, MIN(1 _d 0, (Qpmax(j)-Qp(j))/
-     &                                  (Qpmax(j)-Qpmin(j)) ))
-        regQp = regQp**hillnumPO4(j)
-C       carbon-specific PO4 uptake rate
-        VP = vmaxPO4(j) * MM_PO4 * regQp * uptakeTempFunc
-        uptakePO4 = VP*X(j)
-c       normalized Droop limitation
-#ifndef DARWIN_MACROMOLECULAR_GROWTH
-        limitp = MIN(1 _d 0, (1.0-Qpmin(j)/MAX(Qpmin(j), Qp(j)))/
-     &                       (1.0-Qpmin(j)/Qpmax(j)))
-#endif
-#else /* no PQUOTA */
-# ifdef DARWIN_ALLOW_CSTORE
-        IF (R_PC(j) .GT. 0 _d 0) THEN
-          Dmd_PC = vmaxPO4(j)*MM_PO4*uptakeTempFunc*X(j)/R_PC(j)
-          Dmd_min = MIN(Dmd_min, Dmd_PC)
-        ELSE
-C       set to zero to avoid floating point error in diagonstic
-          Dmd_PC = 0 _d 0
-        ENDIF
-# else
-        limitp = MM_PO4
-# endif
-#endif /* pquota */
-
-c silica
-        IF (ksatSiO2(j) .GT. 0 _d 0) THEN
-          MM_SiO2 = SiO2/(SiO2 + ksatSiO2(j))
-        ELSE
-          MM_SiO2 = 1 _d 0
-        ENDIF
-#ifdef DARWIN_ALLOW_SIQUOTA
-        regQsi = MAX(0 _d 0, MIN(1 _d 0, (Qsimax(j) - Qsi(j))/
-     &                                   (Qsimax(j) - Qsimin(j)) ))
-        regQsi = regQsi**hillnumSiO2(j)
-        uptakeSiO2 = vmaxSiO2(j)*MM_SiO2*regQsi*uptakeTempFunc*X(j)
-c       linear limitation
-        limitsi = MAX(0 _d 0, MIN(1 _d 0, (Qsi(j) - Qsimin(j))/
-     &                                    (Qsimax(j) - Qsimin(j)) ))
-#else /* no SIQUOTA */
-# ifdef DARWIN_ALLOW_CSTORE
-        IF (R_SiC(j) .GT. 0 _d 0) THEN
-          Dmd_SiC = VmaxSiO2(j)*MM_SiO2*uptakeTempFunc*X(j)/R_SiC(j)
-          Dmd_min = MIN(Dmd_min, Dmd_SiC)
-        ELSE
-          Dmd_SiC = 0 _d 0
-        ENDIF
-# else
-        limitsi = MM_SiO2
-# endif
-#endif
-
-c iron
-        IF (ksatFeT(j) .GT. 0 _d 0) THEN
-          MM_FeT = FeT/(FeT + ksatFeT(j))
-        ELSE
-          MM_FeT = 1 _d 0
-        ENDIF
-#ifdef DARWIN_ALLOW_FEQUOTA
-        regQfe = MAX(0 _d 0, MIN(1 _d 0, (Qfemax(j)-Qfe(j))/
-     &                                   (Qfemax(j)-Qfemin(j)) ))
-        regQfe = regQfe**hillnumFeT(j)
-        VFe = vmaxFeT(j) * MM_FeT * regQfe * uptakeTempFunc
-        uptakeFeT = VFe*X(j)
-c       normalized Droop limitation
-#ifndef DARWIN_MACROMOLECULAR_GROWTH
-        limitfe = MIN(1 _d 0, (1.0-Qfemin(j)/MAX(Qfemin(j), Qfe(j)))/
-     &                        (1.0-Qfemin(j)/Qfemax(j)))
-#endif
-#else /* no FEQUOTA */
-C iron limit is applied in Geider
-# ifdef DARWIN_ALLOW_CSTORE
-        IF (R_FeC(j) .GT. 0 _d 0) THEN
-          Dmd_FeC = vmaxFeT(j)*MM_FeT*uptakeTempFunc*X(j)/R_FeC(j)
-          Dmd_min = MIN(Dmd_min, Dmd_FeC)
-        ELSE
-          Dmd_FeC = 0 _d 0
-        ENDIF
-# else
-        limitfe = MM_FeT
-# endif
-#endif
-
-c nitrogen
-#ifdef DARWIN_ALLOW_NQUOTA
-c       have nitrogen quota
-        inhibNH4 = EXP(-amminhib(j)*NH4)
-        MM_NH4 = NH4/(NH4 + ksatNH4(j))
-        MM_NO2 = NO2/(NO2 + ksatNO2(j))*inhibNH4
-        MM_NO3 = NO3/(NO3 + ksatNO3(j))*inhibNH4
-        regQn = MAX(0 _d 0, MIN(1 _d 0, (Qnmax(j)-Qn(j))/
-     &                                  (Qnmax(j)-Qnmin(j)) ))
-        regQn = regQn**hillnumDIN(j)
-        VNH4 = vmaxNH4(j)*MM_NH4*regQn*uptakeTempFunc
-        VNO2 = vmaxNO2(j)*MM_NO2*regQn*uptakeTempFunc
-        VNO3 = vmaxNO3(j)*MM_NO3*regQn*uptakeTempFunc
-#ifdef DARWIN_ALLOW_FEQUOTA
-#ifdef DARWIN_NITRATE_FELIMIT
-        VNO3 = VNO3 * limitfe
-#endif
-#endif
-        VN = MAX(VNH4 + VNO2 + VNO3,
-     &           vmaxN(j)*regQn*uptakeTempFunc*diazo(j))
-        uptakeN = VN*X(j)
-        uptakeNO3 = VNO3*X(j)
-        uptakeNO2 = VNO2*X(j)
-        uptakeNH4 = VNH4*X(j)
-
-c       linear limitation
-        limitn = MAX(0 _d 0, MIN(1 _d 0, (Qn(j) - Qnmin(j))/
-     &                                   (Qnmax(j) - Qnmin(j)) ))
-#else /* not DARWIN_ALLOW_NQUOTA */
-        inhibNH4 = EXP(-amminhib(j)*NH4)
-        limitNH4 = useNH4(j)*NH4/(NH4 + ksatNH4(j))
-        limitNO2 = useNO2(j)*NO2/
-     &   (NO2 + combNO(j)*(NO3 + ksatNO3(j) - ksatNO2(j)) + ksatNO2(j))*
-     &   inhibNH4
-        limitNO3 = useNO3(j)*NO3/
-     &   (combNO(j)*NO2 + NO3 + ksatNO3(j))*inhibNH4
-        limitn = limitNH4 + limitNO2 + limitNO3
-C       normalize to sum 1
-        IF (limitn .GT. DARWIN_EPS) THEN
-          fracNH4 = limitNH4/limitn
-          fracNO2 = limitNO2/limitn
-          fracNO3 = limitNO3/limitn
-        ELSE
-          fracNH4 = 0 _d 0
-          fracNO2 = 0 _d 0
-          fracNO3 = 0 _d 0
-        ENDIF
-# ifdef DARWIN_ALLOW_CSTORE
-C       compute maximum N uptake and C demand by N
-        uptakeNH4 = vmaxNH4(j)*limitNH4*uptakeTempFunc*X(j)
-        uptakeNO2 = vmaxNO2(j)*limitNO2*uptakeTempFunc*X(j)
-        uptakeNO3 = vmaxNO3(j)*limitNO3*uptakeTempFunc*X(j)
-        uptakeN = MAX(uptakeNH4 + uptakeNO2 + uptakeNO3,
-     &                VmaxN(j)*uptakeTempFunc*diazo(j)*X(j))
-        IF (R_NC(j) .GT. 0 _d 0) THEN
-          Dmd_NC = uptakeN/R_NC(j)
-          Dmd_min = MIN(Dmd_min, Dmd_NC)
-        ELSE
-          Dmd_NC = 0 _d 0
-        ENDIF
-# endif
-C if diazo, all fracN* == 0 but want no N limitation
-        limitn = MIN(1 _d 0, limitn)
-        IF (diazo(j) .GT. 0) THEN
-          limitn = 1 _d 0
-        ENDIF
-#endif /* DARWIN_ALLOW_NQUOTA */
-
-#ifndef DARWIN_MACROMOLECULAR_GROWTH
-#ifdef DARWIN_ALLOW_CSTORE
-C       will apply limits for quota elements to growth rate instead
-        limitnut = 1 _d 0
-#else
-        limitnut = MIN(limitn, limitp, limitsi)
-#if !(defined DARWIN_ALLOW_GEIDER && defined DARWIN_ALLOW_FEQUOTA)
-        limitnut = MIN(limitnut, limitfe)
-#endif
-#endif
-#endif
-
-        limitpCO2 = 1.
-
-C==== Photosynthesis ===================================================
-
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
 
         IF (X(j) .GT. DARWIN_EPS) THEN
@@ -1030,10 +837,16 @@ C       Nitrogen:
             ELSE
               MMregQn = 1 _d 0
             ENDIF
+            MM_NO3 = NO3/(NO3 + ksatNO3(j))
+            regQn = MAX(0 _d 0, MIN(1 _d 0, (Qnmax(j)-Qn(j))/
+     &                                      (Qnmax(j)-Qnmin(j)) ))
+            regQn = regQn**hillnumDIN(j)
 C       Carbon-specific NO3 uptake rate
-            VN = VN*MMregQn
+            VN = vmaxNO3(j)*MM_NO3*regQn*uptakeTempFunc*MMregQn
             uptakeN = VN*mmX
             uptakeNO3 = VN*mmX
+            uptakeNO2 = 0 _d 0
+            uptakeNH4 = 0 _d 0
 
 C       Phosphorous:                
             IF ((QP_essential+QP_store) .GT. 0 _d 0) THEN
@@ -1043,8 +856,12 @@ C       Phosphorous:
             ELSE
               MMregQp = 1 _d 0
             ENDIF
+            MM_PO4 = PO4/(PO4 + ksatPO4(j))
+            regQp = MAX(0 _d 0, MIN(1 _d 0, (Qpmax(j)-Qp(j))/
+     &                                      (Qpmax(j)-Qpmin(j)) ))
+            regQp = regQp**hillnumPO4(j)
 C       Carbon-specific PO4 uptake rate
-            VP = VP*MMregQp
+            VP = vmaxPO4(j)*MM_PO4*regQp*uptakeTempFunc*MMregQp
             uptakePO4 = VP*mmX
 
 C       Iron:                
@@ -1055,8 +872,12 @@ C       Iron:
             ELSE
               MMregQFe = 1 _d 0
             ENDIF
+            MM_FeT = FeT/(FeT + ksatFeT(j))
+            regQfe = MAX(0 _d 0, MIN(1 _d 0, (Qfemax(j)-Qfe(j))/
+     &                                       (Qfemax(j)-Qfemin(j)) ))
+            regQfe = regQfe**hillnumFeT(j)
 C       Carbon-specific FeT uptake rate
-            Vfe = Vfe*MMregQFe        
+            VFe = vmaxFeT(j)*MM_FeT*regQfe*uptakeTempFunc*MMregQfe
             uptakeFe = Vfe*mmX
             uptakeFeT = Vfe*mmX
 
@@ -1142,6 +963,193 @@ c        RQ_OC = 1.5
 
 
 #else /* DARWIN_MACROMOLECULAR_GROWTH */
+
+C==== Uptake and nutrient limitation ===================================
+
+C       for quota elements, growth is limiteed by available quota,
+C       for non-quota elements, by available nutrients in medium
+
+C       to not use PO4, ..., set ksatPO4=0 and vmaxPO4=0 (if DARWIN_ALLOW_PQUOTA)
+C       or R_PC=0 (if not)
+C       the result will be limitp = 1, uptakePO4 = 0
+
+C       CSTORE/exudation:
+C       Dmd_XC means the amount of carbon needed for biosynthesis when X
+C       is the limiting nutrient.  To find the lowest demand (maximum
+C       achievable growth rate), start with a large value.  Quota
+C       elements will be handled further down in a dedicatd CSTORE
+C       section.
+#ifdef DARWIN_ALLOW_CSTORE
+        Dmd_min = HUGE(Dmd_min)
+#endif
+
+c phosphorus
+        IF (ksatPO4(j) .GT. 0 _d 0) THEN
+          MM_PO4 = PO4/(PO4 + ksatPO4(j))
+        ELSE
+          MM_PO4 = 1 _d 0
+        ENDIF
+#ifdef DARWIN_ALLOW_PQUOTA
+        regQp = MAX(0 _d 0, MIN(1 _d 0, (Qpmax(j)-Qp(j))/
+     &                                  (Qpmax(j)-Qpmin(j)) ))
+        regQp = regQp**hillnumPO4(j)
+C       carbon-specific PO4 uptake rate
+        VP = vmaxPO4(j) * MM_PO4 * regQp * uptakeTempFunc
+        uptakePO4 = VP*X(j)
+c       normalized Droop limitation
+        limitp = MIN(1 _d 0, (1.0-Qpmin(j)/MAX(Qpmin(j), Qp(j)))/
+     &                       (1.0-Qpmin(j)/Qpmax(j)))
+#else /* no PQUOTA */
+# ifdef DARWIN_ALLOW_CSTORE
+        IF (R_PC(j) .GT. 0 _d 0) THEN
+          Dmd_PC = vmaxPO4(j)*MM_PO4*uptakeTempFunc*X(j)/R_PC(j)
+          Dmd_min = MIN(Dmd_min, Dmd_PC)
+        ELSE
+C       set to zero to avoid floating point error in diagonstic
+          Dmd_PC = 0 _d 0
+        ENDIF
+# else
+        limitp = MM_PO4
+# endif
+#endif /* pquota */
+
+c silica
+        IF (ksatSiO2(j) .GT. 0 _d 0) THEN
+          MM_SiO2 = SiO2/(SiO2 + ksatSiO2(j))
+        ELSE
+          MM_SiO2 = 1 _d 0
+        ENDIF
+#ifdef DARWIN_ALLOW_SIQUOTA
+        regQsi = MAX(0 _d 0, MIN(1 _d 0, (Qsimax(j) - Qsi(j))/
+     &                                   (Qsimax(j) - Qsimin(j)) ))
+        regQsi = regQsi**hillnumSiO2(j)
+        uptakeSiO2 = vmaxSiO2(j)*MM_SiO2*regQsi*uptakeTempFunc*X(j)
+c       linear limitation
+        limitsi = MAX(0 _d 0, MIN(1 _d 0, (Qsi(j) - Qsimin(j))/
+     &                                    (Qsimax(j) - Qsimin(j)) ))
+#else /* no SIQUOTA */
+# ifdef DARWIN_ALLOW_CSTORE
+        IF (R_SiC(j) .GT. 0 _d 0) THEN
+          Dmd_SiC = VmaxSiO2(j)*MM_SiO2*uptakeTempFunc*X(j)/R_SiC(j)
+          Dmd_min = MIN(Dmd_min, Dmd_SiC)
+        ELSE
+          Dmd_SiC = 0 _d 0
+        ENDIF
+# else
+        limitsi = MM_SiO2
+# endif
+#endif
+
+c iron
+        IF (ksatFeT(j) .GT. 0 _d 0) THEN
+          MM_FeT = FeT/(FeT + ksatFeT(j))
+        ELSE
+          MM_FeT = 1 _d 0
+        ENDIF
+#ifdef DARWIN_ALLOW_FEQUOTA
+        regQfe = MAX(0 _d 0, MIN(1 _d 0, (Qfemax(j)-Qfe(j))/
+     &                                   (Qfemax(j)-Qfemin(j)) ))
+        regQfe = regQfe**hillnumFeT(j)
+        VFe = vmaxFeT(j) * MM_FeT * regQfe * uptakeTempFunc
+        uptakeFeT = VFe*X(j)
+c       normalized Droop limitation
+        limitfe = MIN(1 _d 0, (1.0-Qfemin(j)/MAX(Qfemin(j), Qfe(j)))/
+     &                        (1.0-Qfemin(j)/Qfemax(j)))
+#else /* no FEQUOTA */
+C iron limit is applied in Geider
+# ifdef DARWIN_ALLOW_CSTORE
+        IF (R_FeC(j) .GT. 0 _d 0) THEN
+          Dmd_FeC = vmaxFeT(j)*MM_FeT*uptakeTempFunc*X(j)/R_FeC(j)
+          Dmd_min = MIN(Dmd_min, Dmd_FeC)
+        ELSE
+          Dmd_FeC = 0 _d 0
+        ENDIF
+# else
+        limitfe = MM_FeT
+# endif
+#endif
+
+c nitrogen
+#ifdef DARWIN_ALLOW_NQUOTA
+c       have nitrogen quota
+        inhibNH4 = EXP(-amminhib(j)*NH4)
+        MM_NH4 = NH4/(NH4 + ksatNH4(j))
+        MM_NO2 = NO2/(NO2 + ksatNO2(j))*inhibNH4
+        MM_NO3 = NO3/(NO3 + ksatNO3(j))*inhibNH4
+        regQn = MAX(0 _d 0, MIN(1 _d 0, (Qnmax(j)-Qn(j))/
+     &                                  (Qnmax(j)-Qnmin(j)) ))
+        regQn = regQn**hillnumDIN(j)
+        VNH4 = vmaxNH4(j)*MM_NH4*regQn*uptakeTempFunc
+        VNO2 = vmaxNO2(j)*MM_NO2*regQn*uptakeTempFunc
+        VNO3 = vmaxNO3(j)*MM_NO3*regQn*uptakeTempFunc
+#ifdef DARWIN_ALLOW_FEQUOTA
+#ifdef DARWIN_NITRATE_FELIMIT
+        VNO3 = VNO3 * limitfe
+#endif
+#endif
+        VN = MAX(VNH4 + VNO2 + VNO3,
+     &           vmaxN(j)*regQn*uptakeTempFunc*diazo(j))
+        uptakeN = VN*X(j)
+        uptakeNO3 = VNO3*X(j)
+        uptakeNO2 = VNO2*X(j)
+        uptakeNH4 = VNH4*X(j)
+
+c       linear limitation
+        limitn = MAX(0 _d 0, MIN(1 _d 0, (Qn(j) - Qnmin(j))/
+     &                                   (Qnmax(j) - Qnmin(j)) ))
+#else /* not DARWIN_ALLOW_NQUOTA */
+        inhibNH4 = EXP(-amminhib(j)*NH4)
+        limitNH4 = useNH4(j)*NH4/(NH4 + ksatNH4(j))
+        limitNO2 = useNO2(j)*NO2/
+     &   (NO2 + combNO(j)*(NO3 + ksatNO3(j) - ksatNO2(j)) + ksatNO2(j))*
+     &   inhibNH4
+        limitNO3 = useNO3(j)*NO3/
+     &   (combNO(j)*NO2 + NO3 + ksatNO3(j))*inhibNH4
+        limitn = limitNH4 + limitNO2 + limitNO3
+C       normalize to sum 1
+        IF (limitn .GT. DARWIN_EPS) THEN
+          fracNH4 = limitNH4/limitn
+          fracNO2 = limitNO2/limitn
+          fracNO3 = limitNO3/limitn
+        ELSE
+          fracNH4 = 0 _d 0
+          fracNO2 = 0 _d 0
+          fracNO3 = 0 _d 0
+        ENDIF
+# ifdef DARWIN_ALLOW_CSTORE
+C       compute maximum N uptake and C demand by N
+        uptakeNH4 = vmaxNH4(j)*limitNH4*uptakeTempFunc*X(j)
+        uptakeNO2 = vmaxNO2(j)*limitNO2*uptakeTempFunc*X(j)
+        uptakeNO3 = vmaxNO3(j)*limitNO3*uptakeTempFunc*X(j)
+        uptakeN = MAX(uptakeNH4 + uptakeNO2 + uptakeNO3,
+     &                VmaxN(j)*uptakeTempFunc*diazo(j)*X(j))
+        IF (R_NC(j) .GT. 0 _d 0) THEN
+          Dmd_NC = uptakeN/R_NC(j)
+          Dmd_min = MIN(Dmd_min, Dmd_NC)
+        ELSE
+          Dmd_NC = 0 _d 0
+        ENDIF
+# endif
+C if diazo, all fracN* == 0 but want no N limitation
+        limitn = MIN(1 _d 0, limitn)
+        IF (diazo(j) .GT. 0) THEN
+          limitn = 1 _d 0
+        ENDIF
+#endif /* DARWIN_ALLOW_NQUOTA */
+
+#ifdef DARWIN_ALLOW_CSTORE
+C       will apply limits for quota elements to growth rate instead
+        limitnut = 1 _d 0
+#else
+        limitnut = MIN(limitn, limitp, limitsi)
+#if !(defined DARWIN_ALLOW_GEIDER && defined DARWIN_ALLOW_FEQUOTA)
+        limitnut = MIN(limitnut, limitfe)
+#endif
+#endif
+
+        limitpCO2 = 1.
+
+C==== Photosynthesis ===================================================
 
 #ifdef DARWIN_ALLOW_GEIDER
 

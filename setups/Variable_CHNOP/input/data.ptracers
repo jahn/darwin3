@@ -71,7 +71,7 @@
  PTRACERS_initialFile(20)='ssharoni/doo_y2000.data',
  PTRACERS_initialFile(21)='ssharoni/doh_y2000.data',
  PTRACERS_initialFile(22)='input_ecco/glodap_alk_ann-3d.bin',
- PTRACERS_initialFile(23)='input_ecco/lev01_oxygen_ann-3d.bin',
+ PTRACERS_initialFile(23)='input_ecco/lev01_oxygen_micromolar_ann-3d.bin',
  PTRACERS_initialFile(24)='DARWIN_ECCO_run17/phy_6species_y2000.data',
  PTRACERS_initialFile(25)='DARWIN_ECCO_run17/phy_6species_y2000.data',
  PTRACERS_initialFile(26)='DARWIN_ECCO_run17/phy_6species_y2000.data',

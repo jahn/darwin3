@@ -4,8 +4,8 @@ module load impi/2018-01
 module use /home/jahn/software/modulefiles
 module load jahn/netcdf-fortran/4.4.5_intel-2018-01
 #ln -sf /nobackup1/stephdut/ECCO_Iter3.73daily
-ln -sf /home/ssharoni
-ln -sf /nfs/micklab001/stephdut/ECCO_Iter3.73daily_360days
+ln -sf /home/ssharoni/initial_conditions ssharoni
+ln -sf /orcd/data/mick/007/stephdut/ECCO_Iter3.73daily_360days
 ln -sf /nfs/micklab002/jahn/forcing/eccov3/DARWIN_ECCO_run17
 ln -sf /nfs/micklab002/jahn/forcing/eccov3/OPTICS_COEFF
 ln -sf /nfs/micklab002/jahn/forcing/eccov3/eccov3

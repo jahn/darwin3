@@ -115,8 +115,9 @@ C----
      &    scav_inter,
      &    scav_exp,
      &    scav_POC_wgt,
-     &    scav_POSi_wgt,
+     &    scav_PSi_wgt,
      &    scav_PIC_wgt,
+     &    scav_degrPOM,
 #else
      &    scav,
 #endif
@@ -190,7 +191,7 @@ C----
      &    NO3crit,
      &    PARmin,
      &    aphy_chl_ave,
-     &    chl2nmax,
+     &    Chl2Nmax,
      &    synthcost,
      &    inhib_graz,
      &    inhib_graz_exp,
@@ -393,12 +394,13 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       scav_exp = 0.58 _d 0
       scav_R_POPPOC = 1.1321 _d -4
 #elif defined(DARWIN_PART_SCAV)
-      scav_tau = 0.2
+      scav_tau = 0.2 _d 0
       scav_inter = 0.079 _d 0 / pday
       scav_exp = 0.58 _d 0
-      scav_POC_wgt = 0.02173 _d 0
-      scav_POSi_wgt = 0.069 _d 0
-      scav_PIC_wgt = 0.100 _d 0
+      scav_POC_wgt = 0.12728 _d 0
+      scav_PSi_wgt = 0 _d 0
+      scav_PIC_wgt = 0 _d 0
+      scav_degrPOM = 0 _d 0
 #else
       scav = 0.4 _d 0/pyear
 #endif
@@ -477,7 +479,7 @@ C     O2crit from Lipschultz et al 1990, DSR 37, 1513-1541:
       NO3crit = 1. _d -2
       PARmin = 0.1 _d 0
       aphy_chl_ave = 0.02 _d 0
-      chl2nmax = 3.00 _d 0
+      Chl2Nmax = 3.00 _d 0
       synthcost = 0.0 _d 0
       inhib_graz = 1.0 _d 0
       inhib_graz_exp = 0.0 _d 0

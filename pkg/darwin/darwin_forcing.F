@@ -408,8 +408,9 @@ C       compute POM in mg/L
         scv = scav_rat*scav_inter*(scav_pom**scav_exp)
 #elif defined(DARWIN_PART_SCAV)
         scav_pom = scav_POC_wgt*MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iPOC))
-     &           + scav_POSi_wgt*MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iPOSi))
+     &           + scav_PSi_wgt*MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iPOSi))
      &           + scav_PIC_wgt*MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iPIC))
+     &           + scav_degrPOM
         scv = scav_tau*scav_inter*(scav_pom**scav_exp)
 #else
         scv = scav
@@ -698,8 +699,8 @@ C       resolve sediment fluxes at coastal regions
         TcorrALK(i,j) = (0.015179 _d 0+0.000795 _d 0*absT)/0.016292 _d 0
 
 C       Dependent variables
-        fluxPIC(i,j) = wPIC_sink*MAX(0.0,Ptracer(i,j,k,bi,bj,iPIC))
-        fluxPOC(i,j) = wC_sink*MAX(0.0,Ptracer(i,j,k,bi,bj,iPOC))
+        fluxPIC(i,j) = wPIC_sink*MAX(0 _d 0,Ptracer(i,j,k,bi,bj,iPIC))
+        fluxPOC(i,j) = wC_sink*MAX(0 _d 0,Ptracer(i,j,k,bi,bj,iPOC))
 
         OmegaC0(i,j) = omegaC(i,j,k,bi,bj)
 
@@ -725,21 +726,16 @@ C       Set the buried fluxes to 0 if positive
         POCFsediment(i,j) = MIN(0 _d 0, -(sed_a4*omegaC0(i,j)*sed_c +
      &    sed_b4*fluxPOC(i,j) + sed_c4*fluxPIC(i,j) + sed_d4*sed_c))
 
-C       Calculate concentration changes at the deepest depth level
-        gPtr(i,j,k,iDIC) = gPtr(i,j,k,iDIC)
-     &       + DICFsediment(i,j)*recip_drF(k)*recip_hFacC(i,j,k,bi,bj)
-
-        gPtr(i,j,k,iALK) = gPtr(i,j,k,iALK)
-     &       + ALKFsediment(i,j)*recip_drF(k)*recip_hFacC(i,j,k,bi,bj)
-
-        gPtr(i,j,k,iO2) = gPtr(i,j,k,iO2)
-     &       + O2Fsediment(i,j)*recip_drF(k)*recip_hFacC(i,j,k,bi,bj)
-
-        gPtr(i,j,k,iPOC) = gPtr(i,j,k,iPOC)
-     &       + POCFsediment(i,j)*recip_drF(k)*recip_hFacC(i,j,k,bi,bj)
-
-        gPtr(i,j,k,iPIC) = gPtr(i,j,k,iPIC)
-     &       + CALFsediment(i,j)*recip_drF(k)*recip_hFacC(i,j,k,bi,bj)
+#ifdef DARWIN_ALLOW_CONS
+C       Accumulate for conservation check
+        radiFluxC(i,j,bi,bj) = radiFluxC(i,j,bi,bj) +
+     &       (DICFsediment(i,j) + POCFsediment(i,j) + CALFsediment(i,j))
+     &       *dTsub(k)*maskC(i,j,k,bi,bj)
+        radiFluxA(i,j,bi,bj) = radiFluxA(i,j,bi,bj) +
+     &        ALKFsediment(i,j)*dTsub(k)*maskC(i,j,k,bi,bj)
+        radiFluxO(i,j,bi,bj) = radiFluxO(i,j,bi,bj) +
+     &        O2Fsediment(i,j)*dTsub(k)*maskC(i,j,k,bi,bj)
+#endif
 
        ELSE
 
@@ -751,10 +747,49 @@ C       Calculate concentration changes at the deepest depth level
         O2Fsediment(i,j) = 0. _d 0
         CALFsediment(i,j) = 0. _d 0
         POCFsediment(i,j) = 0. _d 0
+        fluxPIC(i,j) = 0. _d 0
+        fluxPOC(i,j) = 0. _d 0
+        OmegaC0(i,j) = 0. _d 0
+        radiFluxC(i,j,bi,bj) = 0. _d 0
+        radiFluxA(i,j,bi,bj) = 0. _d 0
+        radiFluxO(i,j,bi,bj) = 0. _d 0
 
        ENDIF
       ENDDO
       ENDDO
+
+C     Calculate concentration changes at the deepest depth level
+C     and rescale for nonlinear free surface if appropriate
+      CALL DARWIN_ADD_BOTFORC(
+     U                        gPtr(1-OLx,1-OLy,1,iDIC),
+     I                        DICFsediment, oneRL,
+     I                        bi, bj, iMin, iMax, jMin, jMax,
+     I                        myIter, myTime, myThid )
+
+      CALL DARWIN_ADD_BOTFORC(
+     U                        gPtr(1-OLx,1-OLy,1,iALK),
+     I                        ALKFsediment, oneRL,
+     I                        bi, bj, iMin, iMax, jMin, jMax,
+     I                        myIter, myTime, myThid )
+
+      CALL DARWIN_ADD_BOTFORC(
+     U                        gPtr(1-OLx,1-OLy,1,iO2),
+     I                        O2Fsediment, oneRL,
+     I                        bi, bj, iMin, iMax, jMin, jMax,
+     I                        myIter, myTime, myThid )
+
+      CALL DARWIN_ADD_BOTFORC(
+     U                        gPtr(1-OLx,1-OLy,1,iPIC),
+     I                        CALFsediment, oneRL,
+     I                        bi, bj, iMin, iMax, jMin, jMax,
+     I                        myIter, myTime, myThid )
+
+      CALL DARWIN_ADD_BOTFORC(
+     U                        gPtr(1-OLx,1-OLy,1,iPOC),
+     I                        POCFsediment, oneRL,
+     I                        bi, bj, iMin, iMax, jMin, jMax,
+     I                        myIter, myTime, myThid )
+
 #endif
 #endif
 
@@ -1119,6 +1154,33 @@ C      diags(iCons*) for convenience
         WRITE(diagname, '(A,I4.4)') 'GrGC', iTr
         CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iGrGC+iTr-1),
      &        diagname,0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'Mort', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iMort+iTr-1),
+     &        diagname,0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'Resp', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iResp+iTr-1),
+     &        diagname,0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'fnut', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,ifnut+iTr-1),
+     &        diagname,0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'fIph', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,ifIph+iTr-1),
+     &        diagname,0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'fTph', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,ifTph+iTr-1),
+     &        diagname,0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'limN', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,ilimN+iTr-1),
+     &        diagname,0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'limP', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,ilimP+iTr-1),
+     &        diagname,0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'limF', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,ilimF+iTr-1),
+     &        diagname,0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'limS', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,ilimS+iTr-1),
+     &        diagname,0,Nr,2,bi,bj,myThid)
        ENDDO
 #endif
 #ifdef DARWIN_ALLOW_CSTORE
@@ -1150,7 +1212,7 @@ C      diags(iCons*) for convenience
 #endif
        CALL DIAGNOSTICS_FILL(scavRate,'scavRate',0,Nr,2,bi,bj,myThid)
        CALL DIAGNOSTICS_FILL(scavLoss,'scvLosFe',0,Nr,2,bi,bj,myThid)
-       CALL DIAGNOSTICS_FILL(sedFe,   'sedFe   ',0,Nr,1,bi,bj,myThid)
+       CALL DIAGNOSTICS_FILL(sedFe,   'sedFe   ',0,Nr,2,bi,bj,myThid)
        CALL DIAGNOSTICS_FILL(sedFlxFe,'sedFlxFe',0,1,2,bi,bj,myThid)
        IF (DIAGNOSTICS_IS_ON('sfcSolFe', myThid)) THEN
         DO j=jMin,jMax

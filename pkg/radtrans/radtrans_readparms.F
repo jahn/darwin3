@@ -104,8 +104,11 @@ C
      &    RT_wbEdges,
      &    RT_wbRefWLs,
      &    RT_kmax,
+     &    RT_useOASIMrmud,
      &    RT_useMeanCosSolz,
-     &    RT_sfcIrrThresh
+     &    RT_useNoonSolz,
+     &    RT_sfcIrrThresh,
+     &    RT_oasimWgt
 
       NAMELIST/RADTRANS_DEPENDENT/
      &    RT_wbWidths
@@ -135,6 +138,7 @@ C Open and read the data.radtrans file
        RT_Es_exfremo_intercept(l) = 0.0 _d 0
        RT_Ed_exfremo_slope(l)     = 0.0 _d 0
        RT_Es_exfremo_slope(l)     = 0.0 _d 0
+       RT_oasimWgt(l)             = 1.0 _d 0
       ENDDO
       RT_E_period     = 0.0 _d 0
       RT_E_RepCycle   = repeatPeriod
@@ -191,7 +195,9 @@ C     these are taken from Ackleson, et al. 1994 (JGR)
         RT_wbRefWLs(l) = -1 _d 0
       ENDDO
       RT_kmax = Nr
+      RT_useOASIMrmud = useOASIM
       RT_useMeanCosSolz = .FALSE.
+      RT_useNoonSolz = .FALSE.
       RT_sfcIrrThresh = 1 _d -4
 
       WRITE(msgBuf,'(A)') ' RADTRANS_READPARMS: opening data.radtrans'

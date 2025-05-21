@@ -1766,13 +1766,13 @@ C#endif
      &' /* solubility of Fe dust */')
       CALL WRITE_0D_RL(ligand_tot,INDEX_NONE,
      &'ligand_tot =',
-     &' /* total ligand concentration (mol/m3) */')
+     &' /* total ligand concentration (mmol/m3) */')
       CALL WRITE_0D_RL(ligand_stab,INDEX_NONE,
      &'ligand_stab =',
-     &' /* ligand stability rate ratio (m3/mol) */')
+     &' /* ligand stability rate ratio (m3/mmol) */')
       CALL WRITE_0D_RL(freefemax,INDEX_NONE,
      &'freefemax =',
-     &' /* max concentration of free iron (mol/m3) */')
+     &' /* max concentration of free iron (mmol/m3) */')
 #ifdef DARWIN_PART_SCAV_POP
       CALL WRITE_0D_RL(scav_rat,INDEX_NONE,
      &'scav_rat =',
@@ -1799,12 +1799,15 @@ C#endif
       CALL WRITE_0D_RL(scav_POC_wgt,INDEX_NONE,
      &'scav_POC_wgt =',
      &' /* weight of POC in POM for scavenging (g / mmol C) */')
-      CALL WRITE_0D_RL(scav_POSi_wgt,INDEX_NONE,
-     &'scav_POSi_wgt =',
-     &' /* weight of POSi in POM for scavenging (g / mmol Si) */')
+      CALL WRITE_0D_RL(scav_PSi_wgt,INDEX_NONE,
+     &'scav_PSi_wgt =',
+     &' /* weight of PSi in POM for scavenging (g / mmol Si) */')
       CALL WRITE_0D_RL(scav_PIC_wgt,INDEX_NONE,
      &'scav_PIC_wgt =',
      &' /* weight of PIC in POM for scavenging (g / mmol C) */')
+      CALL WRITE_0D_RL(scav_degrPOM,INDEX_NONE,
+     &'scav_degrPOM =',
+     &' /* concentration of non-labile POM for scavenging (g/m3) */')
 #else
       CALL WRITE_0D_RL(scav,INDEX_NONE,
      &'scav =',
@@ -2031,8 +2034,8 @@ C#endif
       CALL WRITE_0D_RL(aphy_chl_ave,INDEX_NONE,
      &'aphy_chl_ave =',
      &' /* Chl-specific absorption coefficient (m2/mg Chl) */')
-      CALL WRITE_0D_RL(chl2nmax,INDEX_NONE,
-     &'chl2nmax =',
+      CALL WRITE_0D_RL(Chl2Nmax,INDEX_NONE,
+     &'Chl2Nmax =',
      &' /* max Chl:N ratio for Chl synthesis following Moore 2002 (mg Ch
      &l / mmol N) */')
       CALL WRITE_0D_RL(synthcost,INDEX_NONE,

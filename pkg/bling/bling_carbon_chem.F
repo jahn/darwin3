@@ -640,8 +640,8 @@ C Both on seawater pH scale
            ak1(i,j,bi,bj)=10.**(-1. _d 0*(3670.7 _d 0*invtk -
      &          62.008 _d 0 + 9.7944 _d 0*dlogtk -
      &          0.0118 _d 0 * s + 0.000116 _d 0*s2))
-           ak2(i,j,bi,bj)=10.**(-1. _d 0*(1394.7 _d 0*invtk+ 4.777 _d 0-
-     &          0.0184 _d 0*s + 0.000118 _d 0*s2))
+           ak2(i,j,bi,bj)=10.**(-1. _d 0*(1394.7 _d 0*invtk +4.777 _d 0
+     &          -0.0184 _d 0*s + 0.000118 _d 0*s2))
 C------------------------------------------------------------------------
 C kb = [H][BO2]/[HBO2]
 C Millero p.669 (1995) using data from dickson (1990)
@@ -911,6 +911,10 @@ c for surface exchange coeffs
             pressc = 1.0d0 + 0.1d0*cdepth
         end do
 
+        bigR = 83.145 _d 0
+        P1atm = 1.01325 _d 0 ! bars
+        Rgas = 83.1451 _d 0 ! bar*cm3/(mol*K)
+
         do i=imin,imax
          do j=jmin,jmax
           if (hFacC(i,j,Klevel,bi,bj).gt.0.d0) then
@@ -939,8 +943,6 @@ C added by Val Bennington Nov 2010
 C Fugacity Factor needed for non-ideality in ocean
 C ff used for atmospheric correction for water vapor and pressure
 C Weiss (1974) Marine Chemistry
-           P1atm = 1.01325 _d 0 ! bars
-           Rgas = 83.1451 _d 0 ! bar*cm3/(mol*K)
            RT = Rgas*tk
            delta = (57.7 _d 0 - 0.118 _d 0*tk)
            B1 = -1636.75 _d 0 + 12.0408 _d 0*tk - 0.0327957 _d 0*tk*tk
@@ -966,10 +968,10 @@ C k1 = [H][HCO3]/[H2CO3]
 C k2 = [H][CO3]/[HCO3]
 C Millero p.664 (1995) using Mehrbach et al. data on seawater scale
 C Both on seawater pH scale
-           ak1(i,j,bi,bj)=10**(-1*(3670.7*invtk -
+           ak1(i,j,bi,bj)=10.**(-1.*(3670.7*invtk -
      &          62.008 + 9.7944*dlogtk -
      &          0.0118 * s + 0.000116*s2))
-           ak2(i,j,bi,bj)=10**(-1*(1394.7*invtk + 4.777 -
+           ak2(i,j,bi,bj)=10.**(-1.*(1394.7*invtk + 4.777 -
      &          0.0184*s + 0.000118*s2))
 C NOW PRESSURE DEPENDENCE:
 c Following Takahashi (1981) GEOSECS report - quoting Culberson and
@@ -1000,7 +1002,6 @@ C Mick and Karsten - Dec 04
 C ADDING pressure dependence based on Millero (1995), p675
 C with additional info from CO2sys documentation (E. Lewis and
 C D. Wallace, 1998 - see endnotes for commentary on Millero, 95)
-C           bigR = 83.145
 C           dv = -29.48 + 0.1622*t + 2.608d-3*t*t
 C           dk = -2.84d-3
 C           pfactor = - (dv/(bigR*tk))*pressc
@@ -1011,7 +1012,6 @@ C Mick and Karsten - Dec 04
 C ADDING pressure dependence based on Millero (1995), p675
 C with additional info from CO2sys documentation (E. Lewis and
 C D. Wallace, 1998 - see endnotes for commentary on Millero, 95)
-           bigR = 83.145 _d 0
            dv = -29.48 _d 0 + 0.1622 _d 0*t + 2.608 _d -3*t*t
            dk = -2.84 _d -3
            pfactor = - (dv/(bigR*tk))*pressc
@@ -1258,8 +1258,8 @@ c alternative pressure dependence from Ingle (1975)
      &                 + (-0.00588d0 + 0.0001845d0*t)*zdum*zdum)
      &            / (188.93d0*(t + 273.15d0))
 
-           Ksp_TP_Calc(i,j,bi,bj) = Ksp_T_Calc*10**(xvalue)
-           Ksp_TP_Arag(i,j,bi,bj) = Ksp_T_Arag*10**(xvalue)
+           Ksp_TP_Calc(i,j,bi,bj) = Ksp_T_Calc*10.**(xvalue)
+           Ksp_TP_Arag(i,j,bi,bj) = Ksp_T_Arag*10.**(xvalue)
 
 C------------------------------------------------------------------------
          else

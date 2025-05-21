@@ -148,8 +148,10 @@ C (i.e. positive virtual flux into surface layer)
          VFluxAlk(i,j) = gsm_ALK*surfaceForcingS(i,j,bi,bj)/gsm_S
          gALK(i,j) =
      &     recip_drF(ks)*recip_hFacC(i,j,ks,bi,bj)*VFluxAlk(i,j)
+#ifdef DARWIN_ALLOW_CONS
          alkVirFlx(i,j,bi,bj) = alkVirFlx(i,j,bi,bj)
      &                        + VFluxAlk(i,j)*dTsub(ks)
+#endif
         ELSE
          VFluxAlk(i,j) = 0 _d 0
         ENDIF
@@ -214,6 +216,8 @@ C Determine flux, inc. correction for local atmos surface pressure
 
          gO2(i,j) =
      &      recip_drF(ks)*recip_hFacC(i,j,ks,bi,bj)*FluxO2(i,j)
+        ELSE
+         FluxO2(i,j) = 0. _d 0
         ENDIF
        ENDDO
       ENDDO
@@ -275,7 +279,7 @@ c put bounds on tracers so pH solver doesn't blow up
           surfphos = ptr2mol * MAX(surfPO4Min,
      &               MIN(surfPO4Max, Ptracer(i,j,k,bi,bj,iPO4)))
      &               * maskC(i,j,k,bi,bj)
-          surfsi   = ptr2mol * MAX(surfSiMinINit,
+          surfsi   = ptr2mol * MAX(surfSiMin,
      &               MIN(surfSiMax, Ptracer(i,j,k,bi,bj,iSiO2)))
      &               * maskC(i,j,k,bi,bj)
 
@@ -370,6 +374,8 @@ c Flux = kw*rho*(ff*pCO2atm-k0*FugFac*pCO2ocean)
      &      ff(i,j,bi,bj)*apCO2sat(i,j) - fugCO2(i,j)*ak0(i,j,bi,bj)
      &     )
           ELSE
+           apCO2sat(i,j) = 0. _d 0
+           fugCO2(i,j) = 0. _d 0
            FluxCO2(i,j) = 0. _d 0
           ENDIF
 C convert flux (mol kg-1 m s-1) to (mmol m-2 s-1)
@@ -389,8 +395,10 @@ C in salinity. Thus, also increase in other surface tracers
 C (i.e. positive virtual flux into surface layer)
 C ...so here, VirtualFLux = dC/dt!
            VFluxCO2(i,j)=gsm_DIC*surfaceForcingS(i,j,bi,bj)/gsm_S
+#ifdef DARWIN_ALLOW_CONS
            carbVirFlx(i,j,bi,bj) = carbVirFlx(i,j,bi,bj)
      &                         + VFluxCO2(i,j)*dTsub(ks)
+#endif
 c OR
 c let virtual flux be zero
 c        VirtualFlux(i,j)=0.d0

@@ -37,6 +37,8 @@ C       |-- CHEAPAML_FIELDS_LOAD
 C       |
 C       |-- EXTERNAL_FIELDS_LOAD
 C       |
+C       |-- OASIM_FIELDS_LOAD
+C       |
 C       |-- RADTRANS_FIELDS_LOAD
 C       |
 C       |-- GCHEM_FIELDS_LOAD
@@ -59,9 +61,9 @@ C     == Global variables ==
 # endif
 # ifdef ALLOW_CTRL
 #  include "CTRL_SIZE.h"
-#  include "ctrl.h"
+#  include "CTRL.h"
 #  include "CTRL_GENARR.h"
-#  include "ctrl_dummy.h"
+#  include "CTRL_DUMMY.h"
 # endif
 # ifdef ALLOW_COST
 #  include "cost.h"
@@ -70,6 +72,11 @@ C     == Global variables ==
 # ifdef ALLOW_EXF
 #  include "EXF_FIELDS.h"
 #  include "EXF_CONSTANTS.h"
+#  ifdef ALLOW_TAPENADE
+#   include "EXF_PARAM.h"
+#   include "EXF_INTERP_SIZE.h"
+#   include "EXF_INTERP_PARAM.h"
+#  endif
 # endif
 #endif /* ALLOW_AUTODIFF */
 
@@ -127,11 +134,6 @@ C--   Initialise forcing arrays that may receive multiple contributions
 C--   Map generic time varying controls to xx_gentim2d
 #ifdef ALLOW_CTRL
       if (useCTRL) CALL CTRL_MAP_GENTIM2D( myTime, myIter, myThid )
-# if (defined ALLOW_AUTODIFF_TAMC && defined ALLOW_GENTIM2D_CONTROL)
-C     This store-directive avoids storing xx_gentim2d0/1 and subsequently
-C     calling this routine in the AD-sweep.
-CADJ STORE xx_gentim2d = comlev1, key = ikey_dynamics, kind = isbyte
-# endif
 #endif
 
 #ifdef ALLOW_BULK_FORCE
@@ -175,14 +177,18 @@ C--   Call external CheapAML forcing package
         CALL TIMER_START('EXTERNAL_FLDS_LOAD [LOAD_FLDS_DRIVER]',myThid)
         CALL EXTERNAL_FIELDS_LOAD( myTime, myIter, myThid )
         CALL TIMER_STOP ('EXTERNAL_FLDS_LOAD [LOAD_FLDS_DRIVER]',myThid)
-#ifdef NONLIN_FRSURF
-CADJ STORE SST    = comlev1, key = ikey_dynamics, kind = isbyte
-CADJ STORE SSS    = comlev1, key = ikey_dynamics, kind = isbyte
-# ifdef SHORTWAVE_HEATING
-CADJ STORE Qsw    = comlev1, key = ikey_dynamics, kind = isbyte
-# endif
-#endif
       ENDIF
+
+#ifdef ALLOW_OASIM
+      IF ( useOASIM ) THEN
+#ifdef ALLOW_DEBUG
+        IF (debugMode) CALL DEBUG_CALL('OASIM_FIELDS_LOAD',myThid)
+#endif /* ALLOW_DEBUG */
+        CALL TIMER_START('OASIM_FIELDS_LOAD  [LOAD_FLDS_DRIVER]',myThid)
+        CALL OASIM_FIELDS_LOAD( .TRUE., myTime, myIter, myThid )
+        CALL TIMER_STOP ('OASIM_FIELDS_LOAD  [LOAD_FLDS_DRIVER]',myThid)
+      ENDIF
+#endif /* ALLOW_OASIM */
 
 #ifdef ALLOW_RADTRANS
       IF ( useRADTRANS ) THEN

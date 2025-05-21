@@ -38,8 +38,8 @@ jobs:
 
      - name: Get a docker image and set it running
        run: |
-         docker pull mitgcm/testreport-images:ubuntu_18_04_villon
-         docker run  -v `pwd`:/MITgcm --name ubuntu_18_04-testreport -t -d mitgcm/testreport-images:ubuntu_18_04_villon /bin/bash
+         docker pull oliverjahn/testreport-images:ubuntu_18_04_villon
+         docker run  -v `pwd`:/MITgcm --name ubuntu_18_04-testreport -t -d oliverjahn/testreport-images:ubuntu_18_04_villon /bin/bash
 
      - name: Run a test
        env:
@@ -64,14 +64,14 @@ jobs:
 
      - name: Get a docker image and set it running
        run: |
-         docker pull mitgcm/mitgcm-openad-test:centos-test
-         docker run -i -t -v `pwd`:/MITgcm -d --name openad-testing --ulimit stack=-1:-1 --rm mitgcm/mitgcm-openad-test:centos-test /bin/bash
+         docker pull oliverjahn/mitgcm-openad-test:centos-test
+         docker run -i -t -v `pwd`:/MITgcm -d --name openad-testing --ulimit stack=-1:-1 --rm oliverjahn/mitgcm-openad-test:centos-test /bin/bash
 
      - name: Run testreport
        env:
         MITGCM_EXP: ${{ matrix.exp }}
         MITGCM_DECMD: "docker exec -i openad-testing bash -lc"
-        MITGCM_TROPT: "-oad -devel -of=../tools/build_options/linux_amd64_gfortran"
+        MITGCM_TROPT: "-oad -devel -of=../tools/build_options/linux_amd64_gfortran -match 14"
         MITGCM_INPUT_DIR_PAT: '/input_oad.*'
        run: |
          . tools/ci/runtr.sh
@@ -83,10 +83,10 @@ jobs:
    strategy:
      matrix:
       include:
+        - exp: "global_oce_latlon"
         - exp: "halfpipe_streamice"
         - exp: "hs94.1x64x5"
         - exp: "isomip"
-        - exp: "OpenAD"
         - exp: "tutorial_global_oce_biogeo"
         - exp: "tutorial_global_oce_optim"
         - exp: "tutorial_tracer_adjsens"
@@ -100,14 +100,14 @@ jobs:
 
      - name: Get a docker image and set it running
        run: |
-         docker pull mitgcm/mitgcm-openad-test:centos-test
-         docker run -i -t -v `pwd`:/MITgcm -d --name openad-testing --ulimit stack=-1:-1 --rm mitgcm/mitgcm-openad-test:centos-test /bin/bash
+         docker pull oliverjahn/mitgcm-openad-test:centos-test
+         docker run -i -t -v `pwd`:/MITgcm -d --name openad-testing --ulimit stack=-1:-1 --rm oliverjahn/mitgcm-openad-test:centos-test /bin/bash
 
      - name: Run testreport
        env:
         MITGCM_EXP: ${{ matrix.exp }}
         MITGCM_DECMD: "docker exec -i openad-testing bash -lc"
-        MITGCM_TROPT: "-oad -devel -of=../tools/build_options/linux_amd64_gfortran"
+        MITGCM_TROPT: "-oad -devel -of=../tools/build_options/linux_amd64_gfortran -match 14"
         MITGCM_INPUT_DIR_PAT: '/input_oad.*'
        run: |
          . tools/ci/runtr.sh

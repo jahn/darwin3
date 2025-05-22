@@ -1100,98 +1100,6 @@ C === diagnostics ======================================================
      &       0,Nr,2,bi,bj,myThid)
 #endif
 
-#ifdef DARWIN_MACROMOLECULAR_GROWTH
-       DO iTr=1,nPhoto
-        WRITE(diagname, '(A,I4.4)') 'PChl', iTr
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iPChl+iTr-1),diagname,
-     &          0,Nr,2,bi,bj,myThid)
-        WRITE(diagname, '(A,I4.4)') 'VN', iTr
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iVN+iTr-1),diagname,
-     &          0,Nr,2,bi,bj,myThid)
-        WRITE(diagname, '(A,I4.4)') 'VP', iTr
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iVP+iTr-1),diagname,
-     &          0,Nr,2,bi,bj,myThid)
-        WRITE(diagname, '(A,I4.4)') 'MODE', iTr
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iMODE+iTr-1),diagname,
-     &          0,Nr,2,bi,bj,myThid)
-        WRITE(diagname, '(A,I4.4)') 'Fe_C', iTr
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iFe_C+iTr-1),diagname,
-     &          0,Nr,2,bi,bj,myThid)
-        WRITE(diagname, '(A,I4.4)') 'exQc', iTr
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iexQc+iTr-1),diagname,
-     &          0,Nr,2,bi,bj,myThid)
-        WRITE(diagname, '(A,I4.4)') 'PCg', iTr
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iPCg+iTr-1),diagname,
-     &          0,Nr,2,bi,bj,myThid)
-        WRITE(diagname, '(A,I4.4)') 'CChl', iTr
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iCChl+iTr-1),diagname,
-     &          0,Nr,2,bi,bj,myThid)
-        WRITE(diagname, '(A,I4.4)') 'NChl', iTr
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iNChl+iTr-1),diagname,
-     &          0,Nr,2,bi,bj,myThid)
-        WRITE(diagname, '(A,I4.4)') 'NPho', iTr
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iNPho+iTr-1),diagname,
-     &          0,Nr,2,bi,bj,myThid)
-        WRITE(diagname, '(A,I4.4)') 'NSyn', iTr
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iNSyn+iTr-1),diagname,
-     &          0,Nr,2,bi,bj,myThid)
-        WRITE(diagname, '(A,I4.4)') 'NPrn', iTr
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iNPrn+iTr-1),diagname,
-     &          0,Nr,2,bi,bj,myThid)
-        WRITE(diagname, '(A,I4.4)') 'NRNA', iTr
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iNRNA+iTr-1),diagname,
-     &          0,Nr,2,bi,bj,myThid)
-        WRITE(diagname, '(A,I4.4)') 'NDNA', iTr
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iNDNA+iTr-1),diagname,
-     &          0,Nr,2,bi,bj,myThid)
-        WRITE(diagname, '(A,I4.4)') 'NSTO', iTr
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iNSTO+iTr-1),diagname,
-     &          0,Nr,2,bi,bj,myThid)
-        WRITE(diagname, '(A,I4.4)') 'NEXC', iTr
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iNEXC+iTr-1),diagname,
-     &          0,Nr,2,bi,bj,myThid)
-        WRITE(diagname, '(A,I4.4)') 'PRNA', iTr
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iPRNA+iTr-1),diagname,
-     &          0,Nr,2,bi,bj,myThid)
-        WRITE(diagname, '(A,I4.4)') 'PDNA', iTr
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iPDNA+iTr-1),diagname,
-     &          0,Nr,2,bi,bj,myThid)
-        WRITE(diagname, '(A,I4.4)') 'PTHY', iTr
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iPTHY+iTr-1),diagname,
-     &          0,Nr,2,bi,bj,myThid)
-        WRITE(diagname, '(A,I4.4)') 'PCON', iTr
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iPCON+iTr-1),diagname,
-     &          0,Nr,2,bi,bj,myThid)
-        WRITE(diagname, '(A,I4.4)') 'PSTO', iTr
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iPSTO+iTr-1),diagname,
-     &          0,Nr,2,bi,bj,myThid)
-        WRITE(diagname, '(A,I4.4)') 'PEXC', iTr
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iPEXC+iTr-1),diagname,
-     &          0,Nr,2,bi,bj,myThid)
-        WRITE(diagname, '(A,I4.4)') 'FPHO', iTr
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iFPHO+iTr-1),diagname,
-     &          0,Nr,2,bi,bj,myThid)
-        WRITE(diagname, '(A,I4.4)') 'FSTO', iTr
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iFSTO+iTr-1),diagname,
-     &          0,Nr,2,bi,bj,myThid)
-        WRITE(diagname, '(A,I4.4)') 'FEXC', iTr
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iFEXC+iTr-1),diagname,
-     &          0,Nr,2,bi,bj,myThid)
-        WRITE(diagname, '(A,I4.4)') 'Y_RQ', iTr
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iY_RQ+iTr-1),diagname,
-     &          0,Nr,2,bi,bj,myThid)
-        WRITE(diagname, '(A,I4.4)') 'dROP', iTr
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,idROP+iTr-1),diagname,
-     &          0,Nr,2,bi,bj,myThid)
-        WRITE(diagname, '(A,I4.4)') 'limC', iTr
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,ilimC+iTr-1),diagname,
-     &          0,Nr,2,bi,bj,myThid)
-        WRITE(diagname, '(A,I4.4)') 'limL', iTr
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,ilimL+iTr-1),diagname,
-     &          0,Nr,2,bi,bj,myThid)
-       ENDDO
-#endif /* DARWIN_MACROMOLECULAR_GROWTH */
-
 #ifdef DARWIN_ALLOW_VARIABLE_CHNOP
         CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iRQ_POC),'RQ_POC  ',
      &          0,Nr,2,bi,bj,myThid)
@@ -1376,6 +1284,91 @@ C      diags(iCons*) for convenience
         CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,ilimS+iTr-1),
      &        diagname,0,Nr,2,bi,bj,myThid)
        ENDDO
+# ifdef DARWIN_MACROMOLECULAR_GROWTH
+       DO iTr=1,nPhoto
+        WRITE(diagname, '(A,I4.4)') 'PChl', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iPChl+iTr-1),diagname,
+     &          0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'VN', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iVN+iTr-1),diagname,
+     &          0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'VP', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iVP+iTr-1),diagname,
+     &          0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'MODE', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iMODE+iTr-1),diagname,
+     &          0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'Fe_C', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iFe_C+iTr-1),diagname,
+     &          0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'exQc', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iexQc+iTr-1),diagname,
+     &          0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'CChl', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iCChl+iTr-1),diagname,
+     &          0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'NChl', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iNChl+iTr-1),diagname,
+     &          0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'NPho', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iNPho+iTr-1),diagname,
+     &          0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'NSyn', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iNSyn+iTr-1),diagname,
+     &          0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'NPrn', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iNPrn+iTr-1),diagname,
+     &          0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'NRNA', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iNRNA+iTr-1),diagname,
+     &          0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'NDNA', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iNDNA+iTr-1),diagname,
+     &          0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'NSTO', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iNSTO+iTr-1),diagname,
+     &          0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'NEXC', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iNEXC+iTr-1),diagname,
+     &          0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'PRNA', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iPRNA+iTr-1),diagname,
+     &          0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'PDNA', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iPDNA+iTr-1),diagname,
+     &          0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'PTHY', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iPTHY+iTr-1),diagname,
+     &          0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'PCON', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iPCON+iTr-1),diagname,
+     &          0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'PSTO', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iPSTO+iTr-1),diagname,
+     &          0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'PEXC', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iPEXC+iTr-1),diagname,
+     &          0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'FPHO', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iFPHO+iTr-1),diagname,
+     &          0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'FSTO', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iFSTO+iTr-1),diagname,
+     &          0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'FEXC', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iFEXC+iTr-1),diagname,
+     &          0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'Y_RQ', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iY_RQ+iTr-1),diagname,
+     &          0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'limC', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,ilimC+iTr-1),diagname,
+     &          0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'limL', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,ilimL+iTr-1),diagname,
+     &          0,Nr,2,bi,bj,myThid)
+       ENDDO
+# endif
 #endif
 #ifdef DARWIN_ALLOW_CSTORE
 #ifdef DARWIN_ALLOW_CSTORE_DIAGS

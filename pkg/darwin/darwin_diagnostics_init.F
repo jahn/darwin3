@@ -145,215 +145,6 @@ C---+----1----+----2----+----3----+----4----+----5----+----6----+----7-|--+----|
      I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
 #endif
 
-#ifdef DARWIN_MACROMOLECULAR_GROWTH
-      DO j = 1, nPhoto
-
-       WRITE(diagName,'(A,I4.4)')'PChl', j
-       WRITE(diagTitle,'(A)')'Chl-specific carbohydrate fixation rate'
-       diagUnits = 'mol C/mol Chl/s '
-       diagCode  = 'SM P    MR      '
-       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
-     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
-
-       WRITE(diagName,'(A,I4.4)')'VN', j
-       WRITE(diagTitle,'(A)')'Carbon-specific nitrogen uptake rate'
-       diagUnits = 'mmol N/mmol C/s '
-       diagCode  = 'SM P    MR      '
-       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
-     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
-
-       WRITE(diagName,'(A,I4.4)')'VP', j
-       WRITE(diagTitle,'(A)')'Carbon-specific phosphate uptake rate'
-       diagUnits = 'mmol P/mmol C/s '
-       diagCode  = 'SM P    MR      '
-       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
-     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
-
-       WRITE(diagName,'(A,I4.4)')'MODE', j
-       WRITE(diagTitle,'(A)')'1: N, 2: P, 3: Fe limitation'
-       diagUnits = 'dimensionless   '
-       diagCode  = 'SM P    MR      '
-       CALL DIAGNOSTICS_ADDTOLIST( diagNum, 
-     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
-
-       WRITE(diagName,'(A,I4.4)')'Fe_C', j
-       WRITE(diagTitle,'(A)')'Fe/C'
-       diagUnits = 'mol Fe/mol C    '
-       diagCode  = 'SM P    MR      '
-       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
-     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
-
-       WRITE(diagName,'(A,I4.4)')'exQc', j
-       WRITE(diagTitle,'(A)')'exQc'
-       diagUnits = 's-1             '
-       diagCode  = 'SM P    MR      '
-       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
-     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
-
-       WRITE(diagName,'(A,I4.4)')'PCg', j
-       WRITE(diagTitle,'(A)')'PCg'
-       diagUnits = 's-1             '
-       diagCode  = 'SM P    MR      '
-       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
-     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
-
-       WRITE(diagName,'(A,I4.4)')'CChl', j
-       WRITE(diagTitle,'(A)')'C quota in Chlorophyll'
-       diagUnits = 'molC molC-1     '
-       diagCode  = 'SM P    MR      '
-       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
-     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
-
-       WRITE(diagName,'(A,I4.4)')'NChl', j
-       WRITE(diagTitle,'(A)')'N quota in Chlorophyll'
-       diagUnits = 'molN molC-1     '
-       diagCode  = 'SM P    MR      '
-       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
-     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
-
-       WRITE(diagName,'(A,I4.4)')'NPho', j
-       WRITE(diagTitle,'(A)')'N quota related to photosynthesis'
-       diagUnits = 'molN molC-1     '
-       diagCode  = 'SM P    MR      '
-       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
-     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
-
-       WRITE(diagName,'(A,I4.4)')'NSyn', j
-       WRITE(diagTitle,'(A)')'N quota related to biosynthesis'
-       diagUnits = 'molN molC-1     '
-       diagCode  = 'SM P    MR      '
-       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
-     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
-
-       WRITE(diagName,'(A,I4.4)')'NPrn', j
-       WRITE(diagTitle,'(A)')'N quota in proteins'
-       diagUnits = 'molN molC-1     '
-       diagCode  = 'SM P    MR      '
-       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
-     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
-
-       WRITE(diagName,'(A,I4.4)')'NRNA', j
-       WRITE(diagTitle,'(A)')'N quota in RNA'
-       diagUnits = 'molN molC-1     '
-       diagCode  = 'SM P    MR      '
-       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
-     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
-
-       WRITE(diagName,'(A,I4.4)')'NDNA', j
-       WRITE(diagTitle,'(A)')'N quota in DNA'
-       diagUnits = 'molN molC-1     '
-       diagCode  = 'SM P    MR      '
-       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
-     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
-
-       WRITE(diagName,'(A,I4.4)')'NSTO', j
-       WRITE(diagTitle,'(A)')'N quota in QN_store'
-       diagUnits = 'molN molC-1     '
-       diagCode  = 'SM P    MR      '
-       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
-     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
-
-       WRITE(diagName,'(A,I4.4)')'NEXC', j
-       WRITE(diagTitle,'(A)')'N quota in QN_excess'
-       diagUnits = 'molN molC-1     '
-       diagCode  = 'SM P    MR      '
-       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
-     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
-
-       WRITE(diagName,'(A,I4.4)')'PRNA', j
-       WRITE(diagTitle,'(A)')'P quota in RNA'
-       diagUnits = 'molP molC-1     '
-       diagCode  = 'SM P    MR      '
-       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
-     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
-
-       WRITE(diagName,'(A,I4.4)')'PDNA', j
-       WRITE(diagTitle,'(A)')'P quota in DNA'
-       diagUnits = 'molP molC-1     '
-       diagCode  = 'SM P    MR      '
-       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
-     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
-
-       WRITE(diagName,'(A,I4.4)')'PTHY', j
-       WRITE(diagTitle,'(A)')'P quota in Thylakoid membrane'
-       diagUnits = 'molP molC-1     '
-       diagCode  = 'SM P    MR      '
-       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
-     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
-
-       WRITE(diagName,'(A,I4.4)')'PCON', j
-       WRITE(diagTitle,'(A)')'P quota a constant part'
-       diagUnits = 'molP molC-1     '
-       diagCode  = 'SM P    MR      '
-       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
-     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
-
-       WRITE(diagName,'(A,I4.4)')'PSTO', j
-       WRITE(diagTitle,'(A)')'P quota in P storage'
-       diagUnits = 'molP molC-1     '
-       diagCode  = 'SM P    MR      '
-       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
-     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
-
-       WRITE(diagName,'(A,I4.4)')'PEXC', j
-       WRITE(diagTitle,'(A)')'P quota in QP_excess'
-       diagUnits = 'mol P molC-1    '
-       diagCode  = 'SM P    MR      '
-       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
-     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
-
-       WRITE(diagName,'(A,I4.4)')'FPHO', j
-       WRITE(diagTitle,'(A)')'Fe quota in Photosystem'
-       diagUnits = 'mol Fe molC-1   '
-       diagCode  = 'SM P    MR      '
-       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
-     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
-
-       WRITE(diagName,'(A,I4.4)')'FSTO', j
-       WRITE(diagTitle,'(A)')'Fe quota in QFe_store'
-       diagUnits = 'mol Fe molC-1   '
-       diagCode  = 'SM P    MR      '
-       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
-     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
-
-       WRITE(diagName,'(A,I4.4)')'FEXC', j
-       WRITE(diagTitle,'(A)')'Fe quota in QFe_excess'
-       diagUnits = 'mol Fe molC-1   '
-       diagCode  = 'SM P    MR      '
-       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
-     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
-     
-       WRITE(diagName,'(A,I4.4)')'Y_RQ', j
-       WRITE(diagTitle,'(A)')'O2:C ratio for respiration'
-       diagUnits = 'mol O2 molC-1   '
-       diagCode  = 'SM P    MR      '
-       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
-     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
-
-       WRITE(diagName,'(A,I4.4)')'dROP', j
-       WRITE(diagTitle,'(A)')'O2:P ratio for respiration'
-       diagUnits = 'mol O2 molP-1   '
-       diagCode  = 'SM P    MR      '
-       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
-     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
-
-       WRITE(diagName,'(A,I4.4)')'limC', j
-       WRITE(diagTitle,'(A)')'C limitation'
-       diagUnits = '                '
-       diagCode  = 'SM P    MR      '
-       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
-     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
-
-       WRITE(diagName,'(A,I4.4)')'limL', j
-       WRITE(diagTitle,'(A)')'Light limitation'
-       diagUnits = '                '
-       diagCode  = 'SM P    MR      '
-       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
-     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
-     
-      ENDDO
-#endif /* DARWIN_MACROMOLECULAR_GROWTH */
-
 #ifdef DARWIN_ALLOW_VARIABLE_CHNOP
       WRITE(diagName,'(A)')'RQ_POC'
       WRITE(diagTitle,'(A)')'RQ of POC'
@@ -826,7 +617,202 @@ C-      use units & names from data.ptracers :
         CALL DIAGNOSTICS_ADDTOLIST( diagNum,
      I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
       ENDDO
-#endif
+
+# ifdef DARWIN_MACROMOLECULAR_GROWTH
+      DO j = 1,nPhoto
+       WRITE(diagName,'(A,I4.4)')'PChl', j
+       WRITE(diagTitle,'(A,I4)')'Chl-spec carbohydrat fix rate plank ',j
+       diagUnits = 'mol C/mol Chl/s '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+       WRITE(diagName,'(A,I4.4)')'VN', j
+       WRITE(diagTitle,'(A,I4)')
+     &       'Carbon-spec nitrogen uptake rate plank ',j
+       diagUnits = 'mmol N/mmol C/s '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+       WRITE(diagName,'(A,I4.4)')'VP', j
+       WRITE(diagTitle,'(A,I4)')
+     &       'Carbon-spec phosphorus uptake rate plank ',j
+       diagUnits = 'mmol N/mmol C/s '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+       WRITE(diagName,'(A,I4.4)')'MODE', j
+       WRITE(diagTitle,'(A,I4)')'Growth limitation enum plankton ',j
+       diagUnits = 'dimensionless   '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+       WRITE(diagName,'(A,I4.4)')'Fe_C', j
+       WRITE(diagTitle,'(A,I4)')'Fe/C plankton ',j
+       diagUnits = 'mol Fe/mol C    '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+       WRITE(diagName,'(A,I4.4)')'exQc', j
+       WRITE(diagTitle,'(A,I4)')'exQc plankton ',j
+       diagUnits = 's-1             '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+       WRITE(diagName,'(A,I4.4)')'CChl', j
+       WRITE(diagTitle,'(A,I4)')'C quota in Chlorophyll plankton ',j
+       diagUnits = 'molC molC-1     '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+       WRITE(diagName,'(A,I4.4)')'NChl', j
+       WRITE(diagTitle,'(A,I4)')'N quota in Chlorophyll plankton ',j
+       diagUnits = 'molN molC-1     '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+       WRITE(diagName,'(A,I4.4)')'NPho', j
+       WRITE(diagTitle,'(A,I4)')'N quota related to photosynth plank ',j
+       diagUnits = 'molN molC-1     '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+       WRITE(diagName,'(A,I4.4)')'NSyn', j
+       WRITE(diagTitle,'(A,I4)')'N quota related to biosynth plank ',j
+       diagUnits = 'molN molC-1     '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+       WRITE(diagName,'(A,I4.4)')'NPrn', j
+       WRITE(diagTitle,'(A,I4)')'N quota in proteins plankton ',j
+       diagUnits = 'molN molC-1     '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+       WRITE(diagName,'(A,I4.4)')'NRNA', j
+       WRITE(diagTitle,'(A,I4)')'N quota in RNA plankton ',j
+       diagUnits = 'molN molC-1     '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+       WRITE(diagName,'(A,I4.4)')'NDNA', j
+       WRITE(diagTitle,'(A,I4)')'N quota in DNA plankton ',j
+       diagUnits = 'molN molC-1     '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+       WRITE(diagName,'(A,I4.4)')'NSTO', j
+       WRITE(diagTitle,'(A,I4)')'N quota in QN_store plankton ',j
+       diagUnits = 'molN molC-1     '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+       WRITE(diagName,'(A,I4.4)')'NEXC', j
+       WRITE(diagTitle,'(A,I4)')'N quota in QN_excess plankton ',j
+       diagUnits = 'molN molC-1     '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+       WRITE(diagName,'(A,I4.4)')'PRNA', j
+       WRITE(diagTitle,'(A,I4)')'P quota in RNA plankton ',j
+       diagUnits = 'molP molC-1     '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+       WRITE(diagName,'(A,I4.4)')'PDNA', j
+       WRITE(diagTitle,'(A,I4)')'P quota in DNA plankton ',j
+       diagUnits = 'molP molC-1     '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+       WRITE(diagName,'(A,I4.4)')'PTHY', j
+       WRITE(diagTitle,'(A,I4)')'P quota in Thylakoid membrane plank ',j
+       diagUnits = 'molP molC-1     '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+       WRITE(diagName,'(A,I4.4)')'PCON', j
+       WRITE(diagTitle,'(A,I4)')'P quota a constant part plankton ',j
+       diagUnits = 'molP molC-1     '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+       WRITE(diagName,'(A,I4.4)')'PSTO', j
+       WRITE(diagTitle,'(A,I4)')'P quota in P storage plankton ',j
+       diagUnits = 'molP molC-1     '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+       WRITE(diagName,'(A,I4.4)')'PEXC', j
+       WRITE(diagTitle,'(A,I4)')'P quota in QP_excess plankton ',j
+       diagUnits = 'mol P molC-1    '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+       WRITE(diagName,'(A,I4.4)')'FPHO', j
+       WRITE(diagTitle,'(A,I4)')'Fe quota in Photosystem plankton ',j
+       diagUnits = 'mol Fe molC-1   '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+       WRITE(diagName,'(A,I4.4)')'FSTO', j
+       WRITE(diagTitle,'(A,I4)')'Fe quota in QFe_store plankton ',j
+       diagUnits = 'mol Fe molC-1   '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+       WRITE(diagName,'(A,I4.4)')'FEXC', j
+       WRITE(diagTitle,'(A,I4)')'Fe quota in QFe_excess plankton ',j
+       diagUnits = 'mol Fe molC-1   '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+       WRITE(diagName,'(A,I4.4)')'Y_RQ', j
+       WRITE(diagTitle,'(A,I4)')'O2:C ratio for respiration plankton ',j
+       diagUnits = 'mol O2 molC-1   '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+       WRITE(diagName,'(A,I4.4)')'limC', j
+       WRITE(diagTitle,'(A,I4)')'C growth limitation plankton ',j
+       diagUnits = '[0/1]           '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+       WRITE(diagName,'(A,I4.4)')'limL', j
+       WRITE(diagTitle,'(A,I4)')'Light growth limitation plankton ',j
+       diagUnits = '[0/1]           '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+      ENDDO
+# endif /* DARWIN_MACROMOLECULAR_GROWTH */
+#endif /* DARWIN_DIAG_PERTYPE */
 
 #ifdef DARWIN_ALLOW_CSTORE
 #ifdef DARWIN_ALLOW_CSTORE_DIAGS

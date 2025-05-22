@@ -254,7 +254,6 @@ C      _RL QN_bio_D
       _RL QC_thy_D1
       _RL QC_pro_D0
       _RL QC_pro_D1
-      _RL QC_RNA_min
       _RL QC_rna_D1
       _RL QC_rna_D2
       _RL Qc_D0
@@ -335,7 +334,6 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL FCmin
       _RL Scal_coeff
       _RL QC_CSTO
-      _RL dROP
       _RL RQ_DOC
       _RL RQ_OC
       _RL RQ(nplank)
@@ -347,7 +345,6 @@ C      _RL QP_rna0
 C      _RL QN_pro_const0
 C      _RL QP_DNA_plot0
       _RL PCc
-      _RL PCg
       REAL, DIMENSION(3) :: BC_all
       _RL BC
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -663,7 +660,6 @@ C       then solve for PC
 C       Carbohydrate fixation rate per chlorophyll (mol C (mol C in chl s)-1)
         PChl = Sf(j)*VI_max(j)*(1 - EXP(-A_I(j)*PARtot))
 
-        PCg = 0 _d 0
 C       Case 1: Enought light, growth rate is a function of macromol allocation
         IF ( PChl .GT. VI_min(j) ) THEN
 
@@ -706,7 +702,6 @@ C        carbon restriction on growth rate
          QC_thy_D1 = (1 _d 0 + ECo2Prod(j))/PChl*A_thy(j)
          QC_pro_D0 = QN_pro_D0*Y_CN_protein(j)
          QC_pro_D1 = QN_pro_D1*Y_CN_protein(j)
-C         QC_RNA_min = QN_RNA_min(j)*Y_CN_RNA(j)
          QC_rna_D1 = QN_rna_D1 *Y_CN_RNA(j)
          QC_rna_D2 = QN_rna_D2*Y_CN_RNA(j)
 
@@ -919,22 +914,17 @@ C       ! shlomit: Calclate the O2:P ratio
      &     + ( QN_RNA*Y_CN_RNA(j)) * 1.23 _d 0
      &     + ( QN_store*Y_CN_cyano(j)) * 1.901 _d 0
 #endif
-C            IF (Qp(j) .NE. 0 _d 0) THEN   
-C        MAX(0., X(j)/Ptr(ip+j-1) ) ! RQ/mmQp
-C              dROP = (RQ(j))/Qp(j)
-C              dROP = (1.35 _d 0)/Qp(j)
-C            ENDIF 
 
         RQ_OC = RQ(j)
 c        RQ_OC = 1.5
 
+# ifdef DARWIN_DIAG_PERTYPE
         diags(iPChl+j-1) = PChl
         diags(iVN  +j-1) = VN
         diags(iVP  +j-1) = VP
         diags(iMODE+j-1) = MODE
         diags(iFe_C+j-1) = mmQfe
-        diags(iexQc+j-1) = exQc        
-        diags(iPCg +j-1) = PCg        
+        diags(iexQc+j-1) = exQc
         diags(iCChl+j-1) = QC_chl
         diags(iNChl+j-1) = QN_chl
         diags(iNPho+j-1) = QN_pro_photo
@@ -954,13 +944,12 @@ c        RQ_OC = 1.5
         diags(iFSTO+j-1) = Qfe_Store
         diags(iFEXC+j-1) = Qfe_excess
         diags(iY_RQ+j-1) = RQ(j)
-        diags(idROP+j-1) = dROP
-        diags(ilimP+j-1) = limP
         diags(ilimN+j-1) = limN
+        diags(ilimP+j-1) = limP
         diags(ilimF+j-1) = limF
         diags(ilimC+j-1) = limC
         diags(ilimL+j-1) = limL
-
+# endif
 
 #else /* DARWIN_MACROMOLECULAR_GROWTH */
 

@@ -1929,6 +1929,9 @@ C--   Print parameters from DARWIN_PARAMS.h
       CALL WRITE_0D_RL(KPOSi,INDEX_NONE,
      &'KPOSi =',
      &' /* POSi remineralization rate (1/s) */')
+      CALL WRITE_0D_RL(ksatO2remin,INDEX_NONE,
+     &'ksatO2remin =',
+     &' /* O2 half saturation for remineralization (mmol O2 m^-3) */')
       CALL WRITE_0D_RL(wC_sink,INDEX_NONE,
      &'wC_sink =',
      &' /* sinking velocity for POC (m/s) */')

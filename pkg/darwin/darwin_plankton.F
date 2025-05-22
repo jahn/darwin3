@@ -1024,8 +1024,8 @@ C       when phytoplankton starts to store, they reduce their nutrient-uptake:
 
 C       Nitrogen:
             IF ((QN_essential + QN_store) .GT. 0 _d 0) THEN
-              MMregQn = ((1.1*(QN_essential + QN_store) - mmQn)/
-     &                          (0.1*(QN_essential + QN_store)))
+              MMregQn = ((1.1 _d 0*(QN_essential + QN_store) - mmQn)/
+     &                          (0.1 _d 0*(QN_essential + QN_store)))
               MMregQn = MAX(0., MIN(1., MMregQn))
             ELSE
               MMregQn = 1 _d 0
@@ -1037,8 +1037,8 @@ C       Carbon-specific NO3 uptake rate
 
 C       Phosphorous:                
             IF ((QP_essential+QP_store) .GT. 0 _d 0) THEN
-              MMregQp = ((1.1*(QP_essential+QP_store) - mmQp)/
-     &                          (0.1*(QP_essential+QP_store)))
+              MMregQp = ((1.1 _d 0*(QP_essential+QP_store) - mmQp)/
+     &                          (0.1 _d 0*(QP_essential+QP_store)))
               MMregQp = MAX(0., MIN(1., MMregQp))
             ELSE
               MMregQp = 1 _d 0
@@ -1049,8 +1049,8 @@ C       Carbon-specific PO4 uptake rate
 
 C       Iron:                
             IF ((Qfe_essential + Qfe_Store) .GT. 0 _d 0) THEN   
-              MMregQFe = ((1.1*(Qfe_essential + Qfe_Store) - mmQfe)/
-     &                          (0.1*(Qfe_essential + Qfe_Store)))
+             MMregQFe = ((1.1 _d 0*(Qfe_essential + Qfe_Store) - mmQfe)/
+     &                          (0.1 _d 0*(Qfe_essential + Qfe_Store)))
               MMregQFe = MAX(0., MIN(1., MMregQFe))
             ELSE
               MMregQFe = 1 _d 0
@@ -1069,34 +1069,34 @@ C       Carbon-specific FeT uptake rate
 C       ! shlomit: Calclate the O2:P ratio 
         QC_CSTO = MAX(1 - QC_essential - QN_store * Y_CN_cyano(j) ,0.)
 
-        RQ(j) = ( QN_pro_tot*Y_CN_protein(j))* 1.56 
-     &     + ( QC_other(j)/2  + QC_CSTO/2) * 1.34
-     &     + ( Y_PC_pg(j) * QP_thy)* 1.30
-     &     + ( QC_other(j)/2 + QC_CSTO/2) * 1.0
-     &     + ( QC_chl) * 1.39
-     &     + ( QN_DNA_plot*Y_CN_DNA(j)) * 1.62
-     &     + ( QN_RNA*Y_CN_RNA(j)) *  1.57
-     &     + ( QN_store*Y_CN_cyano(j)) * 1.85
+        RQ(j) = ( QN_pro_tot*Y_CN_protein(j))* 1.56 _d 0
+     &     + ( QC_other(j)/2  + QC_CSTO/2) * 1.34 _d 0
+     &     + ( Y_PC_pg(j) * QP_thy)* 1.30 _d 0
+     &     + ( QC_other(j)/2 + QC_CSTO/2) * 1.0 _d 0
+     &     + ( QC_chl) * 1.39 _d 0
+     &     + ( QN_DNA_plot*Y_CN_DNA(j)) * 1.62 _d 0
+     &     + ( QN_RNA*Y_CN_RNA(j)) *  1.57 _d 0
+     &     + ( QN_store*Y_CN_cyano(j)) * 1.85 _d 0
 
 #ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-        Qo(j) = ( QN_pro_tot*Y_CN_protein(j))* 0.47 
-     &     + ( QC_other(j)/2  + QC_CSTO/2) * 0.12
-     &     + ( Y_PC_pg(j) * QP_thy)* 0.21
-     &     + ( QC_other(j)/2 + QC_CSTO/2) * 0.83
-     &     + ( QC_chl) * 0.09
-     &     + ( QN_DNA_plot*Y_CN_DNA(j)) * 0.61 
-     &     + ( QN_RNA*Y_CN_RNA(j)) * 0.73
-     &     + ( QN_store*Y_CN_cyano(j)) * 0.50
+        Qo(j) = ( QN_pro_tot*Y_CN_protein(j))* 0.47 _d 0
+     &     + ( QC_other(j)/2  + QC_CSTO/2) * 0.12 _d 0
+     &     + ( Y_PC_pg(j) * QP_thy)* 0.21 _d 0
+     &     + ( QC_other(j)/2 + QC_CSTO/2) * 0.83 _d 0
+     &     + ( QC_chl) * 0.09 _d 0
+     &     + ( QN_DNA_plot*Y_CN_DNA(j)) * 0.61 _d 0
+     &     + ( QN_RNA*Y_CN_RNA(j)) * 0.73 _d 0
+     &     + ( QN_store*Y_CN_cyano(j)) * 0.50 _d 0
 
 
-        Qh(j) = ( QN_pro_tot*Y_CN_protein(j))* 1.90 
-     &     + ( QC_other(j)/2  + QC_CSTO/2) * 1.62
-     &     + ( Y_PC_pg(j) * QP_thy)* 1.74
-     &     + ( QC_other(j)/2 + QC_CSTO/2) * 1.67
-     &     + ( QC_chl) * 1.30
-     &     + ( QN_DNA_plot*Y_CN_DNA(j)) * 1.26 
-     &     + ( QN_RNA*Y_CN_RNA(j)) * 1.23
-     &     + ( QN_store*Y_CN_cyano(j)) * 1.901
+        Qh(j) = ( QN_pro_tot*Y_CN_protein(j))* 1.90 _d 0
+     &     + ( QC_other(j)/2  + QC_CSTO/2) * 1.62 _d 0
+     &     + ( Y_PC_pg(j) * QP_thy)* 1.74 _d 0
+     &     + ( QC_other(j)/2 + QC_CSTO/2) * 1.67 _d 0
+     &     + ( QC_chl) * 1.30 _d 0
+     &     + ( QN_DNA_plot*Y_CN_DNA(j)) * 1.26 _d 0
+     &     + ( QN_RNA*Y_CN_RNA(j)) * 1.23 _d 0
+     &     + ( QN_store*Y_CN_cyano(j)) * 1.901 _d 0
 #endif
 C            IF (Qp(j) .NE. 0 _d 0) THEN   
 C        MAX(0., X(j)/Ptr(ip+j-1) ) ! RQ/mmQp

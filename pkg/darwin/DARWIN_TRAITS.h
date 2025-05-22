@@ -171,7 +171,7 @@ C     Y_CN_cyano         :: [molC molN^-1]   C/N molar ratio of cyanophycin
 C     Y_PN_nucacid       :: [molP molN^-1]   P/N molar ratio of RNA
 C     Y_CN_DNA           :: [molC molN^-1]   C/N molar ratio of DNA
 C     Y_CN_RNA           :: [molC molN^-1]   C/N molar ratio of RNA
-C     Y_THY_P            :: [(molP)/(molC in chl)^-1] the shoichiometric ratio for cell phosphorus in thylakoid membrane to chlorophyll
+C     Y_THY_P            :: [(molP)/(molC in chl)^-1] the stoichiometric ratio for cell phosphorus in thylakoid membrane to chlorophyll
 C     Y_FeN_photo        :: [molFe mol N^-1] Fe/N ratio in photosystem iron
 C     ECo2Prod           :: [dimensionless]  CO2 production ratio
 C     maintConsum        :: [s^-1]           maintenance carbohydrate consumption

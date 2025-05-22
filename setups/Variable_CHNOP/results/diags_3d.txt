@@ -244,7 +244,7 @@
 (PID.TID 0000.0001) %MON diags_3d_graz2DOH_mean       =   8.8799993896484E+02
 (PID.TID 0000.0001) %MON diags_3d_graz2DOH_sd         =   6.1035156250000E-05
 (PID.TID 0000.0001) %MON diags_3d_graz2DOH_del2       =   3.4652398681641E+02
-(PID.TID 0000.0001) %MON diags_3d_ExudePOO_max        =   8.1158424425354E-10
+(PID.TID 0000.0001) %MON diags_3d_ExudePOO_max        =   8.1158429976469E-10
 (PID.TID 0000.0001) %MON diags_3d_ExudePOO_min        =   0.0000000000000E+00
 (PID.TID 0000.0001) %MON diags_3d_ExudePOO_mean       =   1.4141366896925E-11
 (PID.TID 0000.0001) %MON diags_3d_ExudePOO_sd         =   3.9437578203128E-11
@@ -258,8 +258,8 @@
 (PID.TID 0000.0001) %MON diags_3d_ExudeDOO_min        =   0.0000000000000E+00
 (PID.TID 0000.0001) %MON diags_3d_ExudeDOO_mean       =   1.2727228992926E-10
 (PID.TID 0000.0001) %MON diags_3d_ExudeDOO_sd         =   3.5493799566133E-10
-(PID.TID 0000.0001) %MON diags_3d_ExudeDOO_del2       =   1.8841266047342E-10
-(PID.TID 0000.0001) %MON diags_3d_ExudeDOH_max        =   2.6374912920346E-08
+(PID.TID 0000.0001) %MON diags_3d_ExudeDOO_del2       =   1.8841267435121E-10
+(PID.TID 0000.0001) %MON diags_3d_ExudeDOH_max        =   2.6374914696703E-08
 (PID.TID 0000.0001) %MON diags_3d_ExudeDOH_min        =   0.0000000000000E+00
 (PID.TID 0000.0001) %MON diags_3d_ExudeDOH_mean       =   4.5961448535969E-10
 (PID.TID 0000.0001) %MON diags_3d_ExudeDOH_sd         =   1.2817463757031E-09
@@ -1044,7 +1044,7 @@
 (PID.TID 0000.0001) %MON diags_3d_graz2DOH_del2       =   3.4652398681641E+02
 (PID.TID 0000.0001) %MON diags_3d_ExudePOO_max        =   7.9922757301176E-10
 (PID.TID 0000.0001) %MON diags_3d_ExudePOO_min        =   0.0000000000000E+00
-(PID.TID 0000.0001) %MON diags_3d_ExudePOO_mean       =   1.4064488289278E-11
+(PID.TID 0000.0001) %MON diags_3d_ExudePOO_mean       =   1.4064490024002E-11
 (PID.TID 0000.0001) %MON diags_3d_ExudePOO_sd         =   3.9133373624933E-11
 (PID.TID 0000.0001) %MON diags_3d_ExudePOO_del2       =   2.0884696749768E-11
 (PID.TID 0000.0001) %MON diags_3d_ExudePOH_max        =   2.8856963485424E-09

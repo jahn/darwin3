@@ -156,11 +156,7 @@
      &    A_pho,
      &    A_bio,
      &    AP_RNA,
-     &    Sf,
-     &    tauExN,
-     &    tauExP,
-     &    tauExFe,
-     &    tauExC
+     &    Sf
 #endif
 
       NAMELIST/DARWIN_DEPENDENT_TRAITS/

@@ -328,10 +328,6 @@ C     QfeNoChl           :: [molFe molC^-1]  minimum QFe at zero growth rate
      &    QnNoChl,
      &    QpNoChl,
      &    QfeNoChl,
-     &    tauExN,
-     &    tauExP,
-     &    tauExFe,
-     &    tauExC,
      &    QC_const
 #endif
       _RL Xmin(nplank)
@@ -459,10 +455,6 @@ C     QfeNoChl           :: [molFe molC^-1]  minimum QFe at zero growth rate
       _RL QnNoChl(nplank)
       _RL QpNoChl(nplank)
       _RL QfeNoChl(nplank)
-      _RL tauExN(nplank)
-      _RL tauExP(nplank)
-      _RL tauExFe(nplank)
-      _RL tauExC(nplank)
       _RL QC_const(nplank)
 #endif
 

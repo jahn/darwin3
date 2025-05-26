@@ -343,7 +343,6 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 C      _RL QP_rna0
 C      _RL QN_pro_const0
 C      _RL QP_DNA_plot0
-      _RL PCc
       REAL, DIMENSION(3) :: BC_all
       _RL BC
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -725,17 +724,17 @@ C        carbon restriction on growth rate
          Qc_D2 = QC_rna_D2
 
 
-C        Calculate the growth rate as a function of macromolecular composition
+C        Determine what is limiting
          Qn_exc = MAX(0 _d 0, mmQn - Qn_D0)
          PC_n = 2*Qn_exc/(Qn_D1 + SQRT(Qn_D1*Qn_D1 + 4*Qn_D2*Qn_exc))
-         Qp_exc = Max(0 _d 0, mmQp - Qp_D0)
+         Qp_exc = MAX(0 _d 0, mmQp - Qp_D0)
          PC_p = 2*Qp_exc/(Qp_D1 + SQRT(Qp_D1*Qp_D1 + 4*Qp_D2*Qp_exc))
-         Qfe_exc = Max(0 _d 0, mmQfe - Qfe_D0)
+         Qfe_exc = MAX(0 _d 0, mmQfe - Qfe_D0)
          PC_fe = Qfe_exc/Qfe_D1
          Qc_exc = MAX(0 _d 0, Qc(j) - Qc_D0)
-         PCc = 2*Qc_exc/(Qc_D1 + SQRT(Qc_D1*Qc_D1 + 4*Qc_D2*Qc_exc))
+         PC_c = 2*Qc_exc/(Qc_D1 + SQRT(Qc_D1*Qc_D1 + 4*Qc_D2*Qc_exc))
 
-         PC_all = (/ PC_p, PC_n, PC_fe, PCc /)
+         PC_all = (/ PC_p, PC_n, PC_fe, PC_c /)
          MODE = MINLOC (PC_all, DIM=1)
          IF (MODE .EQ. 1. _d 0) THEN
            liMP = 1 _d 0
@@ -748,14 +747,13 @@ C        Calculate the growth rate as a function of macromolecular composition
          ENDIF
 
          PC = MINVAL (PC_all)
-         QC_chl = maintConsum(j)/PChl + (1 + ECo2Prod(j))/PChl*PC
+         QC_chl = QC_chl_D0 + QC_chl_D1*PC
 
 C       Case 2: Light limitation, growth rate is zero, QC_chl is calculated based on cellular mass balance
         ELSE
          MODE = 4 _d 0
          limL = 1 _d 0
          PC = 0. _d 0
-         PCc= 0. _d 0 
         ENDIF
          
  

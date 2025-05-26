@@ -228,14 +228,15 @@ c !LOCAL VARIABLES: ====================================================
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
       _RL mmX, mmQn, mmQp, mmQfe
       _RL PChl
-      _RL QC_chl_const
-      _RL QC_chl_D
-      _RL QN_chl_D1
+      _RL QC_chl_D0
+      _RL QC_chl_D1
       _RL QN_chl_D0
-C      _RL QN_photo_const
-C      _RL QN_bio_D
-      _RL QN_pro_D1
+      _RL QN_chl_D1
+      _RL QN_photo_D0
+      _RL QN_photo_D1
+      _RL QN_bio_D1
       _RL QN_pro_D0
+      _RL QN_pro_D1
       _RL QN_rna_D1
       _RL QN_rna_D2
       _RL Qn_D0
@@ -657,26 +658,40 @@ C==== Phototrophy ======================================================
 C       set up Chl and N requirements as a function of growth rate PC
 C       then solve for PC
 
-C       Carbohydrate fixation rate per chlorophyll (mol C (mol C in chl s)-1)
+C       Carbohydrate fixation rate per chlorophyll
+C       (molC (mol C in chl s)-1)
         PChl = Sf(j)*VI_max(j)*(1 - EXP(-A_I(j)*PARtot))
 
-C       Case 1: Enought light, growth rate is a function of macromol allocation
+C       Case 1: Enought light, growth rate is a function of macromol
+C       allocation
         IF ( PChl .GT. VI_min(j) ) THEN
 
-C        chlorophyll quota (mol C (mol C in Chl)-1)
-         QC_chl_const = maintConsum(j)/PChl
-         QC_chl_D     = (1 _d 0 + ECo2Prod(j))/PChl
+C        chlorophyll quota (mol C cell-1)
+C        Chl = ((1 _d 0 + E)*ls + m)/PChl
+C        where ls = D*Qc               (molC s-1) Biomass synthesis rate
+         QC_chl_D0 = maintConsum(j)/PChl
+         QC_chl_D1 = (1 + ECo2Prod(j))/PChl
 
 C        nitrogen pools in mol N (mol C)-1
-         QN_chl_D0 = maintConsum(j)/PChl*Y_NC_chl(j)
-         QN_chl_D1 = (1 + ECo2Prod(j))/PChl*Y_NC_chl(j)
-         QN_pro_D0 = QN_pro_other(j) + A_pho(j)*maintConsum(j)/PChl
-     &          /Y_CN_protein(j) 
-         QN_pro_D1  = A_pho(j)*(1 + ECo2Prod(j))/PChl/Y_CN_protein(j) 
-     &          + A_bio(j)/Y_CN_protein(j)/macromolTempFunc
-         QN_rna_D1  = QN_pro_D0*AN_RNA(j)/macromolTempFunc
+         QN_chl_D0 = QC_chl_D0*Y_NC_chl(j)
+         QN_chl_D1 = QC_chl_D1*Y_NC_chl(j)
+
+C        photosynthesis related protein
+         QN_photo_D0 = QC_chl_D0*A_pho(j)/Y_CN_protein(j)
+         QN_photo_D1 = QC_chl_D1*A_pho(j)/Y_CN_protein(j)
+
+C        biosynthesis related protein
+         QN_bio_D1 = A_bio(j)/Y_CN_protein(j)/macromolTempFunc
+
+C        total protein
+         QN_pro_D0 = QN_photo_D0 + QN_pro_other(j)
+         QN_pro_D1 = QN_photo_D1 + QN_bio_D1
+
+C        nitrogen in RNA
+         QN_rna_D1 = QN_pro_D0*AN_RNA(j)/macromolTempFunc
          QN_rna_D2 = QN_pro_D1*AN_RNA(j)/macromolTempFunc
 
+C        Total nitrogen
          Qn_D0 = QN_chl_D0 + QN_pro_D0 + QN_RNA_min(j) + QN_DNA(j)
          Qn_D1 = QN_chl_D1 + QN_pro_D1 + QN_rna_D1
          Qn_D2 = QN_rna_D2

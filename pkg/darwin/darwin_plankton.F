@@ -707,10 +707,9 @@ C        Phosphate restriction on growth rate
 
 
 C        Iron restriction on growth
-         Qfe_D0 = A_pho(j)*maintConsum(j)/PChl/Y_CN_protein(j)
-     &      *Y_FeN_photo(j)
-         Qfe_D1 = A_pho(j)*(1 _d 0 + ECo2Prod(j))/PChl/Y_CN_protein(j)
-     &      *Y_FeN_photo(j)
+         Qfe_D0 = QN_photo_D0*Y_FeN_photo(j)
+         Qfe_D1 = QN_photo_D1*Y_FeN_photo(j)
+
 
 C        carbon restriction on growth rate
          QC_thy_D0 = maintConsum(j)/PChl*A_thy(j)

@@ -262,12 +262,10 @@ c !LOCAL VARIABLES: ====================================================
       _RL Qc_D2
       _RL Qc_exc
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-CKei1-0: New values for P limitation
-C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-      _RL QP_rna_D1
-      _RL QP_rna_D2
       _RL QP_thy_D0
       _RL QP_thy_D1
+      _RL QP_rna_D1
+      _RL QP_rna_D2
       _RL Qp_D0
       _RL Qp_D1
       _RL Qp_D2
@@ -696,15 +694,17 @@ C        Total nitrogen
          Qn_D1 = QN_chl_D1 + QN_pro_D1 + QN_rna_D1
          Qn_D2 = QN_rna_D2
 
+
 C        Phosphate restriction on growth rate
          QP_rna_D1 = QN_rna_D1*Y_PN_nucacid(j)
-         QP_rna_D2 = QN_rna_D2*Y_PN_nucacid(j) 
-         QP_thy_D0 = maintConsum(j)/PChl*Y_THY_P(j)
-         QP_thy_D1 = (1 _d 0 + ECo2Prod(j))/PChl*Y_THY_P(j)
+         QP_rna_D2 = QN_rna_D2*Y_PN_nucacid(j)
+         QP_thy_D0 = QC_chl_D0*Y_THY_P(j)
+         QP_thy_D1 = QC_chl_D1*Y_THY_P(j)
 
-         Qp_D0 = QP_thy_D0 + QP_RNA_min(j)+ QP_DNA(j) + QP_other(j)
+         Qp_D0 = QP_thy_D0 + QP_RNA_min(j) + QP_DNA(j) + QP_other(j)
          Qp_D1 = QP_thy_D1 + QP_rna_D1
          Qp_D2 = QP_rna_D2
+
 
 C        Iron restriction on growth
          Qfe_D0 = A_pho(j)*maintConsum(j)/PChl/Y_CN_protein(j)

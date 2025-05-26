@@ -314,7 +314,7 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL QfeExc
       _RL uptakeFe
       INTEGER MODE
-      REAL, DIMENSION(4) :: PC_all
+      _RL, DIMENSION(4) :: PC_all
       _RL limP
       _RL limN
       _RL limF

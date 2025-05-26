@@ -734,6 +734,7 @@ C        Determine what is limiting
          Qc_exc = MAX(0 _d 0, Qc(j) - Qc_D0)
          PC_c = 2*Qc_exc/(Qc_D1 + SQRT(Qc_D1*Qc_D1 + 4*Qc_D2*Qc_exc))
 
+         PC = MIN(PC_n,PC_p,PC_fe,PC_c)
          PC_all = (/ PC_p, PC_n, PC_fe, PC_c /)
          MODE = MINLOC (PC_all, DIM=1)
          IF (MODE .EQ. 1. _d 0) THEN
@@ -746,7 +747,6 @@ C        Determine what is limiting
            limC = 1 _d 0
          ENDIF
 
-         PC = MINVAL (PC_all)
          QC_chl = QC_chl_D0 + QC_chl_D1*PC
 
 C       Case 2: Light limitation, growth rate is zero, QC_chl is calculated based on cellular mass balance

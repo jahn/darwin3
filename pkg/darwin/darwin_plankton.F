@@ -735,16 +735,20 @@ C        Determine what is limiting
          PC_c = 2*Qc_exc/(Qc_D1 + SQRT(Qc_D1*Qc_D1 + 4*Qc_D2*Qc_exc))
 
          PC = MIN(PC_n,PC_p,PC_fe,PC_c)
-         PC_all = (/ PC_p, PC_n, PC_fe, PC_c /)
-         MODE = MINLOC (PC_all, DIM=1)
-         IF (MODE .EQ. 1. _d 0) THEN
-           liMP = 1 _d 0
-         ELSEIF (MODE .EQ. 2. _d 0) THEN
-           limN = 1 _d 0
-         ELSEIF (MODE .EQ. 3. _d 0) THEN
-           limF = 1 _d 0
-         ELSEIF (MODE .EQ. 4. _d 0) THEN
-           limC = 1 _d 0
+         IF (PC_p.EQ.PC) THEN
+          MODE = 1 _d 0
+          limP = 1 _d 0
+         ELSEIF (PC_n.EQ.PC) THEN
+          MODE = 2 _d 0
+          limN = 1 _d 0
+         ELSEIF (PC_fe.EQ.PC) THEN
+          MODE = 3 _d 0
+          limF = 1 _d 0
+         ELSEIF (PC_c.EQ.PC) THEN
+          MODE = 4 _d 0
+          limC = 1 _d 0
+         ELSE
+          MODE = 0 _d 0
          ENDIF
 
          QC_chl = QC_chl_D0 + QC_chl_D1*PC

@@ -712,17 +712,16 @@ C        Iron restriction on growth
 
 
 C        carbon restriction on growth rate
-         QC_thy_D0 = maintConsum(j)/PChl*A_thy(j)
-         QC_thy_D1 = (1 _d 0 + ECo2Prod(j))/PChl*A_thy(j)
+         QC_thy_D0 = QC_chl_D0*A_thy(j)
+         QC_thy_D1 = QC_chl_D1*A_thy(j)
          QC_pro_D0 = QN_pro_D0*Y_CN_protein(j)
          QC_pro_D1 = QN_pro_D1*Y_CN_protein(j)
-         QC_rna_D1 = QN_rna_D1 *Y_CN_RNA(j)
+         QC_rna_D1 = QN_rna_D1*Y_CN_RNA(j)
          QC_rna_D2 = QN_rna_D2*Y_CN_RNA(j)
 
-         Qc_D0 =maintConsum(j)/PChl+QC_pro_D0+QN_RNA_min(j)*Y_CN_RNA(j)
-     &          +QC_thy_D0 + QC_DNA(j) + QC_other(j)
-         Qc_D1 = (1 _d 0 + ECo2Prod(j))/PChl + QC_pro_D1 + QC_thy_D1
-     &      + QC_rna_D1
+         Qc_D0 = QC_chl_D0 + QC_pro_D0 + QC_RNA_min(j) + QC_thy_D0
+     &         + QC_DNA(j) + QC_other(j)
+         Qc_D1 = QC_chl_D1 + QC_pro_D1 + QC_thy_D1 + QC_rna_D1
          Qc_D2 = QC_rna_D2
 
 

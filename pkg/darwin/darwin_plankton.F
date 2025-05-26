@@ -753,23 +753,23 @@ C        Determine what is limiting
 
          QC_chl = QC_chl_D0 + QC_chl_D1*PC
 
-C       Case 2: Light limitation, growth rate is zero, QC_chl is calculated based on cellular mass balance
+C       Case 2: Light limitation, growth rate is zero, QC_chl is
+C       calculated based on cellular mass balance
         ELSE
          MODE = 4 _d 0
          limL = 1 _d 0
          PC = 0. _d 0
         ENDIF
-         
- 
 
-C        if growth rate is zero
+C       If growth rate is zero, recompute maximum QC_chl possible with
+C       given quotas
         IF (PC .EQ. 0. _d 0) THEN
          QC_chlN = (mmQn - QnNoChl(j))
      &         /(Y_NC_chl(j) + A_pho(j)/Y_CN_protein(j))
          QC_chlP = (mmQp - QpNoChl(j))/Y_THY_P(j)
          QC_chlF = (mmQfe - QfeNoChl(j))
      &         /(A_pho(j)/Y_CN_protein(j)*Y_FeN_photo(j))
-         QC_chl = MAX(0., MIN(QC_chlN,QC_chlP,QC_chlF,QC_chlMax(j)))
+         QC_chl = MAX(0 _d 0, MIN(QC_chlN,QC_chlP,QC_chlF,QC_chlMax(j)))
         ENDIF
 
 C       convert to mg Chl m-3

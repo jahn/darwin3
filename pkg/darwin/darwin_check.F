@@ -1706,12 +1706,6 @@ C--   Print parameters from DARWIN_PARAMS.h
      &'oC0 =',
      &' /* Coefficient for determining saturation O2 */')
 #endif
-C#ifdef DARWIN_MACROMOLECULAR_GROWTH
-C      CALL WRITE_0D_RL(phytoMMTemp,INDEX_NONE,
-C     &'phytoMMTemp =',
-C     &' /* temp effect on protein biosyn (MACROMOL GROWTH) (K) */')
-C#endif
-
       CALL WRITE_0D_C(darwin_pickupSuff,-1,INDEX_NONE,
      &'darwin_pickupSuff =',
      &' /* pickup suffix for darwin; set to '' '' to disable reading at'
@@ -1763,6 +1757,9 @@ C#endif
       CALL WRITE_0D_RL(TempCoeffArr,INDEX_NONE,
      &'TempCoeffArr =',
      &' /* pre-factor for pseudo-Arrhenius (TEMP_VERSION 2) */')
+      CALL WRITE_0D_RL(TempAeArrMacromol,INDEX_NONE,
+     &'TempAeArrMacromol =',
+     &' /* temp effect on protein biosyn (MACROMOL GROWTH) (K) */')
       CALL WRITE_0D_RL(reminTempAe,INDEX_NONE,
      &'reminTempAe =',
      &' /* temperature coefficient for remineralization (TEMP_VERSION 4)

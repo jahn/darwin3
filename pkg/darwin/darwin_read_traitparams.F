@@ -163,7 +163,6 @@
      &    a_phytoTempAe,
      &    a_phytoTempExp2,
      &    a_phytoTempOptimum,
-C     &    a_phytoMMTemp,
      &    a_phytoDecayPower,
      &    a_hetTempAe,
      &    a_hetTempExp2,
@@ -174,15 +173,15 @@ C     &    a_phytoMMTemp,
      &    a_grazTempOptimum,
      &    a_grazDecayPower,
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
-     &    a_R_PCpg,
-     &    a_CN_pro,
-     &    a_NC_chl,
-     &    a_CN_cyano,
-     &    a_PN_nucacid,
-     &    a_CN_DNA,
-     &    a_CN_RNA,
-     &    a_THY_P,
-     &    a_FeN_photo,
+     &    a_Y_PC_pg,
+     &    a_Y_CN_protein,
+     &    a_Y_NC_chl,
+     &    a_Y_CN_cyano,
+     &    a_Y_PN_nucacid,
+     &    a_Y_CN_DNA,
+     &    a_Y_CN_RNA,
+     &    a_Y_THY_P,
+     &    a_Y_FeN_photo,
      &    a_ECo2Prod,
      &    a_maintConsum,
      &    a_VI_max,
@@ -193,8 +192,8 @@ C     &    a_phytoMMTemp,
      &    a_QP_other,
      &    a_QP_RNA_min,
      &    a_QC_DNA,
-     &    a_QN_max,
-     &    b_QN_max,
+     &    a_QN_sto_max,
+     &    b_QN_sto_max,
      &    a_Qp_max,
      &    b_Qp_max,
      &    a_Qfe_max,
@@ -475,7 +474,6 @@ C     used to be 120D-20 for phyto
       a_phytoTempAe = 0.0438 _d 0
       a_phytoTempExp2 = 0.001 _d 0
       a_phytoTempOptimum = 2. _d 0
-C      a_phytoMMTemp = -8437 _d 0
       a_phytoDecayPower = 4. _d 0
       a_hetTempAe = 0.0438 _d 0
       a_hetTempExp2 = 0.001 _d 0

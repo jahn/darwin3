@@ -94,18 +94,6 @@ CCOG]]]
       INTEGER i_POFe
       INTEGER i_POSi
       INTEGER i_PIC
-#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-      INTEGER i_POO
-#endif
-#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-      INTEGER i_POH
-#endif
-#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-      INTEGER i_DOO
-#endif
-#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-      INTEGER i_DOH
-#endif
 #ifdef DARWIN_ALLOW_CARBON
       INTEGER i_ALK
 #endif
@@ -134,7 +122,7 @@ CCOG]]]
 #ifdef DARWIN_ALLOW_CSTORE
       INTEGER i_ch, e_ch
 #endif
-CCOG[[[end]]] (checksum: cb4f71e636ee65144eb4bd7106c75143)
+CCOG[[[end]]] (checksum: 1916d588f1c9768c75358b16b3668716)
       INTEGER n_DARWIN
       LOGICAL addBlkLn
       CHARACTER*1 blkLin
@@ -176,18 +164,6 @@ CCOG]]]
      &    i_POFe,
      &    i_POSi,
      &    i_PIC,
-#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-     &    i_POO,
-#endif
-#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-     &    i_POH,
-#endif
-#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-     &    i_DOO,
-#endif
-#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-     &    i_DOH,
-#endif
 #ifdef DARWIN_ALLOW_CARBON
      &    i_ALK,
 #endif
@@ -216,7 +192,7 @@ CCOG]]]
 #ifdef DARWIN_ALLOW_CSTORE
      &    i_ch, e_ch,
 #endif
-CCOG[[[end]]] (checksum: e33d42304278460aa7ac60dd04ce0c9d)
+CCOG[[[end]]] (checksum: 0e66f1b9da7ec7a8cdcee6982dbf6ee5)
      &    n_DARWIN
 
       _BEGIN_MASTER(myThid)
@@ -250,18 +226,6 @@ CCOG]]]
        i_POFe = iPOFe
        i_POSi = iPOSi
        i_PIC = iPIC
-#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-       i_POO = iPOO
-#endif
-#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-       i_POH = iPOH
-#endif
-#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-       i_DOO = iDOO
-#endif
-#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-       i_DOH = iDOH
-#endif
 #ifdef DARWIN_ALLOW_CARBON
        i_ALK = iALK
 #endif
@@ -298,7 +262,7 @@ CCOG]]]
        i_ch = ich
        e_ch = ech
 #endif
-CCOG[[[end]]] (checksum: 40f6f59f9457d3c4c3822962d8cd61e0)
+CCOG[[[end]]] (checksum: a71e683a0fd6b38624b27db90e6ece19)
        n_DARWIN = nDARWIN
 
        CALL MDSFINDUNIT( oUnit, mythid )
@@ -2951,34 +2915,6 @@ CCOG]]]
       CALL PRINT_MESSAGE(msgBuf,standardMessageUnit,
      &                   SQUEEZE_RIGHT,myThid)
 
-#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-      WRITE(msgBuf,'(A,I4,X,A,A32)') 'DARWIN_CHECK: ',
-     &  iPOO   ,'POO       ', PTRACERS_names(iPOO   )
-      CALL PRINT_MESSAGE(msgBuf,standardMessageUnit,
-     &                   SQUEEZE_RIGHT,myThid)
-#endif
-
-#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-      WRITE(msgBuf,'(A,I4,X,A,A32)') 'DARWIN_CHECK: ',
-     &  iPOH   ,'POH       ', PTRACERS_names(iPOH   )
-      CALL PRINT_MESSAGE(msgBuf,standardMessageUnit,
-     &                   SQUEEZE_RIGHT,myThid)
-#endif
-
-#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-      WRITE(msgBuf,'(A,I4,X,A,A32)') 'DARWIN_CHECK: ',
-     &  iDOO   ,'DOO       ', PTRACERS_names(iDOO   )
-      CALL PRINT_MESSAGE(msgBuf,standardMessageUnit,
-     &                   SQUEEZE_RIGHT,myThid)
-#endif
-
-#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-      WRITE(msgBuf,'(A,I4,X,A,A32)') 'DARWIN_CHECK: ',
-     &  iDOH   ,'DOH       ', PTRACERS_names(iDOH   )
-      CALL PRINT_MESSAGE(msgBuf,standardMessageUnit,
-     &                   SQUEEZE_RIGHT,myThid)
-#endif
-
 #ifdef DARWIN_ALLOW_CARBON
       WRITE(msgBuf,'(A,I4,X,A,A32)') 'DARWIN_CHECK: ',
      &  iALK   ,'ALK       ', PTRACERS_names(iALK   )
@@ -3070,7 +3006,7 @@ CCOG]]]
      &                     SQUEEZE_RIGHT,myThid)
       ENDDO
 #endif
-CCOG[[[end]]] (checksum: b8ab48b1b8612937ea24e612f85ea0c9)
+CCOG[[[end]]] (checksum: 05ba5478d3ba98e0625cfbc0f8f1432c)
 
 C---+----1----+----2----+----3----+----4----+----5----+----6----+----7-|--+----|
 C     Log plankton types with ptracer indices

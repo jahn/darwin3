@@ -1100,49 +1100,6 @@ C === diagnostics ======================================================
      &       0,Nr,2,bi,bj,myThid)
 #endif
 
-#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iRQ_POC),'RQ_POC  ',
-     &          0,Nr,2,bi,bj,myThid)
-
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iRQ_DOC),'RQ_DOC  ',
-     &          0,Nr,2,bi,bj,myThid)
-     
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iRespPOO),'respPOO ',
-     &          0,Nr,2,bi,bj,myThid)
-
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iRespPOH),'respPOH ',
-     &          0,Nr,2,bi,bj,myThid)
-
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iRespDOO),'respDOO ',
-     &          0,Nr,2,bi,bj,myThid)
-
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iRespDOH),'respDOH ',
-     &          0,Nr,2,bi,bj,myThid)
-     
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iGraz2POO),'graz2POO',
-     &          0,Nr,2,bi,bj,myThid)
-     
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iGraz2POH),'graz2POH',
-     &          0,Nr,2,bi,bj,myThid)
-     
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iGraz2DOO),'graz2DOO',
-     &          0,Nr,2,bi,bj,myThid)
-     
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iGraz2DOH),'graz2DOH',
-     &          0,Nr,2,bi,bj,myThid)
-
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iExudePOO),'ExudePOO',
-     &          0,Nr,2,bi,bj,myThid)
-
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iExudePOH),'ExudePOH',
-     &          0,Nr,2,bi,bj,myThid)
-
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iExudeDOO),'ExudeDOO',
-     &          0,Nr,2,bi,bj,myThid)
-
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iExudeDOH),'ExudeDOH',
-     &          0,Nr,2,bi,bj,myThid)
-#endif
 C      nutrient consumption diagnostics
        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iConsDIN),'C_DIN   ',
      &       0,Nr,2,bi,bj,myThid)

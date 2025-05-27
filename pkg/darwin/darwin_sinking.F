@@ -96,14 +96,6 @@ C-    Account for change in level thickness
           flux = wFe_sink*MAX(0 _d 0, Ptr(i,j,k,bi,bj,iPOFe))
           gTr(i,j,k  ,iPOFe) = gTr(i,j,k  ,iPOFe) - flux*upfc
           gTr(i,j,k+1,iPOFe) = gTr(i,j,k+1,iPOFe) + flux*dnfc
-#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-          flux = wC_sink*MAX(0 _d 0, Ptr(i,j,k,bi,bj,iPOO))
-          gTr(i,j,k  ,iPOO) = gTr(i,j,k  ,iPOO) - flux*upfc
-          gTr(i,j,k+1,iPOO) = gTr(i,j,k+1,iPOO) + flux*dnfc
-          flux = wC_sink*MAX(0 _d 0, Ptr(i,j,k,bi,bj,iPOH))
-          gTr(i,j,k  ,iPOH) = gTr(i,j,k  ,iPOH) - flux*upfc
-          gTr(i,j,k+1,iPOH) = gTr(i,j,k+1,iPOH) + flux*dnfc
-#endif
           DO l = 1, nplank
            flux = biosink(l)*MAX(0 _d 0, Ptr(i,j,k,bi,bj,ic+l-1))
            gTr(i,j,k  ,ic+l-1 )=gTr(i,j,k  ,ic+l-1 ) - flux*upfc
@@ -222,15 +214,6 @@ C
           gTr(i,j,k  ,iPOSi) = gTr(i,j,k  ,iPOSi) - flux*upfc
 #ifdef DARWIN_ALLOW_CONS
           botSnkSi(i,j,bi,bj) = botSnkSi(i,j,bi,bj) + dTsub(k)*flux
-#endif
-
-C shlomit
-#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-          flux = wC_sink*MAX(0 _d 0, Ptr(i,j,k,bi,bj,iPOH))
-          gTr(i,j,k  ,iPOH) = gTr(i,j,k  ,iPOH) - flux*upfc
-
-          flux = wC_sink*MAX(0 _d 0, Ptr(i,j,k,bi,bj,iPOO))
-          gTr(i,j,k  ,iPOO) = gTr(i,j,k  ,iPOO) - flux*upfc
 #endif
           DO l = 1, nplank
            flux = biosink(l)*MAX(0 _d 0, Ptr(i,j,k,bi,bj,ic+l-1))

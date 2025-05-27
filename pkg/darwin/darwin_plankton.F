@@ -322,36 +322,6 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 #endif /* DARWIN_MACROMOLECULAR_GROWTH */
 
-#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-      _RL respPOO
-      _RL respPOH
-      _RL respDOO
-      _RL respDOH
-      _RL POO
-      _RL POH
-      _RL DOO
-      _RL DOH
-      _RL ExudePOO
-      _RL ExudePOH
-      _RL ExudeDOO
-      _RL ExudeDOH
-      _RL Qo(nplank)
-      _RL Qh(nplank)
-      _RL regQo
-      _RL regQh
-      _RL graz2POO
-      _RL graz2POH
-      _RL graz2OO
-      _RL graz2OH
-      _RL predexpo
-      _RL predexph
-      _RL predgrazo (nplank)
-      _RL predgrazh (nplank)
-      _RL RQ_OC
-      _RL RQ_DOC
-      _RL RQ_POC
-#endif
-
 #ifdef DARWIN_ALLOW_CDOM
       _RL CDOM
       _RL reminPOC_CDOM
@@ -462,22 +432,6 @@ C==== Make all bio fields non-negative and compute quotas ==============
       POP  = MAX(0 _d 0, Ptr(iPOP))
       POSi = MAX(0 _d 0, Ptr(iPOSi))
       POFe = MAX(0 _d 0, Ptr(iPOFe))
-#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-      POO  = MAX(0 _d 0, Ptr(iPOO))
-      POH  = MAX(0 _d 0, Ptr(iPOH))
-      DOO  = MAX(0 _d 0, Ptr(iDOO))
-      DOH  = MAX(0 _d 0, Ptr(iDOH))
-      IF (POC .NE. 0 _d 0) THEN
-      RQ_POC = (POC+0.25*POH+1.25*PON+1.25*POP-0.5*POO)/(POC)
-      ELSE
-      RQ_POC = 1.5 _d 0
-      ENDIF
-      IF (DOC .NE. 0 _d 0) THEN
-      RQ_DOC = (DOC+0.25*DOH+1.25*DON+1.25*DOP-0.5*DOO)/(DOC)
-      ELSE
-      RQ_DOC = 1.5 _d 0
-      ENDIF
-#endif
 #ifdef DARWIN_ALLOW_CARBON
       O2   = MAX(0 _d 0, Ptr(iO2))
 #endif
@@ -486,12 +440,6 @@ C==== Make all bio fields non-negative and compute quotas ==============
 #endif
 
       DO j = 1, nplank
-#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-C first write the Qo, Qh as a constant value, and for phototrophs it will get
-C updated inside of the MARCROMOL LOOP
-       Qo(j) = 0.50 _d 0
-       Qh(j) = 1.80 _d 0
-#endif
 C fixed carbon quota, for now 1.0 (may change later)
         Qc(j) = 1.0
         Qctot(j) = 1.0
@@ -879,28 +827,6 @@ C       shlomit: Calclate the O2:C ratio
      &     + ( QN_DNA_actl*Y_CN_DNA(j)) * 1.62 _d 0
      &     + ( QN_RNA*Y_CN_RNA(j)) *  1.57 _d 0
      &     + ( QN_store*Y_CN_cyano(j)) * 1.85 _d 0
-
-#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-        RQ_OC = RQ
-
-        Qo(j) = ( QN_pro_tot*Y_CN_protein(j))* 0.47 _d 0
-     &     + ( QC_other(j)/2  + QC_CSTO/2) * 0.12 _d 0
-     &     + ( Y_PC_pg(j) * QP_thy)* 0.21 _d 0
-     &     + ( QC_other(j)/2 + QC_CSTO/2) * 0.83 _d 0
-     &     + ( QC_chl) * 0.09 _d 0
-     &     + ( QN_DNA_actl*Y_CN_DNA(j)) * 0.61 _d 0
-     &     + ( QN_RNA*Y_CN_RNA(j)) * 0.73 _d 0
-     &     + ( QN_store*Y_CN_cyano(j)) * 0.50 _d 0
-
-        Qh(j) = ( QN_pro_tot*Y_CN_protein(j))* 1.90 _d 0
-     &     + ( QC_other(j)/2  + QC_CSTO/2) * 1.62 _d 0
-     &     + ( Y_PC_pg(j) * QP_thy)* 1.74 _d 0
-     &     + ( QC_other(j)/2 + QC_CSTO/2) * 1.67 _d 0
-     &     + ( QC_chl) * 1.30 _d 0
-     &     + ( QN_DNA_actl*Y_CN_DNA(j)) * 1.26 _d 0
-     &     + ( QN_RNA*Y_CN_RNA(j)) * 1.23 _d 0
-     &     + ( QN_store*Y_CN_cyano(j)) * 1.901 _d 0
-#endif
 
 # ifdef DARWIN_DIAG_PERTYPE
         diags(iPChl+j-1) = PChl
@@ -1561,20 +1487,6 @@ C shlomit: add O2-dependece respiration
       respPOP  = reminTempFunc*KPOP *POP*tmp
       respPOSi = reminTempFunc*KPOSi*POSi*tmp
       respPOFe = reminTempFunc*KPOFe*POFe*tmp
-#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-      respPOO = reminTempFunc*KPOC*POO*tmp
-      respPOH = reminTempFunc*KPOC*POH*tmp
-      respDOO = reminTempFunc*KDOC*DOO*tmp
-      respDOH = reminTempFunc*KDOC*DOH*tmp
-      gTr(iPOO) = gTr(iPOO)  - respPOO
-      gTr(iPOH) = gTr(iPOH)  - respPOH
-      gTr(iDOO) = gTr(iDOO)  - respDOO
-      gTr(iDOH) = gTr(iDOH)  - respDOH
-      diags(iRespPOO) = respPOO
-      diags(iRespPOH) = respPOH
-      diags(iRespDOO) = respDOO
-      diags(iRespDOH) = respDOH
-#endif
 
       consumDOC  = consumDOC  + respDOC
       consumDON  = consumDON  + respDON
@@ -1600,19 +1512,9 @@ C     endif O2, NO3 for DARWIN_ALLOW_DENIT
 
 #ifdef DARWIN_ALLOW_CARBON
       IF (O2 .GE. O2crit) THEN
-#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-        diags(iRQ_DOC) = RQ_DOC
-        consumO2  = consumO2  + respDOC*RQ_DOC
-#else
         consumO2  = consumO2  + respDOP*R_OP
-#endif
 #ifndef DARWIN_ALLOW_CDOM
-#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-        diags(iRQ_POC) = RQ_POC
-        consumO2  = consumO2  + respPOC*RQ_POC
-#else
         consumO2  = consumO2  + respPOP*R_OP
-#endif
 #endif
       ENDIF
 #endif
@@ -1688,13 +1590,8 @@ C==== Apply remaining tendencies =======================================
 
 #ifdef DARWIN_ALLOW_CARBON
 c production of O2 by photosynthesis
-#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-      gTr(iO2  )=gTr(iO2  ) + RQ_OC*growth
-      diags(iProdO2) = diags(iProdO2) + RQ_OC*growth
-#else
       gTr(iO2  )=gTr(iO2  ) + R_OP*consumPO4
       diags(iProdO2) = diags(iProdO2) + R_OP*consumPO4
-#endif
 c loss of O2 by remineralization
       IF (O2 .GE. O2crit) THEN
         gTr(iO2)=gTr(iO2) - consumO2
@@ -1800,10 +1697,6 @@ C==== Grazing ==========================================================
 #ifdef DARWIN_ALLOW_FEQUOTA
        predgrazfe(j) = 0.0
 #endif
-#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-      predgrazo(j) = 0.0
-      predgrazh(j) = 0.0
-#endif
       ENDDO
       graz2POC  = 0.0
       graz2PON  = 0.0
@@ -1820,15 +1713,7 @@ C==== Grazing ==========================================================
       regQp  = 1.0
       regQfe = 1.0
       regQc  = 1.0
-#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-      graz2POO = 0.0
-      graz2POH = 0.0
-      graz2OO  = 0.0
-      graz2OH  = 0.0
 
-      regQo  = 1.0
-      regQh  = 1.0
-#endif
 C=======================================================================
       DO jz = 1, nplank
        IF (isPred(jz).NE.0) THEN
@@ -1854,10 +1739,7 @@ C       regulate grazing near full quota
         regQfe=regQfe**hillnumGraz
 #endif
         regQc = regQc**hillnumGraz
-#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-        regQh = regQc
-        regQo = regQc
-#endif
+
         sumprey = 0.0
         sumpref = 0.0
         DO jp = 1, nplank
@@ -1880,10 +1762,6 @@ C       regulate grazing near full quota
         predexpn  = 0.0 _d 0
         predexpp  = 0.0 _d 0
         predexpfe = 0.0 _d 0
-#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-        predexpo = 0.0 _d 0
-        predexph = 0.0 _d 0
-#endif
         DO jp = 1, nplank
          IF (palat(jp,jz).NE.0 _d 0) THEN
 #ifdef DARWIN_GRAZING_SWITCH
@@ -1921,17 +1799,6 @@ C       regulate grazing near full quota
           predexpfe = predexpfe + expFrac*grazphy*asseff(jp,jz)*
      &                                    regQfe*Qfe(jp)
 #endif
-#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-          predgrazo(jz) = predgrazo(jz) + grazphy*asseff(jp,jz)*
-     &                                    regQo*Qo(jp)
-          predexpo = predexpo + expFrac*grazphy*asseff(jp,jz)*
-     &                                    regQo*Qo(jp)
-
-          predgrazh(jz) = predgrazh(jz) + grazphy*asseff(jp,jz)*
-     &                                    regQh*Qh(jp)
-          predexph = predexph + expFrac*grazphy*asseff(jp,jz)*
-     &                                    regQh*Qh(jp)
-#endif
          ENDIF
         ENDDO
 
@@ -1963,14 +1830,6 @@ C organic-matter gain will be total preygraz - predgraz
         graz2POFe = graz2POFe - predexpc     *Qfe(jz)
 #endif
 
-#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-        graz2OO   = graz2OO  - predgrazo(jz)
-        graz2POO  = graz2POO - predexpo
-
-        graz2OH   = graz2OH  - predgrazh(jz)
-        graz2POH  = graz2POH - predexph
-#endif
-
        ENDIF
 C     end predator loop
       ENDDO
@@ -1988,12 +1847,6 @@ C     end predator loop
           graz2PON  = graz2PON  + preygrazexp(jp)*Qn (jp)
           graz2POP  = graz2POP  + preygrazexp(jp)*Qp (jp)
           graz2POFe = graz2POFe + preygrazexp(jp)*Qfe(jp)
-#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-          graz2OO = graz2OO + preygraz(jp)*Qo(jp)
-          graz2OH = graz2OH + preygraz(jp)*Qh(jp)
-          graz2POO = graz2POO + preygrazexp(jp)*Qo(jp)
-          graz2POH = graz2POH + preygrazexp(jp)*Qh(jp)
-#endif
        ENDIF
       ENDDO
 
@@ -2009,16 +1862,6 @@ C==== Apply grazing tendencies =========================================
       gTr(iPOSi)=gTr(iPOSi) + graz2POSi
       gTr(iPOFe)=gTr(iPOFe) + graz2POFe
       gTr(iPIC )=gTr(iPIC ) + graz2PIC
-#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-      gTr(iPOO)=gTr(iPOO) + graz2POO
-      gTr(iPOH)=gTr(iPOH) + graz2POH
-      gTr(iDOO)=gTr(iDOO) + graz2OO  - graz2POO
-      gTr(iDOH)=gTr(iDOH) + graz2OH  - graz2POH
-      diags(iGraz2POO) = graz2POO
-      diags(iGraz2POH) = graz2POH
-      diags(iGraz2DOO) = 999
-      diags(iGraz2DOH) = 888
-#endif
 #ifdef DARWIN_ALLOW_CDOM
 # ifdef DARWIN_CDOM_UNITS_CARBON
       graz2CDOM = fracCDOM*(graz2OC - graz2POC)
@@ -2113,12 +1956,7 @@ C==== Mortality and parameterized exudation ============================
       respirP    = 0.0 _d 0
       respirFe   = 0.0 _d 0
       respirSi   = 0.0 _d 0
-#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-      ExudePOO  = 0.0 _d 0
-      ExudePOH  = 0.0 _d 0
-      ExudeDOO  = 0.0 _d 0
-      ExudeDOH  = 0.0 _d 0
-#endif
+
       DO jp = 1, nplank
         Xe = MAX(0 _d 0, X(jp) - Xmin(jp))
         mortX = mort(jp)*Xe*mortTempFunc**tempMort(jp)
@@ -2156,17 +1994,7 @@ C==== Mortality and parameterized exudation ============================
         exude_POSi = exude_POSi + mort_c(jp)*Qsi(jp)
 
         exude_PIC = exude_PIC + mort_c(jp)*R_PICPOC(jp)
-#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-        ExudeDOO = ExudeDOO + (1.-ExportFracMort(jp)) *mortX *Qo(jp)
-     &                        + (1.-ExportFracMort2(jp))*mortX2*Qo(jp)
-        ExudePOO = ExudePOO +     ExportFracMort(jp)  *mortX *Qo(jp)
-     &                        +     ExportFracMort2(jp) *mortX2*Qo(jp)
 
-        ExudeDOH = ExudeDOH + (1.-ExportFracMort(jp)) *mortX *Qh(jp)
-     &                        + (1.-ExportFracMort2(jp))*mortX2*Qh(jp)
-        ExudePOH = ExudePOH +     ExportFracMort(jp)  *mortX *Qh(jp)
-     &                        +     ExportFracMort2(jp) *mortX2*Qh(jp)
-#endif
 C Respiration of non-phototrophs
 C Respired carbon goes to DIC.  Other non-quota elements go to inorganic
 C matter pools according to plankton stoichiometry.  PIC also goes back
@@ -2284,16 +2112,6 @@ C to DIC as if it had never been synthesized.
       gTr(iPOP )=gTr(iPOP ) + exude_POP
       gTr(iPOSi)=gTr(iPOSi) + exude_POSi
       gTr(iPOFe)=gTr(iPOFe) + exude_POFe
-#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-      gTr(iPOO)=gTr(iPOO) + ExudePOO
-      gTr(iPOH)=gTr(iPOH) + ExudePOH
-      gTr(iDOO)=gTr(iDOO) + ExudeDOO
-      gTr(iDOH)=gTr(iDOH) + ExudeDOH
-      diags(iExudePOO) = ExudePOO
-      diags(iExudePOH) = ExudePOH
-      diags(iExudeDOO) = ExudeDOO
-      diags(iExudeDOH) = ExudeDOH
-#endif
 #ifdef DARWIN_ALLOW_CDOM
 # ifdef DARWIN_CDOM_UNITS_CARBON
       exude_CDOM = fracCDOM*exude_DOC

@@ -27,13 +27,6 @@ C Contains indices into diagnostics array
       integer iDisscDIC_PIC
       integer iConsALK
       integer iSrcAlk
-#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-      integer iRQ_POC, iRQ_DOC
-      integer irespPOO, irespPOH, irespDOO, irespDOH
-      integer igraz2POO, igraz2POH, igraz2DOO, igraz2DOH
-      integer iExudePOO, iExudePOH, iExudeDOO, iExudeDOH
-#endif
-      integer ichnop
       integer iConsO2
       integer iProdO2
       integer iPPplank
@@ -104,27 +97,8 @@ C Contains indices into diagnostics array
       PARAMETER(iSrcAlk= 19)
       PARAMETER(iConsO2= 20)
       PARAMETER(iProdO2= 21)
-#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-      PARAMETER(iRQ_POC=  22)
-      PARAMETER(iRQ_DOC=  iRQ_POC+1)
-      PARAMETER(irespPOO= iRQ_DOC+1)
-      PARAMETER(irespPOH= irespPOO+1)
-      PARAMETER(irespDOO= irespPOH+1)
-      PARAMETER(irespDOH= irespDOO+1)
-      PARAMETER(igraz2POO= irespDOH+1)
-      PARAMETER(igraz2POH= igraz2POO+1)
-      PARAMETER(igraz2DOO= igraz2POH+1)
-      PARAMETER(igraz2DOH= igraz2DOO+1)
-      PARAMETER(iExudePOO= igraz2DOH+1)
-      PARAMETER(iExudePOH= iExudePOO+1)
-      PARAMETER(iExudeDOO= iExudePOH+1)
-      PARAMETER(iExudeDOH= iExudeDOO+1)
-      PARAMETER(ichnop=  iExudeDOH+1)
-#else
-      PARAMETER(ichnop= 22)
-#endif
 #ifdef DARWIN_ALLOW_CSTORE
-      PARAMETER(iEX=  ichnop)
+      PARAMETER(iEX=  22)
       PARAMETER(iGW=  iEX+1)
       PARAMETER(iDN=  iGW+1)
       PARAMETER(iDP=  iDN+1)
@@ -144,7 +118,7 @@ C Contains indices into diagnostics array
       PARAMETER(iPPplank=iDmin+1)
 # endif
 #else
-      PARAMETER(iPPplank=ichnop)
+      PARAMETER(iPPplank=22)
 #endif
 #ifdef DARWIN_DIAG_PERTYPE
       PARAMETER(iPCplank=iPPplank+nplank)

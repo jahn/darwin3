@@ -286,9 +286,9 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 C      _RL Qc_essential_and_Nstore
       _RL QpExc
       _RL exQp
+      _RL mmRegQn
       _RL MMregQp
       _RL MMregQFe
-      _RL MMregQn
       _RL VN,VP,VFe,VSi
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
@@ -829,29 +829,28 @@ C       Qfe_max(j)
         Qfe_store = MAX(0 _d 0, MIN(mmQfe, Qfe_max(j)) - Qfe_essential)
         Qfe_excess = MAX(0 _d 0, mmQfe - Qfe_essential - Qfe_store)
 
-C       shlomit: new nutrient-uptake regulation terms: reqQ =(Qmax-Q)/(Qmax-Qmin),
-C       where Qmax=Q_essential + Q_store, Qmin=Q_essential
-C       when phytoplankton starts to store, they reduce their nutrient-uptake: 
+C shlomit: new nutrient-uptake regulation terms:
+C when store is full, phytoplankton reduce their nutrient-uptake:
 
 C       Nitrogen:
-            IF ((QN_essential + QN_store) .GT. 0 _d 0) THEN
-              MMregQn = ((1.1 _d 0*(QN_essential + QN_store) - mmQn)/
-     &                          (0.1 _d 0*(QN_essential + QN_store)))
-              MMregQn = MAX(0., MIN(1., MMregQn))
-            ELSE
-              MMregQn = 1 _d 0
-            ENDIF
-            MM_NO3 = NO3/(NO3 + ksatNO3(j))
-            regQn = MAX(0 _d 0, MIN(1 _d 0, (Qnmax(j)-Qn(j))/
-     &                                      (Qnmax(j)-Qnmin(j)) ))
-            regQn = regQn**hillnumDIN(j)
+        IF ((QN_essential + QN_store) .GT. 0 _d 0) THEN
+         mmRegQn = (1.1 _d 0*(QN_essential + QN_store) - mmQn)/
+     &             (0.1 _d 0*(QN_essential + QN_store))
+         mmRegQn = MAX(0 _d 0, MIN(1 _d 0, mmRegQn))
+        ELSE
+         mmRegQn = 1 _d 0
+        ENDIF
+        MM_NO3 = NO3/(NO3 + ksatNO3(j))
+        regQn = MAX(0 _d 0, MIN(1 _d 0, (Qnmax(j)-Qn(j))/
+     &                                  (Qnmax(j)-Qnmin(j)) ))
+        regQn = regQn**hillnumDIN(j)
 C       Carbon-specific NO3 uptake rate
-            VN = vmaxNO3(j)*MM_NO3*regQn*uptakeTempFunc*MMregQn
-            uptakeN = VN*mmX
-            uptakeNO3 = VN*mmX
-            uptakeNO2 = 0 _d 0
-            uptakeNH4 = 0 _d 0
 
+        VN = vmaxNO3(j)*MM_NO3*regQn*uptakeTempFunc*mmRegQn
+        uptakeN = VN*mmX
+        uptakeNO3 = VN*mmX
+        uptakeNO2 = 0 _d 0
+        uptakeNH4 = 0 _d 0
 C       Phosphorous:                
             IF ((QP_essential+QP_store) .GT. 0 _d 0) THEN
               MMregQp = ((1.1 _d 0*(QP_essential+QP_store) - mmQp)/

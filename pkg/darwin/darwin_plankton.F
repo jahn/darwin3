@@ -824,9 +824,10 @@ C       Qp_max(j)
         QP_store = MAX(0 _d 0, MIN(mmQp, Qp_max(j)) - QP_essential)
         QP_excess = MAX(0 _d 0, mmQp - QP_essential - QP_store)
 
-        Qfe_excess = MAX(0 _d 0,mmQfe - MAX(Qfe_max(j), Qfe_essential))
+C       Fe quota above Qfe_essential is store, but keep total iron under
+C       Qfe_max(j)
         Qfe_store = MAX(0 _d 0, MIN(mmQfe, Qfe_max(j)) - Qfe_essential)
- 
+        Qfe_excess = MAX(0 _d 0, mmQfe - Qfe_essential - Qfe_store)
 
 C       shlomit: new nutrient-uptake regulation terms: reqQ =(Qmax-Q)/(Qmax-Qmin),
 C       where Qmax=Q_essential + Q_store, Qmin=Q_essential

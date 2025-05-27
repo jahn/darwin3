@@ -883,13 +883,11 @@ C       Carbon-specific FeT uptake rate
         Vfe = vmaxFeT(j)*MM_FeT*regQFe*uptakeTempFunc*mmRegQfe
         uptakeFeT = Vfe*mmX
 
+        exQc = 0 _d 0
 
-
-            exQc = 0 _d 0
-  
-        
-C       ! shlomit: Calclate the O2:P ratio 
-        QC_CSTO = MAX(1 - QC_essential - QN_store * Y_CN_cyano(j) ,0.)
+C       shlomit: Calclate the O2:C ratio
+        QC_CSTO = MAX(0 _d 0,
+     &                1 _d 0 - QC_essential - QN_store*Y_CN_cyano(j))
 
         RQ(j) = ( QN_pro_tot*Y_CN_protein(j))* 1.56 _d 0
      &     + ( QC_other(j)/2  + QC_CSTO/2) * 1.34 _d 0

@@ -772,18 +772,19 @@ C       given quotas
 C       convert to mg Chl m-3
         chlout(j) = 893.49 _d 0*X(j)*QC_chl/55 _d 0
 
-        ! Calculate diagnostics and essentials
+C       Calculate diagnostics and essentials
         QN_chl       = QC_chl*Y_NC_chl(j)
         QN_pro_photo = QC_chl*A_pho(j)/Y_CN_protein(j)
         QN_pro_bio   = A_bio(j)/Y_CN_protein(j)*PC/macromolTempFunc
         QN_pro_tot   = QN_pro_other(j) + QN_pro_photo + QN_pro_bio
-        QN_RNA       = QN_RNA_min(j) + QN_pro_tot*AN_RNA(j)*PC
-     &         /macromolTempFunc
-        QP_RNA = QN_RNA*Y_PN_nucacid(j)
+        QN_RNA       = QN_RNA_min(j)
+     &               + QN_pro_tot*AN_RNA(j)*PC/macromolTempFunc
+
         QN_DNA_actl   = QN_DNA(j)
         QP_DNA_actl   = QP_DNA(j)
         QP_other_actl = QP_other(j)
         QP_thy = QC_chl*Y_THY_P(j)
+        QP_RNA = QN_RNA*Y_PN_nucacid(j)
         Qfe_pro_photo = QN_pro_photo*Y_FeN_photo(j)
 
         NCmin = QnNoChl(j) 

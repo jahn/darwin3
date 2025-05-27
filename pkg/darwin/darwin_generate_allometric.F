@@ -390,7 +390,7 @@ C ----------------------------------------------------------------------
         QP_other(jp)     = a_QP_other(g)
         QP_RNA_min(jp)   = a_QP_RNA_min(g)
         QC_DNA(jp)       = a_QC_DNA(g)
-        AP_RNA(jp)       = a_AP_RNA(g)*Y_CN_protein(jp)/Y_PN_nucacid(jp)
+        AP_RNA(jp)       = a_AP_RNA(g)
 
         VI_max(jp)       = a_VI_max(g) * biovol(jp)**b_VI_max(g)
         QN_sto_max(jp)   = a_QN_sto_max(g) * biovol(jp)**b_QN_sto_max(g)

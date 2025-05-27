@@ -674,8 +674,8 @@ C        nitrogen pools in mol N (mol C)-1
      &          /Y_CN_protein(j) 
          QN_pro_D1  = A_pho(j)*(1 + ECo2Prod(j))/PChl/Y_CN_protein(j) 
      &          + A_bio(j)/Y_CN_protein(j)/macromolTempFunc
-         QN_rna_D1  = QN_pro_D0*AP_RNA(j)/macromolTempFunc
-         QN_rna_D2 = QN_pro_D1*AP_RNA(j)/macromolTempFunc
+         QN_rna_D1  = QN_pro_D0*AN_RNA(j)/macromolTempFunc
+         QN_rna_D2 = QN_pro_D1*AN_RNA(j)/macromolTempFunc
 
          Qn_D0 = QN_chl_D0 + QN_pro_D0 + QN_RNA_min(j) + QN_DNA(j)
          Qn_D1 = QN_chl_D1 + QN_pro_D1 + QN_rna_D1
@@ -765,7 +765,7 @@ C       convert to mg Chl m-3
         QN_pro_photo = QC_chl*A_pho(j)/Y_CN_protein(j)
         QN_pro_bio   = A_bio(j)/Y_CN_protein(j)*PC/macromolTempFunc
         QN_pro_tot   = QN_pro_other(j) + QN_pro_photo + QN_pro_bio
-        QN_RNA       = QN_RNA_min(j) + QN_pro_tot*AP_RNA(j)*PC
+        QN_RNA       = QN_RNA_min(j) + QN_pro_tot*AN_RNA(j)*PC
      &         /macromolTempFunc
         QP_RNA = QN_RNA*Y_PN_nucacid(j)
         QN_DNA_plot   = QN_DNA(j)

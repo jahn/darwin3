@@ -184,6 +184,7 @@
      &   ,QN_DNA
      &   ,QP_DNA
      &   ,A_thy
+     &   ,AN_RNA
      &   ,VI_min
      &   ,QC_chlMax
      &   ,QnNoChl
@@ -301,6 +302,7 @@ C       only Coccolithophores have PIC
         QN_DNA(jp)       = QC_DNA(jp)/Y_CN_DNA(jp)
         QP_DNA(jp)       = QN_DNA(jp)*Y_PN_nucacid(jp)
         A_thy(jp)        = Y_THY_P(jp)*Y_PC_pg(jp)
+        AN_RNA(jp)       = AP_RNA(jp)*Y_CN_protein(jp)/Y_PN_nucacid(jp)
 
         QC_const(jp) = QC_pro_other(jp) + QN_RNA_min(jp)*Y_CN_RNA(jp) +
      &    QC_DNA(jp) + QC_other(jp)

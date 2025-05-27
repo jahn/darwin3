@@ -328,9 +328,6 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL QC_chlN
       _RL QC_chlP
       _RL QC_chlF
-      _RL NCmin
-      _RL PCmin
-      _RL FCmin
       _RL Scal_coeff
       _RL QC_CSTO
       _RL RQ_DOC
@@ -784,8 +781,6 @@ C       Calculate diagnostics and essentials
         QP_RNA = QN_RNA*Y_PN_nucacid(j)
 
         Qfe_pro_photo = QN_pro_photo*Y_FeN_photo(j)
-        NCmin = QnNoChl(j) 
-        PCmin = QpNoChl(j) 
 
 C       Case 3: if Qn, Qp are lower then the minimum requirement for Chl
 C       the remaining pools are scaled down to not exceed quotas
@@ -804,9 +799,6 @@ C        excess P (if Qn.LT.QnNoChl) goes here
          QP_DNA_actl   = QP_DNA(j)
          QP_other_actl = QP_other(j)
         ENDIF
-
-        PCmin = QP_RNA + QP_DNA_actl + QP_other(j)
-        NCmin = QN_RNA + QN_DNA_actl + QN_pro_tot
 
         QN_essential  = QN_chl + QN_pro_tot + QN_RNA + QN_DNA_actl
         QN_max        = QN_essential + QN_sto_max(j)

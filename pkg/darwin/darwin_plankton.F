@@ -283,7 +283,6 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL QP_excess
       _RL QN_store
       _RL QN_excess
-C      _RL Qc_essential_and_Nstore
       _RL QpExc
       _RL exQp
       _RL mmRegQn
@@ -291,16 +290,7 @@ C      _RL Qc_essential_and_Nstore
       _RL mmRegQfe
       _RL VN,VP,VFe,VSi
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
-C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-CKei1-1: New values for C exudation
-C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-C      _RL QcnExc
       _RL exQc
-C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
-C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-C Kei1-2: New values for Fe limitation
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL Qfe_D1
       _RL Qfe_D0
@@ -312,18 +302,12 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL Qfe_excess
       _RL exQfe
       _RL QfeExc
-      _RL uptakeFe
-      INTEGER MODE
-      _RL, DIMENSION(4) :: PC_all
-      _RL limP
+      _RL MODE
       _RL limN
+      _RL limP
       _RL limF
       _RL limC
       _RL limL
-C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
-C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-C Kei1-3: revision for N,P,Fe shortage
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL QC_chlN
       _RL QC_chlP
@@ -335,8 +319,6 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL QN_DNA_actl
       _RL QP_other_actl
       _RL QP_DNA_actl
-      REAL, DIMENSION(3) :: BC_all
-      _RL BC
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 #endif /* DARWIN_MACROMOLECULAR_GROWTH */
 
@@ -347,7 +329,7 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL respDOH
       _RL POO
       _RL POH
-      _RL DOO 
+      _RL DOO
       _RL DOH
       _RL ExudePOO
       _RL ExudePOH

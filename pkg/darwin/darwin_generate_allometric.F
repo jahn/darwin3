@@ -48,7 +48,6 @@ C     msgBuf   :: Informational/error meesage buffer
       _RL bmean, bbmean
       _RL bbbratiomeas, bbbratioac
 
-
 C ======================================================================
 C compute cell volumes in micrometer^3
 C
@@ -370,17 +369,15 @@ C real parameters
 
 C ----------------------------------------------------------------------
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
-
-C       Stoichiometric parameters
-        Y_PC_pg(jp)      = a_R_PCpg(g)
-        Y_CN_protein(jp) = a_CN_pro(g)
-        Y_NC_chl(jp)     = a_NC_chl(g)
-        Y_CN_cyano(jp)   = a_CN_cyano(g)
-        Y_PN_nucacid(jp) = a_PN_nucacid(g)
-        Y_CN_DNA(jp)     = a_CN_DNA(g)
-        Y_CN_RNA(jp)     = a_CN_RNA(g)
-        Y_THY_P(jp)      = a_THY_P(g)
-        Y_FeN_photo(jp)  = a_FeN_photo(g)
+        Y_PC_pg(jp)      = a_Y_PC_pg(g)
+        Y_CN_protein(jp) = a_Y_CN_protein(g)
+        Y_NC_chl(jp)     = a_Y_NC_chl(g)
+        Y_CN_cyano(jp)   = a_Y_CN_cyano(g)
+        Y_PN_nucacid(jp) = a_Y_PN_nucacid(g)
+        Y_CN_DNA(jp)     = a_Y_CN_DNA(g)
+        Y_CN_RNA(jp)     = a_Y_CN_RNA(g)
+        Y_THY_P(jp)      = a_Y_THY_P(g)
+        Y_FeN_photo(jp)  = a_Y_FeN_photo(g)
 
         ECo2Prod(jp)     = a_ECo2Prod(g)
         maintConsum(jp)  = a_maintConsum(g)
@@ -395,7 +392,7 @@ C       Stoichiometric parameters
         QC_DNA(jp)       = a_QC_DNA(g)
 
         VI_max(jp)       = a_VI_max(g) * biovol(jp)**b_VI_max(g)
-        QN_sto_max(jp)   = a_QN_max(g) * biovol(jp)**b_QN_max(g)
+        QN_sto_max(jp)   = a_QN_sto_max(g) * biovol(jp)**b_QN_sto_max(g)
         Qp_max(jp)       = a_Qp_max(g) * biovol(jp)**b_Qp_max(g)
         Qfe_max(jp)      = a_Qfe_max(g) * biovol(jp)**b_Qfe_max(g)
 
@@ -549,4 +546,3 @@ C           standard deviation of size preference
 
       RETURN
       END
-C #endif

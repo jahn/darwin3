@@ -780,27 +780,29 @@ C       Calculate diagnostics and essentials
         QN_RNA       = QN_RNA_min(j)
      &               + QN_pro_tot*AN_RNA(j)*PC/macromolTempFunc
 
-        QN_DNA_actl   = QN_DNA(j)
-        QP_DNA_actl   = QP_DNA(j)
-        QP_other_actl = QP_other(j)
         QP_thy = QC_chl*Y_THY_P(j)
         QP_RNA = QN_RNA*Y_PN_nucacid(j)
-        Qfe_pro_photo = QN_pro_photo*Y_FeN_photo(j)
 
+        Qfe_pro_photo = QN_pro_photo*Y_FeN_photo(j)
         NCmin = QnNoChl(j) 
         PCmin = QpNoChl(j) 
 
-C       Case 3: if Qn, Qp, or Qfe are lower then the NCmin, PCmin: 
-C       when Qn<QnNoChl, then Qn_exc=0, PC=0, QC_chlN<0, QC_chl=0
-        IF (QC_chl.EQ.0 _d 0) THEN 
-         Scal_coeff    = MIN(mmQp/QpNoChl(j),mmQn/QnNoChl(j),1.)
-         QN_RNA        = QN_RNA_min(j)*Scal_coeff
-         QN_DNA_actl   = QN_DNA(j)*Scal_coeff
-         QP_RNA        = QP_RNA_min(j)*Scal_coeff
-         QP_DNA_actl   = QP_DNA(j)*Scal_coeff
-         QN_pro_tot    = MIN(mmQn - QN_RNA - QN_DNA_actl,
-     &                   QN_pro_other(j))
-         QP_other_actl = MIN(mmQp - QP_RNA - QP_DNA_actl,QP_other(j))
+C       Case 3: if Qn, Qp are lower then the minimum requirement for Chl
+C       the remaining pools are scaled down to not exceed quotas
+        IF (QC_chl.EQ.0 _d 0) THEN
+         Scal_coeff  = MIN(mmQp/QpNoChl(j),mmQn/QnNoChl(j),1 _d 0)
+         QN_RNA      = QN_RNA_min(j)*Scal_coeff
+         QN_DNA_actl = QN_DNA(j)*Scal_coeff
+         QP_RNA      = QP_RNA_min(j)*Scal_coeff
+         QP_DNA_actl = QP_DNA(j)*Scal_coeff
+C        excess N (if Qp.LT.QpNoChl) goes here
+         QN_pro_tot  = MIN(mmQn - QN_RNA - QN_DNA_actl, QN_pro_other(j))
+C        excess P (if Qn.LT.QnNoChl) goes here
+         QP_other_actl = MIN(mmQp - QP_RNA - QP_DNA_actl, QP_other(j))
+        ELSE
+         QN_DNA_actl   = QN_DNA(j)
+         QP_DNA_actl   = QP_DNA(j)
+         QP_other_actl = QP_other(j)
         ENDIF
 
         PCmin = QP_RNA + QP_DNA_actl + QP_other(j)

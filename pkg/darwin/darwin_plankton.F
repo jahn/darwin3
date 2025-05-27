@@ -811,9 +811,11 @@ C       total pools required for functioning (or scaled down)
 
 C Storage calculation -----------------
 
+C       N quota above QN_essential is store, but not more than
+C       QN_sto_max(j) and make sure enough C for store
         QN_store = MIN(mmQn - QN_essential,
-     &                  (Qc(j) - QC_essential)/Y_CN_cyano(j),
-     &                  QN_sto_max(j))
+     &                 (Qc(j) - QC_essential)/Y_CN_cyano(j),
+     &                 QN_sto_max(j))
         QN_store = MAX(0 _d 0, QN_store)
         QN_excess = MAX(0 _d 0, mmQn - QN_essential - QN_store)
 

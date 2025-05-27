@@ -800,14 +800,15 @@ C        excess P (if Qn.LT.QnNoChl) goes here
          QP_other_actl = QP_other(j)
         ENDIF
 
+C       total pools required for functioning (or scaled down)
         QN_essential  = QN_chl + QN_pro_tot + QN_RNA + QN_DNA_actl
         QN_max        = QN_essential + QN_sto_max(j)
         QP_essential  = QP_thy + QP_RNA + QP_DNA_actl +  QP_other_actl
-        Qfe_essential = QN_pro_photo*Y_FeN_photo(j)
+        Qfe_essential = Qfe_pro_photo
         QC_essential  = QC_chl + QN_pro_tot*Y_CN_protein(j)
-     &         + QN_RNA*Y_CN_RNA(j) + QN_DNA_actl*Y_CN_DNA(j)
-     &         + QP_thy * Y_PC_pg(j) + QC_other(j)
-        
+     &                + QP_thy*Y_PC_pg(j) + QN_RNA*Y_CN_RNA(j)
+     &                + QN_DNA_actl*Y_CN_DNA(j) + QC_other(j)
+
 C Storage calculation -----------------
         IF (mmQn.EQ.QnNoChl(j) .OR.
      &   (PC.EQ.0 .AND. QC_Chl.GT.0 _d 0 .AND. QC_chl.EQ.QC_chlN)) THEN

@@ -134,7 +134,6 @@ c !LOCAL VARIABLES: ====================================================
       _RL muO
       _RL mu
 
-      _RL VN,VNH4,VNO2,VNO3,VP,VFe
       _RL uptakeDIC
       _RL uptakeNH4
       _RL uptakeNO2
@@ -292,6 +291,7 @@ C      _RL Qc_essential_and_Nstore
       _RL MMregQp
       _RL MMregQFe
       _RL MMregQn
+      _RL VN,VP,VFe,VSi
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -965,7 +965,6 @@ c        RQ_OC = 1.5
 #else /* DARWIN_MACROMOLECULAR_GROWTH */
 
 C==== Uptake and nutrient limitation ===================================
-
 C       for quota elements, growth is limiteed by available quota,
 C       for non-quota elements, by available nutrients in medium
 
@@ -994,8 +993,7 @@ c phosphorus
      &                                  (Qpmax(j)-Qpmin(j)) ))
         regQp = regQp**hillnumPO4(j)
 C       carbon-specific PO4 uptake rate
-        VP = vmaxPO4(j) * MM_PO4 * regQp * uptakeTempFunc
-        uptakePO4 = VP*X(j)
+        uptakePO4 = vmaxPO4(j)*MM_PO4*regQp*uptakeTempFunc*X(j)
 c       normalized Droop limitation
         limitp = MIN(1 _d 0, (1.0-Qpmin(j)/MAX(Qpmin(j), Qp(j)))/
      &                       (1.0-Qpmin(j)/Qpmax(j)))
@@ -1050,8 +1048,7 @@ c iron
         regQfe = MAX(0 _d 0, MIN(1 _d 0, (Qfemax(j)-Qfe(j))/
      &                                   (Qfemax(j)-Qfemin(j)) ))
         regQfe = regQfe**hillnumFeT(j)
-        VFe = vmaxFeT(j) * MM_FeT * regQfe * uptakeTempFunc
-        uptakeFeT = VFe*X(j)
+        uptakeFeT = vmaxFeT(j)*MM_FeT*regQfe*uptakeTempFunc*X(j)
 c       normalized Droop limitation
         limitfe = MIN(1 _d 0, (1.0-Qfemin(j)/MAX(Qfemin(j), Qfe(j)))/
      &                        (1.0-Qfemin(j)/Qfemax(j)))
@@ -1079,20 +1076,16 @@ c       have nitrogen quota
         regQn = MAX(0 _d 0, MIN(1 _d 0, (Qnmax(j)-Qn(j))/
      &                                  (Qnmax(j)-Qnmin(j)) ))
         regQn = regQn**hillnumDIN(j)
-        VNH4 = vmaxNH4(j)*MM_NH4*regQn*uptakeTempFunc
-        VNO2 = vmaxNO2(j)*MM_NO2*regQn*uptakeTempFunc
-        VNO3 = vmaxNO3(j)*MM_NO3*regQn*uptakeTempFunc
+        uptakeNH4 = vmaxNH4(j)*MM_NH4*regQn*uptakeTempFunc*X(j)
+        uptakeNO2 = vmaxNO2(j)*MM_NO2*regQn*uptakeTempFunc*X(j)
+        uptakeNO3 = vmaxNO3(j)*MM_NO3*regQn*uptakeTempFunc*X(j)
 #ifdef DARWIN_ALLOW_FEQUOTA
 #ifdef DARWIN_NITRATE_FELIMIT
-        VNO3 = VNO3 * limitfe
+        uptakeNO3 = uptakeNO3 * limitfe
 #endif
 #endif
-        VN = MAX(VNH4 + VNO2 + VNO3,
-     &           vmaxN(j)*regQn*uptakeTempFunc*diazo(j))
-        uptakeN = VN*X(j)
-        uptakeNO3 = VNO3*X(j)
-        uptakeNO2 = VNO2*X(j)
-        uptakeNH4 = VNH4*X(j)
+        uptakeN = MAX(uptakeNH4 + uptakeNO2 + uptakeNO3,
+     &                vmaxN(j)*regQn*uptakeTempFunc*X(j)*diazo(j))
 
 c       linear limitation
         limitn = MAX(0 _d 0, MIN(1 _d 0, (Qn(j) - Qnmin(j))/

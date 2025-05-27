@@ -810,10 +810,6 @@ C       total pools required for functioning (or scaled down)
      &                + QN_DNA_actl*Y_CN_DNA(j) + QC_other(j)
 
 C Storage calculation -----------------
-        IF (mmQn.EQ.QnNoChl(j) .OR.
-     &   (PC.EQ.0 .AND. QC_Chl.GT.0 _d 0 .AND. QC_chl.EQ.QC_chlN)) THEN
-         QN_essential = mmQn
-        ENDIF
 
         QN_store = MIN(mmQn - QN_essential,
      &                  (Qc(j) - QC_essential)/Y_CN_cyano(j),

@@ -330,9 +330,7 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL QC_chlF
       _RL Scal_coeff
       _RL QC_CSTO
-      _RL RQ_DOC
-      _RL RQ_OC
-      _RL RQ(nplank)
+      _RL RQ
       _RL QN_pro_const
       _RL QN_DNA_actl
       _RL QP_other_actl
@@ -367,6 +365,8 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL predexph
       _RL predgrazo (nplank)
       _RL predgrazh (nplank)
+      _RL RQ_OC
+      _RL RQ_DOC
       _RL RQ_POC
 #endif
 
@@ -889,7 +889,7 @@ C       shlomit: Calclate the O2:C ratio
         QC_CSTO = MAX(0 _d 0,
      &                1 _d 0 - QC_essential - QN_store*Y_CN_cyano(j))
 
-        RQ(j) = ( QN_pro_tot*Y_CN_protein(j))* 1.56 _d 0
+        RQ = ( QN_pro_tot*Y_CN_protein(j))* 1.56 _d 0
      &     + ( QC_other(j)/2  + QC_CSTO/2) * 1.34 _d 0
      &     + ( Y_PC_pg(j) * QP_thy)* 1.30 _d 0
      &     + ( QC_other(j)/2 + QC_CSTO/2) * 1.0 _d 0
@@ -899,6 +899,8 @@ C       shlomit: Calclate the O2:C ratio
      &     + ( QN_store*Y_CN_cyano(j)) * 1.85 _d 0
 
 #ifdef DARWIN_ALLOW_VARIABLE_CHNOP
+        RQ_OC = RQ
+
         Qo(j) = ( QN_pro_tot*Y_CN_protein(j))* 0.47 _d 0
      &     + ( QC_other(j)/2  + QC_CSTO/2) * 0.12 _d 0
      &     + ( Y_PC_pg(j) * QP_thy)* 0.21 _d 0
@@ -907,7 +909,6 @@ C       shlomit: Calclate the O2:C ratio
      &     + ( QN_DNA_actl*Y_CN_DNA(j)) * 0.61 _d 0
      &     + ( QN_RNA*Y_CN_RNA(j)) * 0.73 _d 0
      &     + ( QN_store*Y_CN_cyano(j)) * 0.50 _d 0
-
 
         Qh(j) = ( QN_pro_tot*Y_CN_protein(j))* 1.90 _d 0
      &     + ( QC_other(j)/2  + QC_CSTO/2) * 1.62 _d 0
@@ -918,9 +919,6 @@ C       shlomit: Calclate the O2:C ratio
      &     + ( QN_RNA*Y_CN_RNA(j)) * 1.23 _d 0
      &     + ( QN_store*Y_CN_cyano(j)) * 1.901 _d 0
 #endif
-
-        RQ_OC = RQ(j)
-c        RQ_OC = 1.5
 
 # ifdef DARWIN_DIAG_PERTYPE
         diags(iPChl+j-1) = PChl
@@ -947,7 +945,7 @@ c        RQ_OC = 1.5
         diags(iFPHO+j-1) = Qfe_pro_photo
         diags(iFSTO+j-1) = Qfe_Store
         diags(iFEXC+j-1) = Qfe_excess
-        diags(iY_RQ+j-1) = RQ(j)
+        diags(iY_RQ+j-1) = RQ
         diags(ilimN+j-1) = limN
         diags(ilimP+j-1) = limP
         diags(ilimF+j-1) = limF

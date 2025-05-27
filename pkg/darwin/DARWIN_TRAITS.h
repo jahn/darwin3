@@ -271,6 +271,7 @@ C     ksatDOFe           :: [mmol Fe m^-3]  half-saturation of DOFe for bacteria
      &    QC_DNA,
      &    QN_pro_other,
      &    QN_RNA_min,
+     &    QC_RNA_min,
      &    QN_DNA,
      &    QP_DNA,
      &    QN_sto_max,
@@ -400,6 +401,7 @@ C     ksatDOFe           :: [mmol Fe m^-3]  half-saturation of DOFe for bacteria
       _RL QC_DNA(nplank)
       _RL QN_pro_other(nplank)
       _RL QN_RNA_min(nplank)
+      _RL QC_RNA_min(nplank)
       _RL QN_DNA(nplank)
       _RL QP_DNA(nplank)
       _RL QN_sto_max(nplank)

@@ -150,28 +150,17 @@
      &    QP_other,
      &    QP_RNA_min,
      &    QC_DNA,
-     &    QN_pro_other,
-     &    QN_RNA_min,
-     &    QN_DNA,
-     &    QP_DNA,
      &    QN_sto_max,
      &    Qp_max,
      &    Qfe_max,
      &    A_pho,
      &    A_bio,
      &    AP_RNA,
-     &    A_thy,
      &    Sf,
-     &    VI_min,
-     &    QC_chlMax,
-     &    QnNoChl,
-     &    QpNoChl,
-     &    QfeNoChl,
      &    tauExN,
      &    tauExP,
      &    tauExFe,
-     &    tauExC,
-     &    QC_const
+     &    tauExC
 #endif
 
       NAMELIST/DARWIN_DEPENDENT_TRAITS/
@@ -188,6 +177,20 @@
      &    biovol_bygroup,
      &    alpha_mean,
      &    chl2cmin
+#ifdef DARWIN_MACROMOLECULAR_GROWTH
+     &   ,QN_pro_other
+     &   ,QN_RNA_min
+     &   ,QC_RNA_min
+     &   ,QN_DNA
+     &   ,QP_DNA
+     &   ,A_thy
+     &   ,VI_min
+     &   ,QC_chlMax
+     &   ,QnNoChl
+     &   ,QpNoChl
+     &   ,QfeNoChl
+     &   ,QC_const
+#endif
 
 
 #ifdef ALLOW_RADTRANS
@@ -207,24 +210,6 @@ C     DARWIN_TRAITS
 CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 
       READ(UNIT=iUnit, NML=DARWIN_TRAITS)
-
-#ifdef DARWIN_MACROMOLECULAR_GROWTH
-C  compute minimum carbon fixing rate (zero growth)
-      DO jp = 1,nPlank
-        QC_const(jp) = QC_pro_other(jp) + QN_RNA_min(jp)*Y_CN_RNA(jp) +
-     &    QC_DNA(jp) + QC_other(jp)
-        VI_min(jp) = maintConsum(jp)*
-     &    (1. + A_thy(jp) + A_pho(jp))/(1 - QC_const(jp))
-        QC_chlMax(jp) = maintConsum(jp)/VI_min(jp)
-
-        QnNoChl(jp) = QN_DNA(jp) + QN_RNA_min(jp) + QN_pro_other(jp)
-        QpNoChl(jp) = QN_RNA_min(jp)*Y_PN_nucacid(jp)
-     &         + QN_DNA(jp)*Y_PN_nucacid(jp) + QP_other(jp)
-        QfeNoChl(jp) = 0.0 _d 0
-      ENDDO
-
-#endif 
-
 
 CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 C     DARWIN_RADTRANS_TRAITS
@@ -305,6 +290,28 @@ C       only Coccolithophores have PIC
        ELSE
         normI(jp) = 1.0
        ENDIF
+      ENDDO
+#endif
+
+#ifdef DARWIN_MACROMOLECULAR_GROWTH
+      DO jp = 1,nplank
+        QN_pro_other(jp) = QC_pro_other(jp)/Y_CN_protein(jp)
+        QN_RNA_min(jp)   = QP_RNA_min(jp)/Y_PN_nucacid(jp)
+        QC_RNA_min(jp)   = QN_RNA_min(jp)*Y_CN_RNA(jp)
+        QN_DNA(jp)       = QC_DNA(jp)/Y_CN_DNA(jp)
+        QP_DNA(jp)       = QN_DNA(jp)*Y_PN_nucacid(jp)
+        A_thy(jp)        = Y_THY_P(jp)*Y_PC_pg(jp)
+
+        QC_const(jp) = QC_pro_other(jp) + QN_RNA_min(jp)*Y_CN_RNA(jp) +
+     &    QC_DNA(jp) + QC_other(jp)
+        VI_min(jp) = maintConsum(jp)*
+     &    (1. + A_thy(jp) + A_pho(jp))/(1 - QC_const(jp))
+        QC_chlMax(jp) = maintConsum(jp)/VI_min(jp)
+
+        QnNoChl(jp) = QN_DNA(jp) + QN_RNA_min(jp) + QN_pro_other(jp)
+        QpNoChl(jp) = QN_RNA_min(jp)*Y_PN_nucacid(jp)
+     &         + QN_DNA(jp)*Y_PN_nucacid(jp) + QP_other(jp)
+        QfeNoChl(jp) = 0.0 _d 0
       ENDDO
 #endif
 

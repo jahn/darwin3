@@ -287,7 +287,7 @@ C      _RL Qc_essential_and_Nstore
       _RL QpExc
       _RL exQp
       _RL mmRegQn
-      _RL MMregQp
+      _RL mmRegQp
       _RL MMregQFe
       _RL VN,VP,VFe,VSi
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -845,27 +845,27 @@ C       Nitrogen:
      &                                  (Qnmax(j)-Qnmin(j)) ))
         regQn = regQn**hillnumDIN(j)
 C       Carbon-specific NO3 uptake rate
-
         VN = vmaxNO3(j)*MM_NO3*regQn*uptakeTempFunc*mmRegQn
         uptakeN = VN*mmX
         uptakeNO3 = VN*mmX
         uptakeNO2 = 0 _d 0
         uptakeNH4 = 0 _d 0
-C       Phosphorous:                
-            IF ((QP_essential+QP_store) .GT. 0 _d 0) THEN
-              MMregQp = ((1.1 _d 0*(QP_essential+QP_store) - mmQp)/
-     &                          (0.1 _d 0*(QP_essential+QP_store)))
-              MMregQp = MAX(0., MIN(1., MMregQp))
-            ELSE
-              MMregQp = 1 _d 0
-            ENDIF
-            MM_PO4 = PO4/(PO4 + ksatPO4(j))
-            regQp = MAX(0 _d 0, MIN(1 _d 0, (Qpmax(j)-Qp(j))/
-     &                                      (Qpmax(j)-Qpmin(j)) ))
-            regQp = regQp**hillnumPO4(j)
+
+C       Phosphorous:
+        IF ((QP_essential+QP_store) .GT. 0 _d 0) THEN
+         mmRegQp = (1.1 _d 0*(QP_essential+QP_store) - mmQp)/
+     &             (0.1 _d 0*(QP_essential+QP_store))
+         mmRegQp = MAX(0 _d 0, MIN(1 _d 0, mmRegQp))
+        ELSE
+         mmRegQp = 1 _d 0
+        ENDIF
+        MM_PO4 = PO4/(PO4 + ksatPO4(j))
+        regQp = MAX(0 _d 0, MIN(1 _d 0, (Qpmax(j)-Qp(j))/
+     &                                  (Qpmax(j)-Qpmin(j)) ))
+        regQp = regQp**hillnumPO4(j)
 C       Carbon-specific PO4 uptake rate
-            VP = vmaxPO4(j)*MM_PO4*regQp*uptakeTempFunc*MMregQp
-            uptakePO4 = VP*mmX
+        VP = vmaxPO4(j)*MM_PO4*regQp*uptakeTempFunc*mmRegQp
+        uptakePO4 = VP*mmX
 
 C       Iron:                
             IF ((Qfe_essential + Qfe_Store) .GT. 0 _d 0) THEN   

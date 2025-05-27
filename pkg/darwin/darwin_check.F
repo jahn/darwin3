@@ -66,7 +66,7 @@ C     !LOCAL VARIABLES:
 C     msgBuf      - Informational/error meesage buffer
       CHARACTER*(MAX_LEN_MBUF) msgBuf
       CHARACTER*80 gname
-      INTEGER j,jz,iPtr,oUnit,g,l
+      INTEGER j,iPtr,oUnit,g,l,errCount
       _RL dm
 CCOG[[[cog
 CCOGcog.out('\n'.join('''
@@ -458,6 +458,42 @@ C Carbon store is only implemented without quotas
        WRITE(msgBuf,'(2A)') 'DARWIN_CHECK: ERROR: ',
      &  'darwin_disscSelect.NE.0 requires DARWIN_ALLOW_CARBON'
        CALL PRINT_ERROR( msgBuf , 1)
+       STOP 'ABNORMAL END: S/R DARWIN_CHECK'
+      ENDIF
+#endif
+
+      errCount = 0
+#ifdef DARWIN_MACROMOLECULAR_GROWTH
+# ifndef DARWIN_ALLOW_NQUOTA
+      WRITE(msgBuf,'(2A)') 'DARWIN_CHECK: ERROR: ',
+     & 'DARWIN_MACROMOLECULAR_GROWTH requires DARWIN_ALLOW_NQUOTA'
+      CALL PRINT_ERROR( msgBuf , 1)
+      errCount = errCount + 1
+# endif
+# ifndef DARWIN_ALLOW_PQUOTA
+      WRITE(msgBuf,'(2A)') 'DARWIN_CHECK: ERROR: ',
+     & 'DARWIN_MACROMOLECULAR_GROWTH requires DARWIN_ALLOW_PQUOTA'
+      CALL PRINT_ERROR( msgBuf , 1)
+      errCount = errCount + 1
+# endif
+# ifndef DARWIN_ALLOW_FEQUOTA
+      WRITE(msgBuf,'(2A)') 'DARWIN_CHECK: ERROR: ',
+     & 'DARWIN_MACROMOLECULAR_GROWTH requires DARWIN_ALLOW_FEQUOTA'
+      CALL PRINT_ERROR( msgBuf , 1)
+      errCount = errCount + 1
+# endif
+# ifdef DARWIN_ALLOW_SIQUOTA
+      WRITE(msgBuf,'(3A)') 'DARWIN_CHECK: ERROR: ',
+     & 'DARWIN_MACROMOLECULAR_GROWTH does not support ',
+     & 'DARWIN_ALLOW_SIQUOTA'
+      CALL PRINT_ERROR( msgBuf , 1)
+      errCount = errCount + 1
+# endif
+      IF (errCount .GT. 0) THEN
+       WRITE(msgBuf,'(A,I3,A)')
+     &       'DARWIN_CHECK: detected', errCount,' fatal error(s)'
+       CALL PRINT_ERROR( msgBuf, myThid )
+       CALL ALL_PROC_DIE( 0 )
        STOP 'ABNORMAL END: S/R DARWIN_CHECK'
       ENDIF
 #endif

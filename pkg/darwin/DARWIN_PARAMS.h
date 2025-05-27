@@ -470,7 +470,6 @@ C     chl2nmax          :: [mg Chl / mmol N]  max Chl:N ratio for Chl synthesis 
 C     synthcost         :: [mmol C / mmol N]  cost of biosynthesis
 C     inhib_graz        :: [(mmol C m-3)-1]   inverse decay scale for grazing inhibition
 C     inhib_graz_exp    :: []                 exponent for grazing inhibition (0 to turn off inhibition)
-C     hillnumUptake     :: []                 exponent for limiting quota uptake in nutrient uptake
 C     hillnumGraz       :: []                 exponent for limiting quota uptake in grazing
 C     hollexp           :: []                 grazing exponential 1= "Holling 2", 2= "Holling 3"
 C     phygrazmin        :: [mmol C m-3]       minimum total prey conc for grazing to occur

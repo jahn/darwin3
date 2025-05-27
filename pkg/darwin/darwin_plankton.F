@@ -337,12 +337,9 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL RQ_OC
       _RL RQ(nplank)
       _RL QN_pro_const
-      _RL QN_DNA_plot
-      _RL QP_const_plot
-      _RL QP_DNA_plot
-C      _RL QP_rna0
-C      _RL QN_pro_const0
-C      _RL QP_DNA_plot0
+      _RL QN_DNA_actl
+      _RL QP_other_actl
+      _RL QP_DNA_actl
       REAL, DIMENSION(3) :: BC_all
       _RL BC
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -783,9 +780,9 @@ C       convert to mg Chl m-3
         QN_RNA       = QN_RNA_min(j) + QN_pro_tot*AN_RNA(j)*PC
      &         /macromolTempFunc
         QP_RNA = QN_RNA*Y_PN_nucacid(j)
-        QN_DNA_plot   = QN_DNA(j)
-        QP_DNA_plot   = QP_DNA(j)
-        QP_const_plot = QP_other(j)
+        QN_DNA_actl   = QN_DNA(j)
+        QP_DNA_actl   = QP_DNA(j)
+        QP_other_actl = QP_other(j)
         QP_thy = QC_chl*Y_THY_P(j)
         Qfe_pro_photo = QN_pro_photo*Y_FeN_photo(j)
 
@@ -797,23 +794,23 @@ C       when Qn<QnNoChl, then Qn_exc=0, PC=0, QC_chlN<0, QC_chl=0
         IF (QC_chl.EQ.0 _d 0) THEN 
          Scal_coeff    = MIN(mmQp/QpNoChl(j),mmQn/QnNoChl(j),1.)
          QN_RNA        = QN_RNA_min(j)*Scal_coeff
-         QN_DNA_plot   = QN_DNA(j)*Scal_coeff
+         QN_DNA_actl   = QN_DNA(j)*Scal_coeff
          QP_RNA        = QP_RNA_min(j)*Scal_coeff
-         QP_DNA_plot   = QP_DNA(j)*Scal_coeff
-         QN_pro_tot    = MIN(mmQn - QN_RNA - QN_DNA_plot,
+         QP_DNA_actl   = QP_DNA(j)*Scal_coeff
+         QN_pro_tot    = MIN(mmQn - QN_RNA - QN_DNA_actl,
      &                   QN_pro_other(j))
-         QP_const_plot = MIN(mmQp - QP_RNA - QP_DNA_plot,QP_other(j))
+         QP_other_actl = MIN(mmQp - QP_RNA - QP_DNA_actl,QP_other(j))
         ENDIF
 
-        PCmin = QP_RNA + QP_DNA_plot + QP_other(j)
-        NCmin = QN_RNA + QN_DNA_plot + QN_pro_tot
+        PCmin = QP_RNA + QP_DNA_actl + QP_other(j)
+        NCmin = QN_RNA + QN_DNA_actl + QN_pro_tot
 
-        QN_essential  = QN_chl + QN_pro_tot + QN_RNA + QN_DNA_plot
+        QN_essential  = QN_chl + QN_pro_tot + QN_RNA + QN_DNA_actl
         QN_max        = QN_essential + QN_sto_max(j)
-        QP_essential  = QP_thy + QP_RNA + QP_DNA_plot +  QP_const_plot
+        QP_essential  = QP_thy + QP_RNA + QP_DNA_actl +  QP_other_actl
         Qfe_essential = QN_pro_photo*Y_FeN_photo(j)
         QC_essential  = QC_chl + QN_pro_tot*Y_CN_protein(j)
-     &         + QN_RNA*Y_CN_RNA(j) + QN_DNA_plot*Y_CN_DNA(j)
+     &         + QN_RNA*Y_CN_RNA(j) + QN_DNA_actl*Y_CN_DNA(j)
      &         + QP_thy * Y_PC_pg(j) + QC_other(j)
         
 C Storage calculation -----------------
@@ -905,7 +902,7 @@ C       ! shlomit: Calclate the O2:P ratio
      &     + ( Y_PC_pg(j) * QP_thy)* 1.30 _d 0
      &     + ( QC_other(j)/2 + QC_CSTO/2) * 1.0 _d 0
      &     + ( QC_chl) * 1.39 _d 0
-     &     + ( QN_DNA_plot*Y_CN_DNA(j)) * 1.62 _d 0
+     &     + ( QN_DNA_actl*Y_CN_DNA(j)) * 1.62 _d 0
      &     + ( QN_RNA*Y_CN_RNA(j)) *  1.57 _d 0
      &     + ( QN_store*Y_CN_cyano(j)) * 1.85 _d 0
 
@@ -915,7 +912,7 @@ C       ! shlomit: Calclate the O2:P ratio
      &     + ( Y_PC_pg(j) * QP_thy)* 0.21 _d 0
      &     + ( QC_other(j)/2 + QC_CSTO/2) * 0.83 _d 0
      &     + ( QC_chl) * 0.09 _d 0
-     &     + ( QN_DNA_plot*Y_CN_DNA(j)) * 0.61 _d 0
+     &     + ( QN_DNA_actl*Y_CN_DNA(j)) * 0.61 _d 0
      &     + ( QN_RNA*Y_CN_RNA(j)) * 0.73 _d 0
      &     + ( QN_store*Y_CN_cyano(j)) * 0.50 _d 0
 
@@ -925,7 +922,7 @@ C       ! shlomit: Calclate the O2:P ratio
      &     + ( Y_PC_pg(j) * QP_thy)* 1.74 _d 0
      &     + ( QC_other(j)/2 + QC_CSTO/2) * 1.67 _d 0
      &     + ( QC_chl) * 1.30 _d 0
-     &     + ( QN_DNA_plot*Y_CN_DNA(j)) * 1.26 _d 0
+     &     + ( QN_DNA_actl*Y_CN_DNA(j)) * 1.26 _d 0
      &     + ( QN_RNA*Y_CN_RNA(j)) * 1.23 _d 0
      &     + ( QN_store*Y_CN_cyano(j)) * 1.901 _d 0
 #endif
@@ -946,13 +943,13 @@ c        RQ_OC = 1.5
         diags(iNSyn+j-1) = QN_pro_bio
         diags(iNPrn+j-1) = QN_pro_tot
         diags(iNRNA+j-1) = QN_RNA
-        diags(iNDNA+j-1) = QN_DNA_plot
+        diags(iNDNA+j-1) = QN_DNA_actl
         diags(iNSTO+j-1) = QN_store
         diags(iNEXC+j-1) = QN_excess
         diags(iPRNA+j-1) = QP_RNA
-        diags(iPDNA+j-1) = QP_DNA_plot
+        diags(iPDNA+j-1) = QP_DNA_actl
         diags(iPTHY+j-1) = QP_thy
-        diags(iPCON+j-1) = QP_const_plot
+        diags(iPCON+j-1) = QP_other_actl
         diags(iPSTO+j-1) = QP_store
         diags(iPEXC+j-1) = QP_excess
         diags(iFPHO+j-1) = Qfe_pro_photo

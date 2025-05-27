@@ -486,8 +486,8 @@ C==== Make all bio fields non-negative and compute quotas ==============
 #endif
 
       DO j = 1, nplank
-#ifdef DARWIN_ALLOW_VARIABLE_CHNOP      
-C first write the Qo, Qh as a constant value, and for phototrophs it will get 
+#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
+C first write the Qo, Qh as a constant value, and for phototrophs it will get
 C updated inside of the MARCROMOL LOOP
        Qo(j) = 0.50 _d 0
        Qh(j) = 1.80 _d 0
@@ -1116,7 +1116,6 @@ C       will apply limits for quota elements to growth rate instead
         limitpCO2 = 1.
 
 C==== Photosynthesis ===================================================
-
 #ifdef DARWIN_ALLOW_GEIDER
 
         alpha_I = 0 _d 0
@@ -1196,7 +1195,6 @@ C factors that go into growth equation
 #endif /* DARWIN_MACROMOLECULAR_GROWTH */
 
         photoSyn = PC*X(j)
-
 
 C==== Respiration ======================================================
 C Respiration goes straight back to DIC, so we subtract from DIC uptake.
@@ -1651,11 +1649,6 @@ c NH4 -> NO2 -> NO3 by bacterial action, parameterized
         prodNO3 = prodNO3*MAX(0 _d 0, 1.0 - PARtot/PAR_oxi)
       ENDIF
 
-C shlomit, no nitrogen chemistry, only DIN (nitrate)
-C#ifdef DARWIN_MACROMOLECULAR_GROWTH
-C      prodNO2 =  0 _d 0
-C      prodNO3 =  0 _d 0
-C#endif
 C==== CDOM =============================================================
 #ifdef DARWIN_ALLOW_CDOM
 # ifdef DARWIN_CDOM_UNITS_CARBON
@@ -1722,12 +1715,6 @@ c loss of O2 by remineralization
       gTr(iNH4 )=gTr(iNH4 ) + reminDON - prodNO2
       gTr(iNO2 )=gTr(iNO2 ) + prodNO2 - prodNO3
       gTr(iNO3 )=gTr(iNO3 ) + prodNO3
-
-C shlomit, remineralization goes directly to nitrate
-C#ifdef DARWIN_MACROMOLECULAR_GROWTH
-C      gTr(iNO3 )=gTr(iNO3 ) + reminDON
-C#endif
-
 #ifdef DARWIN_ALLOW_DENIT
       IF (O2 .LT. O2crit) THEN
         denitNH4 = reminDON
@@ -1747,7 +1734,7 @@ C#endif
 
       gTr(iPO4 )=gTr(iPO4 ) + reminDOP
       gTr(iFeT )=gTr(iFeT ) + reminDOFe
-      gTr(iSiO2)=gTr(iSiO2) + reminPOSi
+      gTr(iSiO2)=gTr(iSiO2)             + reminPOSi
 
 C     DOC is created by #4 PA-assoc solubilization and consumed by #5
       gTr(iDOC )=gTr(iDOC ) + solubilPOC - consumDOC
@@ -1782,12 +1769,6 @@ C     DOC is created by #4 PA-assoc solubilization and consumed by #5
       diags(iReminDIC_POC) = reminPOC
 
       gTr(iNH4 )=gTr(iNH4 ) + reminPON
-
-C shlomit, remineralization goes directly to nitrate
-C#ifdef DARWIN_MACROMOLECULAR_GROWTH
-C      gTr(iNO3 )=gTr(iNO3 ) + reminPON
-C      gTr(iNH4 )=0.0 _d 0
-C#endif
       gTr(iPO4 )=gTr(iPO4 ) + reminPOP
       gTr(iFeT )=gTr(iFeT ) + reminPOFe
 #endif /* DARWIN_ALLOW_CDOM */
@@ -1902,7 +1883,7 @@ C       regulate grazing near full quota
 #ifdef DARWIN_ALLOW_VARIABLE_CHNOP
         predexpo = 0.0 _d 0
         predexph = 0.0 _d 0
-#endif 
+#endif
         DO jp = 1, nplank
          IF (palat(jp,jz).NE.0 _d 0) THEN
 #ifdef DARWIN_GRAZING_SWITCH
@@ -2185,7 +2166,7 @@ C==== Mortality and parameterized exudation ============================
      &                        + (1.-ExportFracMort2(jp))*mortX2*Qh(jp)
         ExudePOH = ExudePOH +     ExportFracMort(jp)  *mortX *Qh(jp)
      &                        +     ExportFracMort2(jp) *mortX2*Qh(jp)
-#endif 
+#endif
 C Respiration of non-phototrophs
 C Respired carbon goes to DIC.  Other non-quota elements go to inorganic
 C matter pools according to plankton stoichiometry.  PIC also goes back

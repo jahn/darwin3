@@ -819,8 +819,10 @@ C       QN_sto_max(j) and make sure enough C for store
         QN_store = MAX(0 _d 0, QN_store)
         QN_excess = MAX(0 _d 0, mmQn - QN_essential - QN_store)
 
-        QP_excess = MAX(0 _d 0, mmQp - MAX(Qp_max(j), QP_essential))
+C       P quota above QP_essential is store, but keep total P under
+C       Qp_max(j)
         QP_store = MAX(0 _d 0, MIN(mmQp, Qp_max(j)) - QP_essential)
+        QP_excess = MAX(0 _d 0, mmQp - QP_essential - QP_store)
 
         Qfe_excess = MAX(0 _d 0,mmQfe - MAX(Qfe_max(j), Qfe_essential))
         Qfe_store = MAX(0 _d 0, MIN(mmQfe, Qfe_max(j)) - Qfe_essential)

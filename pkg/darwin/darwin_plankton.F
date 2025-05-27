@@ -288,7 +288,7 @@ C      _RL Qc_essential_and_Nstore
       _RL exQp
       _RL mmRegQn
       _RL mmRegQp
-      _RL MMregQFe
+      _RL mmRegQfe
       _RL VN,VP,VFe,VSi
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
@@ -867,23 +867,21 @@ C       Carbon-specific PO4 uptake rate
         VP = vmaxPO4(j)*MM_PO4*regQp*uptakeTempFunc*mmRegQp
         uptakePO4 = VP*mmX
 
-C       Iron:                
-            IF ((Qfe_essential + Qfe_Store) .GT. 0 _d 0) THEN   
-             MMregQFe = ((1.1 _d 0*(Qfe_essential + Qfe_Store) - mmQfe)/
-     &                          (0.1 _d 0*(Qfe_essential + Qfe_Store)))
-              MMregQFe = MAX(0., MIN(1., MMregQFe))
-            ELSE
-              MMregQFe = 1 _d 0
-            ENDIF
-            MM_FeT = FeT/(FeT + ksatFeT(j))
-            regQfe = MAX(0 _d 0, MIN(1 _d 0, (Qfemax(j)-Qfe(j))/
-     &                                       (Qfemax(j)-Qfemin(j)) ))
-            regQfe = regQfe**hillnumFeT(j)
+C       Iron:
+        IF ((Qfe_essential + Qfe_Store) .GT. 0 _d 0) THEN
+         mmRegQFe = (1.1 _d 0*(Qfe_essential + Qfe_Store) - mmQfe)/
+     &              (0.1 _d 0*(Qfe_essential + Qfe_Store))
+         mmRegQFe = MAX(0 _d 0, MIN(1 _d 0, mmRegQFe))
+        ELSE
+         mmRegQFe = 1 _d 0
+        ENDIF
+        MM_FeT = FeT/(FeT + ksatFeT(j))
+        regQfe = MAX(0 _d 0, MIN(1 _d 0, (Qfemax(j)-Qfe(j))/
+     &                                   (Qfemax(j)-Qfemin(j)) ))
+        regQfe = regQfe**hillnumFeT(j)
 C       Carbon-specific FeT uptake rate
-            VFe = vmaxFeT(j)*MM_FeT*regQfe*uptakeTempFunc*MMregQfe
-            uptakeFe = Vfe*mmX
-            uptakeFeT = Vfe*mmX
-
+        Vfe = vmaxFeT(j)*MM_FeT*regQFe*uptakeTempFunc*mmRegQfe
+        uptakeFeT = Vfe*mmX
 
 
 

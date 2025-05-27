@@ -51,12 +51,6 @@ C  but will use solvesaphe dissociation coefficient options.
 C this needs to be defined for coupling to atmospheric model:
 #undef  DARWIN_USE_PLOAD
 
-C enable RADI sediment metamodel v1
-#undef DARWIN_ALLOW_RADIv1
-
-C enable RADI sediment metamodel v2
-#undef DARWIN_ALLOW_RADIv2
-
 C enable macromolecular growth code; requires N, P and Fe quotas
 #undef DARWIN_MACROMOLECULAR_GROWTH
 
@@ -86,6 +80,12 @@ C CDOM is in carbon units and follows POC
 
 C include code for reading nutrient runoff from files
 #undef  DARWIN_NUTRIENT_RUNOFF
+
+C enable RADI sediment metamodel v1
+#undef DARWIN_ALLOW_RADIv1
+
+C enable RADI sediment metamodel v2
+#undef DARWIN_ALLOW_RADIv2
 
 
 C light

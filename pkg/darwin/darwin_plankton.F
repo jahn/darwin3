@@ -315,7 +315,6 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL Scal_coeff
       _RL QC_CSTO
       _RL RQ
-      _RL QN_pro_const
       _RL QN_DNA_actl
       _RL QP_other_actl
       _RL QP_DNA_actl

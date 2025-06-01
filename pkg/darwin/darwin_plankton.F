@@ -735,7 +735,7 @@ C       total pools required for functioning (or scaled down)
         QP_essential  = QP_thy + QP_RNA + QP_DNA_actl +  QP_other_actl
         Qfe_essential = Qfe_pro_photo
         QC_essential  = QC_chl + QN_pro_tot*Y_CN_protein(j)
-     &                + QP_thy*Y_PC_pg(j) + QN_RNA*Y_CN_RNA(j)
+     &                + QP_thy*Y_CP_Plip(j) + QN_RNA*Y_CN_RNA(j)
      &                + QN_DNA_actl*Y_CN_DNA(j) + QC_other(j)
 
 C Storage calculation -----------------
@@ -820,7 +820,7 @@ C       shlomit: Calclate the O2:C ratio
 
         RQ = ( QN_pro_tot*Y_CN_protein(j))* 1.56 _d 0
      &     + ( QC_other(j)/2  + QC_CSTO/2) * 1.34 _d 0
-     &     + ( Y_PC_pg(j) * QP_thy)* 1.30 _d 0
+     &     + ( Y_CP_Plip(j) * QP_thy)* 1.30 _d 0
      &     + ( QC_other(j)/2 + QC_CSTO/2) * 1.0 _d 0
      &     + ( QC_chl) * 1.39 _d 0
      &     + ( QN_DNA_actl*Y_CN_DNA(j)) * 1.62 _d 0

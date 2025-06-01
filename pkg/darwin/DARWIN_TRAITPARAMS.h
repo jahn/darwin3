@@ -353,7 +353,7 @@ C
      &    a_grazTempOptimum,
      &    a_grazDecayPower,
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
-     &    a_Y_PC_pg,
+     &    a_Y_CP_Plip,
      &    a_Y_CN_protein,
      &    a_Y_NC_chl,
      &    a_Y_CN_cyano,
@@ -519,7 +519,7 @@ C
       _RL a_grazTempOptimum(nGroup)
       _RL a_grazDecayPower(nGroup)
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
-      _RL a_Y_PC_pg(nGroup)
+      _RL a_Y_CP_Plip(nGroup)
       _RL a_Y_CN_protein(nGroup)
       _RL a_Y_NC_chl(nGroup)
       _RL a_Y_CN_cyano(nGroup)

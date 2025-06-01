@@ -2545,8 +2545,8 @@ C--   Print traits from DARWIN_TRAITS.h
      &' /* normalization factor for non-Geider light curve */')
 #endif
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
-      CALL WRITE_1D_RL(Y_PC_pg,nplank,INDEX_NONE,
-     &'Y_PC_pg = ',
+      CALL WRITE_1D_RL(Y_CP_Plip,nplank,INDEX_NONE,
+     &'Y_CP_Plip = ',
      &' /* C/P molar ratio of PG: Phosphatidyl glycerol (molC molP^-1) *
      &/')
       CALL WRITE_1D_RL(Y_CN_protein,nplank,INDEX_NONE,

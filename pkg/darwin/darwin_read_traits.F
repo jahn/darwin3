@@ -132,7 +132,7 @@
      &    ksatDOP,
      &    ksatDOFe
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
-     &   ,Y_PC_pg,
+     &   ,Y_CP_Plip,
      &    Y_CN_protein,
      &    Y_NC_chl,
      &    Y_CN_cyano,
@@ -297,7 +297,7 @@ C       only Coccolithophores have PIC
         QC_RNA_min(jp)   = QN_RNA_min(jp)*Y_CN_RNA(jp)
         QN_DNA(jp)       = QC_DNA(jp)/Y_CN_DNA(jp)
         QP_DNA(jp)       = QN_DNA(jp)*Y_PN_nucacid(jp)
-        A_thy(jp)        = Y_THY_P(jp)*Y_PC_pg(jp)
+        A_thy(jp)        = Y_THY_P(jp)*Y_CP_Plip(jp)
         AN_RNA(jp)       = AP_RNA(jp)*Y_CN_protein(jp)/Y_PN_nucacid(jp)
 
         QC_const(jp) = QC_pro_other(jp) + QN_RNA_min(jp)*Y_CN_RNA(jp) +

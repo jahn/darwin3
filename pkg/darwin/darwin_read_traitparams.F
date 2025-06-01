@@ -173,7 +173,7 @@
      &    a_grazTempOptimum,
      &    a_grazDecayPower,
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
-     &    a_Y_PC_pg,
+     &    a_Y_CP_Plip,
      &    a_Y_CN_protein,
      &    a_Y_NC_chl,
      &    a_Y_CN_cyano,
@@ -493,7 +493,7 @@ C     used to be 120D-20 for phyto
       a_Y_PN_nucacid = 1. _d 0 /3.75 _d 0
       a_Y_CN_DNA = 9.75 _d 0 /3.75 _d 0
       a_Y_CN_RNA = 9.50 _d 0 /3.75 _d 0
-      a_Y_PC_pg = 40.0 _d 0
+      a_Y_CP_Plip = 40.0 _d 0
       a_ECo2Prod = 0.774 _d 0
       a_maintConsum = 0.393 _d 0/3600/24
       a_VI_max = 277 _d 0/3600/24

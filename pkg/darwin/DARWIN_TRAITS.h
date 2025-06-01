@@ -164,7 +164,7 @@ C     ksatDOP            :: [mmol P m^-3]   half-saturation of DOP for bacterial
 C     ksatDOFe           :: [mmol Fe m^-3]  half-saturation of DOFe for bacterial growth
 C
 C- MACROMOLECULAR_GROWTH parameters
-C     Y_PC_pg            :: [molC molP^-1]   C/P molar ratio of PG: Phosphatidyl glycerol
+C     Y_CP_Plip          :: [molC molP^-1]   C/P molar ratio of thylacoid membrane
 C     Y_CN_protein       :: [molC molN^-1]   C/N molar ratio in protein
 C     Y_NC_chl           :: [molN molC^-1]   N/C molar ratio in chlorophyll
 C     Y_CN_cyano         :: [molC molN^-1]   C/N molar ratio of cyanophycin
@@ -292,7 +292,7 @@ C     QfeNoChl           :: [molFe molC^-1]  minimum QFe at zero growth rate
      &    ksatDOFe
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
      &   ,Y_CN_protein,
-     &    Y_PC_pg,
+     &    Y_CP_Plip,
      &    Y_NC_chl,
      &    Y_CN_cyano,
      &    Y_PN_nucacid,
@@ -419,7 +419,7 @@ C     QfeNoChl           :: [molFe molC^-1]  minimum QFe at zero growth rate
       _RL ksatDOFe(nplank)
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
       _RL Y_CN_protein(nplank)
-      _RL Y_PC_pg(nplank)
+      _RL Y_CP_Plip(nplank)
       _RL Y_NC_chl(nplank)
       _RL Y_CN_cyano(nplank)
       _RL Y_PN_nucacid(nplank)

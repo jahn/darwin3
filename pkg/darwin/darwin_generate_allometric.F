@@ -369,7 +369,7 @@ C real parameters
 
 C ----------------------------------------------------------------------
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
-        Y_PC_pg(jp)      = a_Y_PC_pg(g)
+        Y_CP_Plip(jp)    = a_Y_CP_Plip(g)
         Y_CN_protein(jp) = a_Y_CN_protein(g)
         Y_NC_chl(jp)     = a_Y_NC_chl(g)
         Y_CN_cyano(jp)   = a_Y_CN_cyano(g)

@@ -634,8 +634,8 @@ C        Iron restriction on growth
 
 
 C        carbon restriction on growth rate
-         QC_thy_D0 = QC_chl_D0*A_thy(j)
-         QC_thy_D1 = QC_chl_D1*A_thy(j)
+         QC_thy_D0 = QP_thy_D0*Y_CP_Plip(j)
+         QC_thy_D1 = QP_thy_D1*Y_CP_Plip(j)
          QC_pro_D0 = QN_pro_D0*Y_CN_protein(j)
          QC_pro_D1 = QN_pro_D1*Y_CN_protein(j)
          QC_rna_D1 = QN_rna_D1*Y_CN_RNA(j)

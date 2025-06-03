@@ -313,7 +313,7 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL QC_chlP
       _RL QC_chlF
       _RL Scal_coeff
-      _RL QC_CSTO
+      _RL QC_store
       _RL RQ
       _RL QN_DNA_actl
       _RL QP_other_actl
@@ -758,6 +758,10 @@ C       Qfe_max(j)
         Qfe_store = MAX(0 _d 0, MIN(mmQfe, Qfe_max(j)) - Qfe_essential)
         Qfe_excess = MAX(0 _d 0, mmQfe - Qfe_essential - Qfe_store)
 
+C       deduce carbon store
+        QC_store = MAX(0 _d 0,
+     &                 1 _d 0 - QC_essential - QN_store*Y_CN_cyano(j))
+
 C shlomit: new nutrient-uptake regulation terms:
 C when store is full, phytoplankton reduce their nutrient-uptake:
 
@@ -815,13 +819,10 @@ C       Carbon-specific FeT uptake rate
         exQc = 0 _d 0
 
 C       shlomit: Calclate the O2:C ratio
-        QC_CSTO = MAX(0 _d 0,
-     &                1 _d 0 - QC_essential - QN_store*Y_CN_cyano(j))
-
         RQ = ( QN_pro_tot*Y_CN_protein(j))* 1.56 _d 0
-     &     + ( QC_other(j)/2  + QC_CSTO/2) * 1.34 _d 0
+     &     + ( QC_other(j)/2  + QC_store/2) * 1.34 _d 0
      &     + ( Y_CP_Plip(j) * QP_thy)* 1.30 _d 0
-     &     + ( QC_other(j)/2 + QC_CSTO/2) * 1.0 _d 0
+     &     + ( QC_other(j)/2 + QC_store/2) * 1.0 _d 0
      &     + ( QC_chl) * 1.39 _d 0
      &     + ( QN_DNA_actl*Y_CN_DNA(j)) * 1.62 _d 0
      &     + ( QN_RNA*Y_CN_RNA(j)) *  1.57 _d 0

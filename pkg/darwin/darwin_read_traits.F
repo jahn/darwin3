@@ -307,8 +307,8 @@ C       only Coccolithophores have PIC
         QC_chlMax(jp) = maintConsum(jp)/VI_min(jp)
 
         QnNoChl(jp) = QN_DNA(jp) + QN_RNA_min(jp) + QN_pro_other(jp)
-        QpNoChl(jp) = QN_RNA_min(jp)*Y_PN_nucacid(jp)
-     &         + QN_DNA(jp)*Y_PN_nucacid(jp) + QP_other(jp)
+        QpNoChl(jp) = QP_RNA_min(jp) + QN_DNA(jp)*Y_PN_nucacid(jp)
+     &              + QP_other(jp)
         QfeNoChl(jp) = 0.0 _d 0
       ENDDO
 #endif

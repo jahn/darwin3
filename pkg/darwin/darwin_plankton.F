@@ -9,6 +9,7 @@ C !INTERFACE: ==========================================================
      O     chlout, diags,
      I     PAR, photoTempFunc, hetTempFunc, grazTempFunc, reminTempFunc,
      I     mortTempFunc, mort2TempFunc, uptakeTempFunc,
+     I     absorpTempFunc, latentTempFunc,
      I     omegaCl,
      I     k_debug,myTime,myIter,myThid)
 
@@ -42,6 +43,8 @@ C  myThid :: thread number
       _RL grazTempFunc(nplank)
       _RL mortTempFunc
       _RL mort2TempFunc
+      _RL absorpTempFunc
+      _RL latentTempFunc
       _RL omegaCl
       _RL myTime
       INTEGER k_debug
@@ -1574,7 +1577,8 @@ C is this a susceptible host-virus pair?
 C          explicit infected class
 
 C individual infection rate (ind/m3/s)
-           rinfect = v_absorp(jS,jV)*X(jS)*X(jV)/qplank/qvirus
+           rinfect = v_absorp(jS,jV)*absorpTempFunc
+     &               *X(jS)*X(jV)/qplank/qvirus
 
 c virus (jV) loses biomass (to infected or DOM if not successful
 c infection)
@@ -1593,7 +1597,7 @@ c virus biomass loss to detritus from unsuccessful infections
            vdetloss_abeff=(1 _d 0 - v_abeff(jS,jV))*rinfect*qvirus
 
 c infected loses from lysis (to virus and DOM)
-           vloss=X(jI)/v_latent(jS,jV)
+           vloss=X(jI)/(v_latent(jS,jV)*latentTempFunc)
            gTr(ic+jI-1)=gTr(ic+jI-1) - vloss
            diags(iVLplank+jI-1)=diags(iVLplank+jI-1) + vloss
 
@@ -1601,7 +1605,8 @@ c infected loses from lysis (to virus and DOM)
 C          no separate infected class
 
 c lysis products taken from susceptible, will go to virus and OM
-           vloss=v_abeff(jS,jV)*v_absorp(jS,jV)*X(jS)*X(jV)/qvirus
+           vloss=v_abeff(jS,jV)*v_absorp(jS,jV)*absorpTempFunc
+     &           *X(jS)*X(jV)/qvirus
            gTr(ic+jS-1)=gTr(ic+jS-1) - vloss
            diags(iVLplank+jS-1)=diags(iVLplank+jS-1) + vloss
 

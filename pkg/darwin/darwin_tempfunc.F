@@ -8,7 +8,7 @@ C !INTERFACE: ==========================================================
      I                  Temp,
      O                  photoFun, hetFun, grazFun,
      O                  reminFun, mortFun, mort2Fun,
-     O                  uptakeFun,
+     O                  uptakeFun, virAbsorpFun, virLatentFun,
      I                  myThid)
 
 C !DESCRIPTION: ========================================================
@@ -42,6 +42,8 @@ C            the predator ones for monod-style grazing
       _RL mortFun
       _RL mort2Fun
       _RL uptakeFun
+      _RL virAbsorpFun
+      _RL virLatentFun
 CEOP
 
 #ifdef ALLOW_DARWIN
@@ -59,6 +61,8 @@ c !LOCAL VARIABLES: ====================================================
       mortFun  = 1.0 _d 0
       mort2Fun = 1.0 _d 0
       uptakeFun = 1.0 _d 0
+      virAbsorpFun = 1.0 _d 0
+      virLatentFun = 1.0 _d 0
 
 #elif DARWIN_TEMP_VERSION == 1
 
@@ -89,6 +93,8 @@ c    &             zooTempExp(j)*(Temp - zooTempOptimum(j)))
       mortFun  = 1.0 _d 0
       mort2Fun = 1.0 _d 0
       uptakeFun = 1.0 _d 0
+      virAbsorpFun = 1.0 _d 0
+      virLatentFun = 1.0 _d 0
 c ++++++++++++++ END VERSION 1 +++++++++++++++++++++++++++++++++++++++
 
 #elif DARWIN_TEMP_VERSION == 2
@@ -129,6 +135,8 @@ c     reminFun = 1. _d 0
 c      mortFun = 1.0 _d 0
 c      mort2Fun = 1.0 _d 0
       uptakeFun = 1.0 _d 0
+      virAbsorpFun = reminFun
+      virLatentFun = reminFun
 c ++++++++++++++ END VERSION 2 +++++++++++++++++++++++++++++++++++++++
 
 #elif DARWIN_TEMP_VERSION == 3
@@ -146,6 +154,8 @@ c ben s version 3 from quota model
       mortFun = reminFun
       mort2Fun = reminFun
       uptakeFun = reminFun
+      virAbsorpFun = reminFun
+      virLatentFun = reminFun
 c ++++++++++++++ END VERSION 3 +++++++++++++++++++++++++++++++++++++++
 
 #elif DARWIN_TEMP_VERSION == 4
@@ -181,6 +191,8 @@ cswd -- temperature range
       mortFun   = EXP(mortTempAe*(Temp - Tempref))
       mort2Fun  = EXP(mort2TempAe*(Temp - Tempref))
       uptakeFun = EXP(uptakeTempAe*(Temp - Tempref))
+      virAbsorpFun = EXP(absorpTempAe*(Temp - Tempref))
+      virLatentFun = EXP(latentTempAe*(Temp - Tempref))
 c ++++++++++++++ END VERSION 4 +++++++++++++++++++++++++++++++++++++++
 
 #else

@@ -127,6 +127,8 @@ C     Dependent variables for sediment flux for validation
       _RL mortTempFunc
       _RL mort2TempFunc
       _RL uptakeTempFunc
+      _RL absorpTempFunc
+      _RL latentTempFunc
       _RL omegaCl
       _RL tmp, tmpFac
       _RL sedFe(1-OLx:sNx+OLx,1-OLy:sNy+OLy,Nr)
@@ -604,7 +606,8 @@ C-      default (face fit into global-IO-array)
         CALL DARWIN_TEMPFUNC(Theta(i,j,k,bi,bj),
      &         photoTempFunc, hetTempFunc, grazTempFunc,
      &         reminTempFunc, mortTempFunc, mort2TempFunc,
-     &         uptakeTempFunc, myThid)
+     &         uptakeTempFunc, absorpTempFunc, latentTempFunc,
+     &         myThid)
         DO iTr=1,nDarwin
          ptr(iTr) = Ptracer(i, j, k, bi, bj, iTr)
          gtr(iTr) = gPtr(i, j, k, iTr)
@@ -627,6 +630,7 @@ C-      default (face fit into global-IO-array)
      I                 reminTempFunc,
      I                 mortTempFunc, mort2TempFunc,
      I                 uptakeTempFunc,
+     I                 absorpTempFunc, latentTempFunc,
      I                 omegaCl,
      I                 k_debug,
      I                 subTime, myIter, myThid )

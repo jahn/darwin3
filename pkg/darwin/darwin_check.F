@@ -1719,6 +1719,14 @@ C--   Print parameters from DARWIN_PARAMS.h
      &'uptakeTempAe =',
      &' /* temperature coefficient for uptake (TEMP_VERSION 4) (1/K) */'
      &)
+      CALL WRITE_0D_RL(absorpTempAe,INDEX_NONE,
+     &'absorpTempAe =',
+     &' /* temperature coefficient for virus absorption (TEMP_VERSION 4)
+     & (1/K) */')
+      CALL WRITE_0D_RL(latentTempAe,INDEX_NONE,
+     &'latentTempAe =',
+     &' /* temperature coefficient for virus latent period '
+     &'(TEMP_VERSION 4) (1/K) */')
       CALL WRITE_0D_RL(alpfe,INDEX_NONE,
      &'alpfe =',
      &' /* solubility of Fe dust */')

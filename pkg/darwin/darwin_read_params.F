@@ -101,6 +101,8 @@ C----
      &    mortTempAe,
      &    mort2TempAe,
      &    uptakeTempAe,
+     &    absorpTempAe,
+     &    latentTempAe,
      &    alpfe,
      &    ligand_tot,
      &    ligand_stab,
@@ -383,6 +385,8 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       mortTempAe = 0.0438 _d 0
       mort2TempAe = 0.0438 _d 0
       uptakeTempAe = 0.0 _d 0
+      absorpTempAe = 0.0438 _d 0
+      latentTempAe = 0.0438 _d 0
       alpfe = 0.04 _d 0
       ligand_tot = 1. _d -3
       ligand_stab = 2. _d 5

@@ -236,6 +236,8 @@ C     reminTempAe       :: [1/K]            temperature coefficient for reminera
 C     mortTempAe        :: [1/K]            temperature coefficient for linear mortality (TEMP_VERSION 4)
 C     mort2TempAe       :: [1/K]            temperature coefficient for quadr. mortality (TEMP_VERSION 4)
 C     uptakeTempAe      :: [1/K]            temperature coefficient for uptake (TEMP_VERSION 4)
+C     absorpTempAe      :: [1/K]            temperature coefficient for virus absorption (TEMP_VERSION 4)
+C     latentTempAe      :: [1/K]            temperature coefficient for virus latent period (TEMP_VERSION 4)
 C
 C- Iron parameters
 C     alpfe             :: []                  solubility of Fe dust
@@ -364,6 +366,8 @@ C     depthdenit        :: [m]             not implemented (depth for denitrific
      &    mortTempAe,
      &    mort2TempAe,
      &    uptakeTempAe,
+     &    absorpTempAe,
+     &    latentTempAe,
      &    alpfe,
      &    ligand_tot,
      &    ligand_stab,
@@ -483,6 +487,8 @@ C     &    yono2,
       _RL mortTempAe
       _RL mort2TempAe
       _RL uptakeTempAe
+      _RL absorpTempAe
+      _RL latentTempAe
       _RL alpfe
       _RL ligand_tot
       _RL ligand_stab

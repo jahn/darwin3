@@ -100,6 +100,14 @@ C  k                    :: vertical level
       _RL ptr(nDarwin), gtr(nDarwin), PARl(nlam)
       _RL chlout(nPhoto)
       _RL diagsl(darwin_nDiag)
+      _RL sumprey_plank(nplank)
+      _RL sumprey_plank_nd(1-OLx:sNx+OLx, 1-OLy:sNy+OLy, Nr,nplank)
+      _RL bioswimDVMup(1-OLx:sNx+OLx, 1-OLy:sNy+OLy, Nr,nplank)
+      _RL bioswimDVMdn(1-OLx:sNx+OLx, 1-OLy:sNy+OLy, Nr,nplank)
+      _RL SwDr(1-OLx:sNx+OLx, 1-OLy:sNy+OLy,Nr,nplank)
+      INTEGER max_loc(1-OLx:sNx+OLx, 1-OLy:sNy+OLy,nplank)
+      _RL sumPAR
+      _RL surfacePAR
       _RL photoTempFunc(nplank)
       _RL hetTempFunc(nplank)
       _RL grazTempFunc(nplank)
@@ -592,7 +600,7 @@ C-      default (face fit into global-IO-array)
         CALL DARWIN_PLANKTON(
      I                 ptr,
      U                 gtr,
-     O                 chlout, diagsl,
+     O                 chlout, diagsl,sumprey_plank,
      I                 PARl, photoTempFunc,
      I                 hetTempFunc,
      I                 grazTempFunc,
@@ -604,6 +612,9 @@ C-      default (face fit into global-IO-array)
         DO l=1,darwin_nDiag
          diags(i, j, k, l) = diagsl(l)
         ENDDO
+
+        sumprey_plank_nd(i,j,k,:) = sumprey_plank
+
 #ifdef DARWIN_ALLOW_CONS
         DARWIN_Nfix(i,j,k,bi,bj)   = DARWIN_Nfix(i,j,k,bi,bj)
      &                             + dTsub(k)*diagsl(iNfix)
@@ -633,9 +644,77 @@ C-      default (face fit into global-IO-array)
          gPtr(i, j, k, iTr) = gtr(iTr)
         ENDDO
        endif
-       enddo
-      enddo
-      enddo
+       enddo !end i
+      enddo !end j
+      enddo !end k
+
+
+C Find DVM swim direction to go to max food availablity
+      SwDr = 0 _d 0
+      max_loc = MAXLOC(sumprey_plank_nd, DIM=3)
+      DO i=iMin,iMax
+      DO j=jMin,jMax
+      DO iTr=1,nplank
+        IF (max_loc(i,j,iTr) .EQ. 1) THEN
+          SwDr(i, j, max_loc(i,j,iTr)+1:Nr,iTr) = 1 _d 0
+        ELSEIF (max_loc(i,j,iTr) .EQ. Nr) THEN
+          SwDr(i, j,1:max_loc(i,j,iTr)-1, iTr) = -1 _d 0
+        ELSE
+          SwDr(i, j,1:max_loc(i,j,iTr)-1, iTr) = -1 _d 0
+          SwDr(i, j, max_loc(i,j,iTr)+1:Nr,iTr) = 1 _d 0
+        ENDIF
+      ENDDO !I
+      ENDDO !j
+      ENDDO !iTr
+
+C Find DVM swim direction based on light and max food availability
+C Day
+C If PAR at top >0 (or above some level in future),
+C swim down (toward PARpref)
+C If PAR at top >0 and PARtot < PARpref, swim up
+C If PAR at top >0 and PARtot = PARpref, no swim
+
+C Night--see logic in SwDr above
+C If PAR at top 0 (or below some light level in future),
+C and prey available at that depth < food max, swim toward food max
+C If PAR at top 0 (or below some light level in future),
+C and prey available at that depth = food max, don't swim; stay put
+
+      DO i=iMin,iMax
+      DO j=jMin,jMax
+        surfacePAR = sum(PAR(i,j,1,:))
+      DO k=1,Nr
+       sumPAR = sum(PAR(i,j,k,:))
+      DO iTr=1,nplank
+
+         IF (surfacePAR .GT. 0) THEN !Day
+           IF (sumPAR .GT. PARpref(iTr)) THEN
+              bioswimDVMup(i,j,k, iTr) = 0 _d 0
+              bioswimDVMdn(i,j,k, iTr) = bioswimDVM(iTr)
+           ELSEIF (sumPAR. LT. PARpref(iTr)) THEN
+              bioswimDVMup(i,j,k, iTr) = bioswimDVM(iTr)
+              bioswimDVMdn(i,j,k, iTr) = 0 _d 0
+           ELSEIF (sumPAR .EQ. PARpref(iTr)) THEN
+              bioswimDVMup(i,j,k, iTr) = 0 _d 0
+              bioswimDVMdn(i,j,k, iTr) = 0 _d 0
+           ENDIF
+         ELSE !Night
+           IF (SwDr(i,j,k,iTr) .GT. 0.0) THEN
+               bioswimDVMup(i,j,k, iTr) = bioswimDVM(iTr)
+               bioswimDVMdn(i,j,k, iTr) = 0 _d 0
+           ELSEIF (SwDr(i,j,k,iTr) .EQ. 0.0) THEN
+               bioswimDVMup(i,j,k, iTr) = 0 _d 0
+               bioswimDVMdn(i,j,k, iTr) = 0 _d 0
+           ELSE
+               bioswimDVMup(i,j,k, iTr) = 0 _d 0
+               bioswimDVMdn(i,j,k, iTr) = bioswimDVM(iTr)
+           ENDIF
+        ENDIF
+       ENDDO !k
+       ENDDO !iTr
+       ENDDO !j
+       ENDDO !i
+
       CALL TIMER_STOP('DARWIN_PLANKTON [DARWIN_FORCING]',myThid)
 
 C === pre-sinking diags ================================================
@@ -653,8 +732,9 @@ C === pre-sinking diags ================================================
 
 C === sinking ==========================================================
       CALL TIMER_START('DARWIN_SINKING [DARWIN_FORCING]',myThid)
-      CALL DARWIN_SINKING( Ptracer,gPtr,dTsub,bi,bj,iMin,iMax,jMin,jMax,
-     &                  subTime,myIter,myThid )
+      CALL DARWIN_SINKING( Ptracer,bioswimDVMup,bioswimDVMdn,
+     &                  gPtr,dTsub,bi,bj,
+     &                  iMin,iMax,jMin,jMax,subTime,myIter,myThid )
       CALL TIMER_STOP ('DARWIN_SINKING [DARWIN_FORCING]',myThid)
 
 C === apply tendencies to tracers ======================================

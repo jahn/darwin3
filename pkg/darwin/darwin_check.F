@@ -321,11 +321,29 @@ C check exf is compiled and used
 #endif
 
 #if defined DARWIN_ALLOW_DENIT && ! defined DARWIN_ALLOW_CARBON
-       WRITE(msgBuf,'(2A)') 'DARWIN_CHECK: ',
+      WRITE(msgBuf,'(2A)') 'DARWIN_CHECK: ',
      &  'DARWIN_ALLOW_DENIT requires DARWIN_ALLOW_CARBON.',
-       CALL PRINT_ERROR( msgBuf, myThid )
-       STOP 'ABNORMAL END: DARWIN_CHECK: DENIT without CARBON'
-      ENDIF
+      CALL PRINT_ERROR( msgBuf, myThid )
+      STOP 'ABNORMAL END: DARWIN_CHECK: DENIT without CARBON'
+#endif
+
+#ifdef DARWIN_ALLOW_RADI
+      WRITE(msgBuf,'(2A)') 'DARWIN_CHECK: ',
+     &  'DARWIN_ALLOW_RADI has been retired.  Define either ',
+      CALL PRINT_ERROR( msgBuf, myThid )
+      WRITE(msgBuf,'(2A)') 'DARWIN_CHECK: ',
+     &  'DARWIN_ALLOW_RADIv1 or DARWIN_ALLOW_RADIv2.'
+      CALL PRINT_ERROR( msgBuf, myThid )
+      STOP 'ABNORMAL END: DARWIN_CHECK: DARWIN_ALLOW_RADI'
+#endif
+#if defined(DARWIN_ALLOW_RADIv1) && defined(DARWIN_ALLOW_RADIv2)
+      WRITE(msgBuf,'(2A)') 'DARWIN_CHECK: ',
+     &  'Only one of DARWIN_ALLOW_RADIv1 and DARWIN_ALOW_RADIv2 '
+      CALL PRINT_ERROR( msgBuf, myThid )
+      WRITE(msgBuf,'(2A)') 'DARWIN_CHECK: ',
+     &  'can be defined at a time.'
+      CALL PRINT_ERROR( msgBuf, myThid )
+      STOP 'ABNORMAL END: S/R DARWIN_CHECK'
 #endif
 
 C check we are not using hollexp and also inhib_graz or DARWIN_GRAZING_SWITCH
@@ -397,6 +415,15 @@ C Carbon store is only implemented without quotas
       CALL PRINT_ERROR( msgBuf , 1)
       STOP 'ABNORMAL END: S/R DARWIN_CHECK'
 # endif
+#endif
+
+#ifndef DARWIN_ALLOW_CARBON
+      IF (darwin_disscSelect .NE. 0) THEN
+       WRITE(msgBuf,'(2A)') 'DARWIN_CHECK: ERROR: ',
+     &  'darwin_disscSelect.NE.0 requires DARWIN_ALLOW_CARBON'
+       CALL PRINT_ERROR( msgBuf , 1)
+       STOP 'ABNORMAL END: S/R DARWIN_CHECK'
+      ENDIF
 #endif
 
 C---+----1----+----2----+----3----+----4----+----5----+----6----+----7-|--+----|
@@ -1715,13 +1742,13 @@ C--   Print parameters from DARWIN_PARAMS.h
      &' /* solubility of Fe dust */')
       CALL WRITE_0D_RL(ligand_tot,INDEX_NONE,
      &'ligand_tot =',
-     &' /* total ligand concentration (mol/m3) */')
+     &' /* total ligand concentration (mmol/m3) */')
       CALL WRITE_0D_RL(ligand_stab,INDEX_NONE,
      &'ligand_stab =',
-     &' /* ligand stability rate ratio (m3/mol) */')
+     &' /* ligand stability rate ratio (m3/mmol) */')
       CALL WRITE_0D_RL(freefemax,INDEX_NONE,
      &'freefemax =',
-     &' /* max concentration of free iron (mol/m3) */')
+     &' /* max concentration of free iron (mmol/m3) */')
 #ifdef DARWIN_PART_SCAV_POP
       CALL WRITE_0D_RL(scav_rat,INDEX_NONE,
      &'scav_rat =',
@@ -1748,12 +1775,15 @@ C--   Print parameters from DARWIN_PARAMS.h
       CALL WRITE_0D_RL(scav_POC_wgt,INDEX_NONE,
      &'scav_POC_wgt =',
      &' /* weight of POC in POM for scavenging (g / mmol C) */')
-      CALL WRITE_0D_RL(scav_POSi_wgt,INDEX_NONE,
-     &'scav_POSi_wgt =',
-     &' /* weight of POSi in POM for scavenging (g / mmol Si) */')
+      CALL WRITE_0D_RL(scav_PSi_wgt,INDEX_NONE,
+     &'scav_PSi_wgt =',
+     &' /* weight of PSi in POM for scavenging (g / mmol Si) */')
       CALL WRITE_0D_RL(scav_PIC_wgt,INDEX_NONE,
      &'scav_PIC_wgt =',
      &' /* weight of PIC in POM for scavenging (g / mmol C) */')
+      CALL WRITE_0D_RL(scav_degrPOM,INDEX_NONE,
+     &'scav_degrPOM =',
+     &' /* concentration of non-labile POM for scavenging (g/m3) */')
 #else
       CALL WRITE_0D_RL(scav,INDEX_NONE,
      &'scav =',
@@ -1842,9 +1872,21 @@ C--   Print parameters from DARWIN_PARAMS.h
       CALL WRITE_0D_RL(wPIC_sink,INDEX_NONE,
      &'wPIC_sink =',
      &' /* sinking velocity for PIC (m/s) */')
-      CALL WRITE_0D_RL(Kdissc,INDEX_NONE,
-     &'Kdissc =',
-     &' /* dissolution rate for PIC (1/s) */')
+      CALL WRITE_0D_I(darwin_disscSelect,INDEX_NONE,
+     &'darwin_disscSelect = ',
+     &' /* Switch for PIC dissolution rate formulation */')
+      IF (darwin_disscSelect .EQ. 0) THEN
+       CALL WRITE_0D_RL(Kdissc,INDEX_NONE,
+     & 'Kdissc =',
+     & ' /* dissolution rate for PIC (1/s) */')
+      ELSEIF (darwin_disscSelect .EQ. 1) THEN
+       CALL WRITE_0D_RL(darwin_KeirCoeff,INDEX_NONE,
+     & 'darwin_KeirCoeff =',
+     & ' /* Keir PIC dissolution rate coefficient (1/s) */')
+       CALL WRITE_0D_RL(darwin_KeirExp,INDEX_NONE,
+     & 'darwin_KeirExp =',
+     & ' /* Keir PIC dissolution rate exponent */')
+      ENDIF
 #ifdef DARWIN_ALLOW_CARBON
       CALL WRITE_0D_RL(R_OP,INDEX_NONE,
      &'R_OP =',
@@ -1968,8 +2010,8 @@ C--   Print parameters from DARWIN_PARAMS.h
       CALL WRITE_0D_RL(aphy_chl_ave,INDEX_NONE,
      &'aphy_chl_ave =',
      &' /* Chl-specific absorption coefficient (m2/mg Chl) */')
-      CALL WRITE_0D_RL(chl2nmax,INDEX_NONE,
-     &'chl2nmax =',
+      CALL WRITE_0D_RL(Chl2Nmax,INDEX_NONE,
+     &'Chl2Nmax =',
      &' /* max Chl:N ratio for Chl synthesis following Moore 2002 (mg Ch
      &l / mmol N) */')
       CALL WRITE_0D_RL(synthcost,INDEX_NONE,

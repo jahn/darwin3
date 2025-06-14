@@ -87,6 +87,7 @@ C     SEAICE_freeze     :: FREEZING TEMP. OF SEA WATER
       CHARACTER*(MAX_LEN_MBUF) IceAgeFile, IceAgeTrFile(4)
       _RL SEAICE_abEps
       LOGICAL SEAICEuseAB2
+#ifdef ALLOW_COST
 C     former ALLOW_SEAICE_COST_SMR_AREA related flags
       _RL  mult_smrarea
       _RL  mult_smrsst
@@ -103,6 +104,7 @@ C     former ALLOW_SEAICE_COST_SMR_AREA related flags
       _RL smrareaperiod
       _RL SEAICE_clamp_salt
       _RL SEAICE_clamp_theta
+#endif /* ALLOW_COST */
 
 C--   SEAICE parameters
       NAMELIST /SEAICE_PARM01/
@@ -135,7 +137,7 @@ C--   SEAICE parameters
      & SEAICE_evpAlpha, SEAICE_evpBeta,
      & SEAICEaEVPcoeff, SEAICEaEVPcStar, SEAICEaEVPalphaMin,
      & SEAICE_zetaMin, SEAICE_zetaMaxFac, SEAICEusePicardAsPrecon,
-     & SEAICEuseKrylov, SEAICEuseJFNK,
+     & SEAICEuseLSRflex, SEAICEuseKrylov, SEAICEuseJFNK,
      & SEAICEnonLinIterMax, SEAICElinearIterMax, SEAICEnonLinTol,
      & SEAICEnewtonIterMax, SEAICEkrylovIterMax, JFNKgamma_nonlin,
      & SEAICEpreconNL_Iter, SEAICEpreconLinIter,
@@ -161,6 +163,7 @@ C--   SEAICE parameters
      & SEAICE_drag_south, SEAICE_waterDrag_south,
      & SEAICE_dryIceAlb_south, SEAICE_wetIceAlb_south,
      & SEAICE_drySnowAlb_south, SEAICE_wetSnowAlb_south, HO_south,
+     & SEAICEsideDrag, uCoastLineFile, vCoastLineFile,
      & SEAICE_cBasalStar, SEAICEbasalDragU0, SEAICEbasalDragK1,
      & SEAICEbasalDragK2, SEAICE_wetAlbTemp, SEAICE_waterAlbedo,
      & SEAICE_strength, SEAICE_cStar, SEAICE_eccen,
@@ -232,7 +235,7 @@ C     print a (weak) warning if data.seaice is found
       _BEGIN_MASTER(myThid)
 
 C--   set default sea ice parameters
-#ifdef SEAICE_ALLOW_DYNAMICS
+#if ( defined SEAICE_CGRID || defined SEAICE_BGRID_DYNAMICS )
       SEAICEuseDYNAMICS  = .TRUE.
 #else
       SEAICEuseDYNAMICS  = .FALSE.
@@ -331,6 +334,7 @@ c     DIFF1      = .004 _d 0
       SEAICE_deltaTevp   = UNSET_RL
       SEAICEuseBDF2      = .FALSE.
       SEAICEuseKrylov    = .FALSE.
+      SEAICEuseLSRflex   = .FALSE.
 C     JFNK stuff
       SEAICEuseJFNK       = .FALSE.
       SEAICEuseIMEX       = .FALSE.
@@ -391,6 +395,7 @@ C        c1=1.5/N, c2=42*c1, c3=3.3
       SEAICE_drag        = 0.001  _d 0
       OCEAN_drag         = 0.001  _d 0
       SEAICE_waterDrag   = 0.0055 _d 0
+      SEAICEsideDrag     = 0.0    _d 0
       SEAICEdWatMin      = 0.25   _d 0
       SEAICE_dryIceAlb   = 0.75   _d 0
       SEAICE_wetIceAlb   = 0.66   _d 0
@@ -506,6 +511,8 @@ c     SEAICE_dTempFrz_dS = 0. _d 0
       HeffFile   = ' '
       uIceFile   = ' '
       vIceFile   = ' '
+      uCoastLineFile = ' '
+      vCoastLineFile = ' '
       IMAX_TICE  = 10
       postSolvTempIter = 2
 C     LSR parameters
@@ -863,6 +870,9 @@ C     Euler time stepping scheme of Zhang+Hibler (1997)
 C     Make sure that we have least two pseudo time steps for Picard-LSR
       IF ( SEAICEuseLSR .AND. .NOT. SEAICEusePicardAsPrecon )
      &     SEAICEnonLinIterMax = MAX(SEAICEnonLinIterMax,2)
+
+C     If we do not use the LSR solver, using LSRflex makes no sense
+      IF ( .NOT. SEAICEuseLSR ) SEAICEuseLSRflex = .FALSE.
 
 C-    different defaults for different linear solvers
       IF ( SEAICElinearIterMax .EQ. UNSET_I ) THEN
@@ -1332,7 +1342,7 @@ C-    Retired parameters
      &  'is no longer allowed in file "data.seaice"'
        CALL PRINT_ERROR( msgBuf, myThid )
       ENDIF
-#endif
+#endif /* ALLOW_COST */
       IF ( nRetired .GT. 0 ) THEN
        WRITE(msgBuf,'(2A)') 'S/R SEAICE_READPARMS: ',
      &  'Error reading parameter file "data.seaice"'
@@ -1431,6 +1441,17 @@ C     in case of large values
        CALL PRINT_MESSAGE( msgBuf, errorMessageUnit,
      &                     SQUEEZE_RIGHT, myThid )
       ENDIF
+
+#ifdef SEAICE_ALLOW_SIDEDRAG
+      IF ( SEAICEsideDrag .NE. 0.0 _d 0 .AND. SEAICE_no_slip ) THEN
+       WRITE(msgBuf,'(3A)') '** WARNING ** SEAICE_READPARMS: ',
+     &      'SEAICEsideDrag .NE. 0.,',
+     &      ' resetting SEAICE_no_slip = .FALSE.'
+       CALL PRINT_MESSAGE( msgBuf, errorMessageUnit,
+     &                     SQUEEZE_RIGHT, myThid )
+       SEAICE_no_slip = .FALSE.
+      ENDIF
+#endif
 
       IF ( DIFF1 .EQ. UNSET_RL ) THEN
         DIFF1 = 0. _d 0

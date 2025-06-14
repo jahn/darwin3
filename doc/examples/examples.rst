@@ -277,6 +277,12 @@ For many experiments, additional information is provided in a ``README`` file lo
    and a setup using piecewise quartic ("mono" and "weno" limiter)
    advection schemes (:filelink:`input.pqm <verification/advect_xz/input.pqm>`).
 
+#. :filelink:`aim.5l_cs <verification/aim.5l_cs>` - 5-level intermediate atmospheric physics, global
+   configuration on cube sphere grid (32x32 grid points per face,
+   roughly 2.8\ :sup:`o` resolution).
+   Also contains an additional setup with a slab-ocean and
+   thermodynamic sea ice (:filelink:`input.thSI <verification/aim.5l_cs/input.thSI>`).
+
 #. :filelink:`aim.5l_Equatorial_Channel <verification/aim.5l_Equatorial_Channel>` - 5-level intermediate atmospheric
    physics, 3-D equatorial channel configuration.
 
@@ -284,11 +290,13 @@ For many experiments, additional information is provided in a ``README`` file lo
    configuration, on latitude-longitude grid with 128x64x5 grid points
    (2.8\ :sup:`o` resolution).
 
-#. :filelink:`aim.5l_cs <verification/aim.5l_cs>` - 5-level intermediate atmospheric physics, global
-   configuration on cube sphere grid (32x32 grid points per face,
-   roughly 2.8\ :sup:`o` resolution).
-   Also contains an additional setup with a slab-ocean and
-   thermodynamic sea ice (:filelink:`input.thSI <verification/aim.5l_cs/input.thSI>`).
+#. :filelink:`atm_gray <verification/atm_gray>` - gray atmospheric physics configuration using
+   :filelink:`atm_phys <pkg/atm_phys>` package, on cube sphere grid (32x32 grid points per face)
+   with 26 pressure levels. This aquaplanet-like experiment has interactive SST with a prescribed,
+   time-invariant Q-flux.
+   Also contains a secondary setup (:filelink:`input.ape <verification/atm_gray/input.ape>`)
+   with prescribed idealized SST from Aqua-Planet Experiment
+   (APE) project (Neale and Hoskins, 2001 :cite:`neale:01`).
 
 #. :filelink:`cfc_example <verification/cfc_example>` - Global ocean with online computation and advection
    of CFC11 and CFC12.
@@ -301,45 +309,57 @@ For many experiments, additional information is provided in a ``README`` file lo
    physics (:filelink:`pkg/aim_v23`) thermodynamic seaice (:filelink:`pkg/thsice`) and land
    packages.
    Also contains an additional setup with seaice dynamics
-   (:filelink:`input_cpl.icedyn  <verification/cpl_aim+ocn/input_cpl.icedyn>`, :filelink:`input_atm.icedyn  <verification/cpl_aim+ocn/input_atm.icedyn>`, :filelink:`input_ocn.icedyn  <verification/cpl_aim+ocn/input_ocn.icedyn>`).
+   (:filelink:`input_cpl.icedyn  <verification/cpl_aim+ocn/input_cpl.icedyn>`,
+   :filelink:`input_atm.icedyn  <verification/cpl_aim+ocn/input_atm.icedyn>`,
+   :filelink:`input_ocn.icedyn  <verification/cpl_aim+ocn/input_ocn.icedyn>`).
 
-#. :filelink:`deep_anelastic <verification/deep_anelastic>` - Convection simulation on a giant planet: relaxes
-   both the Boussinesq approximation (anelastic) and the thin atmosphere
+#. :filelink:`deep_anelastic <verification/deep_anelastic>` - Convection simulation on a giant
+   planet: relaxes both the Boussinesq approximation (anelastic) and the thin atmosphere
    approximation (deep atmosphere).
 
-#. :filelink:`dome <verification/dome>` - Idealized 3-D test of a density-driven bottom current (Denmark Overflow Mixing and Entrainment experiment).
+#. :filelink:`dome <verification/dome>` - Idealized 3-D test of a density-driven bottom current
+   (Denmark Overflow Mixing and Entrainment experiment).
 
 #. :filelink:`exp2 <verification/exp2>` - Old version of the global ocean experiment (no GM, no
    partial-cells). Also contains an additional setup with rigid lid
    (:filelink:`input.rigidLid <verification/exp2/input.rigidLid>`).
 
-#. :filelink:`exp4 <verification/exp4>` - Flow over a Gaussian bump in open-water or channel with
-   open boundaries. Also contains an additional setup using non-linear free-surface
-   (:filelink:`input.nlfs <verification/exp4/input.nlfs>`), and a setup using Stevens (1990) :cite:`stevens:90`
-   boundary conditions (:filelink:`input.stevens <verification/exp4/input.stevens>`).
+#. :filelink:`exp4 <verification/exp4>` - Flow over a Gaussian bump in open-water or channel
+   with open boundaries. Also contains additional setups:
+
+   - using non-linear free-surface (:filelink:`input.nlfs <verification/exp4/input.nlfs>`).
+
+   - using Stevens (1990) :cite:`stevens:90` boundary conditions
+     (:filelink:`input.stevens <verification/exp4/input.stevens>`).
+
+   - a simple example using float (:filelink:`flt <pkg/flt>`) package
+     (:filelink:`input.with_flt <verification/exp4/input.with_flt>`,
+     formerly :filelink:`flt_example <verification/flt_example>`).
 
 #. :filelink:`fizhi-cs-32x32x40 <verification/fizhi-cs-32x32x40>` - Global atmospheric simulation with realistic
    topography, 40 vertical levels, a cubed sphere grid and the full atmospheric physics package.
 
 #. :filelink:`fizhi-cs-aqualev20 <verification/fizhi-cs-aqualev20>` - Global atmospheric simulation on an aqua
    planet with full atmospheric physics. Run is perpetual March with an
-   analytical SST distribution. This is the configuration used for the APE
-   (Aqua Planet Experiment) participation experiment.
+   analytical SST distribution. This is the configuration used for the
+   `Aqua-Planet Experiment Project (APE) <http://www.met.reading.ac.uk/~mike/ape/>`_ ,
+   see also Neale and Hoskins (2001) :cite:`neale:01`.
 
 #. :filelink:`fizhi-gridalt-hs <verification/fizhi-gridalt-hs>` - Global atmospheric simulation Held-Suarez
    (1994) :cite:`held-suar:94` forcing, with the physical forcing and the dynamical forcing
    running on different vertical grids.
 
-#. :filelink:`flt_example <verification/flt_example>` - Example using float package.
-
 #. :filelink:`front_relax <verification/front_relax>` - Relaxation of an 2-D (:math:`y-z`) ocean thermal front (test of
    Gent and McWilliams scheme). Also contains additional setups:
 
+   - using the identical setup except with pressure as the vertical coordinate instead of height
+     (:filelink:`input.in_p <verification/front_relax/input.in_p>`)
+
    - using the boundary-value problem method (Ferrari et al. 2010 :cite:`ferrari:10`)
-     (:filelink:`input.bvp <verification/front_relax/input.bvp>`).
+     (:filelink:`input.bvp <verification/front_relax/input.bvp>`)
 
    - with mixed-layer eddy parameterization (Ferrari and McWilliams
-     2008 :cite:`ferrari:08`) (:filelink:`input.mxl <verification/front_relax/input.mxl>`).
+     2008 :cite:`ferrari:08`) (:filelink:`input.mxl <verification/front_relax/input.mxl>`)
 
    - with dry-cell at the top and a sloping bottom
      (:filelink:`input.top <verification/front_relax/input.top>`).
@@ -370,19 +390,26 @@ For many experiments, additional information is provided in a ``README`` file lo
    - using thermodynamic and dynamic (:filelink:`pkg/seaice`) sea ice with :filelink:`exf <pkg/exf>` package
      package (:filelink:`input.seaice <verification/global_ocean.cs32x15/input.seaice>`).
 
-   - using pressure as vertical coordinate, with :filelink:`ggl90 <pkg/ggl90>` scheme (Gaspar et al. 1990 :cite:`gas-eta:90`) and dynamic and thermodynamic seaice (:filelink:`pkg/seaice`) package and :filelink:`exf <pkg/exf>` package (:filelink:`input.in_p <verification/global_ocean.cs32x15/input.in_p>`)
+   - using pressure as vertical coordinate, with :filelink:`ggl90 <pkg/ggl90>` scheme (Gaspar et al. 1990 :cite:`gas-eta:90`)
+     and dynamic and thermodynamic seaice (:filelink:`pkg/seaice`) package and :filelink:`exf <pkg/exf>`
+     package (:filelink:`input.in_p <verification/global_ocean.cs32x15/input.in_p>`)
 
-#. :filelink:`global_ocean_ebm <verification/global_ocean_ebm>` - Global ocean experiment on a lat-lon grid
-   coupled to a zonally averaged atmospheric energy balance model. Similar to
-   :filelink:`global_ocean.90x40x15 <verification/global_ocean.90x40x15>` experiment.
+#. :filelink:`global_ocean_ebm <verification/global_ocean_ebm>` - Global ocean experiment on a lat-lon grid,
+   similar to :ref:`tutorial_global_oce_latlon <sec_global_oce_latlon>` experiment
+   but using other surface forcing pkg, such as from a zonally averaged atmospheric energy balance model
+   (:filelink:`ebm <pkg/ebm>` package). Also contains additional setups:
+
+   - using the :filelink:`exf <pkg/exf>` package with :filelink:`exf <pkg/exf>` interpolation
+     (:filelink:`input.w_exf <verification/global_ocean_ebm/input.w_exf>`,
+     formerly :filelink:`global_with_exf <verification/global_with_exf>`).
+
+   - same as above with yearly :filelink:`exf <pkg/exf>` fields
+     (:filelink:`input.yearly <verification/global_ocean_ebm/input.yearly>`,
+     formerly in :filelink:`global_with_exf <verification/global_with_exf>`).
+
 
 #. :filelink:`global_oce_biogeo_bling  <verification/global_oce_biogeo_bling >` - Global ocean biogeochemistry simulation,
    based on :ref:`sub_global_oce_biogeo` but using package :filelink:`bling <pkg/bling>` instead of the :ref:`DIC <sub_pkg_dic>` package.
-
-#. :filelink:`global_with_exf <verification/global_with_exf>` - Global ocean experiment (at 4\ :sup:`o`\ x4\ :sup:`o`) on a lat-lon grid
-   using the :filelink:`exf <pkg/exf>` package with :filelink:`exf <pkg/exf>` interpolation. Similar to :ref:`tutorial_global_oce_latlon <sec_global_oce_latlon>`
-   experiment. Also contains a secondary setup with yearly :filelink:`exf <pkg/exf>` fields
-   (:filelink:`input.yearly <verification/global_with_exf/input.yearly>`).
 
 #. :filelink:`halfpipe_streamice<verification/halfpipe_streamice>` - Example using package :filelink:`streamice <pkg/streamice>`.
 
@@ -428,6 +455,13 @@ For many experiments, additional information is provided in a ``README`` file lo
 
    - using package :filelink:`salt_plume <pkg/salt_plume>` (:filelink:`input.salt_plume <verification/lab_sea/input.salt_plume>`).
 
+   - ice-free eastern subtropical North Atlantic box (:filelink:`input.natl_box <verification/lab_sea/input.natl_box>`,
+     formerly :filelink:`natl_box <verification/natl_box>`).
+
+   - same as above with passive tracers (:filelink:`pkg/ptracers`) using package :filelink:`longstep <pkg/longstep>`
+     to speed up integration time (:filelink:`input.longstep <verification/lab_sea/input.longstep>`,
+     formerly in :filelink:`natl_box <verification/natl_box>`).
+
 #. :filelink:`matrix_example <verification/matrix_example>` - Test of experimental method to accelerate
    convergence towards equilibrium.
 
@@ -447,10 +481,6 @@ For many experiments, additional information is provided in a ``README`` file lo
 
    - :filelink:`input.QGLthGM <verification/MLAdjust/input.QGLthGM>`.
 
-#. :filelink:`natl_box <verification/natl_box>` - Eastern subtropical North Atlantic with :ref:`KPP scheme <sub_phys_pkg_kpp>`.
-   Contains additional setup with added tracers (:filelink:`pkg/ptracers`) using the package :filelink:`longstep <pkg/longstep>`
-   to speed up integration time (:filelink:`input.longstep <verification/natl_box/input.longstep>`).
-
 #. :filelink:`offline_exf_seaice <verification/offline_exf_seaice>` - Sea ice on top of oceanic surface layer in
    an idealized channel. Forcing is computed by bulk-formulae
    (:filelink:`pkg/exf`) with temperature relaxation to prescribed SST (i.e., no momentum timestepping in ocean,
@@ -468,21 +498,25 @@ For many experiments, additional information is provided in a ``README`` file lo
    - sea ice dynamics-only using :ref:`LSR solver <para_phys_pkg_seaice_LSRJFNK>`,
      elliptical yield curve with :ref:`non-normal flow rule <rheologies_ellnnfr>`
      and (:filelink:`pkg/seaice`) advection
-     (:filelink:`input.dyn_ellnnfr <verification/offline_exf_seaice/input.dyn_ellnnfr>` and :filelink:`input.dyn_lsr <verification/offline_exf_seaice/input.dyn_lsr>`)
+     (:filelink:`input.dyn_ellnnfr <verification/offline_exf_seaice/input.dyn_ellnnfr>`
+     and :filelink:`input.dyn_lsr <verification/offline_exf_seaice/input.dyn_lsr>`)
 
    - sea ice dynamics-only using :ref:`LSR solver <para_phys_pkg_seaice_LSRJFNK>`,
      :ref:`Mohr-Coulomb yieldcurve with elliptical plastic potential <rheologies_MCE>`
      and (:filelink:`pkg/seaice`) advection
-     (:filelink:`input.dyn_mce <verification/offline_exf_seaice/input.dyn_mce>` and :filelink:`input.dyn_lsr <verification/offline_exf_seaice/input.dyn_lsr>`)
+     (:filelink:`input.dyn_mce <verification/offline_exf_seaice/input.dyn_mce>` and
+     :filelink:`input.dyn_lsr <verification/offline_exf_seaice/input.dyn_lsr>`)
 
    - sea ice dynamics-only using :ref:`Picard (KRYLOV) solver <para_phys_pkg_seaice_LSRJFNK>`,
      :ref:`parabolic lens yieldcurve <rheologies_PL>`
      and (:filelink:`pkg/thsice`) advection
-     (:filelink:`input.dyn_paralens <verification/offline_exf_seaice/input.dyn_paralens>` and :filelink:`input.dyn_jfnk <verification/offline_exf_seaice/input.dyn_jfnk>`)
+     (:filelink:`input.dyn_paralens <verification/offline_exf_seaice/input.dyn_paralens>`
+     and :filelink:`input.dyn_jfnk <verification/offline_exf_seaice/input.dyn_jfnk>`)
 
    - sea ice dynamics-only using :ref:`JFNK solver <para_phys_pkg_seaice_LSRJFNK>`, :ref:`teardrop yieldcurve <rheologies_TD>`
      and (:filelink:`pkg/thsice`) advection
-     (:filelink:`input.dyn_teardrop <verification/offline_exf_seaice/input.dyn_teardrop>` and :filelink:`input.dyn_jfnk <verification/offline_exf_seaice/input.dyn_jfnk>`)
+     (:filelink:`input.dyn_teardrop <verification/offline_exf_seaice/input.dyn_teardrop>`
+     and :filelink:`input.dyn_jfnk <verification/offline_exf_seaice/input.dyn_jfnk>`)
 
    - sea ice thermodynamics-only using (:filelink:`pkg/seaice`) (:filelink:`input.thermo <verification/offline_exf_seaice/input.thermo>`)
 
@@ -516,15 +550,28 @@ For many experiments, additional information is provided in a ``README`` file lo
 #. :filelink:`so_box_biogeo <verification/so_box_biogeo>` - Open boundary Southern Ocean box around Drake
    Passage, using same model parameters and forcing as experiment
    :ref:`tutorial_global_oce_biogeo <sub_global_oce_biogeo>` from which initial conditions and open boundary
-   conditions have been extracted. Also contains additional setup using the SolveSAPHE algorithm
-   (Munhoven 2013 :cite:`munhoven:13`) to determine oceanic pH
-   (:filelink:`input.saphe <verification/so_box_biogeo/input.saphe>`).
+   conditions have been extracted. Also contains additional setups:
+
+   - using the SolveSAPHE algorithm (Munhoven 2013 :cite:`munhoven:13`) to determine oceanic
+     pH (:filelink:`input.saphe <verification/so_box_biogeo/input.saphe>`)
+
+   - using the calcite-saturation code (with 3-D pH and silica input file) with the original pH solver
+     (:filelink:`input.caSat0 <verification/so_box_biogeo/input.caSat0>`)
+
+   - using the calcite-saturation code with the Munhoven "FAST" solver (:filelink:`input.caSat3 <verification/so_box_biogeo/input.caSat3>`)
 
 #. :filelink:`solid-body.cs-32x32x1 <verification/solid-body.cs-32x32x1>` - Solid body rotation test for cube sphere
    grid.
 
-#. :filelink:`tutorial_deep_convection <verification/tutorial_deep_convection>` - Experiment as described in :numref:`sec_deep_convection`, also contains an additional setup
-   using the Smagorinisky (1963) :cite:`smag:63` viscosity scheme (:filelink:`input.smag3d <verification/tutorial_deep_convection/input.smag3d>`).
+#. :filelink:`tutorial_deep_convection <verification/tutorial_deep_convection>` - Experiment as described
+   in :numref:`sec_deep_convection`, also contains an additional setup
+   using the Smagorinisky (1963) :cite:`smag:63` viscosity scheme
+   (:filelink:`input.smag3d <verification/tutorial_deep_convection/input.smag3d>`).
+
+#. :filelink:`tutorial_plume_on_slope <verification/tutorial_plume_on_slope>` - Experiment as described in
+   :numref:`tutorial_plume_on_slope`, also contains an additional setup
+   using the logarithmic law of the wall to compute the bottom drag coefficient
+   (:filelink:`input.roughBot <verification/tutorial_plume_on_slope/input.roughBot>`).
 
 #. :filelink:`vermix <verification/vermix>` - Simple test in a small domain (3 columns) for ocean
    vertical mixing schemes. The standard setup (:filelink:`input <verification/vermix/input>`) uses the :ref:`KPP scheme <sub_phys_pkg_kpp>`
@@ -534,6 +581,10 @@ For many experiments, additional information is provided in a ``README`` file lo
 
    - with package :filelink:`ggl90 <pkg/ggl90>` scheme (Gaspar et al. 1990 :cite:`gas-eta:90`) scheme
      (:filelink:`input.ggl90 <verification/vermix/input.ggl90>`)
+
+   - with :filelink:`ggl90 <pkg/ggl90>` package and parameterized Langmuir circulation effects
+     (:varlink:`useLANGMUIR` ``= .TRUE.`` in ``data.ggl90``,
+     :filelink:`input.gglLC <verification/vermix/input.gglLC>`)
 
    - with Mellor and Yamada (1982) :cite:`mellor:82` level 2 (:filelink:`pkg/my82`)
      scheme (:filelink:`input.my82 <verification/vermix/input.my82>`)
@@ -553,7 +604,8 @@ Unless stated otherwise, the physical setup of the adjoint run is identical to t
 TAF adjoint setups require building with directory ``code_ad`` with input directory ``input_ad``, whereas OpenAD requires
 directories ``code_oad`` and ``input_oad`` respectively.
 
-#. :filelink:`1D_ocean_ice_column <verification/1D_ocean_ice_column>` - Based on standard forward experiment, TAF adjoint setup, uses package :filelink:`ecco <pkg/ecco>`.
+#. :filelink:`1D_ocean_ice_column <verification/1D_ocean_ice_column>` - Based on standard forward experiment,
+   TAF adjoint setup, uses package :filelink:`ecco <pkg/ecco>`.
 
 #. :filelink:`bottom_ctrl_5x5 <verification/bottom_ctrl_5x5>` - TAF adjoint
    test using the bottom topography as the control parameter, uses package
@@ -588,9 +640,20 @@ directories ``code_oad`` and ``input_oad`` respectively.
 
 #. :filelink:`global_ocean_ebm <verification/global_ocean_ebm>` - Based on standard forward experiment, TAF adjoint setup.
 
-#. :filelink:`global_oce_biogeo_bling <verification/global_oce_biogeo_bling>` - Based on standard forward experiment, TAF adjoint setup, uses package :filelink:`ecco <pkg/ecco>`.
+#. :filelink:`global_oce_biogeo_bling <verification/global_oce_biogeo_bling>` - Based on standard forward experiment,
+   TAF adjoint setup, uses package :filelink:`ecco <pkg/ecco>`.
 
-#. :filelink:`global_with_exf <verification/global_with_exf>` - Based on standard forward experiment, TAF adjoint setup.
+#. :filelink:`global_oce_latlon <verification/global_oce_latlon>` - Simple adjoint experiment (used also to test OpenAD compiler), TAF and OpenAD adjoint setups.
+   Also contains additional TAF and OpenAD adjoint setups:
+
+   - using package :filelink:`ggl90 <pkg/ggl90>`
+     (:filelink:`input_ad.ggl90 <verification/global_oce_latlon/input_ad.ggl90>`,
+     :filelink:`input_oad.ggl90 <verification/global_oce_latlon/input_oad.ggl90>`).
+
+   - using package :filelink:`kpp <pkg/kpp>` (:filelink:`input_oad.kpp <verification/global_oce_latlon/input_oad.kpp>`).
+
+   - using package :filelink:`exf <pkg/exf>` (:filelink:`input_ad.w_exf <verification/global_oce_latlon/input_ad.w_exf>`,
+     formerly :filelink:`global_with_exf <verification/global_with_exf>`)
 
 #. :filelink:`halfpipe_streamice<verification/halfpipe_streamice>` - Based on standard forward experiment, TAF and OpenAD adjoint setups.
 
@@ -615,19 +678,12 @@ directories ``code_oad`` and ``input_oad`` respectively.
    Also contains additional TAF adjoint setup
    with sea ice thermodynamics-only using :filelink:`pkg/thsice` (:filelink:`input_ad.thsice <verification/offline_exf_seaice/input_ad.thsice>`).
 
-#. :filelink:`OpenAD <verification/OpenAD>` - Simple adjoint experiment (used also to test OpenAD compiler), TAF and OpenAD adjoint setups.
-   Also contains additional OpenAD adjoint setups:
-
-   - using package :filelink:`ggl90 <pkg/ggl90>` (:filelink:`input_oad.ggl90 <verification/OpenAD/input_oad.ggl90>`).
-
-   - using package :filelink:`kpp <pkg/kpp>` (:filelink:`input_oad.kpp <verification/OpenAD/input_oad.kpp>`).
-
 #. :filelink:`tutorial_dic_adjoffline <verification/tutorial_dic_adjoffline>` - TAF adjoint setup of offline form of passive tracers coupled
    to the dissolved inorganic carbon biogeochemistry model (currently NOT documented as a tutorial experiment).
 
 #. :filelink:`tutorial_global_oce_biogeo <verification/tutorial_global_oce_biogeo>` - Based on forward experiment described
    in :numref:`sub_global_oce_biogeo`, TAF and OpenAD adjoint setups.
 
-#. :filelink:`tutorial_tracer_adjsens <verification/tutorial_tracer_adjsens>` - Based on adjoint experiment described in :numref:`sec_tracer_adj_sens`,
-   contains an additional TAF setup using Second Order Moment (SOM)
+#. :filelink:`tutorial_tracer_adjsens <verification/tutorial_tracer_adjsens>` - Based on adjoint experiment
+   described in :numref:`sec_tracer_adj_sens`, contains an additional TAF setup using Second Order Moment (SOM)
    advection scheme (:filelink:`input_ad.som81 <verification/tutorial_tracer_adjsens/input_ad.som81>`).

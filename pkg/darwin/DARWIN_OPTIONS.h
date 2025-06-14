@@ -43,6 +43,20 @@ C enable air-sea carbon exchange and Alk and O2 tracers
 C consistently use the total pH scale for carbon chemistry coefficients
 #undef  DARWIN_TOTALPHSCALE
 
+C Compile Munhoven (2013) "Solvesaphe" package for pH/pCO2
+C  can still select Follows et al (2006) solver in data.darwin,
+C  but will use solvesaphe dissociation coefficient options.
+#undef  DARWIN_SOLVESAPHE
+
+C this needs to be defined for coupling to atmospheric model:
+#undef  DARWIN_USE_PLOAD
+
+C enable RADI sediment metamodel v1
+#undef DARWIN_ALLOW_RADIv1
+
+C enable RADI sediment metamodel v2
+#undef DARWIN_ALLOW_RADIv2
+
 
 C optional bits
 

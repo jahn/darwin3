@@ -343,6 +343,24 @@ c     diagMate  = diagNum
 c     CALL DIAGNOSTICS_ADDTOLIST( diagNum,
 c    I     diagName, diagCode, diagUnits, diagTitle, diagMate, myThid )
 
+# ifdef SEAICE_ALLOW_SIDEDRAG
+      diagName  = 'SIlatDgU'
+      diagTitle = 'SEAICE lateral coastal drag on U momentum'
+      diagUnits = 'N/m^2           '
+      diagCode  = 'UU      M1      '
+      diagMate  = diagNum + 2
+      CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I     diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+      diagName  = 'SIlatDgV'
+      diagTitle = 'SEAICE lateral coastal drag on V momentum'
+      diagUnits = 'N/m^2           '
+      diagCode  = 'VV      M1      '
+      diagMate  = diagNum
+      CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I     diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+#endif
+
 C     SIqnet, Qnet, and QNETtave are identical.
 C     With #undef NONLIN_FRSURF SIqnet is identical to -(TFLUX-TRELAX).
 C     Except over land and under sea ice, SIqnet is also identical to
@@ -376,7 +394,14 @@ C     Except under sea ice, SIqsw is also identical to EXFswnet.
       diagCode  = 'SM      U1      '
       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
      I     diagName, diagCode, diagUnits, diagTitle, 0, myThid )
-
+#ifdef SEAICE_USE_GROWTH_ADX
+      diagName  = 'SIeprflx'
+      diagTitle = 'heat flux adjustment associated with EmPmR'
+      diagUnits = 'W/m^2           '
+      diagCode  = 'SM      U1      '
+      CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I     diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+#else
 #ifndef SEAICE_DISABLE_HEATCONSFIX
       diagName  = 'SIaaflux'
       diagTitle = 'conservative ocn<->seaice adv. heat flux adjust.'
@@ -384,6 +409,7 @@ C     Except under sea ice, SIqsw is also identical to EXFswnet.
       diagCode  = 'SM      U1      '
       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
      I     diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+#endif
 #endif
 
       diagName  = 'SIhl    '
@@ -805,6 +831,15 @@ C=============== dynamics ============
 
       diagName  = 'SItensil'
       diagTitle = 'SEAICE maximal tensile strength'
+      diagUnits = 'N/m             '
+      diagCode  = 'SM      M1      '
+      CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I    diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+C=============== numerics ============
+
+      diagName  = 'SIlsrRe '
+      diagTitle = 'SEAICE LSR residual norm'
       diagUnits = 'N/m             '
       diagCode  = 'SM      M1      '
       CALL DIAGNOSTICS_ADDTOLIST( diagNum,

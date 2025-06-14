@@ -14,6 +14,9 @@
 # ifdef ALLOW_KPP
 #  include "KPP_OPTIONS.h"
 # endif
+# ifdef ALLOW_SALT_PLUME
+#  include "SALT_PLUME_OPTIONS.h"
+# endif
 #endif /* ALLOW_AUTODIFF */
 #ifdef ALLOW_CTRL
 # include "CTRL_OPTIONS.h"
@@ -69,6 +72,12 @@ C     == Global variables ===
 #  include "SALT_PLUME.h"
 # endif
 #endif /* ALLOW_AUTODIFF */
+
+#ifdef ALLOW_TAPENADE
+# ifdef ALLOW_GENERIC_ADVDIFF
+#  include "GAD_SOM_VARS.h"
+# endif
+#endif /* ALLOW_TAPENADE */
 
 C     !INPUT/OUTPUT PARAMETERS:
 C     == Routine arguments ==
@@ -129,7 +138,7 @@ CEOP
 C--   dummy statement to end declaration part
       tkey = 1
 
-C--   HPF directive to help TAMC
+C--   HPF directive to help TAF
 CHPF$ INDEPENDENT
 #endif /* ALLOW_AUTODIFF_TAMC */
 

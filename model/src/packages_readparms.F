@@ -63,6 +63,8 @@ C       |-- CHEAPAML_READPARMS
 C       |
 C       |-- FLT_READPARMS
 C       |
+C       |-- OASIM_READPARMS
+C       |
 C       |-- RADTRANS_READPARMS
 C       |
 C       |-- LONGSTEP_READPARMS
@@ -79,6 +81,8 @@ C       |
 C       |-- STREAMICE_READPARMS
 C       |
 C       |-- SHELFICE_READPARMS
+C       |
+C       |-- STIC_READPARMS
 C       |
 C       |-- ICEFRONT_READPARMS
 C       |
@@ -239,6 +243,10 @@ C--   if useFLT=T, set Floats (FLT) parameters; otherwise just return
       CALL FLT_READPARMS( myThid )
 #endif /* ALLOW_FLT */
 
+#ifdef ALLOW_OASIM
+      IF (useOASIM) CALL OASIM_READPARMS( myThid )
+#endif
+
 #ifdef ALLOW_RADTRANS
 C--   if useRADTRANS=T, set RADTRANS parameters; otherwise just return
       CALL RADTRANS_READPARMS( myThid )
@@ -282,6 +290,11 @@ C--   if useStreamIce=T, set STREAMICE parameters; otherwise just return
 #ifdef ALLOW_SHELFICE
 C--   if useShelfIce=T, set SHELFICE parameters; otherwise just return
       CALL SHELFICE_READPARMS( myThid )
+#endif
+
+#ifdef ALLOW_STEEP_ICECAVITY
+C--   if useSTIC=T, set STEEP_ICECAVITY parameters; otherwise just return
+      CALL STIC_READPARMS( myThid )
 #endif
 
 #ifdef ALLOW_ICEFRONT

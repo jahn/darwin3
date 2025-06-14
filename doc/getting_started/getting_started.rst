@@ -415,7 +415,7 @@ typical output might be as follows:
 
   ===  Processing options files and arguments  ===
     getting local config information:  none found
-  Warning: ROOTDIR was not specified ; try using a local copy of MITgcm found at "../../.."
+  Warning: MITgcm root directory was not specified ; try using a local copy of MITgcm found at "../../.."
     getting OPTFILE information:
       using OPTFILE="../../../tools/build_options/linux_amd64_gfortran"
     getting AD_OPTFILE information:
@@ -480,12 +480,12 @@ typical output might be as follows:
 
 In the above, notice:
 
-- we did not specify ``ROOTDIR``,
+- we did not specify MITgcm root directory,
   i.e., a path to your MITgcm repository,
   but here we are building code from within the repository (specifically,
   in one of the verification subdirectory experiments). As such,
   :filelink:`genmake2 <tools/genmake2>` was smart enough to
-  locate all necessary files on its own. To specify a remote ``ROOTDIR``,
+  locate all necessary files on its own. To specify a remote MITgcm root directory,
   see :ref:`here <build_elsewhere>`.
 - we specified the :ref:`optfile <genmake2_optfiles>`
   :filelink:`linux_amd64_gfortran <tools/build_options/linux_amd64_gfortran>`
@@ -578,7 +578,7 @@ The most important command-line options are:
 .. _build_elsewhere:
 
 ``-rootdir «/PATH/TO/MITGCMDIR»``
-    specify the location of the MITgcm repository top directory (``ROOTDIR``).
+    specify the location of the MITgcm repository top directory (MITgcm root directory).
     By default, :filelink:`genmake2 <tools/genmake2>` will try to find this
     location by looking in parent directories from where
     :filelink:`genmake2 <tools/genmake2>` is executed
@@ -1365,6 +1365,29 @@ into `Python <https://www.python.org/>`_:
 
   Eta = xr.open_dataset('Eta.nc')
 
+Bash scripts
+~~~~~~~~~~~~
+
+The repository includes utilities for handling model input and output. You can 
+add these command line scripts to the system's search path by modifying the
+unix `PATH <https://www.digitalocean.com/community/tutorials/how-to-view-and-update-the-linux-path-environment-variable>`_
+variable. To permanently access MITgcm bash utilities, put this line in 
+your shell configuration file e.g. ``.bashrc`` or ``.zshrc``:
+
+::
+
+    export PATH=$PATH:/path/to/your/MITgcm/utils/scripts
+
+NetCDF output
+^^^^^^^^^^^^^
+
+`netCDF <http://www.unidata.ucar.edu/software/netcdf>`_ output is produced 
+with one file per processor. This means unique tiles need to be stitched 
+together to create a single 
+`netCDF <http://www.unidata.ucar.edu/software/netcdf>`_ file that spans the
+model domain. The script :filelink:`utils/scripts/gluemnc` can do this from the 
+command line. For usage information and dependencies, see :numref:`gluemnc`.
+
 .. _customize_compilation:
 
 Customizing the Model Configuration - Code Parameters and Compilation Options
@@ -1494,14 +1517,6 @@ somewhat obscure, so newer users of the MITgcm are encouraged to jump to
    | :varlink:`SOLVE_DIAGONAL_LOWMEMORY`           | #undef  | low memory footprint (not suitable for AD) choice for implicit solver routines solve_*diagonal.F                     |
    +-----------------------------------------------+---------+----------------------------------------------------------------------------------------------------------------------+
    | :varlink:`SOLVE_DIAGONAL_KINNER`              | #undef  | choice for implicit solver routines solve_*diagonal.F suitable for AD                                                |
-   +-----------------------------------------------+---------+----------------------------------------------------------------------------------------------------------------------+
-   | :varlink:`COSINEMETH_III`                     | #define | selects implementation form of :math:`\cos{\varphi}` scaling of bi-harmonic term for viscosity                       |
-   |                                               |         | (note, CPP option for tracer diffusivity set independently in                                                        |
-   |                                               |         | :filelink:`GAD_OPTIONS.h <pkg/generic_advdiff/GAD_OPTIONS.h>`)                                                       |
-   +-----------------------------------------------+---------+----------------------------------------------------------------------------------------------------------------------+
-   | :varlink:`ISOTROPIC_COS_SCALING`              | #undef  | selects isotropic scaling of harmonic and bi-harmonic viscous terms when using the :math:`\cos{\varphi}` scaling     |
-   |                                               |         | (note, CPP option for tracer diffusivity set independently in                                                        |
-   |                                               |         | :filelink:`GAD_OPTIONS.h <pkg/generic_advdiff/GAD_OPTIONS.h>`)                                                       |
    +-----------------------------------------------+---------+----------------------------------------------------------------------------------------------------------------------+
 
 .. _default_pkg_list:
@@ -2081,6 +2096,9 @@ elliptic solvers are the variables :varlink:`cg2dMaxIters` and
    | :varlink:`cg3dTargetResidual`          | PARM02    | 1.0E-07                                          | 3D conjugate gradient target residual (non-dim. due to RHS normalization );                             |
    |                                        |           |                                                  | requires #define :varlink:`ALLOW_NONHYDROSTATIC`                                                        |
    +----------------------------------------+-----------+--------------------------------------------------+---------------------------------------------------------------------------------------------------------+
+   | :varlink:`cg3dTargetResWunit`          | PARM02    | -1.0E+00                                         | 3D conjugate gradient target residual (:math:`\dot{r}` units);                                          |
+   |                                        |           |                                                  | <0: use RHS normalization, i.e., :varlink:`cg3dTargetResidual` instead                                  |
+   +----------------------------------------+-----------+--------------------------------------------------+---------------------------------------------------------------------------------------------------------+
    | :varlink:`useSRCGSolver`               | PARM02    | FALSE                                            | use conjugate gradient solver with single reduction (single call of mpi_allreduce)                      |
    +----------------------------------------+-----------+--------------------------------------------------+---------------------------------------------------------------------------------------------------------+
    | :varlink:`printResidualFreq`           | PARM02    | 1 unless :varlink:`debugLevel` >4                | frequency (in number of iterations) of printing conjugate gradient residual                             |
@@ -2524,6 +2542,8 @@ and quadratic (set the variable
 | :varlink:`bottomDragLinear`            | PARM01    | 0.0                                              | linear bottom-drag coefficient ([:math:`r`]/s)                                                          |
 +----------------------------------------+-----------+--------------------------------------------------+---------------------------------------------------------------------------------------------------------+
 | :varlink:`bottomDragQuadratic`         | PARM01    | 0.0                                              | quadratic bottom-drag coefficient ([:math:`r`]/m)                                                       |
++----------------------------------------+-----------+--------------------------------------------------+---------------------------------------------------------------------------------------------------------+
+| :varlink:`zRoughBot`                   | PARM01    | 0.0                                              | roughness length for quadratic bottom friction coefficient (m)                                          |
 +----------------------------------------+-----------+--------------------------------------------------+---------------------------------------------------------------------------------------------------------+
 | :varlink:`selectBotDragQuadr`          | PARM01    | -1                                               | select quadratic bottom drag discretization option                                                      |
 |                                        |           |                                                  |                                                                                                         |
@@ -3168,18 +3188,27 @@ MITgcm input files for grid-related data (e.g., :varlink:`delXFile`),
 forcing fields (e.g., :varlink:`tauThetaClimRelax`),
 parameter fields (e.g., :varlink:`viscAhZfile`), etc. are assumed to
 be in "flat" or "unblocked" `binary format <https://en.wikipedia.org/wiki/Binary_file>`_.
-For historical reasons, MITgcm files use big-endian
+
+Data is expected to be in
+`Fortran/column-major order <https://en.wikipedia.org/wiki/Row-_and_column-major_order>`_,
+in the order (:math:`x`, :math:`y`, :math:`z`, :math:`t`).
+`MATLAB <https://www.mathworks.com/products/matlab.html>`_ typically
+uses F-order, while Python's `NumPy <https://numpy.org>`_ uses C-order (row-major order).
+
+For historical reasons, many large MITgcm projects use big-endian
 `byte ordering <https://en.wikipedia.org/wiki/Endianness>`_,
 **NOT** little-endian which is the more common default for today's computers.
-Thus, some care is required to create MITgcm-readable input files.
-
+Thus, some care is required to create MITgcm-readable input files.  However, if
+you prepare your own input files, it is perfectly fine to use little-endian so
+long as you also compile your executable to be little-endian compatible.
 
 - Using `MATLAB <https://www.mathworks.com/products/matlab.html>`_:
   When writing binary files, MATLAB's `fopen <https://www.mathworks.com/help/matlab/ref/fopen.html>`_
   command includes a MACHINEFORMAT option ``'b'`` which instructs MATLAB
   to read or write using big-endian byte ordering. 2-D arrays should be
-  index-ordered in MATLAB as (:math:`x`, :math:`y`) and 3-D arrays as
-  (:math:`x`, :math:`y`, :math:`z`); data is ordered from low to high in
+  index-ordered in MATLAB as (:math:`x`, :math:`y`), 3-D arrays as
+  (:math:`x`, :math:`y`, :math:`z`), and 4-D arrays as
+  (:math:`x`, :math:`y`, :math:`z`, :math:`t`); data is ordered from low to high in
   each index, with :math:`x` varying most rapidly.
 
   An example to create a bathymetry file of single-precision, floating
@@ -3215,9 +3244,17 @@ Thus, some care is required to create MITgcm-readable input files.
      h = reshape(fread(fid, Inf, accuracy), nx, ny);
      fclose(fid);
 
-- Using `Python <https://www.python.org/>`_:
+- Using Python's `NumPy <https://numpy.org>`_:
 
-  A python version of the above script to create a bathymetry file is as follows:
+  The `tofile <https://numpy.org/doc/stable/reference/generated/numpy.ndarray.tofile.html>`_
+  method on a NumPy array writes the data in
+  `row-major or C-order <https://en.wikipedia.org/wiki/Row-_and_column-major_order>`_,
+  so arrays should be shaped to take this into account for the MITgcm:
+  (:math:`y`, :math:`x`) for 2-D,  (:math:`z`, :math:`y`, :math:`x`) for 3-D, and
+  (:math:`t`, :math:`z`, :math:`y`, :math:`x`) for 4-D.
+
+  A python version of the above script can use NumPy to create a bathymetry file is as
+  follows:
 
   ::
 
@@ -3237,23 +3274,19 @@ Thus, some care is required to create MITgcm-readable input files.
     # save as single-precision (NumPy type float32) with big-endian byte ordering
     h.astype('>f4').tofile('bathy.bin')
 
-  The dtype specification ``'>f4'`` above instructs Python to write the file with
+  The dtype specification ``'>f4'`` above instructs NumPy to write the file with
   big-endian byte ordering (specifically, due to the '>') as single-precision real
   numbers (due to the 'f4' which is NumPy ``float32`` or equivalently,
   Fortran ``real*4`` format).
 
-  To read this bathymetry file back into Python, reshaped back to (ny, nx):
+  To read this bathymetry file back into NumPy, reshaped back to (ny, nx):
 
   ::
 
     h = np.fromfile('bathy.bin', '>f4').reshape(ny, nx)
 
-  where again the dtype spec instructs Python to read a big-endian
+  where again the dtype spec instructs NumPy to read a big-endian
   file of single-precision, floating point values.
-
-  Note that 2-D and 3-D arrays should be index-ordered as
-  (:math:`y`, :math:`x`) and (:math:`z`, :math:`y`, :math:`x`),
-  respectively, to be written in proper ordering for MITgcm.
 
   A more complicated example of using Python to generate input date is provided in
   :filelink:`verification/tutorial_baroclinic_gyre/input/gendata.py`.

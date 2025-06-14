@@ -648,6 +648,10 @@ CADJ &     shape = (/ (sNx+2*OLx)*(sNy+2*OLy) /)
       ENDDO
 
 #ifdef ALLOW_SALT_PLUME
+# ifdef ALLOW_AUTODIFF_TAMC
+C     suppress a TAF warning
+CADJ incomplete worka
+# endif
       IF ( useSALT_PLUME ) THEN
 #ifndef SALT_PLUME_VOLUME
         DO i = 1, imt
@@ -1165,19 +1169,15 @@ c local
       KRi_range(Nrp1) = p0
 
 #ifdef ALLOW_AUTODIFF_TAMC
-C--   dummy assignment to end declaration part for TAMC
+C--   dummy assignment to end declaration part for TAF
       i = 0
-C--   HPF directive to help TAMC
+C--   HPF directive to help TAF
 CHPF$ INDEPENDENT
-CADJ INIT z121tape = common, Nr
 #endif /* ALLOW_AUTODIFF_TAMC */
 
       DO i = 1, imt
 
          k = 1
-#ifdef ALLOW_AUTODIFF_TAMC
-CADJ STORE v(i,k) = z121tape
-#endif
          v(i,Nrp1) = v(i,Nr)
 
          DO k = 1, Nr
@@ -1193,9 +1193,6 @@ CADJ STORE v(i,k) = z121tape
          v(i,1) = v(i,1) / zflag
 
          DO k = 2, Nr
-#ifdef ALLOW_AUTODIFF_TAMC
-CADJ STORE v(i,k), zwork = z121tape
-#endif
             km1 = k - 1
             kp1 = k + 1
             zflag = v(i,k)
@@ -1887,7 +1884,7 @@ c
 c     input:
 c     bi, bj  = array indices on which to apply calculations
 c     iMin, iMax, jMin, jMax = array boundaries
-c     ikey = key for TAMC/TAF automatic differentiation
+c     ikey = key for TAF automatic differentiation
 c     myThid  = thread id
 c
 c      ttalpha= thermal expansion coefficient without 1/rho factor
@@ -1928,7 +1925,7 @@ C--------------------------------------------------------------------------
 C
 C     local variables
 C     i,j,k :: loop indices
-C     kkey  :: key for TAMC/TAF automatic differentiation
+C     kkey  :: key for TAF automatic differentiation
 C
       INTEGER i, j, k
       INTEGER kkey

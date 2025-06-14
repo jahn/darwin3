@@ -53,6 +53,8 @@ C       |-- SEAICE_CHECK
 C       |
 C       |-- SHELFICE_CHECK
 C       |
+C       |-- STIC_CHECK
+C       |
 C       |-- SMOOTH_CHECK
 C       |
 C       |-- STREAMICE_CHECK
@@ -71,11 +73,11 @@ C       |-- CTRL_CHECK
 C       |
 C       |-- COST_CHECK
 C       |
+C       |-- ECCO_CHECK
+C       |
 C       |-- GRDCHK_CHECK
 C       |
 C       |-- SBO_CHECK
-C       |
-C       |-- ECCO_CHECK
 C       |
 C       |-- DIAGNOSTICS_CHECK
 C       |
@@ -296,6 +298,12 @@ C---  Continue with standard packages (with standard usePKG flag)
       IF (useFLT) CALL PACKAGES_ERROR_MSG('FLT',' ',myThid)
 #endif
 
+#ifdef ALLOW_OASIM
+      IF (useOASIM) CALL OASIM_CHECK( myThid )
+#else
+      IF (useOASIM) CALL PACKAGES_ERROR_MSG('OASIM',' ',myThid)
+#endif
+
 #ifdef ALLOW_RADTRANS
       IF (useRADTRANS) CALL RADTRANS_CHECK( myThid )
 #else
@@ -354,6 +362,13 @@ C---  Continue with standard packages (with standard usePKG flag)
       IF (useShelfIce) CALL PACKAGES_ERROR_MSG('ShelfIce',' ',myThid)
 #endif
 
+#ifdef ALLOW_STEEP_ICECAVITY
+      IF (useSTIC) CALL STIC_CHECK( myThid )
+#else
+      IF (useSTIC) CALL PACKAGES_ERROR_MSG(
+     &                  'STEEP_ICECAVITY','useSTIC=.T.', myThid )
+#endif
+
 #ifdef ALLOW_SMOOTH
       IF (useSmooth) CALL SMOOTH_CHECK( myThid )
 #else
@@ -385,7 +400,7 @@ C---  Continue with standard packages (with standard usePKG flag)
 #endif
 
 #ifndef ALLOW_ATM2D
-      IF (useATM2D) CALL PACKAGES_ERROR_MSG('ATM2D',' ',myThid)
+      IF (useATM2d) CALL PACKAGES_ERROR_MSG('ATM2d',' ',myThid)
 #endif
 
 #ifndef ALLOW_AIM
@@ -418,10 +433,8 @@ C---  Continue with standard packages (with standard usePKG flag)
       CALL COST_CHECK( myThid )
 #endif
 
-#ifdef ALLOW_GRDCHK
-      IF (useGrdChk) CALL GRDCHK_CHECK( myThid )
-#else
-      IF (useGrdChk) CALL PACKAGES_ERROR_MSG('GrdChk',' ',myThid)
+#ifdef ALLOW_ECCO
+      IF (useECCO) CALL ECCO_CHECK( myThid )
 #endif
 
 #ifndef ALLOW_SMOOTH
@@ -432,14 +445,16 @@ C---  Continue with standard packages (with standard usePKG flag)
       IF (usePROFILES) CALL PACKAGES_ERROR_MSG('PROFILES',' ',myThid)
 #endif
 
+#ifdef ALLOW_GRDCHK
+      IF (useGrdChk) CALL GRDCHK_CHECK( myThid )
+#else
+      IF (useGrdChk) CALL PACKAGES_ERROR_MSG('GrdChk',' ',myThid)
+#endif
+
 #ifdef ALLOW_SBO
       IF (useSBO) CALL SBO_CHECK( myThid )
 #else
       IF (useSBO) CALL PACKAGES_ERROR_MSG('SBO',' ',myThid)
-#endif
-
-#ifdef ALLOW_ECCO
-      IF (useECCO) CALL ECCO_CHECK( myThid )
 #endif
 
 #ifdef ALLOW_DIAGNOSTICS

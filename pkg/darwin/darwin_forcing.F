@@ -143,12 +143,12 @@ C     Dependent variables for sediment flux for validation
       _RL ptr(nDarwin), gtr(nDarwin), PARl(nlam)
       _RL chlout(nPhoto)
       _RL diagsl(darwin_nDiag)
-      _RL sumprey_plank(nplank)
-      _RL sumprey_plank_nd(1-OLx:sNx+OLx, 1-OLy:sNy+OLy, Nr,nplank)
-      _RL bioswimDVMup(1-OLx:sNx+OLx, 1-OLy:sNy+OLy, Nr,nplank)
-      _RL bioswimDVMdn(1-OLx:sNx+OLx, 1-OLy:sNy+OLy, Nr,nplank)
-      _RL SwDr(1-OLx:sNx+OLx, 1-OLy:sNy+OLy,Nr,nplank)
-      INTEGER max_loc(1-OLx:sNx+OLx, 1-OLy:sNy+OLy,nplank)
+      _RL sumpreyl(nplank)
+      _RL sumprey(1-OLx:sNx+OLx,1-OLy:sNy+OLy,Nr,nplank)
+      _RL bioswimDVMup(1-OLx:sNx+OLx,1-OLy:sNy+OLy,Nr,nplank)
+      _RL bioswimDVMdn(1-OLx:sNx+OLx,1-OLy:sNy+OLy,Nr,nplank)
+      _RL SwDr(1-OLx:sNx+OLx,1-OLy:sNy+OLy,Nr,nplank)
+      INTEGER max_loc(1-OLx:sNx+OLx,1-OLy:sNy+OLy,nplank)
       _RL sumPAR
       _RL surfacePAR
       _RL photoTempFunc(nplank)
@@ -652,7 +652,7 @@ C-      default (face fit into global-IO-array)
         CALL DARWIN_PLANKTON(
      I                 ptr,
      U                 gtr,
-     O                 chlout, diagsl,sumprey_plank,
+     O                 chlout, diagsl,sumpreyl,
      I                 PARl, photoTempFunc,
      I                 hetTempFunc,
      I                 grazTempFunc,
@@ -666,7 +666,7 @@ C-      default (face fit into global-IO-array)
          diags(i, j, k, l) = diagsl(l)
         ENDDO
 
-        sumprey_plank_nd(i,j,k,:) = sumprey_plank
+        sumprey(i,j,k,:) = sumpreyl
 
 #ifdef DARWIN_ALLOW_CONS
         DARWIN_Nfix(i,j,k,bi,bj)   = DARWIN_Nfix(i,j,k,bi,bj)
@@ -710,7 +710,7 @@ C === DVM ==============================================================
 #ifdef DARWIN_ALLOW_DVM
 C Find DVM swim direction to go to max food availablity
       SwDr = 0 _d 0
-      max_loc = MAXLOC(sumprey_plank_nd, DIM=3)
+      max_loc = MAXLOC(sumprey, DIM=3)
       DO i=iMin,iMax
       DO j=jMin,jMax
       DO iTr=1,nplank

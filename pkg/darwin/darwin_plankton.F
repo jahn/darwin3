@@ -6,7 +6,7 @@ C !INTERFACE: ==========================================================
       SUBROUTINE DARWIN_PLANKTON(
      I     Ptr,
      U     gTr,
-     O     chlout, diags,sumprey_plank,
+     O     chlout, diags,sumprey,
      I     PAR,
      I     photoTempFunc, hetTempFunc, grazTempFunc, reminTempFunc,
      I     mortTempFunc, mort2TempFunc, uptakeTempFunc,
@@ -56,6 +56,7 @@ C !OUTPUT PARAMETERS: ==================================================
 C  chlout :: computed acclimated chlorophyll if not dynamic
       _RL chlout(nPhoto)
       _RL diags(darwin_nDiag)
+      _RL sumprey(nplank)
 CEOP
 
 #ifdef ALLOW_DARWIN
@@ -253,13 +254,12 @@ c !LOCAL VARIABLES: ====================================================
 
 C for grazing
 
-      _RL sumprey, sumpref, grazphy
+      _RL sumpref, grazphy
 
       _RL preygraz   (nplank)
       _RL preygrazexp(nplank)
       _RL grazrate   (nplank)
       _RL predgrazc  (nplank)
-      _RL sumprey_plank (nplank)
 #ifdef DARWIN_ALLOW_NQUOTA
       _RL predgrazn  (nplank)
 #endif
@@ -1281,7 +1281,7 @@ C==== Grazing ==========================================================
        preygrazexp(j) = 0.0
        grazrate(j)  = 0.0
        predgrazc(j)  = 0.0
-       sumprey_plank(j) = 0.0
+       sumprey(j) = 0.0
 #ifdef DARWIN_ALLOW_NQUOTA
        predgrazn(j)  = 0.0
 #endif
@@ -1334,11 +1334,11 @@ C       regulate grazing near full quota
 #endif
         regQc = regQc**hillnumGraz
 
-        sumprey = 0.0
+        sumprey(jz) = 0.0
         sumpref = 0.0
         DO jp = 1, nplank
         IF (palat(jp,jz).NE.0 _d 0) THEN
-         sumprey = sumprey + palat(jp,jz)*X(jp)
+         sumprey(jz) = sumprey(jz) + palat(jp,jz)*X(jp)
 #ifdef DARWIN_GRAZING_SWITCH
          sumpref = sumpref + palat(jp,jz)*palat(jp,jz)*X(jp)*X(jp)
 #else
@@ -1346,12 +1346,12 @@ C       regulate grazing near full quota
 #endif
         ENDIF
         ENDDO
-        sumprey = MAX(0 _d 0, sumprey - phygrazmin)
-        sumprey_plank(jz) = sumprey
+        sumprey(jz) = MAX(0 _d 0, sumprey(jz) - phygrazmin)
         sumpref = MAX(phygrazmin, sumpref)
         tmp = grazemax(jz)*grazTempFunc(jz)**tempGraz(jz)*
-     &    (sumprey**hollexp/(sumprey**hollexp+kgrazesat(jz)**hollexp))*
-     &    (1.0 - EXP(-inhib_graz*sumprey))**inhib_graz_exp
+     &    (sumprey(jz)**hollexp/
+     &     (sumprey(jz)**hollexp + kgrazesat(jz)**hollexp))*
+     &    (1.0 - EXP(-inhib_graz*sumprey(jz)))**inhib_graz_exp
 
         predexpc  = 0.0 _d 0
         predexpn  = 0.0 _d 0

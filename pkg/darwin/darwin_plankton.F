@@ -1633,8 +1633,10 @@ C to DIC as if it had never been synthesized.
 #endif
 
 C====== Light-dependent mortality from DVM ====
-        IF (isPred(jp) .EQ. 1) THEN
-         mortDVM_c = mortmaxDVM(jp)*Xe/(ksatDVM(jp)+Xe)*
+
+#ifdef DARWIN_ALLOW_DVM
+       IF (isPred(jp) .EQ. 1) THEN
+        mortDVM_c = mortmaxDVM(jp)*Xe/(ksatDVM(jp)+Xe)*
      &      ( 1 _d 0 - fracPARmort(jp) +
      &        fracPARmort(jp)
      &        *(PARtot/
@@ -1675,7 +1677,9 @@ C====== Light-dependent mortality from DVM ====
 #ifdef DARWIN_ALLOW_SIQUOTA
         mortDVM_POSi = mortDVM_POSi + *mortDVM_c*Qsi
 #endif
-        ENDIF
+       ENDIF
+#endif /* DARWIN_ALLOW_DVM */
+
       ENDDO
 
 #ifdef DARWIN_ALLOW_CHLQUOTA

@@ -654,6 +654,7 @@ C === DVM ==============================================================
 
       CALL TIMER_START('DARWIN_DVM [DARWIN_FORCING]',myThid)
 
+#ifdef DARWIN_ALLOW_DVM
 C Find DVM swim direction to go to max food availablity
       SwDr = 0 _d 0
       max_loc = MAXLOC(sumprey_plank_nd, DIM=3)
@@ -719,6 +720,18 @@ C and prey available at that depth = food max, don't swim; stay put
        ENDDO !iTr
        ENDDO !j
        ENDDO !i
+#else /* DARWIN_ALLOW_DVM */
+      DO iTr=1,nplank
+       DO k=1,Nr
+        DO j=jMin,jMax
+         DO i=iMin,iMax
+          bioswimDVMup(i,j,k, iTr) = 0 _d 0
+          bioswimDVMdn(i,j,k, iTr) = 0 _d 0
+         ENDDO
+        ENDDO
+       ENDDO
+      ENDDO
+#endif /* DARWIN_ALLOW_DVM */
 
       CALL TIMER_STOP('DARWIN_DVM [DARWIN_FORCING]',myThid)
 

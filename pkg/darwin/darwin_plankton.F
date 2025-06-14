@@ -1647,16 +1647,16 @@ C====== Light-dependent mortality from DVM ====
 
            gTr(ic+jp-1) = gTr(ic+jp-1) - mortDVM_c
 #ifdef DARWIN_ALLOW_NQUOTA
-        gTr(in+jp-1)=gTr(in+jp-1)  - mortDVM_c(jp)*Qn(jp)
+        gTr(in+jp-1)=gTr(in+jp-1)  - mortDVM_c*Qn(jp)
 #endif
 #ifdef DARWIN_ALLOW_PQUOTA
-        gTr(ip+jp-1)=gTr(ip+jp-1)  - mortDVM_c(jp)*Qp(jp)
+        gTr(ip+jp-1)=gTr(ip+jp-1)  - mortDVM_c*Qp(jp)
 #endif
 #ifdef DARWIN_ALLOW_SIQUOTA
-        gTr(isi+jp-1)=gTr(isi+jp-1) - mortDVM_c(jp)*Qsi(jp)
+        gTr(isi+jp-1)=gTr(isi+jp-1) - mortDVM_c*Qsi(jp)
 #endif
 #ifdef DARWIN_ALLOW_FEQUOTA
-        gTr(ife+jp-1)=gTr(ife+jp-1) - mortDVM_c(jp)*Qfe(jp)
+        gTr(ife+jp-1)=gTr(ife+jp-1) - mortDVM_c*Qfe(jp)
 #endif
 
         mortDVM_DOC = mortDVM_DOC + (1.-ExportFracDVM(jp))*mortDVM_c

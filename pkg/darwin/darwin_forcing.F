@@ -648,6 +648,11 @@ C-      default (face fit into global-IO-array)
       enddo !end j
       enddo !end k
 
+      CALL TIMER_STOP('DARWIN_PLANKTON [DARWIN_FORCING]',myThid)
+
+C === DVM ==============================================================
+
+      CALL TIMER_START('DARWIN_DVM [DARWIN_FORCING]',myThid)
 
 C Find DVM swim direction to go to max food availablity
       SwDr = 0 _d 0
@@ -715,7 +720,7 @@ C and prey available at that depth = food max, don't swim; stay put
        ENDDO !j
        ENDDO !i
 
-      CALL TIMER_STOP('DARWIN_PLANKTON [DARWIN_FORCING]',myThid)
+      CALL TIMER_STOP('DARWIN_DVM [DARWIN_FORCING]',myThid)
 
 C === pre-sinking diags ================================================
 #ifdef ALLOW_DIAGNOSTICS

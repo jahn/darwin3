@@ -149,8 +149,7 @@ C     Dependent variables for sediment flux for validation
       _RL bioswimDVMdn(1-OLx:sNx+OLx,1-OLy:sNy+OLy,Nr,nplank)
       _RL SwDr(1-OLx:sNx+OLx,1-OLy:sNy+OLy,Nr,nplank)
       INTEGER max_loc(1-OLx:sNx+OLx,1-OLy:sNy+OLy,nplank)
-      _RL sumPAR
-      _RL surfacePAR
+      _RL sumPAR(1-OLx:sNx+OLx,1-OLy:sNy+OLy,Nr)
       _RL photoTempFunc(nplank)
       _RL hetTempFunc(nplank)
       _RL grazTempFunc(nplank)
@@ -709,22 +708,22 @@ C === DVM ==============================================================
 
 #ifdef DARWIN_ALLOW_DVM
 C Find DVM swim direction to go to max food availablity
-      SwDr = 0 _d 0
       max_loc = MAXLOC(sumprey, DIM=3)
-      DO i=iMin,iMax
-      DO j=jMin,jMax
       DO iTr=1,nplank
-        IF (max_loc(i,j,iTr) .EQ. 1) THEN
-          SwDr(i, j, max_loc(i,j,iTr)+1:Nr,iTr) = 1 _d 0
-        ELSEIF (max_loc(i,j,iTr) .EQ. Nr) THEN
-          SwDr(i, j,1:max_loc(i,j,iTr)-1, iTr) = -1 _d 0
-        ELSE
-          SwDr(i, j,1:max_loc(i,j,iTr)-1, iTr) = -1 _d 0
-          SwDr(i, j, max_loc(i,j,iTr)+1:Nr,iTr) = 1 _d 0
-        ENDIF
-      ENDDO !I
-      ENDDO !j
-      ENDDO !iTr
+       DO k=1,Nr
+        DO j=jMin,jMax
+         DO i=iMin,iMax
+          IF (k.LT.max_loc(i,j,iTr)) THEN
+           SwDr(i,j,k,iTr) = -1 _d 0
+          ELSEIF (k.GT.max_loc(i,j,iTr)) THEN
+           SwDr(i,j,k,iTr) = 1 _d 0
+          ELSE
+           SwDr(i,j,k,iTr) = 0 _d 0
+          ENDIF
+         ENDDO
+        ENDDO
+       ENDDO
+      ENDDO
 
 C Find DVM swim direction based on light and max food availability
 C Day
@@ -739,47 +738,62 @@ C and prey available at that depth < food max, swim toward food max
 C If PAR at top 0 (or below some light level in future),
 C and prey available at that depth = food max, don't swim; stay put
 
-      DO i=iMin,iMax
-      DO j=jMin,jMax
-        surfacePAR = sum(PAR(i,j,1,:))
       DO k=1,Nr
-       sumPAR = sum(PAR(i,j,k,:))
-      DO iTr=1,nplank
+       DO j=jMin,jMax
+        DO i=iMin,iMax
+         sumPAR(i,j,k) = 0 _d 0
+        ENDDO
+       ENDDO
+      ENDDO
+      DO l=1,nlam
+       DO k=1,Nr
+        DO j=jMin,jMax
+         DO i=iMin,iMax
+          sumPAR(i,j,k) = sumPAR(i,j,k) + PAR(i,j,k,l)
+         ENDDO
+        ENDDO
+       ENDDO
+      ENDDO
 
-         IF (surfacePAR .GT. 0) THEN !Day
-           IF (sumPAR .GT. PARpref(iTr)) THEN
-              bioswimDVMup(i,j,k, iTr) = 0 _d 0
-              bioswimDVMdn(i,j,k, iTr) = bioswimDVM(iTr)
-           ELSEIF (sumPAR. LT. PARpref(iTr)) THEN
-              bioswimDVMup(i,j,k, iTr) = bioswimDVM(iTr)
-              bioswimDVMdn(i,j,k, iTr) = 0 _d 0
-           ELSEIF (sumPAR .EQ. PARpref(iTr)) THEN
-              bioswimDVMup(i,j,k, iTr) = 0 _d 0
-              bioswimDVMdn(i,j,k, iTr) = 0 _d 0
+      DO iTr=1,nplank
+       DO k=1,Nr
+        DO j=jMin,jMax
+         DO i=iMin,iMax
+          IF (sumPAR(i,j,1) .GT. 0) THEN !Day
+           IF (sumPAR(i,j,k) .GT. PARpref(iTr)) THEN
+              bioswimDVMup(i,j,k,iTr) = 0 _d 0
+              bioswimDVMdn(i,j,k,iTr) = bioswimDVM(iTr)
+           ELSEIF (sumPAR(i,j,k). LT. PARpref(iTr)) THEN
+              bioswimDVMup(i,j,k,iTr) = bioswimDVM(iTr)
+              bioswimDVMdn(i,j,k,iTr) = 0 _d 0
+           ELSEIF (sumPAR(i,j,k) .EQ. PARpref(iTr)) THEN
+              bioswimDVMup(i,j,k,iTr) = 0 _d 0
+              bioswimDVMdn(i,j,k,iTr) = 0 _d 0
            ENDIF
-         ELSE !Night
+          ELSE
+C          night
            IF (SwDr(i,j,k,iTr) .GT. 0.0) THEN
-               bioswimDVMup(i,j,k, iTr) = bioswimDVM(iTr)
-               bioswimDVMdn(i,j,k, iTr) = 0 _d 0
+               bioswimDVMup(i,j,k,iTr) = bioswimDVM(iTr)
+               bioswimDVMdn(i,j,k,iTr) = 0 _d 0
            ELSEIF (SwDr(i,j,k,iTr) .EQ. 0.0) THEN
-               bioswimDVMup(i,j,k, iTr) = 0 _d 0
-               bioswimDVMdn(i,j,k, iTr) = 0 _d 0
+               bioswimDVMup(i,j,k,iTr) = 0 _d 0
+               bioswimDVMdn(i,j,k,iTr) = 0 _d 0
            ELSE
-               bioswimDVMup(i,j,k, iTr) = 0 _d 0
-               bioswimDVMdn(i,j,k, iTr) = bioswimDVM(iTr)
+               bioswimDVMup(i,j,k,iTr) = 0 _d 0
+               bioswimDVMdn(i,j,k,iTr) = bioswimDVM(iTr)
            ENDIF
-        ENDIF
-       ENDDO !k
-       ENDDO !iTr
-       ENDDO !j
-       ENDDO !i
+          ENDIF
+         ENDDO
+        ENDDO
+       ENDDO
+      ENDDO
 #else /* DARWIN_ALLOW_DVM */
       DO iTr=1,nplank
        DO k=1,Nr
         DO j=jMin,jMax
          DO i=iMin,iMax
-          bioswimDVMup(i,j,k, iTr) = 0 _d 0
-          bioswimDVMdn(i,j,k, iTr) = 0 _d 0
+          bioswimDVMup(i,j,k,iTr) = 0 _d 0
+          bioswimDVMdn(i,j,k,iTr) = 0 _d 0
          ENDDO
         ENDDO
        ENDDO

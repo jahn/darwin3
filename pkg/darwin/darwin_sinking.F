@@ -4,7 +4,7 @@ CBOP
 C !ROUTINE: DARWIN_SINKING
 C !INTERFACE: ==========================================================
       SUBROUTINE DARWIN_SINKING(
-     I     Ptr,bioswimDVMup, bioswimDVMdn,
+     I     Ptr,bioswimDVMup,bioswimDVMdn,
      U     gTr,
      I     dTsub,bi,bj,iMin,iMax,jMin,jMax,myTime,myIter,myThid)
 
@@ -25,12 +25,13 @@ C !USES: ===============================================================
 #include "DARWIN_FIELDS.h"
 
 C !INPUT PARAMETERS: ===================================================
-C  myThid :: thread number
-C  Ptr    :: darwin model tracers
-C  dT     :: time step (for fake tendency with useEquilibriumC)
+C myThid       :: thread number
+C Ptr          :: darwin model tracers
+C bioswimDVMup :: extra upward velocity due to diel vertical migration
+C bioswimDVMdn :: extra downward velocity due to diel vertical migration
       _RL Ptr(1-OLx:sNx+OLx,1-OLy:sNy+OLy,Nr,nSx,nSy,nDarwin)
-      _RL bioswimDVMup(1-OLx:sNx+OLx, 1-OLy:sNy+OLy, Nr,nplank)
-      _RL bioswimDVMdn(1-OLx:sNx+OLx, 1-OLy:sNy+OLy, Nr,nplank)
+      _RL bioswimDVMup(1-OLx:sNx+OLx,1-OLy:sNy+OLy,Nr,nplank)
+      _RL bioswimDVMdn(1-OLx:sNx+OLx,1-OLy:sNy+OLy,Nr,nplank)
 
       _RL dTsub(Nr)
       INTEGER bi,bj,iMin,iMax,jMin,jMax

@@ -651,7 +651,7 @@ C-      default (face fit into global-IO-array)
         CALL DARWIN_PLANKTON(
      I                 ptr,
      U                 gtr,
-     O                 chlout, diagsl,sumpreyl,
+     O                 chlout, diagsl, sumpreyl,
      I                 PARl, photoTempFunc,
      I                 hetTempFunc,
      I                 grazTempFunc,
@@ -696,9 +696,9 @@ C-      default (face fit into global-IO-array)
          gPtr(i, j, k, iTr) = gtr(iTr)
         ENDDO
        endif
-       enddo !end i
-      enddo !end j
-      enddo !end k
+       enddo
+      enddo
+      enddo
 
       CALL TIMER_STOP('DARWIN_PLANKTON [DARWIN_FORCING]',myThid)
 
@@ -759,7 +759,8 @@ C and prey available at that depth = food max, don't swim; stay put
        DO k=1,Nr
         DO j=jMin,jMax
          DO i=iMin,iMax
-          IF (sumPAR(i,j,1) .GT. 0) THEN !Day
+          IF (sumPAR(i,j,1) .GT. 0) THEN
+C          day
            IF (sumPAR(i,j,k) .GT. PARpref(iTr)) THEN
               bioswimDVMup(i,j,k,iTr) = 0 _d 0
               bioswimDVMdn(i,j,k,iTr) = bioswimDVM(iTr)
@@ -1109,8 +1110,8 @@ C     and rescale for nonlinear free surface if appropriate
 C === sinking ==========================================================
       CALL TIMER_START('DARWIN_SINKING [DARWIN_FORCING]',myThid)
       CALL DARWIN_SINKING( Ptracer,bioswimDVMup,bioswimDVMdn,
-     &                  gPtr,dTsub,bi,bj,
-     &                  iMin,iMax,jMin,jMax,subTime,myIter,myThid )
+     &                     gPtr,dTsub,bi,bj,
+     &                     iMin,iMax,jMin,jMax,subTime,myIter,myThid )
       CALL TIMER_STOP ('DARWIN_SINKING [DARWIN_FORCING]',myThid)
 
 C === apply tendencies to tracers ======================================

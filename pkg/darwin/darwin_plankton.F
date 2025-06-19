@@ -6,9 +6,8 @@ C !INTERFACE: ==========================================================
       SUBROUTINE DARWIN_PLANKTON(
      I     Ptr,
      U     gTr,
-     O     chlout, diags,sumprey,
-     I     PAR,
-     I     photoTempFunc, hetTempFunc, grazTempFunc, reminTempFunc,
+     O     chlout, diags, sumprey,
+     I     PAR, photoTempFunc, hetTempFunc, grazTempFunc, reminTempFunc,
      I     mortTempFunc, mort2TempFunc, uptakeTempFunc,
      I     omegaCl,
      I     k_debug,myTime,myIter,myThid)
@@ -53,7 +52,9 @@ C  gTr    :: accumulates computed tendencies
       _RL gTr(nDarwin)
 
 C !OUTPUT PARAMETERS: ==================================================
-C  chlout :: computed acclimated chlorophyll if not dynamic
+C  chlout  :: computed acclimated chlorophyll if not dynamic
+C  diags   :: pass diagnostics back to darwin_forcing
+C  sumprey :: pass total prey per zoo back for DVM
       _RL chlout(nPhoto)
       _RL diags(darwin_nDiag)
       _RL sumprey(nplank)
@@ -1334,7 +1335,6 @@ C       regulate grazing near full quota
 #endif
         regQc = regQc**hillnumGraz
 
-        sumprey(jz) = 0.0
         sumpref = 0.0
         DO jp = 1, nplank
         IF (palat(jp,jz).NE.0 _d 0) THEN
@@ -1687,22 +1687,21 @@ C====== Light-dependent mortality from DVM ====
      &        *(PARtot/
      &          ((ksatDVM(jp)/(ksatDVM(jp)+Xe))*ksatPARDVM(jp) + PARtot)
      &         )
-     &      )
-     &      *Xe !Assume DVM mortality scales with own biomass
+     &      )*Xe
 
-           gTr(ic+jp-1) = gTr(ic+jp-1) - mortDVM_c
-#ifdef DARWIN_ALLOW_NQUOTA
-        gTr(in+jp-1)=gTr(in+jp-1)  - mortDVM_c*Qn(jp)
-#endif
-#ifdef DARWIN_ALLOW_PQUOTA
-        gTr(ip+jp-1)=gTr(ip+jp-1)  - mortDVM_c*Qp(jp)
-#endif
-#ifdef DARWIN_ALLOW_SIQUOTA
+        gTr(ic+jp-1)=gTr(ic+jp-1) - mortDVM_c
+# ifdef DARWIN_ALLOW_NQUOTA
+        gTr(in+jp-1)=gTr(in+jp-1) - mortDVM_c*Qn(jp)
+# endif
+# ifdef DARWIN_ALLOW_PQUOTA
+        gTr(ip+jp-1)=gTr(ip+jp-1) - mortDVM_c*Qp(jp)
+# endif
+# ifdef DARWIN_ALLOW_SIQUOTA
         gTr(isi+jp-1)=gTr(isi+jp-1) - mortDVM_c*Qsi(jp)
-#endif
-#ifdef DARWIN_ALLOW_FEQUOTA
+# endif
+# ifdef DARWIN_ALLOW_FEQUOTA
         gTr(ife+jp-1)=gTr(ife+jp-1) - mortDVM_c*Qfe(jp)
-#endif
+# endif
 
         mortDVM_DOC = mortDVM_DOC + (1.-ExportFracDVM(jp))*mortDVM_c
         mortDVM_POC = mortDVM_POC + ExportFracDVM(jp)*mortDVM_c

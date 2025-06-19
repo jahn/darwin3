@@ -262,8 +262,8 @@ C plankton sinking and swimming
 
 C light-dependent mortality for DVM
         mortmaxDVM(jp) = a_mortmaxDVM(g) * biovol(jp)**b_mortmaxDVM(g)
-        ksatDVM(jp) = a_ksatDVM(g)* biovol(jp)**b_ksatDVM(g)
-        ksatPARDVM(jp) = a_ksatPARDVM(g)* biovol(jp)**b_ksatPARDVM(g)
+        ksatDVM(jp) = a_ksatDVM(g) * biovol(jp)**b_ksatDVM(g)
+        ksatPARDVM(jp) = a_ksatPARDVM(g) * biovol(jp)**b_ksatPARDVM(g)
         fracPARmort(jp) = a_fracPARmort(g)*biovol(jp)**b_fracPARmort(g)
         ExportFracDVM(jp) = a_ExportFracDVM(g)
 
@@ -312,8 +312,7 @@ c EXCRETION
         kexcfe(jp) = a_kexcfe(g) * biovol(jp)**b_kexcfe(g)
 
 C PAR preference for DVM
-        PARpref(jp) = a_PARpref(g)*biovol(jp)**b_PARpref(g)
-
+        PARpref(jp) = a_PARpref(g) * biovol(jp)**b_PARpref(g)
 
         IF (darwin_effective_ksat) THEN
 c        compute effective half sat for uptake of non-quota elements

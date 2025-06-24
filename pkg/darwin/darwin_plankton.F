@@ -285,9 +285,6 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL QN_excess
       _RL QpExc
       _RL exQp
-      _RL mmRegQn
-      _RL mmRegQp
-      _RL mmRegQfe
       _RL VN,VP,VFe,VSi
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL exQc
@@ -767,18 +764,15 @@ C when store is full, phytoplankton reduce their nutrient-uptake:
 
 C       Nitrogen:
         IF ((QN_essential + QN_store) .GT. 0 _d 0) THEN
-         mmRegQn = (1.1 _d 0*(QN_essential + QN_store) - mmQn)/
+         regQn = (1.1 _d 0*(QN_essential + QN_store) - mmQn)/
      &             (0.1 _d 0*(QN_essential + QN_store))
-         mmRegQn = MAX(0 _d 0, MIN(1 _d 0, mmRegQn))
+         regQn = MAX(0 _d 0, MIN(1 _d 0, regQn))
         ELSE
-         mmRegQn = 1 _d 0
+         regQn = 1 _d 0
         ENDIF
         MM_NO3 = NO3/(NO3 + ksatNO3(j))
-        regQn = MAX(0 _d 0, MIN(1 _d 0, (Qnmax(j)-Qn(j))/
-     &                                  (Qnmax(j)-Qnmin(j)) ))
-        regQn = regQn**hillnumDIN(j)
 C       Carbon-specific NO3 uptake rate
-        VN = vmaxNO3(j)*MM_NO3*regQn*uptakeTempFunc*mmRegQn
+        VN = vmaxNO3(j)*MM_NO3*regQn*uptakeTempFunc
         uptakeN = VN*mmX
         uptakeNO3 = VN*mmX
         uptakeNO2 = 0 _d 0
@@ -786,34 +780,28 @@ C       Carbon-specific NO3 uptake rate
 
 C       Phosphorous:
         IF ((QP_essential+QP_store) .GT. 0 _d 0) THEN
-         mmRegQp = (1.1 _d 0*(QP_essential+QP_store) - mmQp)/
+         regQp = (1.1 _d 0*(QP_essential+QP_store) - mmQp)/
      &             (0.1 _d 0*(QP_essential+QP_store))
-         mmRegQp = MAX(0 _d 0, MIN(1 _d 0, mmRegQp))
+         regQp = MAX(0 _d 0, MIN(1 _d 0, regQp))
         ELSE
-         mmRegQp = 1 _d 0
+         regQp = 1 _d 0
         ENDIF
         MM_PO4 = PO4/(PO4 + ksatPO4(j))
-        regQp = MAX(0 _d 0, MIN(1 _d 0, (Qpmax(j)-Qp(j))/
-     &                                  (Qpmax(j)-Qpmin(j)) ))
-        regQp = regQp**hillnumPO4(j)
 C       Carbon-specific PO4 uptake rate
-        VP = vmaxPO4(j)*MM_PO4*regQp*uptakeTempFunc*mmRegQp
+        VP = vmaxPO4(j)*MM_PO4*regQp*uptakeTempFunc
         uptakePO4 = VP*mmX
 
 C       Iron:
         IF ((Qfe_essential + Qfe_Store) .GT. 0 _d 0) THEN
-         mmRegQFe = (1.1 _d 0*(Qfe_essential + Qfe_Store) - mmQfe)/
+         regQFe = (1.1 _d 0*(Qfe_essential + Qfe_Store) - mmQfe)/
      &              (0.1 _d 0*(Qfe_essential + Qfe_Store))
-         mmRegQFe = MAX(0 _d 0, MIN(1 _d 0, mmRegQFe))
+         regQFe = MAX(0 _d 0, MIN(1 _d 0, regQFe))
         ELSE
-         mmRegQFe = 1 _d 0
+         regQFe = 1 _d 0
         ENDIF
         MM_FeT = FeT/(FeT + ksatFeT(j))
-        regQfe = MAX(0 _d 0, MIN(1 _d 0, (Qfemax(j)-Qfe(j))/
-     &                                   (Qfemax(j)-Qfemin(j)) ))
-        regQfe = regQfe**hillnumFeT(j)
 C       Carbon-specific FeT uptake rate
-        Vfe = vmaxFeT(j)*MM_FeT*regQFe*uptakeTempFunc*mmRegQfe
+        Vfe = vmaxFeT(j)*MM_FeT*regQFe*uptakeTempFunc
         uptakeFeT = Vfe*mmX
 
         exQc = 0 _d 0

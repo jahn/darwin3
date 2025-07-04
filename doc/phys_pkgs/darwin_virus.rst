@@ -118,7 +118,7 @@ Parameters
 
                        & :varlink:`isvirus`\ (jV)                    & :varlink:`grp_virus`      & 0                     &                     & 1: type jV is a virus
                        & :varlink:`infected`\ (jS,jV)                & :varlink:`grp_infected`   & 0                     &                     & index of type resulting from infection of host jS with virus jV
-   :math:`\phi_S`      & :varlink:`v_absorp`\ (jS,jV)                & :varlink:`a_v_absorp`     & 2.7×10\ :sup:`−19`    & m\ :sup:`3`\ /s/ind & = 0.27 μm\ :sup:`3`\ /ind/s = infection rate per number density
+   :math:`\phi_S`      & :varlink:`v_absorp`\ (jS,jV)                & :varlink:`a_v_absorp`     & 2.7×10\ :sup:`--19`   & m\ :sup:`3`\ /s/ind & = 0.27 μm\ :sup:`3`\ /ind/s = infection rate per number density
    :math:`\epsilon`    & :varlink:`v_abeff`\ (jS,jV)                 & :varlink:`a_v_abeff`      & 1                     & unitless            & absorption efficiency
    :math:`\tau`        & :varlink:`v_latent`\ (jS,jV)                & :varlink:`a_v_latent`     & 86400                 & s                   & latency period
    :math:`\beta`       & :varlink:`v_burst`\ (jS,jV)                 & :varlink:`a_v_burst`      & 20                    & virons              & burst size
@@ -135,7 +135,7 @@ into the first in the target group, etc.
 
 The carbon content of an individual, :math:`Q^{\mathrm{c}}_j` =
 :varlink:`qcarbon`\ (j), is described in :numref:`RespParams`.  A typical
-value for a virus is 2.75×10\ :sup:`−15` mmol C/viron.  Quotas of infected
+value for a virus is 2.75×10\ :sup:`--15` mmol C/viron.  Quotas of infected
 classes (carbon and other) are computed as a sum of those of the corresponding
 susceptible and virus classes at model initialization.
 

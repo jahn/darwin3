@@ -61,8 +61,8 @@ abbreviated source terms are described in sections below:
 - :math:`U`: uptake, see :ref:`Uptake` and :ref:`Bacteria`,
   also :ref:`Growth`, :ref:`CarbonStore`, :ref:`Light` and :ref:`Spectral`
 - :math:`M`: :ref:`Mortality`
-- :math:`R^{\mathrm{C}}`: :ref:`Respiration`
-- :math:`H`, :math:`R_j`: bacterial hydrolysis and remineralization, see :ref:`Bacteria`
+- :math:`R^{\mathrm{C}}`, :math:`R^{\mathrm{P}}`, ...: :ref:`Respiration`
+- :math:`H`, :math:`R^{\mathrm{DIC}}`, ...: bacterial hydrolysis and remineralization, see :ref:`Bacteria`
 - :math:`R`, :math:`P`: parameterized :ref:`Remineralization`
 - :math:`D_{\mathrm{NO3}}`: denitrification, see :ref:`Denitrification`
 - :math:`D_{\mathrm{PIC}}`: dissolution of PIC, see :ref:`CarbonChemistry`
@@ -87,3 +87,69 @@ The Alk and O\ :sub:`2` tracers are only present with :varlink:`DARWIN_ALLOW_CAR
                        & :varlink:`R_OP`       & :math:`R_{\mathrm{O}_2:\mathrm{P}}`       & 170          & mmol O\ :sub:`2` / mmol P & O\ :sub:`2`:P ratio for respiration and consumption
 
 For CDOM elemental ratios, see :ref:`CDOM`.
+
+Flow diagrams for the various chemical elements:
+
+.. figure:: figs/darwin_P_noCDOM_nograz.*
+   :width: 100%
+   :align: center
+   :alt: Flow of phosphorus schematic
+   :name: figdarwinP
+
+   The flow of phosphorus without CDOM (for grazing see :numref:`figdarwinPgraz`)
+
+.. figure:: figs/darwin_P_CDOM_nograz.*
+   :width: 100%
+   :align: center
+   :alt: Flow of phosphorus schematic
+   :name: figdarwinPCDOM
+
+   The flow of phosphorus wich CDOM.
+
+.. figure:: figs/darwin_P_graz.*
+   :width: 75%
+   :align: center
+   :alt: Flow of phosphorus schematic
+   :name: figdarwinPgraz
+
+   The flow of phosphorus due to grazing.
+
+.. figure:: figs/darwin_N_noCDOM_nograz.*
+   :width: 100%
+   :align: center
+   :alt: Flow of nitrogen schematic
+   :name: figdarwinN
+
+   The flow of nitrogen (no CDOM, grazing suppressed).
+
+.. figure:: figs/darwin_Fe_noCDOM_nograz.*
+   :width: 100%
+   :align: center
+   :alt: Flow of iron schematic
+   :name: figdarwinFe
+
+   The flow of iron (no CDOM, grazing suppressed).
+
+.. figure:: figs/darwin_Si_noCDOM_nograz.*
+   :width: 80%
+   :align: center
+   :alt: Flow of silica schematic
+   :name: figdarwinSi
+
+   The flow of silica (no CDOM, grazing suppressed).
+
+.. figure:: figs/darwin_ALK.*
+   :width: 50%
+   :align: center
+   :alt: Flow of alkalinity schematic
+   :name: figdarwinALK
+
+   Sources and sinks of alkalinity.
+
+.. figure:: figs/darwin_O2.*
+   :width: 50%
+   :align: center
+   :alt: Flow of oxygen schematic
+   :name: figdarwinO2
+
+   Sources and sinks of oxygen.

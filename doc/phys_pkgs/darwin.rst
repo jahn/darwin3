@@ -163,7 +163,8 @@ To use spectral light, compile the radtrans package, see
    :varlink:`DARWIN_SOLVESAPHE`                 & compile Munhoven "Solvesaphe" pH/pOC2 solver package
    :varlink:`DARWIN_TOTALPHSCALE`               & consistently use the total pH scale for carbon chemistry coefficients
    :varlink:`DARWIN_USE_PLOAD`                  & take atmospheric pressure from coupled atmospheric model
-   :varlink:`DARWIN_ALLOW_RADI`                 & enable RADI sediment model
+   :varlink:`DARWIN_ALLOW_RADIv1`               & enable RADI sediment metamodel version 1
+   :varlink:`DARWIN_ALLOW_RADIv2`               & enable RADI sediment metamodel version 2
    :varlink:`DARWIN_ALLOW_DENIT`                & enable denitrification code
    :varlink:`DARWIN_ALLOW_EXUDE`                & enable exudation of individual quotas
    :varlink:`ALLOW_OLD_VIRTUALFLUX`             & enable old virtualflux code for DIC and ALK
@@ -687,7 +688,7 @@ or decreasing precedence),
 
    V_j = \begin{cases}
        \op{grp\_biovol(i,g)} &  \\
-       V_{\log}(\op{grp\_biovolind(i,g)}) \\
+       V_{\log}(\op{grp\_logvolind(i,g)}) \\
        V_{\log}(\op{logvol0ind(g)}+i-1) \\
        V_{0 g} f_g^{i-1}
      \end{cases}
@@ -898,6 +899,15 @@ Diagnostics
    GR####     & ``SMRP____MR`` & mmol C /m\ :sup:`3`/s           & Grazing loss of plankton ####
    GrGn####   & ``SMRP____MR`` & mmol C /m\ :sup:`3`/s           & Grazing gain of plankton ####
    GrGC####   & ``SMRP____MR`` & 1/s                             & Carbon-specific grazing rate plankton ####
+   Mort####   & ``SMRP____MR`` & mmol C /m\ :sup:`3`/s           & Mortality loss plankton ####
+   Resp####   & ``SMRP____MR`` & mmol C /m\ :sup:`3`/s           & Respiration loss plankton ####
+   limN####   & ``SMRP____MR`` & [0/1]                           & N growth limitation plankton ####
+   limP####   & ``SMRP____MR`` & [0/1]                           & P growth limitation plankton ####
+   limF####   & ``SMRP____MR`` & [0/1]                           & Fe growth limitation plankton ####
+   limS####   & ``SMRP____MR`` & [0/1]                           & Si growth limitation plankton ####
+   fnut####   & ``SMRP____MR`` & [0/1]                           & Nutrient growth factor plankton ####
+   fIph####   & ``SMRP____MR`` & [0/1]                           & Light growth factor plankton ####
+   fTph####   & ``SMRP____MR`` & [0/1]                           & Temperature growth factor plankton ####
    EXU####    & ``SMRP____MR`` & mmol C /m\ :sup:`3`/s           & Exudation plankton ####
    BS####     & ``SMRP____MR`` & mmol C /m\ :sup:`3`/s           & Biosynthesis rate plankton ####
    DN####     & ``SMRP____MR`` & mmol C /m\ :sup:`3`/s           & Carbon demand from N limit plankton ####

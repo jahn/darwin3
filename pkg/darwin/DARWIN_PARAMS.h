@@ -116,7 +116,7 @@ C     oC0 :: Coefficient for determining saturation O2
       _RL oB3
       _RL oC0
 
-# ifdef DARWIN_ALLOW_RADI
+# ifdef DARWIN_ALLOW_RADIv1
 C--   COMMON /DARWIN_SED_CONSTANTS_R/ Coefficients for sediment model
 C     sed_a1 :: coefficient for sediment model
 C     sed_b1 :: coefficient for sediment model
@@ -182,6 +182,109 @@ C     sed_c :: coefficient for sediment model
       _RL sed_c5
       _RL sed_d5
       _RL sed_c
+# endif
+
+# ifdef DARWIN_ALLOW_RADIv2
+C--   COMMON /DARWIN_SED_CONSTANTS_r/ Coefficients for sediment model
+C     sed_depth_threshold :: depth threshold for deep/coast equations
+C     sed_globala1        :: coefficient for sediment model
+C     sed_globalb1        :: coefficient for sediment model
+C     sed_globalc1        :: coefficient for sediment model
+C     sed_globald1        :: coefficient for sediment model
+C     sed_globale1        :: coefficient for sediment model
+C     sed_globala2        :: coefficient for sediment model
+C     sed_globalb2        :: coefficient for sediment model
+C     sed_globalc2        :: coefficient for sediment model
+C     sed_globald2        :: coefficient for sediment model
+C     sed_globale2        :: coefficient for sediment model
+C     sed_globala3        :: coefficient for sediment model
+C     sed_globalb3        :: coefficient for sediment model
+C     sed_globalc3        :: coefficient for sediment model
+C     sed_globald3        :: coefficient for sediment model
+C     sed_globale3        :: coefficient for sediment model
+C     sed_globala4        :: coefficient for sediment model
+C     sed_globalb4        :: coefficient for sediment model
+C     sed_globalc4        :: coefficient for sediment model
+C     sed_globald4        :: coefficient for sediment model
+C     sed_globale4        :: coefficient for sediment model
+C     sed_globalf4        :: coefficient for sediment model
+C     sed_globalg4        :: coefficient for sediment model
+C     sed_globala5        :: coefficient for sediment model
+C     sed_globalb5        :: coefficient for sediment model
+C     sed_globalc5        :: coefficient for sediment model
+C     sed_globald5        :: coefficient for sediment model
+C     sed_globale5        :: coefficient for sediment model
+C     sed_globala6        :: coefficient for sediment model
+C     sed_globalb6        :: coefficient for sediment model
+C     sed_globalc6        :: coefficient for sediment model
+C     sed_globald6        :: coefficient for sediment model
+C     sed_globale6        :: coefficient for sediment model
+
+      COMMON /DARWIN_SED_CONSTANTS_r/
+     &    sed_globala1,
+     &    sed_globalb1,
+     &    sed_globalc1,
+     &    sed_globald1,
+     &    sed_globale1,
+     &    sed_globala2,
+     &    sed_globalb2,
+     &    sed_globalc2,
+     &    sed_globald2,
+     &    sed_globale2,
+     &    sed_globala3,
+     &    sed_globalb3,
+     &    sed_globalc3,
+     &    sed_globald3,
+     &    sed_globale3,
+     &    sed_globala4,
+     &    sed_globalb4,
+     &    sed_globalc4,
+     &    sed_globald4,
+     &    sed_globale4,
+     &    sed_globalf4,
+     &    sed_globalg4,
+     &    sed_globala5,
+     &    sed_globalb5,
+     &    sed_globalc5,
+     &    sed_globald5,
+     &    sed_globale5,
+     &    sed_globala6,
+     &    sed_globalb6,
+     &    sed_globalc6,
+     &    sed_globald6,
+     &    sed_globale6
+      _RL sed_globala1
+      _RL sed_globalb1
+      _RL sed_globalc1
+      _RL sed_globald1
+      _RL sed_globale1
+      _RL sed_globala2
+      _RL sed_globalb2
+      _RL sed_globalc2
+      _RL sed_globald2
+      _RL sed_globale2
+      _RL sed_globala3
+      _RL sed_globalb3
+      _RL sed_globalc3
+      _RL sed_globald3
+      _RL sed_globale3
+      _RL sed_globala4
+      _RL sed_globalb4
+      _RL sed_globalc4
+      _RL sed_globald4
+      _RL sed_globale4
+      _RL sed_globalf4
+      _RL sed_globalg4
+      _RL sed_globala5
+      _RL sed_globalb5
+      _RL sed_globalc5
+      _RL sed_globald5
+      _RL sed_globale5
+      _RL sed_globala6
+      _RL sed_globalb6
+      _RL sed_globalc6
+      _RL sed_globald6
+      _RL sed_globale6
 # endif
 #endif
 
@@ -249,8 +352,9 @@ C     scav_tau          :: [1]                 factor to go from Th scavenging r
 C     scav_inter        :: [L^e mg^-e s^-1]    intercept of scavenging power law (e=scav_exp)
 C     scav_exp          :: [1]                 exponent of scavenging power law
 C     scav_POC_wgt      :: [g / mmol C]        weight POC contributes to POM for scavenging
-C     scav_POSi_wgt     :: [g / mmol Si]       weight POSi contributes to POM for scavenging
+C     scav_PSi_wgt      :: [g / mmol Si]       weight PSi contributes to POM for scavenging
 C     scav_PIC_wgt      :: [g / mmol C]        weight PIC contributes to POM for scavenging
+C     scav_degrPOM      :: [g/m3]              concentration of non-labile POM for scavenging
 C     scav_rat          :: [1]                 factor Th to iron for DARWIN_PART_SCAV_POP
 C     scav_R_POPPOC     :: [mmol P / g C]      POP:POC ratio for DARWIN_PART_SCAV_POP
 C     depthfesed        :: [m]                 depth above which to add sediment source (was -1000)
@@ -382,8 +486,9 @@ C     depthdenit        :: [m]             not implemented (depth for denitrific
      &    scav_inter,
      &    scav_exp,
      &    scav_POC_wgt,
-     &    scav_POSi_wgt,
+     &    scav_PSi_wgt,
      &    scav_PIC_wgt,
+     &    scav_degrPOM,
 #else
      &    scav,
 #endif
@@ -503,8 +608,9 @@ C     &    yono2,
       _RL scav_inter
       _RL scav_exp
       _RL scav_POC_wgt
-      _RL scav_POSi_wgt
+      _RL scav_PSi_wgt
       _RL scav_PIC_wgt
+      _RL scav_degrPOM
 #else
       _RL scav
 #endif

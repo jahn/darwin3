@@ -117,8 +117,9 @@ C----
      &    scav_inter,
      &    scav_exp,
      &    scav_POC_wgt,
-     &    scav_POSi_wgt,
+     &    scav_PSi_wgt,
      &    scav_PIC_wgt,
+     &    scav_degrPOM,
 #else
      &    scav,
 #endif
@@ -183,6 +184,40 @@ C----
      &    selectBTconst, selectFTconst,
      &    selectHFconst, selectK1K2const,
      &    selectPHsolver,
+#ifdef DARWIN_ALLOW_RADIv2
+     &    sed_globala1,
+     &    sed_globalb1,
+     &    sed_globalc1,
+     &    sed_globald1,
+     &    sed_globale1,
+     &    sed_globala2,
+     &    sed_globalb2,
+     &    sed_globalc2,
+     &    sed_globald2,
+     &    sed_globale2,
+     &    sed_globala3,
+     &    sed_globalb3,
+     &    sed_globalc3,
+     &    sed_globald3,
+     &    sed_globale3,
+     &    sed_globala4,
+     &    sed_globalb4,
+     &    sed_globalc4,
+     &    sed_globald4,
+     &    sed_globale4,
+     &    sed_globalf4,
+     &    sed_globalg4,
+     &    sed_globala5,
+     &    sed_globalb5,
+     &    sed_globalc5,
+     &    sed_globald5,
+     &    sed_globale5,
+     &    sed_globala6,
+     &    sed_globalb6,
+     &    sed_globalc6,
+     &    sed_globald6,
+     &    sed_globale6,
+#endif
 #endif
      &    diaz_ini_fac,
      &    O2crit,
@@ -333,7 +368,7 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       oB3 = -8.17083 _d -3
       oC0 = -4.88682 _d -7
 
-#ifdef DARWIN_ALLOW_RADI
+#ifdef DARWIN_ALLOW_RADIv1
 C for sediment model
       sed_a1 = -0.101 _d 0
       sed_b1 = 1.04 _d 0
@@ -356,6 +391,42 @@ C for sediment model
       sed_c5 = 0.852 _d 0
       sed_d5 = -0.127 _d 0
       sed_c = 3.17 _d -5
+#endif
+
+#ifdef DARWIN_ALLOW_RADIv2
+C for sediment model
+      sed_globala1 = 2.07 _d -5
+      sed_globalb1 = -5.64 _d -7
+      sed_globalc1 = -5.42 _d -6
+      sed_globald1 = 1.45 _d 0
+      sed_globale1 = 4.19 _d -1
+      sed_globala2 = 1.55 _d -5
+      sed_globalb2 = -2.94 _d -7
+      sed_globalc2 = -6.55 _d -6
+      sed_globald2 = 5.83 _d -1
+      sed_globale2 = 1.38 _d -1
+      sed_globala3 = -1.35 _d -5
+      sed_globalb3 = 5.08 _d -8
+      sed_globalc3 = 1.79 _d -6
+      sed_globald3 = -1.07 _d 0
+      sed_globale3 = -4.47 _d -1
+      sed_globala4 = 3.0 _d -6
+      sed_globalb4 = -7.14 _d -1
+      sed_globalc4 = 1.94 _d -1
+      sed_globald4 = 2.81 _d -1
+      sed_globale4 = -2.21 _d -2
+      sed_globalf4 = -2.97 _d -2
+      sed_globalg4 = -3.20 _d 2
+      sed_globala5 = -2.42 _d -7
+      sed_globalb5 = 1.54 _d -8
+      sed_globalc5 = -4.77 _d -8
+      sed_globald5 = 1.64 _d 0
+      sed_globale5 = 1.20 _d -2
+      sed_globala6 = -3.87 _d -6
+      sed_globalb6 = 9.15 _d -8
+      sed_globalc6 = -7.26 _d -7
+      sed_globald6 = 1.73 _d 0
+      sed_globale6 = 1.51 _d -1
 #endif
 #endif
 
@@ -397,12 +468,13 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       scav_exp = 0.58 _d 0
       scav_R_POPPOC = 1.1321 _d -4
 #elif defined(DARWIN_PART_SCAV)
-      scav_tau = 0.2
+      scav_tau = 0.2 _d 0
       scav_inter = 0.079 _d 0 / pday
       scav_exp = 0.58 _d 0
-      scav_POC_wgt = 0.02173 _d 0
-      scav_POSi_wgt = 0.069 _d 0
-      scav_PIC_wgt = 0.100 _d 0
+      scav_POC_wgt = 0.12728 _d 0
+      scav_PSi_wgt = 0 _d 0
+      scav_PIC_wgt = 0 _d 0
+      scav_degrPOM = 0 _d 0
 #else
       scav = 0.4 _d 0/pyear
 #endif

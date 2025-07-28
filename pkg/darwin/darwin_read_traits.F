@@ -75,6 +75,7 @@
      &    R_PICPOC,
      &    biosink,
      &    bioswim,
+     &    bioswimDVM,
      &    respRate,
      &    PCmax,
      &    Qnmax,
@@ -130,7 +131,13 @@
      &    ksatDON,
      &    ksatDOC,
      &    ksatDOP,
-     &    ksatDOFe
+     &    ksatDOFe,
+     &    PARpref,
+     &    mortmaxDVM,
+     &    ksatDVM,
+     &    ksatPARDVM,
+     &    fracPARmort,
+     &    ExportFracDVM
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
      &   ,Y_CP_Plip,
      &    Y_CN_protein,

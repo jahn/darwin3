@@ -99,6 +99,7 @@ C     R_PICPOC           :: [mmol PIC (mmol POC)^-1]   inorganic-organic carbon 
 C
 C     biosink            :: [m s^-1]                   sinking velocity (positive downwards)
 C     bioswim            :: [m s^-1]                   upward swimming velocity (positive upwards)
+C     bioswimDVM         :: [m s^-1]                   swimming speed for diel vertically migrating plankton (pos. upwards)
 C
 C     respRate           :: [s^-1]                     respiration rate
 C     PCmax              :: [s^-1]                     maximum carbon-specific growth rate
@@ -162,6 +163,14 @@ C     ksatDON            :: [mmol N m^-3]   half-saturation of DON for bacterial
 C     ksatDOC            :: [mmol C m^-3]   half-saturation of DOC for bacterial growth
 C     ksatDOP            :: [mmol P m^-3]   half-saturation of DOP for bacterial growth
 C     ksatDOFe           :: [mmol Fe m^-3]  half-saturation of DOFe for bacterial growth
+C- PAR preference
+C     PARpref            :: [uEin m^-2 s^-1] preferred PAR isolume for determining DVM
+C- Light-mediated mortality for DVM
+C     mortmaxDVM         :: [s^-1]           maximum mortality rate related to PAR for DVM
+C     ksatDVM            :: [mmol C m^-3]    half saturation for DVM mortality
+C     ksatPARDVM         :: [uEin m^-2 s^-1] half sat for light limitation for DVM
+C     fracPARmort        :: []               fraction of mortality from light-dependent mortality
+C     ExportFracDVM      :: []               fraction of light-dep mortality from DVM to POM
 C
 C- MACROMOLECULAR_GROWTH parameters
 C     Y_CP_Plip          :: [molC molP^-1]   C/P molar ratio of thylacoid membrane
@@ -234,6 +243,7 @@ C     QfeNoChl           :: [molFe molC^-1]  minimum QFe at zero growth rate
      &    R_PICPOC,
      &    biosink,
      &    bioswim,
+     &    bioswimDVM,
      &    respRate,
      &    PCmax,
      &    Qnmax,
@@ -289,7 +299,13 @@ C     QfeNoChl           :: [molFe molC^-1]  minimum QFe at zero growth rate
      &    ksatDON,
      &    ksatDOC,
      &    ksatDOP,
-     &    ksatDOFe
+     &    ksatDOFe,
+     &    PARpref,
+     &    mortmaxDVM,
+     &    ksatDVM,
+     &    ksatPARDVM,
+     &    fracPARmort,
+     &    ExportFracDVM
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
      &   ,Y_CN_protein,
      &    Y_CP_Plip,
@@ -361,6 +377,7 @@ C     QfeNoChl           :: [molFe molC^-1]  minimum QFe at zero growth rate
       _RL R_PICPOC(nplank)
       _RL biosink(nplank)
       _RL bioswim(nplank)
+      _RL bioswimDVM(nplank)
       _RL respRate(nplank)
       _RL PCmax(nplank)
       _RL Qnmax(nplank)
@@ -417,6 +434,12 @@ C     QfeNoChl           :: [molFe molC^-1]  minimum QFe at zero growth rate
       _RL ksatDOC(nplank)
       _RL ksatDOP(nplank)
       _RL ksatDOFe(nplank)
+      _RL PARpref(nplank)
+      _RL mortmaxDVM(nplank)
+      _RL ksatDVM(nplank)
+      _RL ksatPARDVM(nplank)
+      _RL fracPARmort(nplank)
+      _RL ExportFracDVM(nplank)
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
       _RL Y_CN_protein(nplank)
       _RL Y_CP_Plip(nplank)

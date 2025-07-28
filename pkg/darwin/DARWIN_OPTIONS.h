@@ -87,6 +87,9 @@ C enable RADI sediment metamodel v1
 C enable RADI sediment metamodel v2
 #undef DARWIN_ALLOW_RADIv2
 
+C include diel vertical migration code
+#undef  DARWIN_ALLOW_DVM
+
 
 C light
 

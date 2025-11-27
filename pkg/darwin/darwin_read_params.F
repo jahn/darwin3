@@ -144,6 +144,17 @@ C----
      &    KPON,
      &    KPOFe,
      &    KPOSi,
+#ifdef DARWIN_MACROMOLECULAR_GROWTH
+     &    Y_THY_P,
+     &    Y_CN_protein,
+     &    Y_FeN_photo,
+     &    Y_NC_chl,
+     &    Y_CN_cyano,
+     &    Y_PN_nucacid,
+     &    Y_CN_DNA,
+     &    Y_CN_RNA,
+     &    Y_CP_Plip,
+#endif
      &    ksatO2remin,
      &    wC_sink,
      &    wP_sink,
@@ -500,6 +511,17 @@ C
       KPON = KPOC
       KPOFe = KPOC
       KPOSi = 1 _d 0/(300 _d 0*pday)
+#ifdef DARWIN_MACROMOLECULAR_GROWTH
+      Y_THY_P = 0.028163 _d 0
+      Y_CN_protein = 5.3 _d 0 /1.4 _d 0
+      Y_FeN_photo = 0.00163 _d 0
+      Y_NC_chl = 4.0 _d 0/55.0 _d 0
+      Y_CN_cyano = 2.0 _d 0
+      Y_PN_nucacid = 1. _d 0 /3.75 _d 0
+      Y_CN_DNA = 9.75 _d 0 /3.75 _d 0
+      Y_CN_RNA = 9.50 _d 0 /3.75 _d 0
+      Y_CP_Plip = 40.0 _d 0
+#endif
       ksatO2remin = 0 _d 0
       wC_sink = 10 _d 0/pday
       wP_sink = wC_sink

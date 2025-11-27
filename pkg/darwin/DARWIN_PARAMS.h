@@ -454,6 +454,17 @@ C     fno2              :: []              not implemented (for nitrite-oxidizin
 C     yno2              :: []              not implemented (for nitrite-oxidizing bacteria)
 C     yono2             :: []              not implemented (for nitrite-oxidizing bacteria)
 C
+C- DARWIN_MACROMOLECULAR_GROWTH parameters
+C     Y_CP_Plip         :: [molC molP^-1]   C/P molar ratio of thylacoid membrane
+C     Y_CN_protein      :: [molC molN^-1]   C/N molar ratio in protein
+C     Y_NC_chl          :: [molN molC^-1]   N/C molar ratio in chlorophyll
+C     Y_CN_cyano        :: [molC molN^-1]   C/N molar ratio of cyanophycin
+C     Y_PN_nucacid      :: [molP molN^-1]   P/N molar ratio of RNA
+C     Y_CN_DNA          :: [molC molN^-1]   C/N molar ratio of DNA
+C     Y_CN_RNA          :: [molC molN^-1]   C/N molar ratio of RNA
+C     Y_THY_P           :: [(molP)/(molC in chl)^-1] the stoichiometric ratio for cell phosphorus in thylakoid membrane to chlorophyll
+C     Y_FeN_photo       :: [molFe mol N^-1] Fe/N ratio in photosystem iron
+C
 C- To be implemented
 C     depthdenit        :: [m]             not implemented (depth for denitrification relaxation to start)
       COMMON /DARWIN_PARAMS_r/
@@ -511,6 +522,17 @@ C     depthdenit        :: [m]             not implemented (depth for denitrific
      &    KPOFe,
      &    KPOSi,
      &    ksatO2remin,
+#ifdef DARWIN_MACROMOLECULAR_GROWTH
+     &    Y_THY_P,
+     &    Y_CN_protein,
+     &    Y_FeN_photo,
+     &    Y_NC_chl,
+     &    Y_CN_cyano,
+     &    Y_PN_nucacid,
+     &    Y_CN_DNA,
+     &    Y_CN_RNA,
+     &    Y_CP_Plip,
+#endif
      &    wC_sink,
      &    wN_sink,
      &    wP_sink,
@@ -631,6 +653,17 @@ C     &    yono2,
       _RL KPOP
       _RL KPOFe
       _RL KPOSi
+#ifdef DARWIN_MACROMOLECULAR_GROWTH
+      _RL Y_THY_P
+      _RL Y_CN_protein
+      _RL Y_FeN_photo
+      _RL Y_NC_chl
+      _RL Y_CN_cyano
+      _RL Y_PN_nucacid
+      _RL Y_CN_DNA
+      _RL Y_CN_RNA
+      _RL Y_CP_Plip
+#endif
       _RL ksatO2remin
       _RL wC_sink
       _RL wN_sink

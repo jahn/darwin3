@@ -2272,6 +2272,37 @@ C--   Print parameters from DARWIN_PARAMS.h
       CALL WRITE_0D_I(kMinFeVent,INDEX_NONE,
      &'kMinFeVent =',
      &' /* minimum level index for hydrothermal vents */')
+#ifdef DARWIN_MACROMOLECULAR_GROWTH
+      CALL WRITE_0D_RL(Y_CP_Plip,INDEX_NONE,
+     &'Y_CP_Plip = ',
+     &' /* C/P molar ratio of PG: Phosphatidyl glycerol (molC molP^-1) *
+     &/')
+      CALL WRITE_0D_RL(Y_CN_protein,INDEX_NONE,
+     &'Y_CN_protein = ',
+     &' /* C/N molar ratio in protein (molC molN^-1) */')
+      CALL WRITE_0D_RL(Y_NC_chl,INDEX_NONE,
+     &'Y_NC_chl = ',
+     &' /* N/C molar ratio in chlorophyll (molN molC^-1) */')
+      CALL WRITE_0D_RL(Y_CN_cyano,INDEX_NONE,
+     &'Y_CN_cyano = ',
+     &' /* C/N molar ratio of cyanophycin (molC molN^-1) */')
+      CALL WRITE_0D_RL(Y_PN_nucacid,INDEX_NONE,
+     &'Y_PN_nucacid = ',
+     &' /* P/N molar ratio of RNA (molP molN^-1) */')
+      CALL WRITE_0D_RL(Y_CN_DNA,INDEX_NONE,
+     &'Y_CN_DNA = ',
+     &' /* C/N molar ratio of DNA (molC molN^-1) */')
+      CALL WRITE_0D_RL(Y_CN_RNA,INDEX_NONE,
+     &'Y_CN_RNA = ',
+     &' /* C/N molar ratio of RNA (molC molN^-1) */')
+      CALL WRITE_0D_RL(Y_THY_P,INDEX_NONE,
+     &'Y_THY_P = ',
+     &' /* the stoichiometric ratio for cell phosphorus in thylakoid mem
+     &brane to chlorophyll ((molP)/(molC in chl)^-1) */')
+      CALL WRITE_0D_RL(Y_FeN_photo,INDEX_NONE,
+     &'Y_FeN_photo = ',
+     &' /* Fe/N ratio in photosystem iron (molFe mol N^-1) */')
+#endif
 
 C---+----1----+----2----+----3----+----4----+----5----+----6----+----7-|--+----|
 C--   Print traits from DARWIN_TRAITS.h
@@ -2656,35 +2687,6 @@ C--   Print traits from DARWIN_TRAITS.h
      &' /* normalization factor for non-Geider light curve */')
 #endif
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
-      CALL WRITE_1D_RL(Y_CP_Plip,nplank,INDEX_NONE,
-     &'Y_CP_Plip = ',
-     &' /* C/P molar ratio of PG: Phosphatidyl glycerol (molC molP^-1) *
-     &/')
-      CALL WRITE_1D_RL(Y_CN_protein,nplank,INDEX_NONE,
-     &'Y_CN_protein = ',
-     &' /* C/N molar ratio in protein (molC molN^-1) */')
-      CALL WRITE_1D_RL(Y_NC_chl,nplank,INDEX_NONE,
-     &'Y_NC_chl = ',
-     &' /* N/C molar ratio in chlorophyll (molN molC^-1) */')
-      CALL WRITE_1D_RL(Y_CN_cyano,nplank,INDEX_NONE,
-     &'Y_CN_cyano = ',
-     &' /* C/N molar ratio of cyanophycin (molC molN^-1) */')
-      CALL WRITE_1D_RL(Y_PN_nucacid,nplank,INDEX_NONE,
-     &'Y_PN_nucacid = ',
-     &' /* P/N molar ratio of RNA (molP molN^-1) */')
-      CALL WRITE_1D_RL(Y_CN_DNA,nplank,INDEX_NONE,
-     &'Y_CN_DNA = ',
-     &' /* C/N molar ratio of DNA (molC molN^-1) */')
-      CALL WRITE_1D_RL(Y_CN_RNA,nplank,INDEX_NONE,
-     &'Y_CN_RNA = ',
-     &' /* C/N molar ratio of RNA (molC molN^-1) */')
-      CALL WRITE_1D_RL(Y_THY_P,nplank,INDEX_NONE,
-     &'Y_THY_P = ',
-     &' /* the stoichiometric ratio for cell phosphorus in thylakoid mem
-     &brane to chlorophyll ((molP)/(molC in chl)^-1) */')
-      CALL WRITE_1D_RL(Y_FeN_photo,nplank,INDEX_NONE,
-     &'Y_FeN_photo = ',
-     &' /* Fe/N ratio in photosystem iron (molFe mol N^-1) */')
       CALL WRITE_1D_RL(ECo2Prod,nplank,INDEX_NONE,
      &'ECo2Prod = ',
      &' /* CO2 production ratio (dimensionless) */')

@@ -139,16 +139,7 @@
      &    fracPARmort,
      &    ExportFracDVM
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
-     &   ,Y_CP_Plip,
-     &    Y_CN_protein,
-     &    Y_NC_chl,
-     &    Y_CN_cyano,
-     &    Y_PN_nucacid,
-     &    Y_CN_DNA,
-     &    Y_CN_RNA,
-     &    Y_THY_P,
-     &    Y_FeN_photo,
-     &    ECo2Prod,
+     &   ,ECo2Prod,
      &    maintConsum,
      &    VI_max,
      &    A_I,
@@ -299,22 +290,22 @@ C       only Coccolithophores have PIC
 
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
       DO jp = 1,nplank
-        QN_pro_other(jp) = QC_pro_other(jp)/Y_CN_protein(jp)
-        QN_RNA_min(jp)   = QP_RNA_min(jp)/Y_PN_nucacid(jp)
-        QC_RNA_min(jp)   = QN_RNA_min(jp)*Y_CN_RNA(jp)
-        QN_DNA(jp)       = QC_DNA(jp)/Y_CN_DNA(jp)
-        QP_DNA(jp)       = QN_DNA(jp)*Y_PN_nucacid(jp)
-        A_thy(jp)        = Y_THY_P(jp)*Y_CP_Plip(jp)
-        AN_RNA(jp)       = AP_RNA(jp)*Y_CN_protein(jp)/Y_PN_nucacid(jp)
+        QN_pro_other(jp) = QC_pro_other(jp)/Y_CN_protein
+        QN_RNA_min(jp)   = QP_RNA_min(jp)/Y_PN_nucacid
+        QC_RNA_min(jp)   = QN_RNA_min(jp)*Y_CN_RNA
+        QN_DNA(jp)       = QC_DNA(jp)/Y_CN_DNA
+        QP_DNA(jp)       = QN_DNA(jp)*Y_PN_nucacid
+        A_thy(jp)        = Y_THY_P*Y_CP_Plip
+        AN_RNA(jp)       = AP_RNA(jp)*Y_CN_protein/Y_PN_nucacid
 
-        QC_const(jp) = QC_pro_other(jp) + QN_RNA_min(jp)*Y_CN_RNA(jp) +
+        QC_const(jp) = QC_pro_other(jp) + QN_RNA_min(jp)*Y_CN_RNA +
      &    QC_DNA(jp) + QC_other(jp)
         VI_min(jp) = maintConsum(jp)*
      &    (1. + A_thy(jp) + A_pho(jp))/(1 - QC_const(jp))
         QC_chlMax(jp) = maintConsum(jp)/VI_min(jp)
 
         QnNoChl(jp) = QN_DNA(jp) + QN_RNA_min(jp) + QN_pro_other(jp)
-        QpNoChl(jp) = QP_RNA_min(jp) + QN_DNA(jp)*Y_PN_nucacid(jp)
+        QpNoChl(jp) = QP_RNA_min(jp) + QN_DNA(jp)*Y_PN_nucacid
      &              + QP_other(jp)
         QfeNoChl(jp) = 0.0 _d 0
       ENDDO

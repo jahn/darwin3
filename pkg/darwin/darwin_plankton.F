@@ -608,15 +608,15 @@ C        where ls = D*Qc               (molC s-1) Biomass synthesis rate
          QC_chl_D1 = (1 + ECo2Prod(j))/PChl
 
 C        nitrogen pools in mol N (mol C)-1
-         QN_chl_D0 = QC_chl_D0*Y_NC_chl(j)
-         QN_chl_D1 = QC_chl_D1*Y_NC_chl(j)
+         QN_chl_D0 = QC_chl_D0*Y_NC_chl
+         QN_chl_D1 = QC_chl_D1*Y_NC_chl
 
 C        photosynthesis related protein
-         QN_photo_D0 = QC_chl_D0*A_pho(j)/Y_CN_protein(j)
-         QN_photo_D1 = QC_chl_D1*A_pho(j)/Y_CN_protein(j)
+         QN_photo_D0 = QC_chl_D0*A_pho(j)/Y_CN_protein
+         QN_photo_D1 = QC_chl_D1*A_pho(j)/Y_CN_protein
 
 C        biosynthesis related protein
-         QN_bio_D1 = A_bio(j)/Y_CN_protein(j)/macromolTempFunc
+         QN_bio_D1 = A_bio(j)/Y_CN_protein/macromolTempFunc
 
 C        total protein
          QN_pro_D0 = QN_photo_D0 + QN_pro_other(j)
@@ -633,10 +633,10 @@ C        Total nitrogen
 
 
 C        Phosphate restriction on growth rate
-         QP_rna_D1 = QN_rna_D1*Y_PN_nucacid(j)
-         QP_rna_D2 = QN_rna_D2*Y_PN_nucacid(j)
-         QP_thy_D0 = QC_chl_D0*Y_THY_P(j)
-         QP_thy_D1 = QC_chl_D1*Y_THY_P(j)
+         QP_rna_D1 = QN_rna_D1*Y_PN_nucacid
+         QP_rna_D2 = QN_rna_D2*Y_PN_nucacid
+         QP_thy_D0 = QC_chl_D0*Y_THY_P
+         QP_thy_D1 = QC_chl_D1*Y_THY_P
 
          Qp_D0 = QP_thy_D0 + QP_RNA_min(j) + QP_DNA(j) + QP_other(j)
          Qp_D1 = QP_thy_D1 + QP_rna_D1
@@ -644,17 +644,17 @@ C        Phosphate restriction on growth rate
 
 
 C        Iron restriction on growth
-         Qfe_D0 = QN_photo_D0*Y_FeN_photo(j)
-         Qfe_D1 = QN_photo_D1*Y_FeN_photo(j)
+         Qfe_D0 = QN_photo_D0*Y_FeN_photo
+         Qfe_D1 = QN_photo_D1*Y_FeN_photo
 
 
 C        carbon restriction on growth rate
-         QC_thy_D0 = QP_thy_D0*Y_CP_Plip(j)
-         QC_thy_D1 = QP_thy_D1*Y_CP_Plip(j)
-         QC_pro_D0 = QN_pro_D0*Y_CN_protein(j)
-         QC_pro_D1 = QN_pro_D1*Y_CN_protein(j)
-         QC_rna_D1 = QN_rna_D1*Y_CN_RNA(j)
-         QC_rna_D2 = QN_rna_D2*Y_CN_RNA(j)
+         QC_thy_D0 = QP_thy_D0*Y_CP_Plip
+         QC_thy_D1 = QP_thy_D1*Y_CP_Plip
+         QC_pro_D0 = QN_pro_D0*Y_CN_protein
+         QC_pro_D1 = QN_pro_D1*Y_CN_protein
+         QC_rna_D1 = QN_rna_D1*Y_CN_RNA
+         QC_rna_D2 = QN_rna_D2*Y_CN_RNA
 
          Qc_D0 = QC_chl_D0 + QC_pro_D0 + QC_RNA_min(j) + QC_thy_D0
      &         + QC_DNA(j) + QC_other(j)
@@ -703,10 +703,10 @@ C       If growth rate is zero, recompute maximum QC_chl possible with
 C       given quotas
         IF (PC .EQ. 0. _d 0) THEN
          QC_chlN = (mmQn - QnNoChl(j))
-     &         /(Y_NC_chl(j) + A_pho(j)/Y_CN_protein(j))
-         QC_chlP = (mmQp - QpNoChl(j))/Y_THY_P(j)
+     &         /(Y_NC_chl + A_pho(j)/Y_CN_protein)
+         QC_chlP = (mmQp - QpNoChl(j))/Y_THY_P
          QC_chlF = (mmQfe - QfeNoChl(j))
-     &         /(A_pho(j)/Y_CN_protein(j)*Y_FeN_photo(j))
+     &         /(A_pho(j)/Y_CN_protein*Y_FeN_photo)
          QC_chl = MAX(0 _d 0, MIN(QC_chlN,QC_chlP,QC_chlF,QC_chlMax(j)))
         ENDIF
 
@@ -714,17 +714,17 @@ C       convert to mg Chl m-3
         chlout(j) = 893.49 _d 0*X(j)*QC_chl/55 _d 0
 
 C       Calculate diagnostics and essentials
-        QN_chl       = QC_chl*Y_NC_chl(j)
-        QN_pro_photo = QC_chl*A_pho(j)/Y_CN_protein(j)
-        QN_pro_bio   = A_bio(j)/Y_CN_protein(j)*PC/macromolTempFunc
+        QN_chl       = QC_chl*Y_NC_chl
+        QN_pro_photo = QC_chl*A_pho(j)/Y_CN_protein
+        QN_pro_bio   = A_bio(j)/Y_CN_protein*PC/macromolTempFunc
         QN_pro_tot   = QN_pro_other(j) + QN_pro_photo + QN_pro_bio
         QN_RNA       = QN_RNA_min(j)
      &               + QN_pro_tot*AN_RNA(j)*PC/macromolTempFunc
 
-        QP_thy = QC_chl*Y_THY_P(j)
-        QP_RNA = QN_RNA*Y_PN_nucacid(j)
+        QP_thy = QC_chl*Y_THY_P
+        QP_RNA = QN_RNA*Y_PN_nucacid
 
-        Qfe_pro_photo = QN_pro_photo*Y_FeN_photo(j)
+        Qfe_pro_photo = QN_pro_photo*Y_FeN_photo
 
 C       Case 3: if Qn, Qp are lower then the minimum requirement for Chl
 C       the remaining pools are scaled down to not exceed quotas
@@ -749,16 +749,16 @@ C       total pools required for functioning (or scaled down)
         QN_max        = QN_essential + QN_sto_max(j)
         QP_essential  = QP_thy + QP_RNA + QP_DNA_actl +  QP_other_actl
         Qfe_essential = Qfe_pro_photo
-        QC_essential  = QC_chl + QN_pro_tot*Y_CN_protein(j)
-     &                + QP_thy*Y_CP_Plip(j) + QN_RNA*Y_CN_RNA(j)
-     &                + QN_DNA_actl*Y_CN_DNA(j) + QC_other(j)
+        QC_essential  = QC_chl + QN_pro_tot*Y_CN_protein
+     &                + QP_thy*Y_CP_Plip + QN_RNA*Y_CN_RNA
+     &                + QN_DNA_actl*Y_CN_DNA + QC_other(j)
 
 C Storage calculation -----------------
 
 C       N quota above QN_essential is store, but not more than
 C       QN_sto_max(j) and make sure enough C for store
         QN_store = MIN(mmQn - QN_essential,
-     &                 (Qc(j) - QC_essential)/Y_CN_cyano(j),
+     &                 (Qc(j) - QC_essential)/Y_CN_cyano,
      &                 QN_sto_max(j))
         QN_store = MAX(0 _d 0, QN_store)
         QN_excess = MAX(0 _d 0, mmQn - QN_essential - QN_store)
@@ -775,7 +775,7 @@ C       Qfe_max(j)
 
 C       deduce carbon store
         QC_store = MAX(0 _d 0,
-     &                 1 _d 0 - QC_essential - QN_store*Y_CN_cyano(j))
+     &                 1 _d 0 - QC_essential - QN_store*Y_CN_cyano)
 
 C shlomit: new nutrient-uptake regulation terms:
 C when store is full, phytoplankton reduce their nutrient-uptake:
@@ -823,14 +823,14 @@ C       Carbon-specific FeT uptake rate
         uptakeFeT = Vfe*mmX
 
 C       shlomit: Calclate the O2:C ratio
-        RQ = ( QN_pro_tot*Y_CN_protein(j))* 1.56 _d 0
+        RQ = ( QN_pro_tot*Y_CN_protein)* 1.56 _d 0
      &     + ( QC_other(j)/2  + QC_store/2) * 1.34 _d 0
-     &     + ( Y_CP_Plip(j) * QP_thy)* 1.30 _d 0
+     &     + ( Y_CP_Plip * QP_thy)* 1.30 _d 0
      &     + ( QC_other(j)/2 + QC_store/2) * 1.0 _d 0
      &     + ( QC_chl) * 1.39 _d 0
-     &     + ( QN_DNA_actl*Y_CN_DNA(j)) * 1.62 _d 0
-     &     + ( QN_RNA*Y_CN_RNA(j)) *  1.57 _d 0
-     &     + ( QN_store*Y_CN_cyano(j)) * 1.85 _d 0
+     &     + ( QN_DNA_actl*Y_CN_DNA) * 1.62 _d 0
+     &     + ( QN_RNA*Y_CN_RNA) *  1.57 _d 0
+     &     + ( QN_store*Y_CN_cyano) * 1.85 _d 0
 
 # ifdef DARWIN_DIAG_PERTYPE
         diags(iPChl+j-1) = PChl

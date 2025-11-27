@@ -353,15 +353,6 @@ C
      &    a_grazTempOptimum,
      &    a_grazDecayPower,
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
-     &    a_Y_CP_Plip,
-     &    a_Y_CN_protein,
-     &    a_Y_NC_chl,
-     &    a_Y_CN_cyano,
-     &    a_Y_PN_nucacid,
-     &    a_Y_CN_DNA,
-     &    a_Y_CN_RNA,
-     &    a_Y_THY_P,
-     &    a_Y_FeN_photo,
      &    a_ECo2Prod,
      &    a_maintConsum,
      &    a_VI_max,
@@ -532,15 +523,6 @@ C
       _RL a_grazTempOptimum(nGroup)
       _RL a_grazDecayPower(nGroup)
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
-      _RL a_Y_CP_Plip(nGroup)
-      _RL a_Y_CN_protein(nGroup)
-      _RL a_Y_NC_chl(nGroup)
-      _RL a_Y_CN_cyano(nGroup)
-      _RL a_Y_PN_nucacid(nGroup)
-      _RL a_Y_CN_DNA(nGroup)
-      _RL a_Y_CN_RNA(nGroup)
-      _RL a_Y_THY_P(nGroup)
-      _RL a_Y_FeN_photo(nGroup)
       _RL a_ECo2Prod(nGroup)
       _RL a_maintConsum(nGroup)
       _RL a_VI_max(nGroup)

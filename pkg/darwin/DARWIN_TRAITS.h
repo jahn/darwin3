@@ -173,15 +173,6 @@ C     fracPARmort        :: []               fraction of mortality from light-de
 C     ExportFracDVM      :: []               fraction of light-dep mortality from DVM to POM
 C
 C- MACROMOLECULAR_GROWTH parameters
-C     Y_CP_Plip          :: [molC molP^-1]   C/P molar ratio of thylacoid membrane
-C     Y_CN_protein       :: [molC molN^-1]   C/N molar ratio in protein
-C     Y_NC_chl           :: [molN molC^-1]   N/C molar ratio in chlorophyll
-C     Y_CN_cyano         :: [molC molN^-1]   C/N molar ratio of cyanophycin
-C     Y_PN_nucacid       :: [molP molN^-1]   P/N molar ratio of RNA
-C     Y_CN_DNA           :: [molC molN^-1]   C/N molar ratio of DNA
-C     Y_CN_RNA           :: [molC molN^-1]   C/N molar ratio of RNA
-C     Y_THY_P            :: [(molP)/(molC in chl)^-1] the stoichiometric ratio for cell phosphorus in thylakoid membrane to chlorophyll
-C     Y_FeN_photo        :: [molFe mol N^-1] Fe/N ratio in photosystem iron
 C     ECo2Prod           :: [dimensionless]  CO2 production ratio
 C     maintConsum        :: [s^-1]           maintenance carbohydrate consumption
 C     VI_max             :: [molC (molC in Chl)^-1 s^-1] carbon fixing rate
@@ -307,16 +298,7 @@ C     QfeNoChl           :: [molFe molC^-1]  minimum QFe at zero growth rate
      &    fracPARmort,
      &    ExportFracDVM
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
-     &   ,Y_CN_protein,
-     &    Y_CP_Plip,
-     &    Y_NC_chl,
-     &    Y_CN_cyano,
-     &    Y_PN_nucacid,
-     &    Y_CN_DNA,
-     &    Y_CN_RNA,
-     &    Y_THY_P,
-     &    Y_FeN_photo,
-     &    ECo2Prod,
+     &   ,ECo2Prod,
      &    maintConsum,
      &    VI_max,
      &    A_I,
@@ -441,15 +423,6 @@ C     QfeNoChl           :: [molFe molC^-1]  minimum QFe at zero growth rate
       _RL fracPARmort(nplank)
       _RL ExportFracDVM(nplank)
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
-      _RL Y_CN_protein(nplank)
-      _RL Y_CP_Plip(nplank)
-      _RL Y_NC_chl(nplank)
-      _RL Y_CN_cyano(nplank)
-      _RL Y_PN_nucacid(nplank)
-      _RL Y_CN_DNA(nplank)
-      _RL Y_CN_RNA(nplank)
-      _RL Y_THY_P(nplank)
-      _RL Y_FeN_photo(nplank)
       _RL ECo2Prod(nplank)
       _RL maintConsum(nplank)
       _RL VI_max(nplank)

@@ -93,7 +93,39 @@ CCOG]]]
       INTEGER i_POP
       INTEGER i_POFe
       INTEGER i_POSi
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+      INTEGER i_DetCchl
+#endif
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+      INTEGER i_DetCpho
+#endif
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+      INTEGER i_DetCbio
+#endif
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+      INTEGER i_DetCproo
+#endif
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+      INTEGER i_DetCrna
+#endif
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+      INTEGER i_DetCdna
+#endif
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+      INTEGER i_DetCthy
+#endif
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+      INTEGER i_DetCoth
+#endif
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+      INTEGER i_DetCNsto
+#endif
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+      INTEGER i_DetCsto
+#endif
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
       INTEGER i_PIC
+#endif
 #ifdef DARWIN_ALLOW_CARBON
       INTEGER i_ALK
 #endif
@@ -122,7 +154,7 @@ CCOG]]]
 #ifdef DARWIN_ALLOW_CSTORE
       INTEGER i_ch, e_ch
 #endif
-CCOG[[[end]]] (checksum: 1916d588f1c9768c75358b16b3668716)
+CCOG[[[end]]] (checksum: 1b91f8911123a58e4aa22035e67a4ad0)
       INTEGER n_DARWIN
       LOGICAL addBlkLn
       CHARACTER*1 blkLin
@@ -163,7 +195,39 @@ CCOG]]]
      &    i_POP,
      &    i_POFe,
      &    i_POSi,
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+     &    i_DetCchl,
+#endif
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+     &    i_DetCpho,
+#endif
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+     &    i_DetCbio,
+#endif
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+     &    i_DetCproo,
+#endif
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+     &    i_DetCrna,
+#endif
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+     &    i_DetCdna,
+#endif
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+     &    i_DetCthy,
+#endif
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+     &    i_DetCoth,
+#endif
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+     &    i_DetCNsto,
+#endif
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+     &    i_DetCsto,
+#endif
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
      &    i_PIC,
+#endif
 #ifdef DARWIN_ALLOW_CARBON
      &    i_ALK,
 #endif
@@ -192,7 +256,7 @@ CCOG]]]
 #ifdef DARWIN_ALLOW_CSTORE
      &    i_ch, e_ch,
 #endif
-CCOG[[[end]]] (checksum: 0e66f1b9da7ec7a8cdcee6982dbf6ee5)
+CCOG[[[end]]] (checksum: 507cb0dd441f41a3eaa2a7a21164f85b)
      &    n_DARWIN
 
       _BEGIN_MASTER(myThid)
@@ -225,7 +289,39 @@ CCOG]]]
        i_POP = iPOP
        i_POFe = iPOFe
        i_POSi = iPOSi
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+       i_DetCchl = iDetCchl
+#endif
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+       i_DetCpho = iDetCpho
+#endif
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+       i_DetCbio = iDetCbio
+#endif
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+       i_DetCproo = iDetCproo
+#endif
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+       i_DetCrna = iDetCrna
+#endif
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+       i_DetCdna = iDetCdna
+#endif
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+       i_DetCthy = iDetCthy
+#endif
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+       i_DetCoth = iDetCoth
+#endif
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+       i_DetCNsto = iDetCNsto
+#endif
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+       i_DetCsto = iDetCsto
+#endif
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
        i_PIC = iPIC
+#endif
 #ifdef DARWIN_ALLOW_CARBON
        i_ALK = iALK
 #endif
@@ -262,7 +358,7 @@ CCOG]]]
        i_ch = ich
        e_ch = ech
 #endif
-CCOG[[[end]]] (checksum: a71e683a0fd6b38624b27db90e6ece19)
+CCOG[[[end]]] (checksum: 0593f87d43e42b66aab3e9fa502ecdc4)
        n_DARWIN = nDARWIN
 
        CALL MDSFINDUNIT( oUnit, mythid )
@@ -2312,6 +2408,7 @@ C--   Print parameters from DARWIN_PARAMS.h
       CALL WRITE_0D_RL(Y_FeN_photo,INDEX_NONE,
      &'Y_FeN_photo = ',
      &' /* Fe/N ratio in photosystem iron (molFe mol N^-1) */')
+# ifdef DARWIN_MACROMOLECULAR_DETRITUS
       CALL WRITE_0D_RL(kDetCchl,INDEX_NONE,
      &'kDetCchl = ',
      &' /* DetCchl remineralization rate (1/s) */')
@@ -2342,6 +2439,7 @@ C--   Print parameters from DARWIN_PARAMS.h
       CALL WRITE_0D_RL(kDetCsto,INDEX_NONE,
      &'kDetCsto = ',
      &' /* DetCsto remineralization rate (1/s) */')
+# endif
 #endif
 
 C---+----1----+----2----+----3----+----4----+----5----+----6----+----7-|--+----|
@@ -3063,10 +3161,82 @@ CCOG]]]
       CALL PRINT_MESSAGE(msgBuf,standardMessageUnit,
      &                   SQUEEZE_RIGHT,myThid)
 
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+      WRITE(msgBuf,'(A,I4,X,A,A32)') 'DARWIN_CHECK: ',
+     &  iDetCchl,'DetCchl    ', PTRACERS_names(iDetCchl)
+      CALL PRINT_MESSAGE(msgBuf,standardMessageUnit,
+     &                   SQUEEZE_RIGHT,myThid)
+#endif
+
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+      WRITE(msgBuf,'(A,I4,X,A,A32)') 'DARWIN_CHECK: ',
+     &  iDetCpho,'DetCpho    ', PTRACERS_names(iDetCpho)
+      CALL PRINT_MESSAGE(msgBuf,standardMessageUnit,
+     &                   SQUEEZE_RIGHT,myThid)
+#endif
+
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+      WRITE(msgBuf,'(A,I4,X,A,A32)') 'DARWIN_CHECK: ',
+     &  iDetCbio,'DetCbio    ', PTRACERS_names(iDetCbio)
+      CALL PRINT_MESSAGE(msgBuf,standardMessageUnit,
+     &                   SQUEEZE_RIGHT,myThid)
+#endif
+
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+      WRITE(msgBuf,'(A,I4,X,A,A32)') 'DARWIN_CHECK: ',
+     &  iDetCproo,'DetCproo    ', PTRACERS_names(iDetCproo)
+      CALL PRINT_MESSAGE(msgBuf,standardMessageUnit,
+     &                   SQUEEZE_RIGHT,myThid)
+#endif
+
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+      WRITE(msgBuf,'(A,I4,X,A,A32)') 'DARWIN_CHECK: ',
+     &  iDetCrna,'DetCrna    ', PTRACERS_names(iDetCrna)
+      CALL PRINT_MESSAGE(msgBuf,standardMessageUnit,
+     &                   SQUEEZE_RIGHT,myThid)
+#endif
+
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+      WRITE(msgBuf,'(A,I4,X,A,A32)') 'DARWIN_CHECK: ',
+     &  iDetCdna,'DetCdna    ', PTRACERS_names(iDetCdna)
+      CALL PRINT_MESSAGE(msgBuf,standardMessageUnit,
+     &                   SQUEEZE_RIGHT,myThid)
+#endif
+
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+      WRITE(msgBuf,'(A,I4,X,A,A32)') 'DARWIN_CHECK: ',
+     &  iDetCthy,'DetCthy    ', PTRACERS_names(iDetCthy)
+      CALL PRINT_MESSAGE(msgBuf,standardMessageUnit,
+     &                   SQUEEZE_RIGHT,myThid)
+#endif
+
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+      WRITE(msgBuf,'(A,I4,X,A,A32)') 'DARWIN_CHECK: ',
+     &  iDetCoth,'DetCoth    ', PTRACERS_names(iDetCoth)
+      CALL PRINT_MESSAGE(msgBuf,standardMessageUnit,
+     &                   SQUEEZE_RIGHT,myThid)
+#endif
+
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+      WRITE(msgBuf,'(A,I4,X,A,A32)') 'DARWIN_CHECK: ',
+     &  iDetCNsto,'DetCNsto    ', PTRACERS_names(iDetCNsto)
+      CALL PRINT_MESSAGE(msgBuf,standardMessageUnit,
+     &                   SQUEEZE_RIGHT,myThid)
+#endif
+
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+      WRITE(msgBuf,'(A,I4,X,A,A32)') 'DARWIN_CHECK: ',
+     &  iDetCsto,'DetCsto    ', PTRACERS_names(iDetCsto)
+      CALL PRINT_MESSAGE(msgBuf,standardMessageUnit,
+     &                   SQUEEZE_RIGHT,myThid)
+#endif
+
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
       WRITE(msgBuf,'(A,I4,X,A,A32)') 'DARWIN_CHECK: ',
      &  iPIC   ,'PIC       ', PTRACERS_names(iPIC   )
       CALL PRINT_MESSAGE(msgBuf,standardMessageUnit,
      &                   SQUEEZE_RIGHT,myThid)
+#endif
 
 #ifdef DARWIN_ALLOW_CARBON
       WRITE(msgBuf,'(A,I4,X,A,A32)') 'DARWIN_CHECK: ',
@@ -3159,7 +3329,7 @@ CCOG]]]
      &                     SQUEEZE_RIGHT,myThid)
       ENDDO
 #endif
-CCOG[[[end]]] (checksum: 05ba5478d3ba98e0625cfbc0f8f1432c)
+CCOG[[[end]]] (checksum: 0f76a79a78ddcc6342bfa2bffcae92de)
 
 C---+----1----+----2----+----3----+----4----+----5----+----6----+----7-|--+----|
 C     Log plankton types with ptracer indices

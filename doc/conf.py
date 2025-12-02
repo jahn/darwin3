@@ -187,6 +187,77 @@ latex_elements = {
     \newcommand{\dd}[2]{\frac{d #1}{d #2}}
     \newcommand{\h}{\frac{1}{2}}
     \newcommand{\op}[1]{\operatorname{#1}}
+    \newcommand{\PC}{P_{\mathrm{C}}}
+    \newcommand{\QC}{Q_{\mathrm{C}}}
+    \newcommand{\QN}{Q_{\mathrm{N}}}
+    \newcommand{\QP}{Q_{\mathrm{P}}}
+    \newcommand{\QFe}{Q_{\mathrm{Fe}}}
+    \newcommand{\QCess}{Q_{\mathrm{C}}^{\mathrm{ess}}}
+    \newcommand{\QNess}{Q_{\mathrm{N}}^{\mathrm{ess}}}
+    \newcommand{\QPess}{Q_{\mathrm{P}}^{\mathrm{ess}}}
+    \newcommand{\QFeess}{Q_{\mathrm{Fe}}^{\mathrm{ess}}}
+    \newcommand{\maintConsum}{{m}}
+    \newcommand{\ECoiiProd}{{E}}
+    \newcommand{\VImax}{{V^{\max}_{\mathrm{I}}}}
+    \newcommand{\Sf}{{S_{\mathrm{f}}}}
+    \newcommand{\AI}{{A_{\mathrm{I}}}}
+    \newcommand{\RQ}{{R_Q}}
+    \newcommand{\QNprotot}{{Q_{\mathrm{N}}^{\mathrm{Pro\,tot}}}}
+    \newcommand{\QPRNAmin}{{Q_{\mathrm{P,min}}^{\mathrm{RNA}}}}
+    \newcommand{\QNRNAmin}{{Q_{\mathrm{N,min}}^{\mathrm{RNA}}}}
+    \newcommand{\QNstomax}{{Q_{\mathrm{N,max}}^{\mathrm{Sto}}}}
+    \newcommand{\QPother}{{Q_{\mathrm{P}}^{\mathrm{Other}}}}
+    \newcommand{\QPthy}{{Q_{\mathrm{P}}^{\mathrm{Thy}}}}
+    \newcommand{\QCthy}{{Q_{\mathrm{C}}^{\mathrm{Thy}}}}
+    \newcommand{\QCother}{{Q_{\mathrm{C}}^{\mathrm{Other}}}}
+    \newcommand{\QCproother}{{Q_{\mathrm{C}}^{\mathrm{Pro\_Other}}}}
+    \newcommand{\QCchl}{{Q_{\mathrm{C}}^{\mathrm{Chl}}}}
+    \newcommand{\QNDNAactl}{{Q_{\mathrm{N}}^{\mathrm{DNA\_actl}}}}
+    \newcommand{\QPDNAactl}{{Q_{\mathrm{P}}^{\mathrm{DNA\_actl}}}}
+    \newcommand{\QNproactl}{{Q_{\mathrm{N}}^{\mathrm{Pro\_actl}}}}
+    \newcommand{\QPotheractl}{{Q_{\mathrm{P}}^{\mathrm{Other\_actl}}}}
+    \newcommand{\QCDNA}{{Q_{\mathrm{C}}^{\mathrm{DNA}}}}
+    \newcommand{\QCRNA}{{Q_{\mathrm{C}}^{\mathrm{RNA}}}}
+    \newcommand{\QCRNAmin}{{Q_{\mathrm{C,min}}^{\mathrm{RNA}}}}
+    \newcommand{\QNstore}{{Q_{\mathrm{N}}^{\mathrm{Sto}}}}
+    \newcommand{\QPstore}{{Q_{\mathrm{P}}^{\mathrm{Sto}}}}
+    \newcommand{\QFestore}{{Q_{\mathrm{Fe}}^{\mathrm{Sto}}}}
+    \newcommand{\Qpmax}{{Q_{\mathrm{P}}^{\mathrm{max}}}}
+    \newcommand{\Qfemax}{{Q_{\mathrm{Fe}}^{\mathrm{max}}}}
+    \newcommand{\YCPPlip}{{Y^{\mathrm{C}:\mathrm{P}}_{\mathrm{Plip}}}}
+    \newcommand{\YCNprotein}{{Y^{\mathrm{C}:\mathrm{N}}_{\mathrm{Pro}}}}
+    \newcommand{\YCNDNA}{{Y^{\mathrm{C}:\mathrm{N}}_{\mathrm{DNA}}}}
+    \newcommand{\YCNRNA}{{Y^{\mathrm{C}:\mathrm{N}}_{\mathrm{RNA}}}}
+    \newcommand{\YCNcyano}{{Y^{\mathrm{C}:\mathrm{N}}_{\mathrm{Nsto}}}}
+    \newcommand{\YNCchl}{{Y^{\mathrm{N}:\mathrm{C}}_{\mathrm{Chl}}}}
+    \newcommand{\YPNnucacid}{{Y^{\mathrm{P}:\mathrm{N}}_{\mathrm{RNA}}}}
+    \newcommand{\YTHYP}{{Y^{\mathrm{P}}_{\mathrm{Thy}}}}
+    \newcommand{\Athy}{{A_{\mathrm{Thy}}}}
+    \newcommand{\YFeNphoto}{{Y^{\mathrm{Fe}:\mathrm{N}}_{\mathrm{Pho}}}}
+    \newcommand{\Apho}{{A_{\mathrm{Pho}}}}
+    \newcommand{\Abio}{{A_{\mathrm{Bio}}}}
+    \newcommand{\APRNA}{{A^{\mathrm{P}}_{\mathrm{RNA}}}}
+    \newcommand{\ANRNA}{{A^{\mathrm{N}}_{\mathrm{RNA}}}}
+    \newcommand{\macromolTempFunc}{{f^{\mathrm{mm}}(T)}}
+    \newcommand{\QCphoto}{{Q_{\mathrm{C}}^{\mathrm{Pro\_Pho}}}}
+    \newcommand{\QNphoto}{{Q_{\mathrm{N}}^{\mathrm{Pro\_Pho}}}}
+    \newcommand{\QCbio}{{Q_{\mathrm{C}}^{\mathrm{Pro\_Bio}}}}
+    \newcommand{\QNbio}{{Q_{\mathrm{N}}^{\mathrm{Pro\_Bio}}}}
+    \newcommand{\QNchl}{{Q_{\mathrm{N}}^{\mathrm{Chl}}}}
+    \newcommand{\QNpro}{{Q_{\mathrm{N}}^{\mathrm{Pro}}}}
+    \newcommand{\QCpro}{{Q_{\mathrm{C}}^{\mathrm{Pro}}}}
+    \newcommand{\QNproother}{{Q_{\mathrm{N}}^{\mathrm{Pro\_Other}}}}
+    \newcommand{\QNDNA}{{Q_{\mathrm{N}}^{\mathrm{DNA}}}}
+    \newcommand{\QPDNA}{{Q_{\mathrm{P}}^{\mathrm{DNA}}}}
+    \newcommand{\QNRNA}{{Q_{\mathrm{N}}^{\mathrm{RNA}}}}
+    \newcommand{\QPRNA}{{Q_{\mathrm{P}}^{\mathrm{RNA}}}}
+    \newcommand{\Qfephoto}{{Q_{\mathrm{Fe}}^{\mathrm{Pro\_Pho}}}}
+    \newcommand{\QnNoChl}{{Q_{\mathrm{N}}^{\text{no-Chl}}}}
+    \newcommand{\QpNoChl}{{Q_{\mathrm{P}}^{\text{no-Chl}}}}
+    \newcommand{\QfeNoChl}{{Q_{\mathrm{Fe}}^{\text{no-Chl}}}}
+    \newcommand{\QCchlMax}{{Q_{\mathrm{C,max}}^{\mathrm{Chl}}}}
+    \newcommand{\VImin}{{V^{\min}_{\mathrm{I}}}}
+    \newcommand{\QCconst}{{Q_{\mathrm{C}}^{\mathrm{const}}}}
     \setlength{\tymax}{0.5\textwidth}
     ''',
 

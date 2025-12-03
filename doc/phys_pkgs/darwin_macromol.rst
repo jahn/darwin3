@@ -7,24 +7,20 @@
    :math:`\newcommand{\QN}{Q_{\mathrm{N}}}`
    :math:`\newcommand{\QP}{Q_{\mathrm{P}}}`
    :math:`\newcommand{\QFe}{Q_{\mathrm{Fe}}}`
-
    :math:`\newcommand{\QCess}{Q_{\mathrm{C}}^{\mathrm{ess}}}`
    :math:`\newcommand{\QNess}{Q_{\mathrm{N}}^{\mathrm{ess}}}`
    :math:`\newcommand{\QPess}{Q_{\mathrm{P}}^{\mathrm{ess}}}`
    :math:`\newcommand{\QFeess}{Q_{\mathrm{Fe}}^{\mathrm{ess}}}`
-
    :math:`\newcommand{\maintConsum}{{m}}`
    :math:`\newcommand{\ECoiiProd}{{E}}`
    :math:`\newcommand{\VImax}{{V^{\max}_{\mathrm{I}}}}`
    :math:`\newcommand{\Sf}{{S_{\mathrm{f}}}}`
    :math:`\newcommand{\AI}{{A_{\mathrm{I}}}}`
    :math:`\newcommand{\RQ}{{R_Q}}`
-
    :math:`\newcommand{\QNprotot}{{Q_{\mathrm{N}}^{\mathrm{Pro\,tot}}}}`
    :math:`\newcommand{\QPRNAmin}{{Q_{\mathrm{P,min}}^{\mathrm{RNA}}}}`
    :math:`\newcommand{\QNRNAmin}{{Q_{\mathrm{N,min}}^{\mathrm{RNA}}}}`
    :math:`\newcommand{\QNstomax}{{Q_{\mathrm{N,max}}^{\mathrm{Sto}}}}`
-   :math:`\newcommand{\QCother}{{Q_{\mathrm{C}}^{\mathrm{Other}}}}`
    :math:`\newcommand{\QPother}{{Q_{\mathrm{P}}^{\mathrm{Other}}}}`
    :math:`\newcommand{\QPthy}{{Q_{\mathrm{P}}^{\mathrm{Thy}}}}`
    :math:`\newcommand{\QCthy}{{Q_{\mathrm{C}}^{\mathrm{Thy}}}}`
@@ -36,8 +32,6 @@
    :math:`\newcommand{\QNproactl}{{Q_{\mathrm{N}}^{\mathrm{Pro\_actl}}}}`
    :math:`\newcommand{\QPotheractl}{{Q_{\mathrm{P}}^{\mathrm{Other\_actl}}}}`
    :math:`\newcommand{\QCDNA}{{Q_{\mathrm{C}}^{\mathrm{DNA}}}}`
-   :math:`\newcommand{\QNDNA}{{Q_{\mathrm{N}}^{\mathrm{DNA}}}}`
-   :math:`\newcommand{\QNRNA}{{Q_{\mathrm{N}}^{\mathrm{RNA}}}}`
    :math:`\newcommand{\QCRNA}{{Q_{\mathrm{C}}^{\mathrm{RNA}}}}`
    :math:`\newcommand{\QCRNAmin}{{Q_{\mathrm{C,min}}^{\mathrm{RNA}}}}`
    :math:`\newcommand{\QNstore}{{Q_{\mathrm{N}}^{\mathrm{Sto}}}}`
@@ -45,7 +39,6 @@
    :math:`\newcommand{\QFestore}{{Q_{\mathrm{Fe}}^{\mathrm{Sto}}}}`
    :math:`\newcommand{\Qpmax}{{Q_{\mathrm{P}}^{\mathrm{max}}}}`
    :math:`\newcommand{\Qfemax}{{Q_{\mathrm{Fe}}^{\mathrm{max}}}}`
-
    :math:`\newcommand{\YCPPlip}{{Y^{\mathrm{C}:\mathrm{P}}_{\mathrm{Plip}}}}`
    :math:`\newcommand{\YCNprotein}{{Y^{\mathrm{C}:\mathrm{N}}_{\mathrm{Pro}}}}`
    :math:`\newcommand{\YCNDNA}{{Y^{\mathrm{C}:\mathrm{N}}_{\mathrm{DNA}}}}`
@@ -60,7 +53,6 @@
    :math:`\newcommand{\Abio}{{A_{\mathrm{Bio}}}}`
    :math:`\newcommand{\APRNA}{{A^{\mathrm{P}}_{\mathrm{RNA}}}}`
    :math:`\newcommand{\ANRNA}{{A^{\mathrm{N}}_{\mathrm{RNA}}}}`
-
    :math:`\newcommand{\macromolTempFunc}{{f^{\mathrm{mm}}(T)}}`
    :math:`\newcommand{\QCphoto}{{Q_{\mathrm{C}}^{\mathrm{Pro\_Pho}}}}`
    :math:`\newcommand{\QNphoto}{{Q_{\mathrm{N}}^{\mathrm{Pro\_Pho}}}}`
@@ -81,7 +73,6 @@
    :math:`\newcommand{\QCchlMax}{{Q_{\mathrm{C,max}}^{\mathrm{Chl}}}}`
    :math:`\newcommand{\VImin}{{V^{\min}_{\mathrm{I}}}}`
    :math:`\newcommand{\QCconst}{{Q_{\mathrm{C}}^{\mathrm{const}}}}`
-
 
 .. _Macromolecular:
 
@@ -144,7 +135,7 @@ photosynthetically active radiation, :math:`I`,
 
 .. math::
 
-   P_{\mathrm{Chl}}(I) = S_{\op{f}} V^\max_{\op{I}} f_{\op{I}}(I)
+   P_{\mathrm{Chl}}(I) = S_{\op{f}} V^{\max}_{\op{I}} f_{\op{I}}(I)
    \quad\text{with}\quad
    f_{\op{I}}(I) = 1 - e^{-A_{\op{I}}I}
    \;,

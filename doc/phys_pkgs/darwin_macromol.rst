@@ -438,9 +438,12 @@ an additional multiplicative regulation term in :math:`U^{\mathrm{NO3}}`,
 
 and similar for phosphorus and iron.
 
+.. tabularcolumns:: |\Y{.12}|\Y{.16}|\Y{.18}|\Y{.14}|\Y{.1}|\Y{.3}|
+
 .. csv-table:: Traits of the macromolecular growth model
    :delim: &
    :widths: 13,20,22,16,11,18
+   :class: longtable
    :header: symbol, trait, param, default, units, description
    :name: tab_phys_pkg_darwin_macromol_traits
 

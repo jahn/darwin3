@@ -34,9 +34,15 @@
    :math:`\newcommand{\QCDNA}{{Q_{\mathrm{C}}^{\mathrm{DNA}}}}`
    :math:`\newcommand{\QCRNA}{{Q_{\mathrm{C}}^{\mathrm{RNA}}}}`
    :math:`\newcommand{\QCRNAmin}{{Q_{\mathrm{C,min}}^{\mathrm{RNA}}}}`
+   :math:`\newcommand{\QCstore}{{Q_{\mathrm{C}}^{\mathrm{Sto}}}}`
+   :math:`\newcommand{\QCNstore}{{Q_{\mathrm{C}}^{\mathrm{NSto}}}}`
    :math:`\newcommand{\QNstore}{{Q_{\mathrm{N}}^{\mathrm{Sto}}}}`
    :math:`\newcommand{\QPstore}{{Q_{\mathrm{P}}^{\mathrm{Sto}}}}`
    :math:`\newcommand{\QFestore}{{Q_{\mathrm{Fe}}^{\mathrm{Sto}}}}`
+   :math:`\newcommand{\QCexcess}{{Q_{\mathrm{C}}^{\mathrm{exc}}}}`
+   :math:`\newcommand{\QNexcess}{{Q_{\mathrm{N}}^{\mathrm{exc}}}}`
+   :math:`\newcommand{\QPexcess}{{Q_{\mathrm{P}}^{\mathrm{exc}}}}`
+   :math:`\newcommand{\QFeexcess}{{Q_{\mathrm{Fe}}^{\mathrm{exc}}}}`
    :math:`\newcommand{\Qpmax}{{Q_{\mathrm{P}}^{\mathrm{max}}}}`
    :math:`\newcommand{\Qfemax}{{Q_{\mathrm{Fe}}^{\mathrm{max}}}}`
    :math:`\newcommand{\YCPPlip}{{Y^{\mathrm{C}:\mathrm{P}}_{\mathrm{Plip}}}}`
@@ -105,7 +111,22 @@ The assumed macromolecular pools and fluxes between them are shown in
 
    Macromolecular pools and fluxes
 
-They imply the following elemental quota requirements:
+The elemental cellular quotas of carbon, nitrogen, phosphorus and iron are
+divided into essential pools required for growth, storage, and any excess that
+will be used to regulate update.
+
+.. math::
+   :label: eq_macromol_balance
+
+   \QC &= \QCess + \QCNstore + \QCstore + \QCexcess
+
+   \QN &= \QNess + \QNstore + \QNexcess
+
+   \QP &= \QPess + \QPstore + \QPexcess
+
+   \QFe &= \QFeess + \QFestore + \QFeexcess
+
+The essential pools are further divided into their macromolecular components,
 
 .. math::
    :label: eq_ess
@@ -118,10 +139,11 @@ They imply the following elemental quota requirements:
 
    \QFeess &= \Qfephoto
 
-Any quotas beyonds these essential values will be distributed between a store
-and an excess that is used to regulate uptake.
+To find the maximum growth rate given elemental quotas, storage and excess
+pools are set to zero, leaving all available C, N, P and Fe to the essential
+pools.
 
-To find the required Chlorophyll quota, consider that photosynthesis is needed
+The required Chlorophyll quota is found by noting that photosynthesis is needed
 for maintainance and growth
 
 .. math::

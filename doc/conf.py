@@ -219,9 +219,15 @@ latex_elements = {
     \newcommand{\QCDNA}{{Q_{\mathrm{C}}^{\mathrm{DNA}}}}
     \newcommand{\QCRNA}{{Q_{\mathrm{C}}^{\mathrm{RNA}}}}
     \newcommand{\QCRNAmin}{{Q_{\mathrm{C,min}}^{\mathrm{RNA}}}}
+    \newcommand{\QCstore}{{Q_{\mathrm{C}}^{\mathrm{Sto}}}}
+    \newcommand{\QCNstore}{{Q_{\mathrm{C}}^{\mathrm{NSto}}}}
     \newcommand{\QNstore}{{Q_{\mathrm{N}}^{\mathrm{Sto}}}}
     \newcommand{\QPstore}{{Q_{\mathrm{P}}^{\mathrm{Sto}}}}
     \newcommand{\QFestore}{{Q_{\mathrm{Fe}}^{\mathrm{Sto}}}}
+    \newcommand{\QCexcess}{{Q_{\mathrm{C}}^{\mathrm{exc}}}}
+    \newcommand{\QNexcess}{{Q_{\mathrm{N}}^{\mathrm{exc}}}}
+    \newcommand{\QPexcess}{{Q_{\mathrm{P}}^{\mathrm{exc}}}}
+    \newcommand{\QFeexcess}{{Q_{\mathrm{Fe}}^{\mathrm{exc}}}}
     \newcommand{\Qpmax}{{Q_{\mathrm{P}}^{\mathrm{max}}}}
     \newcommand{\Qfemax}{{Q_{\mathrm{Fe}}^{\mathrm{max}}}}
     \newcommand{\YCPPlip}{{Y^{\mathrm{C}:\mathrm{P}}_{\mathrm{Plip}}}}

@@ -5,6 +5,42 @@ on:
   pull_request:
 
 jobs:
+ oned:
+   runs-on: ubuntu-latest
+
+   strategy:
+     matrix:
+      include:
+        - exp: "darwin_2+1+0_1D"
+        - exp: "darwin_6+4+0_1D"
+        - exp: "darwin_6+4+0_RT_1D"
+        - exp: "darwin_6+4+0_RT_QUOTA_1D"
+        - exp: "darwin_31+16+3_RT_1D"
+
+   continue-on-error: true
+
+   steps:
+
+     - name: Checkout
+       uses: actions/checkout@v2.2.0
+
+     - name: Set up compilers
+       run: |
+         sudo apt-get update
+         sudo apt-get -qq install gfortran
+
+     - name: Get a docker image and set it running
+       run: |
+         docker pull oliverjahn/testreport-ubuntu:latest
+         docker run -v `pwd`:/MITgcm --name testreport-ubuntu -t -d oliverjahn/testreport-ubuntu:latest /bin/bash
+         docker exec -i testreport-ubuntu bash -c "cd /MITgcm; git clone https://github.com/jahn/darwin_oned_examples.git"
+
+     - name: Run a test
+       env:
+        MITGCM_EXP: ${{ matrix.exp }}
+       run: |
+         . tools/ci/runtr_oned.sh
+
  forward:
    runs-on: ubuntu-latest
 

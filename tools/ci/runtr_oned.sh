@@ -19,4 +19,4 @@ if [ -z "${MITGCM_INPUT_DIR_PAT}" ]; then
  export MITGCM_INPUT_DIR_PAT='/input.*'
 fi
 
-${MITGCM_DECMD} "cd /MITgcm/darwin_oned_examples; ./testreport -pass -short -t ${MITGCM_EXP} ${MITGCM_TROPT}"
+${MITGCM_DECMD} "cd /MITgcm/darwin_oned_examples; ../verification/testreport -pass -short -t ${MITGCM_EXP} ${MITGCM_TROPT}"

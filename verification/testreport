@@ -37,6 +37,7 @@ usage()
     echo "  (-ts)                    provide timing information per timestep"
     echo "  (-papis)                 provide MFlop/s per timestep using PAPI"
     echo "  (-pcls)                  provide MFlop/s per timestep using PCL"
+    echo "  (-short)                 run short test using data_short"
     echo " ---- system options : ----"
     echo "  (-bash|-b) STRING        preferred location of a \"bash\" or \"sh\" shell"
     echo "                             (DEF=\"\" for \"bash\")"
@@ -1339,6 +1340,24 @@ linkdata()
 	(
 	    cd $1 ; shift
 	    echo 'linkdata from dirs:' $*
+	    inpSHORT=`(cd ../$1 ; find . -name "*_short" -print | sed 's:^\./::')`
+	    for xx in $inpSHORT ; do
+	      if test -r "../"$1"/"$xx ; then
+		# found 1 _short sfx file in 1rst input dir and it is readable
+		yy=`echo $xx | sed 's:_short$::'`
+		if test "$SHORT" = "f" ; then
+		    # not short test: remove symbolic link
+		    if test -h $yy ; then rm -f $yy ; fi
+		else
+		    # short test: remove symbolic link & link _short sfx file
+		    if test -h $yy ; then rm -f $yy ; fi
+		    if test ! -r $yy ; then
+			ln -sf "../"$1"/"$xx $yy ;
+			printf " $xx" 1>&2
+		    fi
+		fi
+	      fi
+	    done
 	    inpMPI=`(cd ../$1 ; find . -name "*.mpi" -print | sed 's:^\./::')`
 	    for xx in $inpMPI ; do
 	      if test -r "../"$1"/"$xx ; then
@@ -1769,6 +1788,7 @@ NOCATAD=
 MKSMALLF=
 OADSINGULARITY=
 CHECK_PASS=f
+SHORT=f
 
 #- type of testing (KIND):
 #   KIND=0 : forward (= default) ;     KIND=6 : Adjoint with OpenAD
@@ -1919,6 +1939,8 @@ for ac_option ; do
 	-ts) TS=t;;
 	-papis) PAPIS=t;;
 	-pcls) PCLS=t;;
+
+	-short | --short) SHORT=t ;;
 
 	-*) echo "Error: unrecognized option: "$ac_option
 	    usage ;;

@@ -26,6 +26,16 @@ C these cannot be modified for now
       INTEGER iPOP
       INTEGER iPOFe
       INTEGER iPOSi
+      INTEGER iDetCchl
+      INTEGER iDetCpho
+      INTEGER iDetCbio
+      INTEGER iDetCproo
+      INTEGER iDetCrna
+      INTEGER iDetCdna
+      INTEGER iDetCthy
+      INTEGER iDetCoth
+      INTEGER iDetCNsto
+      INTEGER iDetCsto
       INTEGER iPIC
       INTEGER ic
       INTEGER eCARBON
@@ -54,7 +64,21 @@ C these cannot be modified for now
       PARAMETER (iPOP   =iPON +1)
       PARAMETER (iPOFe  =iPOP +1)
       PARAMETER (iPOSi  =iPOFe+1)
-      PARAMETER (iPIC   =iPOSi+1)
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+      PARAMETER (iDetCchl =iPOSi    +1)
+      PARAMETER (iDetCpho =iDetCchl +1)
+      PARAMETER (iDetCbio =iDetCpho +1)
+      PARAMETER (iDetCproo=iDetCbio +1)
+      PARAMETER (iDetCrna =iDetCproo+1)
+      PARAMETER (iDetCdna =iDetCrna +1)
+      PARAMETER (iDetCthy =iDetCdna +1)
+      PARAMETER (iDetCoth =iDetCthy +1)
+      PARAMETER (iDetCNsto=iDetCoth +1)
+      PARAMETER (iDetCsto =iDetCNsto+1)
+      PARAMETER (iPIC     =iDetCsto +1)
+#else
+      PARAMETER (iPIC     =iPOSi+1)
+#endif
 #ifdef DARWIN_ALLOW_CARBON
       INTEGER iALK
       INTEGER iO2

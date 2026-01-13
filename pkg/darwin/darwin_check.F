@@ -462,6 +462,16 @@ C Carbon store is only implemented without quotas
       ENDIF
 #endif
 
+#if defined(DARWIN_MACROMOLECULAR_DETRITUS) && !defined(DARWIN_MACROMOLECULAR_GROWTH)
+      WRITE(msgBuf,'(2A)') 'DARWIN_CHECK: ERROR: ',
+     & 'DARWIN_MACROMOLECULAR_DETRITUS',
+      CALL PRINT_ERROR( msgBuf , 1)
+      WRITE(msgBuf,'(2A)') 'DARWIN_CHECK: ERROR: ',
+     & 'requires DARWIN_MACROMOLECULAR_GROWTH'
+      CALL PRINT_ERROR( msgBuf , 1)
+      STOP 'ABNORMAL END: S/R DARWIN_CHECK'
+#endif
+
 C---+----1----+----2----+----3----+----4----+----5----+----6----+----7-|--+----|
 C--   Print settings of some CPP flags.
 
@@ -2302,6 +2312,36 @@ C--   Print parameters from DARWIN_PARAMS.h
       CALL WRITE_0D_RL(Y_FeN_photo,INDEX_NONE,
      &'Y_FeN_photo = ',
      &' /* Fe/N ratio in photosystem iron (molFe mol N^-1) */')
+      CALL WRITE_0D_RL(kDetCchl,INDEX_NONE,
+     &'kDetCchl = ',
+     &' /* DetCchl remineralization rate (1/s) */')
+      CALL WRITE_0D_RL(kDetCpho,INDEX_NONE,
+     &'kDetCpho = ',
+     &' /* DetCpho remineralization rate (1/s) */')
+      CALL WRITE_0D_RL(kDetCbio,INDEX_NONE,
+     &'kDetCbio = ',
+     &' /* DetCbio remineralization rate (1/s) */')
+      CALL WRITE_0D_RL(kDetCproo,INDEX_NONE,
+     &'kDetCproo = ',
+     &' /* DetCproo remineralization rate (1/s) */')
+      CALL WRITE_0D_RL(kDetCrna,INDEX_NONE,
+     &'kDetCrna = ',
+     &' /* DetCrna remineralization rate (1/s) */')
+      CALL WRITE_0D_RL(kDetCdna,INDEX_NONE,
+     &'kDetCdna = ',
+     &' /* DetCdna remineralization rate (1/s) */')
+      CALL WRITE_0D_RL(kDetCthy,INDEX_NONE,
+     &'kDetCthy = ',
+     &' /* DetCthy remineralization rate (1/s) */')
+      CALL WRITE_0D_RL(kDetCoth,INDEX_NONE,
+     &'kDetCoth = ',
+     &' /* DetCoth remineralization rate (1/s) */')
+      CALL WRITE_0D_RL(kDetCNsto,INDEX_NONE,
+     &'kDetCNsto = ',
+     &' /* DetCNsto remineralization rate (1/s) */')
+      CALL WRITE_0D_RL(kDetCsto,INDEX_NONE,
+     &'kDetCsto = ',
+     &' /* DetCsto remineralization rate (1/s) */')
 #endif
 
 C---+----1----+----2----+----3----+----4----+----5----+----6----+----7-|--+----|

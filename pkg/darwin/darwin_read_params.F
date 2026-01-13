@@ -154,6 +154,18 @@ C----
      &    Y_CN_DNA,
      &    Y_CN_RNA,
      &    Y_CP_Plip,
+# ifdef DARWIN_MACROMOLECULAR_DETRITUS
+     &    kDetCchl,
+     &    kDetCpho,
+     &    kDetCbio,
+     &    kDetCproo,
+     &    kDetCrna,
+     &    kDetCdna,
+     &    kDetCthy,
+     &    kDetCoth,
+     &    kDetCNsto,
+     &    kDetCsto,
+# endif
 #endif
      &    ksatO2remin,
      &    wC_sink,
@@ -521,6 +533,18 @@ C
       Y_CN_DNA = 9.75 _d 0 /3.75 _d 0
       Y_CN_RNA = 9.50 _d 0 /3.75 _d 0
       Y_CP_Plip = 40.0 _d 0
+# ifdef DARWIN_MACROMOLECULAR_DETRITUS
+      kDetCchl  = 0.016 _d 0 / pday
+      kDetCpho  = 0.016 _d 0 / pday
+      kDetCbio  = 0.016 _d 0 / pday
+      kDetCproo = 0.016 _d 0 / pday
+      kDetCrna  = 0.016 _d 0 / pday
+      kDetCdna  = 0.016 _d 0 / pday
+      kDetCthy  = 0.016 _d 0 / pday
+      kDetCoth  = 0.016 _d 0 / pday
+      kDetCNsto = 0.016 _d 0 / pday
+      kDetCsto  = 0.016 _d 0 / pday
+# endif
 #endif
       ksatO2remin = 0 _d 0
       wC_sink = 10 _d 0/pday

@@ -703,6 +703,78 @@ C-      use units & names from data.ptracers :
        diagCode  = 'SM P    MR      '
        CALL DIAGNOSTICS_ADDTOLIST( diagNum,
      I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+#  ifdef DARWIN_MACROMOLECULAR_DETRITUS
+       WRITE(diagName,'(A,I4.4)')'Qchl', j
+       WRITE(diagTitle,'(A,I4)')'QCchl plankton ',j
+       diagUnits = '[0/1]           '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+       WRITE(diagName,'(A,I4.4)')'Qpho', j
+       WRITE(diagTitle,'(A,I4)')'QCpho plankton ',j
+       diagUnits = '[0/1]           '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+       WRITE(diagName,'(A,I4.4)')'Qbio', j
+       WRITE(diagTitle,'(A,I4)')'QCbio plankton ',j
+       diagUnits = '[0/1]           '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+       WRITE(diagName,'(A,I4.4)')'Qpro', j
+       WRITE(diagTitle,'(A,I4)')'QCpro plankton ',j
+       diagUnits = '[0/1]           '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+       WRITE(diagName,'(A,I4.4)')'Qrna', j
+       WRITE(diagTitle,'(A,I4)')'QCrna plankton ',j
+       diagUnits = '[0/1]           '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+       WRITE(diagName,'(A,I4.4)')'Qdna', j
+       WRITE(diagTitle,'(A,I4)')'QCdna plankton ',j
+       diagUnits = '[0/1]           '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+       WRITE(diagName,'(A,I4.4)')'Qthy', j
+       WRITE(diagTitle,'(A,I4)')'QCthy plankton ',j
+       diagUnits = '[0/1]           '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+       WRITE(diagName,'(A,I4.4)')'Qoth', j
+       WRITE(diagTitle,'(A,I4)')'QCoth plankton ',j
+       diagUnits = '[0/1]           '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+       WRITE(diagName,'(A,I4.4)')'QNst', j
+       WRITE(diagTitle,'(A,I4)')'QCNsto plankton ',j
+       diagUnits = '[0/1]           '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+       WRITE(diagName,'(A,I4.4)')'Qsto', j
+       WRITE(diagTitle,'(A,I4)')'QCsto plankton ',j
+       diagUnits = '[0/1]           '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+#  endif /* DARWIN_MACROMOLECULAR_DETRITUS */
       ENDDO
 # endif /* DARWIN_MACROMOLECULAR_GROWTH */
 #endif /* DARWIN_DIAG_PERTYPE */

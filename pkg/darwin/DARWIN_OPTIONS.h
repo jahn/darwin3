@@ -54,6 +54,9 @@ C this needs to be defined for coupling to atmospheric model:
 C enable macromolecular growth code; requires N, P and Fe quotas
 #undef DARWIN_MACROMOLECULAR_GROWTH
 
+C enable macromolecular detritus; requires DARWIN_MACROMOLECULAR_GROWTH
+#undef DARWIN_MACROMOLECULAR_DETRITUS
+
 
 C optional bits
 

@@ -297,6 +297,28 @@ C Carbon budget
         tiletotC(bi,bj)=tiletotC(bi,bj)+Ptracer(i,j,k,bi,bj,iDOC)*vol
         tiletotC(bi,bj)=tiletotC(bi,bj)+Ptracer(i,j,k,bi,bj,iPOC)*vol
         tiletotC(bi,bj)=tiletotC(bi,bj)+Ptracer(i,j,k,bi,bj,iPIC)*vol
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+        tiletotC(bi,bj)=tiletotC(bi,bj)+Ptracer(i,j,k,bi,bj,iDetCchl)
+     &                                 *vol
+        tiletotC(bi,bj)=tiletotC(bi,bj)+Ptracer(i,j,k,bi,bj,iDetCpho)
+     &                                 *vol
+        tiletotC(bi,bj)=tiletotC(bi,bj)+Ptracer(i,j,k,bi,bj,iDetCbio)
+     &                                 *vol
+        tiletotC(bi,bj)=tiletotC(bi,bj)+Ptracer(i,j,k,bi,bj,iDetCproo)
+     &                                 *vol
+        tiletotC(bi,bj)=tiletotC(bi,bj)+Ptracer(i,j,k,bi,bj,iDetCrna)
+     &                                 *vol
+        tiletotC(bi,bj)=tiletotC(bi,bj)+Ptracer(i,j,k,bi,bj,iDetCdna)
+     &                                 *vol
+        tiletotC(bi,bj)=tiletotC(bi,bj)+Ptracer(i,j,k,bi,bj,iDetCthy)
+     &                                 *vol
+        tiletotC(bi,bj)=tiletotC(bi,bj)+Ptracer(i,j,k,bi,bj,iDetCoth)
+     &                                 *vol
+        tiletotC(bi,bj)=tiletotC(bi,bj)+Ptracer(i,j,k,bi,bj,iDetCNsto)
+     &                                 *vol
+        tiletotC(bi,bj)=tiletotC(bi,bj)+Ptracer(i,j,k,bi,bj,iDetCsto)
+     &                                 *vol
+#endif
         DO np=1,nplank
          iTr=ic+np-1
          tiletotC(bi,bj)=tiletotC(bi,bj)+Ptracer(i,j,k,bi,bj,iTr)
@@ -324,6 +346,22 @@ c Nitrogen budget
         tiletotN(bi,bj)=tiletotN(bi,bj)+Ptracer(i,j,k,bi,bj,iNO2)*vol
         tiletotN(bi,bj)=tiletotN(bi,bj)+Ptracer(i,j,k,bi,bj,iDON)*vol
         tiletotN(bi,bj)=tiletotN(bi,bj)+Ptracer(i,j,k,bi,bj,iPON)*vol
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+        tiletotN(bi,bj)=tiletotN(bi,bj)+Ptracer(i,j,k,bi,bj,iDetCchl)
+     &                                  *Y_NC_chl*vol
+        tiletotN(bi,bj)=tiletotN(bi,bj)+Ptracer(i,j,k,bi,bj,iDetCpho)
+     &                                  /Y_CN_protein*vol
+        tiletotN(bi,bj)=tiletotN(bi,bj)+Ptracer(i,j,k,bi,bj,iDetCbio)
+     &                                  /Y_CN_protein*vol
+        tiletotN(bi,bj)=tiletotN(bi,bj)+Ptracer(i,j,k,bi,bj,iDetCproo)
+     &                                  /Y_CN_protein*vol
+        tiletotN(bi,bj)=tiletotN(bi,bj)+Ptracer(i,j,k,bi,bj,iDetCrna)
+     &                                  /Y_CN_rna*vol
+        tiletotN(bi,bj)=tiletotN(bi,bj)+Ptracer(i,j,k,bi,bj,iDetCdna)
+     &                                  /Y_CN_dna*vol
+        tiletotN(bi,bj)=tiletotN(bi,bj)+Ptracer(i,j,k,bi,bj,iDetCNsto)
+     &                                  /Y_CN_cyano*vol
+#endif
         DO np=1,nplank
 #ifdef DARWIN_ALLOW_NQUOTA
          iTr=in+np-1
@@ -348,6 +386,14 @@ c Phosphorus budget
         tiletotP(bi,bj)=tiletotP(bi,bj)+Ptracer(i,j,k,bi,bj,iPO4)*vol
         tiletotP(bi,bj)=tiletotP(bi,bj)+Ptracer(i,j,k,bi,bj,iDOP)*vol
         tiletotP(bi,bj)=tiletotP(bi,bj)+Ptracer(i,j,k,bi,bj,iPOP)*vol
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+        tiletotP(bi,bj)=tiletotP(bi,bj)+Ptracer(i,j,k,bi,bj,iDetCrna)
+     &                                  /Y_CN_RNA*Y_PN_nucacid*vol
+        tiletotP(bi,bj)=tiletotP(bi,bj)+Ptracer(i,j,k,bi,bj,iDetCdna)
+     &                                  /Y_CN_DNA*Y_PN_nucacid*vol
+        tiletotP(bi,bj)=tiletotP(bi,bj)+Ptracer(i,j,k,bi,bj,iDetCthy)
+     &                                  /Y_CP_Plip*vol
+#endif
         DO np=1,nplank
 #ifdef DARWIN_ALLOW_PQUOTA
          iTr=ip+np-1
@@ -372,6 +418,10 @@ c Iron budget
         tiletotFe(bi,bj)=tiletotFe(bi,bj)+Ptracer(i,j,k,bi,bj,iFeT)*vol
         tiletotFe(bi,bj)=tiletotFe(bi,bj)+Ptracer(i,j,k,bi,bj,iDOFe)*vol
         tiletotFe(bi,bj)=tiletotFe(bi,bj)+Ptracer(i,j,k,bi,bj,iPOFe)*vol
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+        tiletotFe(bi,bj)=tiletotFe(bi,bj)+Ptracer(i,j,k,bi,bj,iDetCpho)
+     &                                    /Y_CN_protein*Y_FeN_photo*vol
+#endif
         DO np=1,nplank
 #ifdef DARWIN_ALLOW_FEQUOTA
          iTr=ife+np-1
@@ -536,6 +586,28 @@ C Carbon imp.FS corrections
          tileFSC(bi,bj)=tileFSC(bi,bj)+Ptracer(i,j,ks,bi,bj,iDOC)*dvol
          tileFSC(bi,bj)=tileFSC(bi,bj)+Ptracer(i,j,ks,bi,bj,iPOC)*dvol
          tileFSC(bi,bj)=tileFSC(bi,bj)+Ptracer(i,j,ks,bi,bj,iPIC)*dvol
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+         tileFSC(bi,bj)=tileFSC(bi,bj)+Ptracer(i,j,ks,bi,bj,iDetCchl)
+     &                                 *dvol
+         tileFSC(bi,bj)=tileFSC(bi,bj)+Ptracer(i,j,ks,bi,bj,iDetCpho)
+     &                                 *dvol
+         tileFSC(bi,bj)=tileFSC(bi,bj)+Ptracer(i,j,ks,bi,bj,iDetCbio)
+     &                                 *dvol
+         tileFSC(bi,bj)=tileFSC(bi,bj)+Ptracer(i,j,ks,bi,bj,iDetCproo)
+     &                                 *dvol
+         tileFSC(bi,bj)=tileFSC(bi,bj)+Ptracer(i,j,ks,bi,bj,iDetCrna)
+     &                                 *dvol
+         tileFSC(bi,bj)=tileFSC(bi,bj)+Ptracer(i,j,ks,bi,bj,iDetCdna)
+     &                                 *dvol
+         tileFSC(bi,bj)=tileFSC(bi,bj)+Ptracer(i,j,ks,bi,bj,iDetCthy)
+     &                                 *dvol
+         tileFSC(bi,bj)=tileFSC(bi,bj)+Ptracer(i,j,ks,bi,bj,iDetCoth)
+     &                                 *dvol
+         tileFSC(bi,bj)=tileFSC(bi,bj)+Ptracer(i,j,ks,bi,bj,iDetCNsto)
+     &                                 *dvol
+         tileFSC(bi,bj)=tileFSC(bi,bj)+Ptracer(i,j,ks,bi,bj,iDetCsto)
+     &                                 *dvol
+#endif
          DO np=1,nplank
           iTr=ic+np-1
           tileFSC(bi,bj)=tileFSC(bi,bj)+Ptracer(i,j,ks,bi,bj,iTr)
@@ -557,6 +629,22 @@ C Nitrogen imp.FS corrections
          tileFSN(bi,bj)=tileFSN(bi,bj)+Ptracer(i,j,ks,bi,bj,iNO2)*dvol
          tileFSN(bi,bj)=tileFSN(bi,bj)+Ptracer(i,j,ks,bi,bj,iDON)*dvol
          tileFSN(bi,bj)=tileFSN(bi,bj)+Ptracer(i,j,ks,bi,bj,iPON)*dvol
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+         tileFSN(bi,bj)=tileFSN(bi,bj)+Ptracer(i,j,ks,bi,bj,iDetCchl)
+     &                                 *Y_NC_chl*dvol
+         tileFSN(bi,bj)=tileFSN(bi,bj)+Ptracer(i,j,ks,bi,bj,iDetCpho)
+     &                                 /Y_CN_protein*dvol
+         tileFSN(bi,bj)=tileFSN(bi,bj)+Ptracer(i,j,ks,bi,bj,iDetCbio)
+     &                                 /Y_CN_protein*dvol
+         tileFSN(bi,bj)=tileFSN(bi,bj)+Ptracer(i,j,ks,bi,bj,iDetCproo)
+     &                                 /Y_CN_protein*dvol
+         tileFSN(bi,bj)=tileFSN(bi,bj)+Ptracer(i,j,ks,bi,bj,iDetCrna)
+     &                                 /Y_CN_rna*dvol
+         tileFSN(bi,bj)=tileFSN(bi,bj)+Ptracer(i,j,ks,bi,bj,iDetCdna)
+     &                                 /Y_CN_dna*dvol
+         tileFSN(bi,bj)=tileFSN(bi,bj)+Ptracer(i,j,ks,bi,bj,iDetCNsto)
+     &                                 /Y_CN_cyano*dvol
+#endif
          DO np=1,nplank
 #ifdef DARWIN_ALLOW_NQUOTA
           iTr=in+np-1
@@ -581,6 +669,14 @@ C Phosphorus imp.FS corrections
          tileFSP(bi,bj)=tileFSP(bi,bj)+Ptracer(i,j,ks,bi,bj,iPO4)*dvol
          tileFSP(bi,bj)=tileFSP(bi,bj)+Ptracer(i,j,ks,bi,bj,iDOP)*dvol
          tileFSP(bi,bj)=tileFSP(bi,bj)+Ptracer(i,j,ks,bi,bj,iPOP)*dvol
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+         tileFSP(bi,bj)=tileFSP(bi,bj)+Ptracer(i,j,ks,bi,bj,iDetCrna)
+     &                                 /Y_CN_RNA*Y_PN_nucacid*dvol
+         tileFSP(bi,bj)=tileFSP(bi,bj)+Ptracer(i,j,ks,bi,bj,iDetCdna)
+     &                                 /Y_CN_DNA*Y_PN_nucacid*dvol
+         tileFSP(bi,bj)=tileFSP(bi,bj)+Ptracer(i,j,ks,bi,bj,iDetCthy)
+     &                                 /Y_CP_Plip*dvol
+#endif
          DO np=1,nplank
 #ifdef DARWIN_ALLOW_PQUOTA
           iTr=ip+np-1
@@ -608,6 +704,10 @@ C Iron imp.FS corrections
      &                                  *dvol
          tileFSFe(bi,bj)=tileFSFe(bi,bj)+Ptracer(i,j,ks,bi,bj,iPOFe)
      &                                  *dvol
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+         tileFSFe(bi,bj)=tileFSFe(bi,bj)+Ptracer(i,j,ks,bi,bj,iDetCpho)
+     &                                   /Y_CN_protein*Y_FeN_photo*dvol
+#endif
          DO np=1,nplank
 #ifdef DARWIN_ALLOW_FEQUOTA
           iTr=ife+np-1
@@ -674,23 +774,55 @@ C Carbon E-P-R fluxes
      &   tileEPRC(bi,bj)=tileEPRC(bi,bj)+Ptracer(i,j,ks,bi,bj,iPOC)*dvol
          IF (PTRACERS_EvPrRn(iPIC).EQ.UNSET_RL)
      &   tileEPRC(bi,bj)=tileEPRC(bi,bj)+Ptracer(i,j,ks,bi,bj,iPIC)*dvol
+# ifdef DARWIN_MACROMOLECULAR_DETRITUS
+         IF (PTRACERS_EvPrRn(iDetCchl).EQ.UNSET_RL)
+     &   tileEPRC(bi,bj)=tileEPRC(bi,bj)+Ptracer(i,j,ks,bi,bj,iDetCchl)
+     &                                   *dvol
+         IF (PTRACERS_EvPrRn(iDetCpho).EQ.UNSET_RL)
+     &   tileEPRC(bi,bj)=tileEPRC(bi,bj)+Ptracer(i,j,ks,bi,bj,iDetCpho)
+     &                                   *dvol
+         IF (PTRACERS_EvPrRn(iDetCbio).EQ.UNSET_RL)
+     &   tileEPRC(bi,bj)=tileEPRC(bi,bj)+Ptracer(i,j,ks,bi,bj,iDetCbio)
+     &                                   *dvol
+         IF (PTRACERS_EvPrRn(iDetCproo).EQ.UNSET_RL)
+     &   tileEPRC(bi,bj)=tileEPRC(bi,bj)+Ptracer(i,j,ks,bi,bj,iDetCproo)
+     &                                   *dvol
+         IF (PTRACERS_EvPrRn(iDetCrna).EQ.UNSET_RL)
+     &   tileEPRC(bi,bj)=tileEPRC(bi,bj)+Ptracer(i,j,ks,bi,bj,iDetCrna)
+     &                                   *dvol
+         IF (PTRACERS_EvPrRn(iDetCdna).EQ.UNSET_RL)
+     &   tileEPRC(bi,bj)=tileEPRC(bi,bj)+Ptracer(i,j,ks,bi,bj,iDetCdna)
+     &                                   *dvol
+         IF (PTRACERS_EvPrRn(iDetCthy).EQ.UNSET_RL)
+     &   tileEPRC(bi,bj)=tileEPRC(bi,bj)+Ptracer(i,j,ks,bi,bj,iDetCthy)
+     &                                   *dvol
+         IF (PTRACERS_EvPrRn(iDetCoth).EQ.UNSET_RL)
+     &   tileEPRC(bi,bj)=tileEPRC(bi,bj)+Ptracer(i,j,ks,bi,bj,iDetCoth)
+     &                                   *dvol
+         IF (PTRACERS_EvPrRn(iDetCNsto).EQ.UNSET_RL)
+     &   tileEPRC(bi,bj)=tileEPRC(bi,bj)+Ptracer(i,j,ks,bi,bj,iDetCNsto)
+     &                                   *dvol
+         IF (PTRACERS_EvPrRn(iDetCsto).EQ.UNSET_RL)
+     &   tileEPRC(bi,bj)=tileEPRC(bi,bj)+Ptracer(i,j,ks,bi,bj,iDetCsto)
+     &                                   *dvol
+# endif
          DO np=1,nplank
           iTr=ic+np-1
           IF (PTRACERS_EvPrRn(iTr).EQ.UNSET_RL)
      &     tileEPRC(bi,bj)=tileEPRC(bi,bj)+Ptracer(i,j,ks,bi,bj,iTr)
      &                                    *(1+R_PICPOC(np))*dvol
          ENDDO
-#ifdef DARWIN_ALLOW_CDOM
+# ifdef DARWIN_ALLOW_CDOM
          IF (PTRACERS_EvPrRn(iCDOM).EQ.UNSET_RL) THEN
-# ifdef DARWIN_CDOM_UNITS_CARBON
+#  ifdef DARWIN_CDOM_UNITS_CARBON
           tileEPRC(bi,bj)=tileEPRC(bi,bj)+Ptracer(i,j,ks,bi,bj,iCDOM)
      &                                   *dvol
-# else
+#  else
           tileEPRC(bi,bj)=tileEPRC(bi,bj)+Ptracer(i,j,ks,bi,bj,iCDOM)
      &                                   *R_CP_CDOM*dvol
-# endif
+#  endif
          ENDIF
-#endif
+# endif
 
 C Nitrogen E-P-R fluxes
          IF (PTRACERS_EvPrRn(iNO3).EQ.UNSET_RL)
@@ -703,29 +835,52 @@ C Nitrogen E-P-R fluxes
      &   tileEPRN(bi,bj)=tileEPRN(bi,bj)+Ptracer(i,j,ks,bi,bj,iDON)*dvol
          IF (PTRACERS_EvPrRn(iPON).EQ.UNSET_RL)
      &   tileEPRN(bi,bj)=tileEPRN(bi,bj)+Ptracer(i,j,ks,bi,bj,iPON)*dvol
+# ifdef DARWIN_MACROMOLECULAR_DETRITUS
+         IF (PTRACERS_EvPrRn(iDetCchl).EQ.UNSET_RL)
+     &   tileEPRN(bi,bj)=tileEPRN(bi,bj)+Ptracer(i,j,ks,bi,bj,iDetCchl)
+     &                                  *Y_NC_chl*dvol
+         IF (PTRACERS_EvPrRn(iDetCpho).EQ.UNSET_RL)
+     &   tileEPRN(bi,bj)=tileEPRN(bi,bj)+Ptracer(i,j,ks,bi,bj,iDetCpho)
+     &                                  /Y_CN_protein*dvol
+         IF (PTRACERS_EvPrRn(iDetCbio).EQ.UNSET_RL)
+     &   tileEPRN(bi,bj)=tileEPRN(bi,bj)+Ptracer(i,j,ks,bi,bj,iDetCbio)
+     &                                  /Y_CN_protein*dvol
+         IF (PTRACERS_EvPrRn(iDetCproo).EQ.UNSET_RL)
+     &   tileEPRN(bi,bj)=tileEPRN(bi,bj)+Ptracer(i,j,ks,bi,bj,iDetCproo)
+     &                                  /Y_CN_protein*dvol
+         IF (PTRACERS_EvPrRn(iDetCrna).EQ.UNSET_RL)
+     &   tileEPRN(bi,bj)=tileEPRN(bi,bj)+Ptracer(i,j,ks,bi,bj,iDetCrna)
+     &                                  /Y_CN_rna*dvol
+         IF (PTRACERS_EvPrRn(iDetCdna).EQ.UNSET_RL)
+     &   tileEPRN(bi,bj)=tileEPRN(bi,bj)+Ptracer(i,j,ks,bi,bj,iDetCdna)
+     &                                  /Y_CN_dna*dvol
+         IF (PTRACERS_EvPrRn(iDetCNsto).EQ.UNSET_RL)
+     &   tileEPRN(bi,bj)=tileEPRN(bi,bj)+Ptracer(i,j,ks,bi,bj,iDetCNsto)
+     &                                  /Y_CN_cyano*dvol
+# endif
          DO np=1,nplank
-#ifdef DARWIN_ALLOW_NQUOTA
+# ifdef DARWIN_ALLOW_NQUOTA
           iTr=in+np-1
           IF (PTRACERS_EvPrRn(iTr).EQ.UNSET_RL)
      &    tileEPRN(bi,bj)=tileEPRN(bi,bj)+Ptracer(i,j,ks,bi,bj,iTr)*dvol
-#else
+# else
           iTr=ic+np-1
           IF (PTRACERS_EvPrRn(iTr).EQ.UNSET_RL)
      &     tileEPRN(bi,bj)=tileEPRN(bi,bj)+Ptracer(i,j,ks,bi,bj,iTr)
      &                                    *R_NC(np)*dvol
-#endif
+# endif
          ENDDO
-#ifdef DARWIN_ALLOW_CDOM
+# ifdef DARWIN_ALLOW_CDOM
          IF (PTRACERS_EvPrRn(iCDOM).EQ.UNSET_RL) THEN
-# ifdef DARWIN_CDOM_UNITS_CARBON
+#  ifdef DARWIN_CDOM_UNITS_CARBON
           tileEPRN(bi,bj)=tileEPRN(bi,bj)+Ptracer(i,j,ks,bi,bj,iCDOM)
      &                                   *R_NC_CDOM*dvol
-# else
+#  else
           tileEPRN(bi,bj)=tileEPRN(bi,bj)+Ptracer(i,j,ks,bi,bj,iCDOM)
      &                                   *R_NP_CDOM*dvol
-# endif
+#  endif
          ENDIF
-#endif
+# endif
 
 C Phosphorus E-P-R fluxes
          IF (PTRACERS_EvPrRn(iPO4).EQ.UNSET_RL)
@@ -734,29 +889,40 @@ C Phosphorus E-P-R fluxes
      &   tileEPRP(bi,bj)=tileEPRP(bi,bj)+Ptracer(i,j,ks,bi,bj,iDOP)*dvol
          IF (PTRACERS_EvPrRn(iPOP).EQ.UNSET_RL)
      &   tileEPRP(bi,bj)=tileEPRP(bi,bj)+Ptracer(i,j,ks,bi,bj,iPOP)*dvol
+# ifdef DARWIN_MACROMOLECULAR_DETRITUS
+         IF (PTRACERS_EvPrRn(iDetCrna).EQ.UNSET_RL)
+     &   tileEPRP(bi,bj)=tileEPRP(bi,bj)+Ptracer(i,j,ks,bi,bj,iDetCrna)
+     &                                  /Y_CN_RNA*Y_PN_nucacid*dvol
+         IF (PTRACERS_EvPrRn(iDetCdna).EQ.UNSET_RL)
+     &   tileEPRP(bi,bj)=tileEPRP(bi,bj)+Ptracer(i,j,ks,bi,bj,iDetCdna)
+     &                                  /Y_CN_DNA*Y_PN_nucacid*dvol
+         IF (PTRACERS_EvPrRn(iDetCNsto).EQ.UNSET_RL)
+     &   tileEPRP(bi,bj)=tileEPRP(bi,bj)+Ptracer(i,j,ks,bi,bj,iDetCthy)
+     &                                  /Y_CP_Plip*dvol
+# endif
          DO np=1,nplank
-#ifdef DARWIN_ALLOW_PQUOTA
+# ifdef DARWIN_ALLOW_PQUOTA
           iTr=ip+np-1
           IF (PTRACERS_EvPrRn(iTr).EQ.UNSET_RL)
      &    tileEPRP(bi,bj)=tileEPRP(bi,bj)+Ptracer(i,j,ks,bi,bj,iTr)*dvol
-#else
+# else
           iTr=ic+np-1
           IF (PTRACERS_EvPrRn(iTr).EQ.UNSET_RL)
      &     tileEPRP(bi,bj)=tileEPRP(bi,bj)+Ptracer(i,j,ks,bi,bj,iTr)
      &                                    *R_PC(np)*dvol
-#endif
+# endif
          ENDDO
-#ifdef DARWIN_ALLOW_CDOM
+# ifdef DARWIN_ALLOW_CDOM
          IF (PTRACERS_EvPrRn(iCDOM).EQ.UNSET_RL) THEN
-# ifdef DARWIN_CDOM_UNITS_CARBON
+#  ifdef DARWIN_CDOM_UNITS_CARBON
           tileEPRP(bi,bj)=tileEPRP(bi,bj)+Ptracer(i,j,ks,bi,bj,iCDOM)
      &                                   *R_PC_CDOM*dvol
-# else
+#  else
           tileEPRP(bi,bj)=tileEPRP(bi,bj)+Ptracer(i,j,ks,bi,bj,iCDOM)
      &                                   *dvol
-# endif
+#  endif
          ENDIF
-#endif
+# endif
 
 C Iron E-P-R fluxes
          IF (PTRACERS_EvPrRn(iFeT).EQ.UNSET_RL)
@@ -768,30 +934,35 @@ C Iron E-P-R fluxes
          IF (PTRACERS_EvPrRn(iPOFe).EQ.UNSET_RL)
      &    tileEPRFe(bi,bj)=tileEPRFe(bi,bj)+Ptracer(i,j,ks,bi,bj,iPOFe)
      &                                     *dvol
+# ifdef DARWIN_MACROMOLECULAR_DETRITUS
+         IF (PTRACERS_EvPrRn(iDetCpho).EQ.UNSET_RL)
+     &   tileEPRFe(bi,bj)=tileEPRFe(bi,bj)
+     &    +Ptracer(i,j,ks,bi,bj,iDetCpho)/Y_CN_protein*Y_FeN_photo*dvol
+# endif
          DO np=1,nplank
-#ifdef DARWIN_ALLOW_FEQUOTA
+# ifdef DARWIN_ALLOW_FEQUOTA
           iTr=ife+np-1
           IF (PTRACERS_EvPrRn(iTr).EQ.UNSET_RL)
      &     tileEPRFe(bi,bj)=tileEPRFe(bi,bj)+Ptracer(i,j,ks,bi,bj,iTr)
      &                                      *dvol
-#else
+# else
           iTr=ic+np-1
           IF (PTRACERS_EvPrRn(iTr).EQ.UNSET_RL)
      &     tileEPRFe(bi,bj)=tileEPRFe(bi,bj)+Ptracer(i,j,ks,bi,bj,iTr)
      &                                      *R_FeC(np)*dvol
-#endif
+# endif
          ENDDO
-#ifdef DARWIN_ALLOW_CDOM
+# ifdef DARWIN_ALLOW_CDOM
          IF (PTRACERS_EvPrRn(iCDOM).EQ.UNSET_RL) THEN
-# ifdef DARWIN_CDOM_UNITS_CARBON
+#  ifdef DARWIN_CDOM_UNITS_CARBON
           tileEPRFe(bi,bj)=tileEPRFe(bi,bj)+Ptracer(i,j,ks,bi,bj,iCDOM)
      &                                     *R_FeC_CDOM*dvol
-# else
+#  else
           tileEPRFe(bi,bj)=tileEPRFe(bi,bj)+Ptracer(i,j,ks,bi,bj,iCDOM)
      &                                     *R_FeP_CDOM*dvol
-# endif
+#  endif
          ENDIF
-#endif
+# endif
 
 C Silica E-P-R fluxes
          IF (PTRACERS_EvPrRn(iSiO2).EQ.UNSET_RL)
@@ -801,26 +972,26 @@ C Silica E-P-R fluxes
      &    tileEPRSi(bi,bj)=tileEPRSi(bi,bj)+Ptracer(i,j,ks,bi,bj,iPOSi)
      &                                     *dvol
          DO np=1,nplank
-#ifdef DARWIN_ALLOW_SIQUOTA
+# ifdef DARWIN_ALLOW_SIQUOTA
           iTr=isi+np-1
           IF (PTRACERS_EvPrRn(iTr).EQ.UNSET_RL)
      &     tileEPRSi(bi,bj)=tileEPRSi(bi,bj)+Ptracer(i,j,ks,bi,bj,iTr)
      &                                      *dvol
-#else
+# else
           iTr=ic+np-1
           IF (PTRACERS_EvPrRn(iTr).EQ.UNSET_RL)
      &     tileEPRSi(bi,bj)=tileEPRSi(bi,bj)+Ptracer(i,j,ks,bi,bj,iTr)
      &                                      *R_SiC(np)*dvol
-#endif
+# endif
          ENDDO
 
 C Alkalinity and oxygen E-P-R fluxes
-#ifdef DARWIN_ALLOW_CARBON
+# ifdef DARWIN_ALLOW_CARBON
          IF (PTRACERS_EvPrRn(iALK).EQ.UNSET_RL)
      &   tileEPRA(bi,bj)=tileEPRA(bi,bj)+Ptracer(i,j,ks,bi,bj,iALK)*dvol
          IF (PTRACERS_EvPrRn(iO2).EQ.UNSET_RL)
      &   tileEPRO(bi,bj)=tileEPRO(bi,bj)+Ptracer(i,j,ks,bi,bj,iO2)*dvol
-#endif
+# endif
 
 C       endif stage 0, etc
         ENDIF
@@ -853,6 +1024,38 @@ C Carbon E-P-R fluxes
      &   tileEPRC(bi,bj)=tileEPRC(bi,bj)-Ptracer(i,j,ks,bi,bj,iPOC)*dvol
          IF (PTRACERS_EvPrRn(iPIC).NE.UNSET_RL)
      &   tileEPRC(bi,bj)=tileEPRC(bi,bj)-Ptracer(i,j,ks,bi,bj,iPIC)*dvol
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+         IF (PTRACERS_EvPrRn(iDetCchl).NE.UNSET_RL)
+     &   tileEPRC(bi,bj)=tileEPRC(bi,bj)-Ptracer(i,j,ks,bi,bj,iDetCchl)
+     &                                   *dvol
+         IF (PTRACERS_EvPrRn(iDetCpho).NE.UNSET_RL)
+     &   tileEPRC(bi,bj)=tileEPRC(bi,bj)-Ptracer(i,j,ks,bi,bj,iDetCpho)
+     &                                   *dvol
+         IF (PTRACERS_EvPrRn(iDetCbio).NE.UNSET_RL)
+     &   tileEPRC(bi,bj)=tileEPRC(bi,bj)-Ptracer(i,j,ks,bi,bj,iDetCbio)
+     &                                   *dvol
+         IF (PTRACERS_EvPrRn(iDetCproo).NE.UNSET_RL)
+     &   tileEPRC(bi,bj)=tileEPRC(bi,bj)-Ptracer(i,j,ks,bi,bj,iDetCproo)
+     &                                   *dvol
+         IF (PTRACERS_EvPrRn(iDetCrna).NE.UNSET_RL)
+     &   tileEPRC(bi,bj)=tileEPRC(bi,bj)-Ptracer(i,j,ks,bi,bj,iDetCrna)
+     &                                   *dvol
+         IF (PTRACERS_EvPrRn(iDetCdna).NE.UNSET_RL)
+     &   tileEPRC(bi,bj)=tileEPRC(bi,bj)-Ptracer(i,j,ks,bi,bj,iDetCdna)
+     &                                   *dvol
+         IF (PTRACERS_EvPrRn(iDetCthy).NE.UNSET_RL)
+     &   tileEPRC(bi,bj)=tileEPRC(bi,bj)-Ptracer(i,j,ks,bi,bj,iDetCthy)
+     &                                   *dvol
+         IF (PTRACERS_EvPrRn(iDetCoth).NE.UNSET_RL)
+     &   tileEPRC(bi,bj)=tileEPRC(bi,bj)-Ptracer(i,j,ks,bi,bj,iDetCoth)
+     &                                   *dvol
+         IF (PTRACERS_EvPrRn(iDetCNsto).NE.UNSET_RL)
+     &   tileEPRC(bi,bj)=tileEPRC(bi,bj)-Ptracer(i,j,ks,bi,bj,iDetCNsto)
+     &                                   *dvol
+         IF (PTRACERS_EvPrRn(iDetCsto).NE.UNSET_RL)
+     &   tileEPRC(bi,bj)=tileEPRC(bi,bj)-Ptracer(i,j,ks,bi,bj,iDetCsto)
+     &                                   *dvol
+#endif
          DO np=1,nplank
           iTr=ic+np-1
           IF (PTRACERS_EvPrRn(iTr).NE.UNSET_RL)
@@ -882,6 +1085,29 @@ C Nitrogen E-P-R fluxes
      &   tileEPRN(bi,bj)=tileEPRN(bi,bj)-Ptracer(i,j,ks,bi,bj,iDON)*dvol
          IF (PTRACERS_EvPrRn(iPON).NE.UNSET_RL)
      &   tileEPRN(bi,bj)=tileEPRN(bi,bj)-Ptracer(i,j,ks,bi,bj,iPON)*dvol
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+         IF (PTRACERS_EvPrRn(iDetCchl).NE.UNSET_RL)
+     &   tileEPRN(bi,bj)=tileEPRN(bi,bj)-Ptracer(i,j,ks,bi,bj,iDetCchl)
+     &                                  *Y_NC_chl*dvol
+         IF (PTRACERS_EvPrRn(iDetCpho).NE.UNSET_RL)
+     &   tileEPRN(bi,bj)=tileEPRN(bi,bj)-Ptracer(i,j,ks,bi,bj,iDetCpho)
+     &                                  /Y_CN_protein*dvol
+         IF (PTRACERS_EvPrRn(iDetCbio).NE.UNSET_RL)
+     &   tileEPRN(bi,bj)=tileEPRN(bi,bj)-Ptracer(i,j,ks,bi,bj,iDetCbio)
+     &                                  /Y_CN_protein*dvol
+         IF (PTRACERS_EvPrRn(iDetCproo).NE.UNSET_RL)
+     &   tileEPRN(bi,bj)=tileEPRN(bi,bj)-Ptracer(i,j,ks,bi,bj,iDetCproo)
+     &                                  /Y_CN_protein*dvol
+         IF (PTRACERS_EvPrRn(iDetCrna).NE.UNSET_RL)
+     &   tileEPRN(bi,bj)=tileEPRN(bi,bj)-Ptracer(i,j,ks,bi,bj,iDetCrna)
+     &                                  /Y_CN_rna*dvol
+         IF (PTRACERS_EvPrRn(iDetCdna).NE.UNSET_RL)
+     &   tileEPRN(bi,bj)=tileEPRN(bi,bj)-Ptracer(i,j,ks,bi,bj,iDetCdna)
+     &                                  /Y_CN_dna*dvol
+         IF (PTRACERS_EvPrRn(iDetCNsto).NE.UNSET_RL)
+     &   tileEPRN(bi,bj)=tileEPRN(bi,bj)-Ptracer(i,j,ks,bi,bj,iDetCNsto)
+     &                                  /Y_CN_cyano*dvol
+#endif
          DO np=1,nplank
 #ifdef DARWIN_ALLOW_NQUOTA
           iTr=in+np-1
@@ -913,6 +1139,17 @@ C Phosphorus E-P-R fluxes
      &   tileEPRP(bi,bj)=tileEPRP(bi,bj)-Ptracer(i,j,ks,bi,bj,iDOP)*dvol
          IF (PTRACERS_EvPrRn(iPOP).NE.UNSET_RL)
      &   tileEPRP(bi,bj)=tileEPRP(bi,bj)-Ptracer(i,j,ks,bi,bj,iPOP)*dvol
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+         IF (PTRACERS_EvPrRn(iDetCrna).NE.UNSET_RL)
+     &   tileEPRP(bi,bj)=tileEPRP(bi,bj)-Ptracer(i,j,ks,bi,bj,iDetCrna)
+     &                                  /Y_CN_RNA*Y_PN_nucacid*dvol
+         IF (PTRACERS_EvPrRn(iDetCdna).NE.UNSET_RL)
+     &   tileEPRP(bi,bj)=tileEPRP(bi,bj)-Ptracer(i,j,ks,bi,bj,iDetCdna)
+     &                                  /Y_CN_DNA*Y_PN_nucacid*dvol
+         IF (PTRACERS_EvPrRn(iDetCNsto).NE.UNSET_RL)
+     &   tileEPRP(bi,bj)=tileEPRP(bi,bj)-Ptracer(i,j,ks,bi,bj,iDetCthy)
+     &                                  /Y_CP_Plip*dvol
+#endif
          DO np=1,nplank
 #ifdef DARWIN_ALLOW_PQUOTA
           iTr=ip+np-1
@@ -947,6 +1184,11 @@ C Iron E-P-R fluxes
          IF (PTRACERS_EvPrRn(iPOFe).NE.UNSET_RL)
      &   tileEPRFe(bi,bj)=tileEPRFe(bi,bj)-Ptracer(i,j,ks,bi,bj,iPOFe)
      &                                    *dvol
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+         IF (PTRACERS_EvPrRn(iDetCpho).NE.UNSET_RL)
+     &   tileEPRFe(bi,bj)=tileEPRFe(bi,bj)
+     &    -Ptracer(i,j,ks,bi,bj,iDetCpho)/Y_CN_protein*Y_FeN_photo*dvol
+#endif
          DO np=1,nplank
 #ifdef DARWIN_ALLOW_FEQUOTA
           iTr=ife+np-1
@@ -1125,6 +1367,28 @@ C Carbon E-P-R fluxes
      &   tmpEPRC = tmpEPRC - PTRACERS_ref(ks,iPOC)*totPER
         IF (PTRACERS_EvPrRn(iPIC).NE.UNSET_RL)
      &   tmpEPRC = tmpEPRC - PTRACERS_ref(ks,iPIC)*totPER
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+        IF (PTRACERS_EvPrRn(iDetCchl).NE.UNSET_RL)
+     &   tmpEPRC = tmpEPRC - PTRACERS_ref(ks,iDetCchl)*totPER
+        IF (PTRACERS_EvPrRn(iDetCpho).NE.UNSET_RL)
+     &   tmpEPRC = tmpEPRC - PTRACERS_ref(ks,iDetCpho)*totPER
+        IF (PTRACERS_EvPrRn(iDetCbio).NE.UNSET_RL)
+     &   tmpEPRC = tmpEPRC - PTRACERS_ref(ks,iDetCbio)*totPER
+        IF (PTRACERS_EvPrRn(iDetCproo).NE.UNSET_RL)
+     &   tmpEPRC = tmpEPRC - PTRACERS_ref(ks,iDetCproo)*totPER
+        IF (PTRACERS_EvPrRn(iDetCrna).NE.UNSET_RL)
+     &   tmpEPRC = tmpEPRC - PTRACERS_ref(ks,iDetCrna)*totPER
+        IF (PTRACERS_EvPrRn(iDetCdna).NE.UNSET_RL)
+     &   tmpEPRC = tmpEPRC - PTRACERS_ref(ks,iDetCdna)*totPER
+        IF (PTRACERS_EvPrRn(iDetCthy).NE.UNSET_RL)
+     &   tmpEPRC = tmpEPRC - PTRACERS_ref(ks,iDetCthy)*totPER
+        IF (PTRACERS_EvPrRn(iDetCoth).NE.UNSET_RL)
+     &   tmpEPRC = tmpEPRC - PTRACERS_ref(ks,iDetCoth)*totPER
+        IF (PTRACERS_EvPrRn(iDetCNsto).NE.UNSET_RL)
+     &   tmpEPRC = tmpEPRC - PTRACERS_ref(ks,iDetCNsto)*totPER
+        IF (PTRACERS_EvPrRn(iDetCsto).NE.UNSET_RL)
+     &   tmpEPRC = tmpEPRC - PTRACERS_ref(ks,iDetCsto)*totPER
+#endif
         DO np=1,nplank
          iTr=ic+np-1
          IF (PTRACERS_EvPrRn(iTr).NE.UNSET_RL)
@@ -1151,6 +1415,29 @@ C Nitrogen E-P-R fluxes
      &   tmpEPRN = tmpEPRN - PTRACERS_ref(ks,iDON)*totPER
         IF (PTRACERS_EvPrRn(iPON).NE.UNSET_RL)
      &   tmpEPRN = tmpEPRN - PTRACERS_ref(ks,iPON)*totPER
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+        IF (PTRACERS_EvPrRn(iDetCchl).NE.UNSET_RL)
+     &   tmpEPRN = tmpEPRN - PTRACERS_ref(ks,iDetCchl)
+     &                       *Y_NC_chl*totPER
+        IF (PTRACERS_EvPrRn(iDetCpho).NE.UNSET_RL)
+     &   tmpEPRN = tmpEPRN - PTRACERS_ref(ks,iDetCpho)
+     &                       /Y_CN_protein*totPER
+        IF (PTRACERS_EvPrRn(iDetCbio).NE.UNSET_RL)
+     &   tmpEPRN = tmpEPRN - PTRACERS_ref(ks,iDetCbio)
+     &                       /Y_CN_protein*totPER
+        IF (PTRACERS_EvPrRn(iDetCproo).NE.UNSET_RL)
+     &   tmpEPRN = tmpEPRN - PTRACERS_ref(ks,iDetCproo)
+     &                       /Y_CN_protein*totPER
+        IF (PTRACERS_EvPrRn(iDetCrna).NE.UNSET_RL)
+     &   tmpEPRN = tmpEPRN - PTRACERS_ref(ks,iDetCrna)
+     &                       /Y_CN_rna*totPER
+        IF (PTRACERS_EvPrRn(iDetCdna).NE.UNSET_RL)
+     &   tmpEPRN = tmpEPRN - PTRACERS_ref(ks,iDetCdna)
+     &                       /Y_CN_dna*totPER
+        IF (PTRACERS_EvPrRn(iDetCNsto).NE.UNSET_RL)
+     &   tmpEPRN = tmpEPRN - PTRACERS_ref(ks,iDetCNsto)
+     &                       /Y_CN_cyano*totPER
+#endif
         DO np=1,nplank
          IF (PTRACERS_EvPrRn(iTr).NE.UNSET_RL) THEN
 #ifdef DARWIN_ALLOW_NQUOTA
@@ -1179,6 +1466,17 @@ C Phosphorus E-P-R fluxes
      &   tmpEPRP = tmpEPRP - PTRACERS_ref(ks,iDOP)*totPER
         IF (PTRACERS_EvPrRn(iPOP).NE.UNSET_RL)
      &   tmpEPRP = tmpEPRP - PTRACERS_ref(ks,iPOP)*totPER
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+        IF (PTRACERS_EvPrRn(iDetCrna).NE.UNSET_RL)
+     &   tmpEPRP = tmpEPRP - PTRACERS_ref(ks,iDetCrna)
+     &                       /Y_CN_RNA*Y_PN_nucacid*totPER
+        IF (PTRACERS_EvPrRn(iDetCdna).NE.UNSET_RL)
+     &   tmpEPRP = tmpEPRP - PTRACERS_ref(ks,iDetCdna)
+     &                       /Y_CN_DNA*Y_PN_nucacid*totPER
+        IF (PTRACERS_EvPrRn(iDetCNsto).NE.UNSET_RL)
+     &   tmpEPRP = tmpEPRP - PTRACERS_ref(ks,iDetCthy)
+     &                       /Y_CP_Plip*totPER
+#endif
         DO np=1,nplank
          IF (PTRACERS_EvPrRn(iTr).NE.UNSET_RL) THEN
 #ifdef DARWIN_ALLOW_PQUOTA
@@ -1207,6 +1505,11 @@ C Iron E-P-R fluxes
      &   tmpEPRFe = tmpEPRFe - PTRACERS_ref(ks,iDOFe)*totPER
         IF (PTRACERS_EvPrRn(iPOFe).NE.UNSET_RL)
      &   tmpEPRFe = tmpEPRFe - PTRACERS_ref(ks,iPOFe)*totPER
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+        IF (PTRACERS_EvPrRn(iDetCpho).NE.UNSET_RL)
+     &   tmpEPRFe = tmpEPRFe - PTRACERS_ref(ks,iDetCpho)
+     &                         /Y_CN_protein*Y_FeN_photo*totPER
+#endif
         DO np=1,nplank
          IF (PTRACERS_EvPrRn(iTr).NE.UNSET_RL) THEN
 #ifdef DARWIN_ALLOW_FEQUOTA
@@ -1266,6 +1569,28 @@ C Carbon E-P-R fluxes
      &   tmpEPRC = tmpEPRC + PTRACERS_EvPrRn(iPOC)*totPER
         IF (PTRACERS_EvPrRn(iPIC).NE.UNSET_RL)
      &   tmpEPRC = tmpEPRC + PTRACERS_EvPrRn(iPIC)*totPER
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+        IF (PTRACERS_EvPrRn(iDetCchl).NE.UNSET_RL)
+     &   tmpEPRC = tmpEPRC + PTRACERS_EvPrRn(iDetCchl)*totPER
+        IF (PTRACERS_EvPrRn(iDetCpho).NE.UNSET_RL)
+     &   tmpEPRC = tmpEPRC + PTRACERS_EvPrRn(iDetCpho)*totPER
+        IF (PTRACERS_EvPrRn(iDetCbio).NE.UNSET_RL)
+     &   tmpEPRC = tmpEPRC + PTRACERS_EvPrRn(iDetCbio)*totPER
+        IF (PTRACERS_EvPrRn(iDetCproo).NE.UNSET_RL)
+     &   tmpEPRC = tmpEPRC + PTRACERS_EvPrRn(iDetCproo)*totPER
+        IF (PTRACERS_EvPrRn(iDetCrna).NE.UNSET_RL)
+     &   tmpEPRC = tmpEPRC + PTRACERS_EvPrRn(iDetCrna)*totPER
+        IF (PTRACERS_EvPrRn(iDetCdna).NE.UNSET_RL)
+     &   tmpEPRC = tmpEPRC + PTRACERS_EvPrRn(iDetCdna)*totPER
+        IF (PTRACERS_EvPrRn(iDetCthy).NE.UNSET_RL)
+     &   tmpEPRC = tmpEPRC + PTRACERS_EvPrRn(iDetCthy)*totPER
+        IF (PTRACERS_EvPrRn(iDetCoth).NE.UNSET_RL)
+     &   tmpEPRC = tmpEPRC + PTRACERS_EvPrRn(iDetCoth)*totPER
+        IF (PTRACERS_EvPrRn(iDetCNsto).NE.UNSET_RL)
+     &   tmpEPRC = tmpEPRC + PTRACERS_EvPrRn(iDetCNsto)*totPER
+        IF (PTRACERS_EvPrRn(iDetCsto).NE.UNSET_RL)
+     &   tmpEPRC = tmpEPRC + PTRACERS_EvPrRn(iDetCsto)*totPER
+#endif
         DO np=1,nplank
          iTr=ic+np-1
          IF (PTRACERS_EvPrRn(iTr).NE.UNSET_RL)
@@ -1292,6 +1617,29 @@ C Nitrogen E-P-R fluxes
      &   tmpEPRN = tmpEPRN + PTRACERS_EvPrRn(iDON)*totPER
         IF (PTRACERS_EvPrRn(iPON).NE.UNSET_RL)
      &   tmpEPRN = tmpEPRN + PTRACERS_EvPrRn(iPON)*totPER
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+        IF (PTRACERS_EvPrRn(iDetCchl).NE.UNSET_RL)
+     &   tmpEPRN = tmpEPRN + PTRACERS_EvPrRn(iDetCchl)
+     &                       *Y_NC_chl*totPER
+        IF (PTRACERS_EvPrRn(iDetCpho).NE.UNSET_RL)
+     &   tmpEPRN = tmpEPRN + PTRACERS_EvPrRn(iDetCpho)
+     &                       /Y_CN_protein*totPER
+        IF (PTRACERS_EvPrRn(iDetCbio).NE.UNSET_RL)
+     &   tmpEPRN = tmpEPRN + PTRACERS_EvPrRn(iDetCbio)
+     &                       /Y_CN_protein*totPER
+        IF (PTRACERS_EvPrRn(iDetCproo).NE.UNSET_RL)
+     &   tmpEPRN = tmpEPRN + PTRACERS_EvPrRn(iDetCproo)
+     &                       /Y_CN_protein*totPER
+        IF (PTRACERS_EvPrRn(iDetCrna).NE.UNSET_RL)
+     &   tmpEPRN = tmpEPRN + PTRACERS_EvPrRn(iDetCrna)
+     &                       /Y_CN_rna*totPER
+        IF (PTRACERS_EvPrRn(iDetCdna).NE.UNSET_RL)
+     &   tmpEPRN = tmpEPRN + PTRACERS_EvPrRn(iDetCdna)
+     &                       /Y_CN_dna*totPER
+        IF (PTRACERS_EvPrRn(iDetCNsto).NE.UNSET_RL)
+     &   tmpEPRN = tmpEPRN + PTRACERS_EvPrRn(iDetCNsto)
+     &                       /Y_CN_cyano*totPER
+#endif
         DO np=1,nplank
          IF (PTRACERS_EvPrRn(iTr).NE.UNSET_RL) THEN
 #ifdef DARWIN_ALLOW_NQUOTA
@@ -1320,6 +1668,17 @@ C Phosphorus E-P-R fluxes
      &   tmpEPRP = tmpEPRP + PTRACERS_EvPrRn(iDOP)*totPER
         IF (PTRACERS_EvPrRn(iPOP).NE.UNSET_RL)
      &   tmpEPRP = tmpEPRP + PTRACERS_EvPrRn(iPOP)*totPER
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+        IF (PTRACERS_EvPrRn(iDetCrna).NE.UNSET_RL)
+     &   tmpEPRP = tmpEPRP + PTRACERS_EvPrRn(iDetCrna)
+     &                       /Y_CN_RNA*Y_PN_nucacid*totPER
+        IF (PTRACERS_EvPrRn(iDetCdna).NE.UNSET_RL)
+     &   tmpEPRP = tmpEPRP + PTRACERS_EvPrRn(iDetCdna)
+     &                       /Y_CN_DNA*Y_PN_nucacid*totPER
+        IF (PTRACERS_EvPrRn(iDetCNsto).NE.UNSET_RL)
+     &   tmpEPRP = tmpEPRP + PTRACERS_EvPrRn(iDetCthy)
+     &                       /Y_CP_Plip*totPER
+#endif
         DO np=1,nplank
          IF (PTRACERS_EvPrRn(iTr).NE.UNSET_RL) THEN
 #ifdef DARWIN_ALLOW_PQUOTA
@@ -1348,6 +1707,11 @@ C Iron E-P-R fluxes
      &   tmpEPRFe = tmpEPRFe + PTRACERS_EvPrRn(iDOFe)*totPER
         IF (PTRACERS_EvPrRn(iPOFe).NE.UNSET_RL)
      &   tmpEPRFe = tmpEPRFe + PTRACERS_EvPrRn(iPOFe)*totPER
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+        IF (PTRACERS_EvPrRn(iDetCpho).NE.UNSET_RL)
+     &   tmpEPRFe = tmpEPRFe + PTRACERS_EvPrRn(iDetCpho)
+     &                         /Y_CN_protein*Y_FeN_photo*totPER
+#endif
         DO np=1,nplank
          IF (PTRACERS_EvPrRn(iTr).NE.UNSET_RL) THEN
 #ifdef DARWIN_ALLOW_FEQUOTA

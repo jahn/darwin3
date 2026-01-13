@@ -465,6 +465,18 @@ C     Y_CN_RNA          :: [molC molN^-1]   C/N molar ratio of RNA
 C     Y_THY_P           :: [(molP)/(molC in chl)^-1] the stoichiometric ratio for cell phosphorus in thylakoid membrane to chlorophyll
 C     Y_FeN_photo       :: [molFe mol N^-1] Fe/N ratio in photosystem iron
 C
+C- DARWIN_MACROMOLECULAR_DETRITUS parameters
+C     kDetCchl          :: [1/s]  DetCchl remineralization rate
+C     kDetCpho          :: [1/s]  DetCpho remineralization rate
+C     kDetCbio          :: [1/s]  DetCbio remineralization rate
+C     kDetCproo         :: [1/s]  DetCproo remineralization rate
+C     kDetCrna          :: [1/s]  DetCrna remineralization rate
+C     kDetCdna          :: [1/s]  DetCdna remineralization rate
+C     kDetCthy          :: [1/s]  DetCthy remineralization rate
+C     kDetCoth          :: [1/s]  DetCoth remineralization rate
+C     kDetCNsto         :: [1/s]  DetCNsto remineralization rate
+C     kDetCsto          :: [1/s]  DetCsto remineralization rate
+C
 C- To be implemented
 C     depthdenit        :: [m]             not implemented (depth for denitrification relaxation to start)
       COMMON /DARWIN_PARAMS_r/
@@ -532,6 +544,18 @@ C     depthdenit        :: [m]             not implemented (depth for denitrific
      &    Y_CN_DNA,
      &    Y_CN_RNA,
      &    Y_CP_Plip,
+# ifdef DARWIN_MACROMOLECULAR_DETRITUS
+     &    kDetCchl,
+     &    kDetCpho,
+     &    kDetCbio,
+     &    kDetCproo,
+     &    kDetCrna,
+     &    kDetCdna,
+     &    kDetCthy,
+     &    kDetCoth,
+     &    kDetCNsto,
+     &    kDetCsto,
+# endif
 #endif
      &    wC_sink,
      &    wN_sink,
@@ -663,6 +687,18 @@ C     &    yono2,
       _RL Y_CN_DNA
       _RL Y_CN_RNA
       _RL Y_CP_Plip
+# ifdef DARWIN_MACROMOLECULAR_DETRITUS
+      _RL kDetCchl
+      _RL kDetCpho
+      _RL kDetCbio
+      _RL kDetCproo
+      _RL kDetCrna
+      _RL kDetCdna
+      _RL kDetCthy
+      _RL kDetCoth
+      _RL kDetCNsto
+      _RL kDetCsto
+# endif
 #endif
       _RL ksatO2remin
       _RL wC_sink

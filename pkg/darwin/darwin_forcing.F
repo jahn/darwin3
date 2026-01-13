@@ -1458,6 +1458,38 @@ C      diags(iCons*) for convenience
         WRITE(diagname, '(A,I4.4)') 'limL', iTr
         CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,ilimL+iTr-1),diagname,
      &          0,Nr,2,bi,bj,myThid)
+#  ifdef DARWIN_MACROMOLECULAR_DETRITUS
+        WRITE(diagname, '(A,I4.4)') 'Qchl', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iQCchl+iTr-1),
+     &          diagname,0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'Qpho', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iQCpho+iTr-1),
+     &          diagname,0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'Qbio', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iQCbio+iTr-1),
+     &          diagname,0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'Qpro', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iQCproo+iTr-1),
+     &          diagname,0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'Qrna', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iQCrna+iTr-1),
+     &          diagname,0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'Qdna', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iQCdna+iTr-1),
+     &          diagname,0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'Qthy', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iQCthy+iTr-1),
+     &          diagname,0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'Qoth', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iQCoth+iTr-1),
+     &          diagname,0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'QNst', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iQCNsto+iTr-1),
+     &          diagname,0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'Qsto', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iQCsto+iTr-1),
+     &          diagname,0,Nr,2,bi,bj,myThid)
+#  endif
        ENDDO
 # endif
 #endif

@@ -57,6 +57,18 @@ C Contains indices into diagnostics array
       integer iFPHO, iFSTO, iFEXC, iY_RQ
       integer iMODE, iFe_C
       integer ilimC, ilimL
+#  ifdef DARWIN_MACROMOLECULAR_DETRITUS
+      integer iQCchl
+      integer iQCpho
+      integer iQCbio
+      integer iQCproo
+      integer iQCrna
+      integer iQCdna
+      integer iQCthy
+      integer iQCoth
+      integer iQCNsto
+      integer iQCsto
+#  endif
 # endif
 #endif
 #ifdef DARWIN_ALLOW_CSTORE
@@ -169,7 +181,21 @@ C Contains indices into diagnostics array
       PARAMETER(iY_RQ=iFEXC+nPhoto)
       PARAMETER(ilimC=iY_RQ+nPhoto)
       PARAMETER(ilimL=ilimC+nPhoto)
+#  ifdef DARWIN_MACROMOLECULAR_DETRITUS
+      PARAMETER(iQCchl =ilimL+nPhoto)
+      PARAMETER(iQCpho =iQCchl +nPhoto)
+      PARAMETER(iQCbio =iQCpho +nPhoto)
+      PARAMETER(iQCproo=iQCbio +nPhoto)
+      PARAMETER(iQCrna =iQCproo+nPhoto)
+      PARAMETER(iQCdna =iQCrna +nPhoto)
+      PARAMETER(iQCthy =iQCdna +nPhoto)
+      PARAMETER(iQCoth =iQCthy +nPhoto)
+      PARAMETER(iQCNsto=iQCoth +nPhoto)
+      PARAMETER(iQCsto =iQCNsto+nPhoto)
+      PARAMETER(darwin_nDiag=iQCsto+nPhoto-1)
+#  else
       PARAMETER(darwin_nDiag=ilimL+nPhoto-1)
+#  endif
 # else
       PARAMETER(darwin_nDiag=ifTph+nplank-1)
 # endif

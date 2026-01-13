@@ -315,9 +315,65 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL QC_store
       _RL RQ
       _RL QN_DNA_actl
+      _RL QN_pro_other_actl
       _RL QP_other_actl
       _RL QP_DNA_actl
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+      _RL DetCchl
+      _RL DetCpho
+      _RL DetCbio
+      _RL DetCproo
+      _RL DetCrna
+      _RL DetCdna
+      _RL DetCthy
+      _RL DetCoth
+      _RL DetCNsto
+      _RL DetCsto
+      _RL QCchl(nplank)
+      _RL QCpho(nplank)
+      _RL QCbio(nplank)
+      _RL QCproo(nplank)
+      _RL QCrna(nplank)
+      _RL QCdna(nplank)
+      _RL QCthy(nplank)
+      _RL QCoth(nplank)
+      _RL QCNsto(nplank)
+      _RL QCsto(nplank)
+      _RL QNexc(nplank)
+      _RL QPexc(nplank)
+      _RL Qfeexc(nplank)
+      _RL exude_DetCchl
+      _RL exude_DetCpho
+      _RL exude_DetCbio
+      _RL exude_DetCproo
+      _RL exude_DetCrna
+      _RL exude_DetCdna
+      _RL exude_DetCthy
+      _RL exude_DetCoth
+      _RL exude_DetCNsto
+      _RL exude_DetCsto
+      _RL respDetCchl
+      _RL respDetCpho
+      _RL respDetCbio
+      _RL respDetCproo
+      _RL respDetCrna
+      _RL respDetCdna
+      _RL respDetCthy
+      _RL respDetCoth
+      _RL respDetCNsto
+      _RL respDetCsto
+      _RL consumDetCchl
+      _RL consumDetCpho
+      _RL consumDetCbio
+      _RL consumDetCproo
+      _RL consumDetCrna
+      _RL consumDetCdna
+      _RL consumDetCthy
+      _RL consumDetCoth
+      _RL consumDetCNsto
+      _RL consumDetCsto
+#endif
 #endif /* DARWIN_MACROMOLECULAR_GROWTH */
 
 #ifdef DARWIN_ALLOW_CDOM
@@ -389,6 +445,8 @@ C for grazing
       _RL exude_POFe
 
       _RL mort_c(nplank)
+      _RL mort_pom
+      _RL mort_dom
 
       _RL respir
       _RL respir_c
@@ -441,6 +499,18 @@ C==== Make all bio fields non-negative and compute quotas ==============
       POP  = MAX(0 _d 0, Ptr(iPOP))
       POSi = MAX(0 _d 0, Ptr(iPOSi))
       POFe = MAX(0 _d 0, Ptr(iPOFe))
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+      DetCchl = MAX(0 _d 0, Ptr(iDetCchl))
+      DetCpho = MAX(0 _d 0, Ptr(iDetCpho))
+      DetCbio = MAX(0 _d 0, Ptr(iDetCbio))
+      DetCproo = MAX(0 _d 0, Ptr(iDetCproo))
+      DetCrna = MAX(0 _d 0, Ptr(iDetCrna))
+      DetCdna = MAX(0 _d 0, Ptr(iDetCdna))
+      DetCthy = MAX(0 _d 0, Ptr(iDetCthy))
+      DetCoth = MAX(0 _d 0, Ptr(iDetCoth))
+      DetCNsto = MAX(0 _d 0, Ptr(iDetCNsto))
+      DetCsto = MAX(0 _d 0, Ptr(iDetCsto))
+#endif
 #ifdef DARWIN_ALLOW_CARBON
       O2   = MAX(0 _d 0, Ptr(iO2))
 #endif
@@ -551,6 +621,18 @@ C==== Initialize accumulators ==========================================
       fTph_sum = 0.0 _d 0
       fnut_sum = 0.0 _d 0
       X_photo = 0.0 _d 0
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+      consumDetCchl = 0 _d 0
+      consumDetCpho = 0 _d 0
+      consumDetCbio = 0 _d 0
+      consumDetCproo = 0 _d 0
+      consumDetCrna = 0 _d 0
+      consumDetCdna = 0 _d 0
+      consumDetCthy = 0 _d 0
+      consumDetCoth = 0 _d 0
+      consumDetCNsto = 0 _d 0
+      consumDetCsto = 0 _d 0
+#endif
 
 #ifdef DARWIN_ALLOW_CSTORE
       excC = 0.0
@@ -738,10 +820,14 @@ C        excess N (if Qp.LT.QpNoChl) goes here
          QN_pro_tot  = MIN(mmQn - QN_RNA - QN_DNA_actl, QN_pro_other(j))
 C        excess P (if Qn.LT.QnNoChl) goes here
          QP_other_actl = MIN(mmQp - QP_RNA - QP_DNA_actl, QP_other(j))
+         QN_pro_photo = 0 _d 0
+         QN_pro_bio   = 0 _d 0
+         QN_pro_other_actl = QN_pro_tot
         ELSE
          QN_DNA_actl   = QN_DNA(j)
          QP_DNA_actl   = QP_DNA(j)
          QP_other_actl = QP_other(j)
+         QN_pro_other_actl = QN_pro_other(j)
         ENDIF
 
 C       total pools required for functioning (or scaled down)
@@ -776,6 +862,23 @@ C       Qfe_max(j)
 C       deduce carbon store
         QC_store = MAX(0 _d 0,
      &                 1 _d 0 - QC_essential - QN_store*Y_CN_cyano)
+
+# ifdef DARWIN_MACROMOLECULAR_DETRITUS
+c       for detritus
+        QCchl(j) = QC_chl
+        QCpho(j) = QN_pro_photo*Y_CN_protein
+        QCbio(j) = QN_pro_bio*Y_CN_protein
+        QCproo(j) = QN_pro_other_actl*Y_CN_protein
+        QCrna(j) = QN_RNA*Y_CN_RNA
+        QCdna(j) = QN_DNA_actl*Y_CN_DNA
+        QCthy(j) = QP_thy*Y_CP_Plip
+        QCoth(j) = QC_other(j)
+        QCNsto(j) = QN_store*Y_CN_cyano
+        QCsto(j) = QC_store
+        QNexc(j) = QN_excess
+        QPexc(j) = QP_excess + QP_store + QP_other_actl
+        Qfeexc(j) = Qfe_excess + Qfe_store
+# endif
 
 C shlomit: new nutrient-uptake regulation terms:
 C when store is full, phytoplankton reduce their nutrient-uptake:
@@ -862,6 +965,18 @@ C       shlomit: Calclate the O2:C ratio
         diags(ilimF+j-1) = limF
         diags(ilimC+j-1) = limC
         diags(ilimL+j-1) = limL
+#  ifdef DARWIN_MACROMOLECULAR_DETRITUS
+        diags(iQCchl+j-1) = QCchl(j)
+        diags(iQCpho+j-1) = QCpho(j)
+        diags(iQCbio+j-1) = QCbio(j)
+        diags(iQCproo+j-1) = QCproo(j)
+        diags(iQCrna+j-1) = QCrna(j)
+        diags(iQCdna+j-1) = QCdna(j)
+        diags(iQCthy+j-1) = QCthy(j)
+        diags(iQCoth+j-1) = QCoth(j)
+        diags(iQCsto+j-1) = QCsto(j)
+        diags(iQCNsto+j-1) = QCNsto(j)
+#  endif
 # endif
 
 #else /* DARWIN_MACROMOLECULAR_GROWTH */
@@ -1505,6 +1620,7 @@ C shlomit: add O2-dependece respiration
       respPOSi = reminTempFunc*KPOSi*POSi*tmp
       respPOFe = reminTempFunc*KPOFe*POFe*tmp
 
+C     what is taken from organic matter pools
       consumDOC  = consumDOC  + respDOC
       consumDON  = consumDON  + respDON
       consumDOP  = consumDOP  + respDOP
@@ -1515,16 +1631,59 @@ C shlomit: add O2-dependece respiration
       consumPOSi = consumPOSi + respPOSi
       consumPOFe = consumPOFe + respPOFe
 
+C     what goes into inorganics
       reminDOC  = reminDOC  + respDOC
       reminDON  = reminDON  + respDON
       reminDOP  = reminDOP  + respDOP
       reminDOFe = reminDOFe + respDOFe
+C     what goes into other pools (inorganics or CDOM, DOM)
       reminPOC  = reminPOC  + respPOC
       reminPON  = reminPON  + respPON
       reminPOP  = reminPOP  + respPOP
       reminPOSi = reminPOSi + respPOSi
       reminPOFe = reminPOFe + respPOFe
 C     endif O2, NO3 for DARWIN_ALLOW_DENIT
+
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+      respDetCchl  = reminTempFunc*kDetCchl *DetCchl*tmp
+      respDetCpho  = reminTempFunc*kDetCpho *DetCpho*tmp
+      respDetCbio  = reminTempFunc*kDetCbio *DetCbio*tmp
+      respDetCproo = reminTempFunc*kDetCproo*DetCproo*tmp
+      respDetCrna  = reminTempFunc*kDetCrna *DetCrna*tmp
+      respDetCdna  = reminTempFunc*kDetCdna *DetCdna*tmp
+      respDetCthy  = reminTempFunc*kDetCthy *DetCthy*tmp
+      respDetCoth  = reminTempFunc*kDetCoth *DetCoth*tmp
+      respDetCNsto = reminTempFunc*kDetCNsto*DetCNsto*tmp
+      respDetCsto  = reminTempFunc*kDetCsto *DetCsto*tmp
+
+      consumDetCchl  = consumDetCchl  + respDetCchl
+      consumDetCpho  = consumDetCpho  + respDetCpho
+      consumDetCbio  = consumDetCbio  + respDetCbio
+      consumDetCproo = consumDetCproo + respDetCproo
+      consumDetCrna  = consumDetCrna  + respDetCrna
+      consumDetCdna  = consumDetCdna  + respDetCdna
+      consumDetCthy  = consumDetCthy  + respDetCthy
+      consumDetCoth  = consumDetCoth  + respDetCoth
+      consumDetCNsto = consumDetCNsto + respDetCNsto
+      consumDetCsto  = consumDetCsto  + respDetCsto
+
+      reminPOC = reminPOC
+     &         + respDetCchl + respDetCpho + respDetCbio
+     &         + respDetCproo + respDetCrna + respDetCdna + respDetCthy
+     &         + respDetCoth + respDetCNsto + respDetCsto
+      reminPON = reminPON
+     &         + respDetCchl*Y_NC_chl
+     &         + (respDetCpho + respDetCbio + respDetCproo)/Y_CN_protein
+     &         + respDetCrna/Y_CN_RNA + respDetCdna/Y_CN_DNA
+     &         + respDetCNsto/Y_CN_cyano
+C     QP_other goes to POP, together with QP_store and QP_excess
+      reminPOP = reminPOP
+     &         + respDetCrna/Y_CN_RNA*Y_PN_nucacid
+     &         + respDetCdna/Y_CN_DNA*Y_PN_nucacid
+     &         + respDetCthy/Y_CP_Plip
+      reminPOFe = reminPOFe
+     &          + respDetCpho/Y_CN_protein*Y_FeN_photo
+#endif /* DARWIN_MACROMOLECULAR_DETRITUS */
       ENDIF
 
 #ifdef DARWIN_ALLOW_CARBON
@@ -1583,11 +1742,11 @@ C==== CDOM =============================================================
 # endif
 c degradation of  CDOM
       tmp = CDOMdegrd
-#ifdef DARWIN_ALLOW_DENIT
+# ifdef DARWIN_ALLOW_DENIT
       IF (O2 .LT. O2crit .AND. NO3 .LT. NO3crit) THEN
         tmp = 0 _d 0
       ENDIF
-#endif
+# endif
 c increase when bleached by light
       tmp = tmp + CDOMbleach*MIN(1.0 _d 0, PARtot/PARCDOM)
 # ifdef DARWIN_CDOM_UNITS_CARBON
@@ -1665,6 +1824,18 @@ C     DOC is created by #4 PA-assoc solubilization and consumed by #5
       gTr(iPOP )=gTr(iPOP ) - consumPOP
       gTr(iPOFe)=gTr(iPOFe) - consumPOFe
       gTr(iPOSi)=gTr(iPOSi) - consumPOSi
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+      gTr(iDetCchl )=gTr(iDetCchl ) - consumDetCchl
+      gTr(iDetCpho )=gTr(iDetCpho ) - consumDetCpho
+      gTr(iDetCbio )=gTr(iDetCbio ) - consumDetCbio
+      gTr(iDetCproo)=gTr(iDetCproo) - consumDetCproo
+      gTr(iDetCrna )=gTr(iDetCrna ) - consumDetCrna
+      gTr(iDetCdna )=gTr(iDetCdna ) - consumDetCdna
+      gTr(iDetCthy )=gTr(iDetCthy ) - consumDetCthy
+      gTr(iDetCoth )=gTr(iDetCoth ) - consumDetCoth
+      gTr(iDetCNsto)=gTr(iDetCNsto) - consumDetCNsto
+      gTr(iDetCsto )=gTr(iDetCsto ) - consumDetCsto
+#endif
 
 #ifdef DARWIN_ALLOW_CDOM
       gTr(iDOC )=gTr(iDOC ) + reminPOC  - reminPOC_CDOM  + degrCDOM_DOC
@@ -1677,11 +1848,9 @@ C     DOC is created by #4 PA-assoc solubilization and consumed by #5
 # else
       gTr(iCDOM)=gTr(iCDOM) + reminPOP_CDOM - degrCDOM_DOP
 # endif
-#else
+#else /* no CDOM */
       gTr(iDIC )=gTr(iDIC ) + reminPOC
-
       diags(iReminDIC_POC) = reminPOC
-
       gTr(iNH4 )=gTr(iNH4 ) + reminPON
       gTr(iPO4 )=gTr(iPO4 ) + reminPOP
       gTr(iFeT )=gTr(iFeT ) + reminPOFe
@@ -1969,6 +2138,18 @@ C==== Mortality and parameterized exudation ============================
       exude_POP  = 0.0 _d 0
       exude_POSi = 0.0 _d 0
       exude_PIC  = 0.0 _d 0
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+      exude_DetCchl = 0 _d 0
+      exude_DetCpho = 0 _d 0
+      exude_DetCbio = 0 _d 0
+      exude_DetCproo = 0 _d 0
+      exude_DetCrna = 0 _d 0
+      exude_DetCdna = 0 _d 0
+      exude_DetCthy = 0 _d 0
+      exude_DetCoth = 0 _d 0
+      exude_DetCNsto= 0 _d 0
+      exude_DetCsto = 0 _d 0
+#endif
       respir     = 0.0 _d 0
       respirN    = 0.0 _d 0
       respirP    = 0.0 _d 0
@@ -1990,37 +2171,43 @@ C==== Mortality and parameterized exudation ============================
         mortX2= mort2(jp)*Xe*Xe*mort2TempFunc**tempMort2(jp)
 
         mort_c(jp) = mortX + mortX2
+        mort_pom = ExportFracMort(jp)*mortX
+     &           + ExportFracMort2(jp)*mortX2
+        mort_dom = (1.-ExportFracMort(jp))*mortX
+     &           + (1.-ExportFracMort2(jp))*mortX2
 
-#ifdef DARWIN_ALLOW_CSTORE
-        exude_DOC=exude_DOC+(1.-ExportFracMort(jp)) *mortX*Qctot(jp)
-     &                     +(1.-ExportFracMort2(jp))*mortX2*Qctot(jp)
-        exude_POC=exude_POC+    ExportFracMort(jp)  *mortX*Qctot(jp)
-     &                     +    ExportFracMort2(jp) *mortX2*Qctot(jp)
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+       IF (isPhoto(jp) .NE. 0) THEN
+        exude_DetCchl  = exude_DetCchl  + mort_pom*QCchl(jp)
+        exude_DetCpho  = exude_DetCpho  + mort_pom*QCpho(jp)
+        exude_DetCbio  = exude_DetCbio  + mort_pom*QCbio(jp)
+        exude_DetCproo = exude_DetCproo + mort_pom*QCproo(jp)
+        exude_DetCrna  = exude_DetCrna  + mort_pom*QCrna(jp)
+        exude_DetCdna  = exude_DetCdna  + mort_pom*QCdna(jp)
+        exude_DetCthy  = exude_DetCthy  + mort_pom*QCthy(jp)
+        exude_DetCoth  = exude_DetCoth  + mort_pom*QCoth(jp)
+        exude_DetCNsto = exude_DetCNsto + mort_pom*QCNsto(jp)
+        exude_DetCsto  = exude_DetCsto  + mort_pom*QCsto(jp)
+        exude_PON = exude_PON + mort_pom*QNexc(jp)
+        exude_POP = exude_POP + mort_pom*QPexc(jp)
+        exude_POFe = exude_POFe + mort_pom*QFeexc(jp)
+       ELSE
 #else
-        exude_DOC = exude_DOC + (1.-ExportFracMort(jp)) *mortX
-     &                        + (1.-ExportFracMort2(jp))*mortX2
-        exude_POC = exude_POC +     ExportFracMort(jp)  *mortX
-     &                        +     ExportFracMort2(jp) *mortX2
+       IF (.TRUE.) THEN
 #endif
+        exude_POC = exude_POC + mort_pom*Qctot(jp)
+        exude_PON = exude_PON + mort_pom*Qn(jp)
+        exude_POP = exude_POP + mort_pom*Qp(jp)
+        exude_POFe = exude_POFe + mort_pom*Qfe(jp)
+       ENDIF
 
-        exude_DON = exude_DON + (1.-ExportFracMort(jp)) *mortX *Qn(jp)
-     &                        + (1.-ExportFracMort2(jp))*mortX2*Qn(jp)
-        exude_PON = exude_PON +     ExportFracMort(jp)  *mortX *Qn(jp)
-     &                        +     ExportFracMort2(jp) *mortX2*Qn(jp)
+       exude_DOC = exude_DOC + mort_dom*Qctot(jp)
+       exude_DON = exude_DON + mort_dom*Qn(jp)
+       exude_DOP = exude_DOP + mort_dom*Qp(jp)
+       exude_DOFe = exude_DOFe + mort_dom*Qfe(jp)
 
-        exude_DOP = exude_DOP + (1.-ExportFracMort(jp)) *mortX *Qp(jp)
-     &                        + (1.-ExportFracMort2(jp))*mortX2*Qp(jp)
-        exude_POP = exude_POP +     ExportFracMort(jp)  *mortX *Qp(jp)
-     &                        +     ExportFracMort2(jp) *mortX2*Qp(jp)
-
-        exude_DOFe= exude_DOFe+ (1.-ExportFracMort(jp)) *mortX *Qfe(jp)
-     &                        + (1.-ExportFracMort2(jp))*mortX2*Qfe(jp)
-        exude_POFe= exude_POFe+     ExportFracMort(jp)  *mortX *Qfe(jp)
-     &                        +     ExportFracMort2(jp) *mortX2*Qfe(jp)
-
-        exude_POSi = exude_POSi + mort_c(jp)*Qsi(jp)
-
-        exude_PIC = exude_PIC + mort_c(jp)*R_PICPOC(jp)
+       exude_POSi = exude_POSi + mort_c(jp)*Qsi(jp)
+       exude_PIC = exude_PIC + mort_c(jp)*R_PICPOC(jp)
 
 C Respiration of non-phototrophs
 C Respired carbon goes to DIC.  Other non-quota elements go to inorganic
@@ -2201,6 +2388,19 @@ C====== Light-dependent mortality from DVM ====
       gTr(iDOFe)=gTr(iDOFe)              - R_FeP_CDOM*exude_CDOM
 # endif
       gTr(iCDOM)=gTr(iCDOM) + exude_CDOM
+#endif
+
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+      gTr(iDetCchl )=gTr(iDetCchl ) + exude_DetCchl
+      gTr(iDetCpho )=gTr(iDetCpho ) + exude_DetCpho
+      gTr(iDetCbio )=gTr(iDetCbio ) + exude_DetCbio
+      gTr(iDetCproo)=gTr(iDetCproo) + exude_DetCproo
+      gTr(iDetCrna )=gTr(iDetCrna ) + exude_DetCrna
+      gTr(iDetCdna )=gTr(iDetCdna ) + exude_DetCdna
+      gTr(iDetCthy )=gTr(iDetCthy ) + exude_DetCthy
+      gTr(iDetCoth )=gTr(iDetCoth ) + exude_DetCoth
+      gTr(iDetCNsto)=gTr(iDetCNsto) + exude_DetCNsto
+      gTr(iDetCsto )=gTr(iDetCsto ) + exude_DetCsto
 #endif
 
 #endif /* ALLOW_DARWIN */

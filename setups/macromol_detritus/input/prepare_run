@@ -1,0 +1,11 @@
+#!/bin/sh
+#ln -sf /orcd/data/mick/007/stephdut/ECCO_Iter3.73daily_360days
+#ln -sf /nfs/micklab002/jahn/forcing/eccov3/DARWIN_ECCO_run17
+#ln -sf /nfs/micklab002/jahn/forcing/eccov3/OPTICS_COEFF
+#ln -sf /nfs/micklab002/jahn/forcing/eccov3/eccov3
+#ln -sf /nfs/micklab002/jahn/forcing/eccov3/input_ecco
+ln -sf /orcd/scratch/orcd/002/jahn/forcing/eccov3/ECCO_Iter3.73daily_360days
+ln -sf /orcd/scratch/orcd/002/jahn/forcing/eccov3/DARWIN_ECCO_run17
+ln -sf /orcd/scratch/orcd/002/jahn/forcing/eccov3/OPTICS_COEFF
+ln -sf /orcd/scratch/orcd/002/jahn/forcing/eccov3/eccov3
+ln -sf /orcd/scratch/orcd/002/jahn/forcing/eccov3/input_ecco

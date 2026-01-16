@@ -2194,9 +2194,13 @@ C==== Mortality and parameterized exudation ============================
         exude_DetCoth  = exude_DetCoth  + mort_pom*QCoth(jp)
         exude_DetCNsto = exude_DetCNsto + mort_pom*QCNsto(jp)
         exude_DetCsto  = exude_DetCsto  + mort_pom*QCsto(jp)
-        exude_PON = exude_PON + mort_pom*QNexc(jp)
-        exude_POP = exude_POP + mort_pom*QPexc(jp)
-        exude_POFe = exude_POFe + mort_pom*QFeexc(jp)
+c       exude_PON = exude_PON + mort_pom*QNexc(jp)
+c       exude_POP = exude_POP + mort_pom*QPexc(jp)
+c       exude_POFe = exude_POFe + mort_pom*QFeexc(jp)
+C       feed these right back into inorganics instead of detritus
+        respirN = respirN + mort_pom*QNexc(jp)
+        respirP = respirP + mort_pom*QPexc(jp)
+        respirFe = respirFe + mort_pom*QFeexc(jp)
        ELSE
 #else
        IF (.TRUE.) THEN
@@ -2353,18 +2357,10 @@ C====== Light-dependent mortality from DVM ====
 #endif
 
       gTr(iDIC) = gTr(iDIC) + respir
-#ifndef DARWIN_ALLOW_NQUOTA
       gTr(iNO3) = gTr(iNO3) + respirN
-#endif
-#ifndef DARWIN_ALLOW_PQUOTA
       gTr(iPO4) = gTr(iPO4) + respirP
-#endif
-#ifndef DARWIN_ALLOW_FEQUOTA
       gTr(iFeT) = gTr(iFeT) + respirFe
-#endif
-#ifndef DARWIN_ALLOW_SIQUOTA
       gTr(iSiO2) = gTr(iSiO2) + respirSi
-#endif
 
       diags(iRespirDIC) = respir
 

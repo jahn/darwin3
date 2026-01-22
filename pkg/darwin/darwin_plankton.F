@@ -1642,7 +1642,6 @@ C     what goes into other pools (inorganics or CDOM, DOM)
       reminPOP  = reminPOP  + respPOP
       reminPOSi = reminPOSi + respPOSi
       reminPOFe = reminPOFe + respPOFe
-C     endif O2, NO3 for DARWIN_ALLOW_DENIT
 
 #ifdef DARWIN_MACROMOLECULAR_DETRITUS
       respDetCchl  = reminTempFunc*kDetCchl *DetCchl*tmp
@@ -1684,6 +1683,8 @@ C     QP_other goes to POP, together with QP_store and QP_excess
       reminPOFe = reminPOFe
      &          + respDetCpho/Y_CN_protein*Y_FeN_photo
 #endif /* DARWIN_MACROMOLECULAR_DETRITUS */
+
+C     endif O2, NO3 for DARWIN_ALLOW_DENIT
       ENDIF
 
 #ifdef DARWIN_ALLOW_CARBON

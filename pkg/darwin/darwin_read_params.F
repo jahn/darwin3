@@ -165,6 +165,16 @@ C----
      &    kDetCoth,
      &    kDetCNsto,
      &    kDetCsto,
+     &    wDetCchl_sink,
+     &    wDetCpho_sink,
+     &    wDetCbio_sink,
+     &    wDetCproo_sink,
+     &    wDetCrna_sink,
+     &    wDetCdna_sink,
+     &    wDetCthy_sink,
+     &    wDetCoth_sink,
+     &    wDetCNsto_sink,
+     &    wDetCsto_sink,
 # endif
 #endif
      &    ksatO2remin,
@@ -544,6 +554,16 @@ C
       kDetCoth  = 0.016 _d 0 / pday
       kDetCNsto = 0.016 _d 0 / pday
       kDetCsto  = 0.016 _d 0 / pday
+      wDetCchl_sink  = 10 _d 0 / pday
+      wDetCpho_sink  = 10 _d 0 / pday
+      wDetCbio_sink  = 10 _d 0 / pday
+      wDetCproo_sink = 10 _d 0 / pday
+      wDetCrna_sink  = 10 _d 0 / pday
+      wDetCdna_sink  = 10 _d 0 / pday
+      wDetCthy_sink  = 10 _d 0 / pday
+      wDetCoth_sink  = 10 _d 0 / pday
+      wDetCNsto_sink = 10 _d 0 / pday
+      wDetCsto_sink  = 10 _d 0 / pday
 # endif
 #endif
       ksatO2remin = 0 _d 0

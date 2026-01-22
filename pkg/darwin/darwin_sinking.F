@@ -100,6 +100,39 @@ C-    Account for change in level thickness
           flux = wFe_sink*MAX(0 _d 0, Ptr(i,j,k,bi,bj,iPOFe))
           gTr(i,j,k  ,iPOFe) = gTr(i,j,k  ,iPOFe) - flux*upfc
           gTr(i,j,k+1,iPOFe) = gTr(i,j,k+1,iPOFe) + flux*dnfc
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+          flux = wDetCchl_sink*MAX(0 _d 0, Ptr(i,j,k,bi,bj,iDetCchl))
+          gTr(i,j,k  ,iDetCchl) = gTr(i,j,k  ,iDetCchl) - flux*upfc
+          gTr(i,j,k+1,iDetCchl) = gTr(i,j,k+1,iDetCchl) + flux*dnfc
+          flux = wDetCpho_sink*MAX(0 _d 0, Ptr(i,j,k,bi,bj,iDetCpho))
+          gTr(i,j,k  ,iDetCpho) = gTr(i,j,k  ,iDetCpho) - flux*upfc
+          gTr(i,j,k+1,iDetCpho) = gTr(i,j,k+1,iDetCpho) + flux*dnfc
+          flux = wDetCbio_sink*MAX(0 _d 0, Ptr(i,j,k,bi,bj,iDetCbio))
+          gTr(i,j,k  ,iDetCbio) = gTr(i,j,k  ,iDetCbio) - flux*upfc
+          gTr(i,j,k+1,iDetCbio) = gTr(i,j,k+1,iDetCbio) + flux*dnfc
+          flux = wDetCproo_sink*MAX(0 _d 0, Ptr(i,j,k,bi,bj,iDetCproo))
+          gTr(i,j,k  ,iDetCproo) = gTr(i,j,k  ,iDetCproo) - flux*upfc
+          gTr(i,j,k+1,iDetCproo) = gTr(i,j,k+1,iDetCproo) + flux*dnfc
+          flux = wDetCrna_sink*MAX(0 _d 0, Ptr(i,j,k,bi,bj,iDetCrna))
+          gTr(i,j,k  ,iDetCrna) = gTr(i,j,k  ,iDetCrna) - flux*upfc
+          gTr(i,j,k+1,iDetCrna) = gTr(i,j,k+1,iDetCrna) + flux*dnfc
+          flux = wDetCdna_sink*MAX(0 _d 0, Ptr(i,j,k,bi,bj,iDetCdna))
+          gTr(i,j,k  ,iDetCdna) = gTr(i,j,k  ,iDetCdna) - flux*upfc
+          gTr(i,j,k+1,iDetCdna) = gTr(i,j,k+1,iDetCdna) + flux*dnfc
+          flux = wDetCthy_sink*MAX(0 _d 0, Ptr(i,j,k,bi,bj,iDetCthy))
+          gTr(i,j,k  ,iDetCthy) = gTr(i,j,k  ,iDetCthy) - flux*upfc
+          gTr(i,j,k+1,iDetCthy) = gTr(i,j,k+1,iDetCthy) + flux*dnfc
+          flux = wDetCoth_sink*MAX(0 _d 0, Ptr(i,j,k,bi,bj,iDetCoth))
+          gTr(i,j,k  ,iDetCoth) = gTr(i,j,k  ,iDetCoth) - flux*upfc
+          gTr(i,j,k+1,iDetCoth) = gTr(i,j,k+1,iDetCoth) + flux*dnfc
+          flux = wDetCNsto_sink*MAX(0 _d 0, Ptr(i,j,k,bi,bj,iDetCNsto))
+          gTr(i,j,k  ,iDetCNsto) = gTr(i,j,k  ,iDetCNsto) - flux*upfc
+          gTr(i,j,k+1,iDetCNsto) = gTr(i,j,k+1,iDetCNsto) + flux*dnfc
+          flux = wDetCsto_sink*MAX(0 _d 0, Ptr(i,j,k,bi,bj,iDetCsto))
+          gTr(i,j,k  ,iDetCsto) = gTr(i,j,k  ,iDetCsto) - flux*upfc
+          gTr(i,j,k+1,iDetCsto) = gTr(i,j,k+1,iDetCsto) + flux*dnfc
+#endif /* DARWIN_MACROMOLECULAR_DETRITUS */
+
           DO l = 1, nplank
            flux = (biosink(l)+bioswimDVMdn(i,j,k,l))*MAX(0.0,
      &           Ptr(i,j,k,bi,bj,ic+l-1))
@@ -232,6 +265,70 @@ C
 #ifdef DARWIN_ALLOW_CONS
           botSnkSi(i,j,bi,bj) = botSnkSi(i,j,bi,bj) + dTsub(k)*flux
 #endif
+
+
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+          flux = wDetCchl_sink*MAX(0 _d 0, Ptr(i,j,k,bi,bj,iDetCchl))
+          gTr(i,j,k,iDetCchl) = gTr(i,j,k,iDetCchl) - flux*upfc
+#ifdef DARWIN_ALLOW_CONS
+          botSnkCchl(i,j,bi,bj) = botSnkCchl(i,j,bi,bj) + dTsub(k)*flux
+#endif
+C
+          flux = wDetCpho_sink*MAX(0 _d 0, Ptr(i,j,k,bi,bj,iDetCpho))
+          gTr(i,j,k,iDetCpho) = gTr(i,j,k,iDetCpho) - flux*upfc
+#ifdef DARWIN_ALLOW_CONS
+          botSnkCpho(i,j,bi,bj) = botSnkCpho(i,j,bi,bj) + dTsub(k)*flux
+#endif
+C
+          flux = wDetCbio_sink*MAX(0 _d 0, Ptr(i,j,k,bi,bj,iDetCbio))
+          gTr(i,j,k,iDetCbio) = gTr(i,j,k,iDetCbio) - flux*upfc
+#ifdef DARWIN_ALLOW_CONS
+          botSnkCbio(i,j,bi,bj) = botSnkCbio(i,j,bi,bj) + dTsub(k)*flux
+#endif
+C
+          flux = wDetCproo_sink*MAX(0 _d 0, Ptr(i,j,k,bi,bj,iDetCproo))
+          gTr(i,j,k,iDetCproo) = gTr(i,j,k,iDetCproo) - flux*upfc
+#ifdef DARWIN_ALLOW_CONS
+          botSnkCproo(i,j,bi,bj)=botSnkCproo(i,j,bi,bj) + dTsub(k)*flux
+#endif
+C
+          flux = wDetCrna_sink*MAX(0 _d 0, Ptr(i,j,k,bi,bj,iDetCrna))
+          gTr(i,j,k,iDetCrna) = gTr(i,j,k,iDetCrna) - flux*upfc
+#ifdef DARWIN_ALLOW_CONS
+          botSnkCrna(i,j,bi,bj) = botSnkCrna(i,j,bi,bj) + dTsub(k)*flux
+#endif
+C
+          flux = wDetCdna_sink*MAX(0 _d 0, Ptr(i,j,k,bi,bj,iDetCdna))
+          gTr(i,j,k,iDetCdna) = gTr(i,j,k,iDetCdna) - flux*upfc
+#ifdef DARWIN_ALLOW_CONS
+          botSnkCdna(i,j,bi,bj) = botSnkCdna(i,j,bi,bj) + dTsub(k)*flux
+#endif
+C
+          flux = wDetCthy_sink*MAX(0 _d 0, Ptr(i,j,k,bi,bj,iDetCthy))
+          gTr(i,j,k,iDetCthy) = gTr(i,j,k,iDetCthy) - flux*upfc
+#ifdef DARWIN_ALLOW_CONS
+          botSnkCthy(i,j,bi,bj) = botSnkCthy(i,j,bi,bj) + dTsub(k)*flux
+#endif
+C
+          flux = wDetCoth_sink*MAX(0 _d 0, Ptr(i,j,k,bi,bj,iDetCoth))
+          gTr(i,j,k,iDetCoth) = gTr(i,j,k,iDetCoth) - flux*upfc
+#ifdef DARWIN_ALLOW_CONS
+          botSnkCoth(i,j,bi,bj) = botSnkCoth(i,j,bi,bj) + dTsub(k)*flux
+#endif
+C
+          flux = wDetCNsto_sink*MAX(0 _d 0, Ptr(i,j,k,bi,bj,iDetCNsto))
+          gTr(i,j,k,iDetCNsto) = gTr(i,j,k,iDetCNsto) - flux*upfc
+#ifdef DARWIN_ALLOW_CONS
+          botSnkCNsto(i,j,bi,bj)=botSnkCNsto(i,j,bi,bj) + dTsub(k)*flux
+#endif
+C
+          flux = wDetCsto_sink*MAX(0 _d 0, Ptr(i,j,k,bi,bj,iDetCsto))
+          gTr(i,j,k,iDetCsto) = gTr(i,j,k,iDetCsto) - flux*upfc
+#ifdef DARWIN_ALLOW_CONS
+          botSnkCsto(i,j,bi,bj) = botSnkCsto(i,j,bi,bj) + dTsub(k)*flux
+#endif
+#endif /* DARWIN_MACROMOLECULAR_DETRITUS */
+
           DO l = 1, nplank
            flux = biosink(l)*MAX(0 _d 0, Ptr(i,j,k,bi,bj,ic+l-1))
            gTr(i,j,k  ,ic+l-1 )=gTr(i,j,k  ,ic+l-1 ) - flux*upfc

@@ -476,6 +476,16 @@ C     kDetCthy          :: [1/s]  DetCthy remineralization rate
 C     kDetCoth          :: [1/s]  DetCoth remineralization rate
 C     kDetCNsto         :: [1/s]  DetCNsto remineralization rate
 C     kDetCsto          :: [1/s]  DetCsto remineralization rate
+C     wDetCchl_sink     :: [1/s]  DetCchl sinking velocity
+C     wDetCpho_sink     :: [1/s]  DetCpho sinking velocity
+C     wDetCbio_sink     :: [1/s]  DetCbio sinking velocity
+C     wDetCproo_sink    :: [1/s]  DetCproo sinking velocity
+C     wDetCrna_sink     :: [1/s]  DetCrna sinking velocity
+C     wDetCdna_sink     :: [1/s]  DetCdna sinking velocity
+C     wDetCthy_sink     :: [1/s]  DetCthy sinking velocity
+C     wDetCoth_sink     :: [1/s]  DetCoth sinking velocity
+C     wDetCNsto_sink    :: [1/s]  DetCNsto sinking velocity
+C     wDetCsto_sink     :: [1/s]  DetCsto sinking velocity
 C
 C- To be implemented
 C     depthdenit        :: [m]             not implemented (depth for denitrification relaxation to start)
@@ -555,6 +565,16 @@ C     depthdenit        :: [m]             not implemented (depth for denitrific
      &    kDetCoth,
      &    kDetCNsto,
      &    kDetCsto,
+     &    wDetCchl_sink,
+     &    wDetCpho_sink,
+     &    wDetCbio_sink,
+     &    wDetCproo_sink,
+     &    wDetCrna_sink,
+     &    wDetCdna_sink,
+     &    wDetCthy_sink,
+     &    wDetCoth_sink,
+     &    wDetCNsto_sink,
+     &    wDetCsto_sink,
 # endif
 #endif
      &    wC_sink,
@@ -698,6 +718,16 @@ C     &    yono2,
       _RL kDetCoth
       _RL kDetCNsto
       _RL kDetCsto
+      _RL wDetCchl_sink
+      _RL wDetCpho_sink
+      _RL wDetCbio_sink
+      _RL wDetCproo_sink
+      _RL wDetCrna_sink
+      _RL wDetCdna_sink
+      _RL wDetCthy_sink
+      _RL wDetCoth_sink
+      _RL wDetCNsto_sink
+      _RL wDetCsto_sink
 # endif
 #endif
       _RL ksatO2remin

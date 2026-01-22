@@ -2439,8 +2439,38 @@ C--   Print parameters from DARWIN_PARAMS.h
       CALL WRITE_0D_RL(kDetCsto,INDEX_NONE,
      &'kDetCsto = ',
      &' /* DetCsto remineralization rate (1/s) */')
-# endif
-#endif
+      CALL WRITE_0D_RL(wDetCchl_sink,INDEX_NONE,
+     &'wDetCchl_sink =',
+     &' /* DetCchl sinking velocity (m/s) */')
+      CALL WRITE_0D_RL(wDetCpho_sink,INDEX_NONE,
+     &'wDetCpho_sink =',
+     &' /* DetCpho sinking velocity (m/s) */')
+      CALL WRITE_0D_RL(wDetCbio_sink,INDEX_NONE,
+     &'wDetCbio_sink =',
+     &' /* DetCbio sinking velocity (m/s) */')
+      CALL WRITE_0D_RL(wDetCproo_sink,INDEX_NONE,
+     &'wDetCproo_sink =',
+     &' /* DetCproo sinking velocity (m/s) */')
+      CALL WRITE_0D_RL(wDetCrna_sink,INDEX_NONE,
+     &'wDetCrna_sink =',
+     &' /* DetCrna sinking velocity (m/s) */')
+      CALL WRITE_0D_RL(wDetCdna_sink,INDEX_NONE,
+     &'wDetCdna_sink =',
+     &' /* DetCdna sinking velocity (m/s) */')
+      CALL WRITE_0D_RL(wDetCthy_sink,INDEX_NONE,
+     &'wDetCthy_sink =',
+     &' /* DetCthy sinking velocity (m/s) */')
+      CALL WRITE_0D_RL(wDetCoth_sink,INDEX_NONE,
+     &'wDetCoth_sink =',
+     &' /* DetCoth sinking velocity (m/s) */')
+      CALL WRITE_0D_RL(wDetCNsto_sink,INDEX_NONE,
+     &'wDetCNsto_sink =',
+     &' /* DetCNsto sinking velocity (m/s) */')
+      CALL WRITE_0D_RL(wDetCsto_sink,INDEX_NONE,
+     &'wDetCsto_sink =',
+     &' /* DetCsto sinking velocity (m/s) */')
+# endif /* DARWIN_MACROMOLECULAR_DETRITUS */
+#endif /* DARWIN_MACROMOLECULAR_GROWTH */
 
 C---+----1----+----2----+----3----+----4----+----5----+----6----+----7-|--+----|
 C--   Print traits from DARWIN_TRAITS.h

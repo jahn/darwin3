@@ -92,8 +92,18 @@ C ======================================================================
        DO i=iMin,iMax
         DO k=1,Nr
 
-         part = MAX(Ptracer(i,j,k,bi,bj,iPOP), 0 _d 0)
-         part = part + (darwin_RPOC/120 _d 0)
+C        these are in carbon units
+         part = darwin_RPOC/120 _d 0
+         part = part + MAX(Ptracer(i,j,k,bi,bj,iPOP), 0 _d 0)
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+         part = part + MAX(Ptracer(i,j,k,bi,bj,iDetCrna), 0 _d 0)
+     &                 /Y_CN_RNA*Y_PN_nucacid
+         part = part + MAX(Ptracer(i,j,k,bi,bj,iDetCdna), 0 _d 0)
+     &                 /Y_CN_DNA*Y_PN_nucacid
+         part = part + MAX(Ptracer(i,j,k,bi,bj,iDetCthy), 0 _d 0)
+     &                 /Y_CP_Plip
+#endif
+
          DO jp=1,nPhoto
 #ifdef DARWIN_ALLOW_CHLQUOTA
           phychl(jp)=MAX(Ptracer(i,j,k,bi,bj,iChl+jp-1),0 _d 0)

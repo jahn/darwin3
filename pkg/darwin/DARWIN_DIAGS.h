@@ -25,6 +25,11 @@ C Contains indices into diagnostics array
       integer iReminDIC_DOC
       integer iReminDIC_POC
       integer iDisscDIC_PIC
+      integer iReminPOC
+      integer iReminPON
+      integer iReminPOP
+      integer iReminPOFe
+      integer iReminPOSi
       integer iConsALK
       integer iSrcAlk
       integer iConsO2
@@ -108,15 +113,20 @@ C Contains indices into diagnostics array
       PARAMETER(iReminDIC_DOC=15)
       PARAMETER(iReminDIC_POC=16)
       PARAMETER(iDisscDIC_PIC=17)
-      PARAMETER(iConsALK=18)
-      PARAMETER(iSrcAlk= 19)
-      PARAMETER(iConsO2= 20)
-      PARAMETER(iProdO2= 21)
-      PARAMETER(ifIphavg= 22)
-      PARAMETER(ifTphavg= 23)
-      PARAMETER(ifnutavg= 24)
+      PARAMETER(iReminPOC=18)
+      PARAMETER(iReminPON=19)
+      PARAMETER(iReminPOP=20)
+      PARAMETER(iReminPOFe=21)
+      PARAMETER(iReminPOSi=22)
+      PARAMETER(iConsALK=23)
+      PARAMETER(iSrcAlk= 24)
+      PARAMETER(iConsO2= 25)
+      PARAMETER(iProdO2= 26)
+      PARAMETER(ifIphavg= 27)
+      PARAMETER(ifTphavg= 28)
+      PARAMETER(ifnutavg= 29)
 #ifdef DARWIN_ALLOW_CSTORE
-      PARAMETER(iEX=  25)
+      PARAMETER(iEX=  30)
       PARAMETER(iGW=  iEX+1)
       PARAMETER(iDN=  iGW+1)
       PARAMETER(iDP=  iDN+1)
@@ -136,7 +146,7 @@ C Contains indices into diagnostics array
       PARAMETER(iPPplank=iDmin+1)
 # endif
 #else
-      PARAMETER(iPPplank=25)
+      PARAMETER(iPPplank=30)
 #endif
 #ifdef DARWIN_DIAG_PERTYPE
       PARAMETER(iPCplank=iPPplank+nplank)

@@ -1048,6 +1048,41 @@ C-      use units & names from data.ptracers :
       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
      I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
 
+      WRITE(diagName,'(A)')'rPOC    '
+      WRITE(diagTitle,'(A)')'remineralization of POC'
+      diagUnits = 'mmol C/m3/s     '
+      diagCode  = 'SMR     MR      '
+      CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+      WRITE(diagName,'(A)')'rPON    '
+      WRITE(diagTitle,'(A)')'remineralization of PON'
+      diagUnits = 'mmol C/m3/s     '
+      diagCode  = 'SMR     MR      '
+      CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+      WRITE(diagName,'(A)')'rPOP    '
+      WRITE(diagTitle,'(A)')'remineralization of POP'
+      diagUnits = 'mmol C/m3/s     '
+      diagCode  = 'SMR     MR      '
+      CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+      WRITE(diagName,'(A)')'rPOFe   '
+      WRITE(diagTitle,'(A)')'remineralization of POFe'
+      diagUnits = 'mmol C/m3/s     '
+      diagCode  = 'SMR     MR      '
+      CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+      WRITE(diagName,'(A)')'rPOSi   '
+      WRITE(diagTitle,'(A)')'remineralization of POSi'
+      diagUnits = 'mmol C/m3/s     '
+      diagCode  = 'SMR     MR      '
+      CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
       WRITE(diagName,'(A)')'C_ALK'
       WRITE(diagTitle,'(A)')'Consumption of alkalinity'
       diagUnits = 'meq/m3/s        '

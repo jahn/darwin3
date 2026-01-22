@@ -1866,6 +1866,11 @@ C     DOC is created by #4 PA-assoc solubilization and consumed by #5
       diags(iConsPO4) = consumPO4
       diags(iConsSi)  = consumSiO2
       diags(iConsFe)  = consumFeT
+      diags(iReminPOC) = reminPOC
+      diags(iReminPON) = reminPON
+      diags(iReminPOP) = reminPOP
+      diags(iReminPOFe) = reminPOFe
+      diags(iReminPOSi) = reminPOSi
 
 C=======================================================================
 C==== Grazing ==========================================================

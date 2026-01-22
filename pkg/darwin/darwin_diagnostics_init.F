@@ -557,13 +557,6 @@ C-      use units & names from data.ptracers :
        CALL DIAGNOSTICS_ADDTOLIST( diagNum,
      I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
 
-       WRITE(diagName,'(A,I4.4)')'exQc', j
-       WRITE(diagTitle,'(A,I4)')'exQc plankton ',j
-       diagUnits = 's-1             '
-       diagCode  = 'SM P    MR      '
-       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
-     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
-
        WRITE(diagName,'(A,I4.4)')'CChl', j
        WRITE(diagTitle,'(A,I4)')'C quota in Chlorophyll plankton ',j
        diagUnits = 'molC molC-1     '

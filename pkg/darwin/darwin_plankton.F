@@ -256,7 +256,6 @@ c !LOCAL VARIABLES: ====================================================
       _RL QN_pro_bio
       _RL QN_pro_tot
       _RL QN_RNA
-      _RL QnExc
       _RL exQn
       _RL QC_thy_D0
       _RL QC_thy_D1
@@ -290,11 +289,8 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL QP_excess
       _RL QN_store
       _RL QN_excess
-      _RL QpExc
       _RL exQp
       _RL VN,VP,VFe,VSi
-C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-      _RL exQc
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL Qfe_D1
       _RL Qfe_D0
@@ -305,7 +301,6 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL Qfe_Store
       _RL Qfe_excess
       _RL exQfe
-      _RL QfeExc
       _RL MODE
       _RL limN
       _RL limP
@@ -827,8 +822,6 @@ C       Carbon-specific FeT uptake rate
         Vfe = vmaxFeT(j)*MM_FeT*regQFe*uptakeTempFunc
         uptakeFeT = Vfe*mmX
 
-        exQc = 0 _d 0
-
 C       shlomit: Calclate the O2:C ratio
         RQ = ( QN_pro_tot*Y_CN_protein(j))* 1.56 _d 0
      &     + ( QC_other(j)/2  + QC_store/2) * 1.34 _d 0
@@ -845,7 +838,6 @@ C       shlomit: Calclate the O2:C ratio
         diags(iVP  +j-1) = VP
         diags(iMODE+j-1) = MODE
         diags(iFe_C+j-1) = mmQfe
-        diags(iexQc+j-1) = exQc
         diags(iCChl+j-1) = QC_chl
         diags(iNChl+j-1) = QN_chl
         diags(iNPho+j-1) = QN_pro_photo
@@ -1272,10 +1264,6 @@ C==== Nutrient consumption =============================================
 C==== Apply phototrophy tendencies =====================================
 
         gTr(ic+j-1)=gTr(ic+j-1)  + growth
-#ifdef DARWIN_MACROMOLECULAR_GROWTH
-        gTr(ic+j-1)=gTr(ic+j-1)  - mmX*exQc
-        gTr(iDOC) = gTr(iDOC) + mmX*exQc
-#endif
 #ifdef DARWIN_ALLOW_CSTORE
         gTr(ich+j-1)=gTr(ich+j-1)  + storeC
 #endif

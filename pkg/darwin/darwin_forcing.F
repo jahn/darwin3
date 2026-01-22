@@ -1395,9 +1395,6 @@ C      diags(iCons*) for convenience
         WRITE(diagname, '(A,I4.4)') 'Fe_C', iTr
         CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iFe_C+iTr-1),diagname,
      &          0,Nr,2,bi,bj,myThid)
-        WRITE(diagname, '(A,I4.4)') 'exQc', iTr
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iexQc+iTr-1),diagname,
-     &          0,Nr,2,bi,bj,myThid)
         WRITE(diagname, '(A,I4.4)') 'CChl', iTr
         CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iCChl+iTr-1),diagname,
      &          0,Nr,2,bi,bj,myThid)

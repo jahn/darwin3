@@ -452,10 +452,32 @@ C     scavenging
       DO i=iMin,iMax
 C       compute POM in mg/L
 #ifdef DARWIN_PART_SCAV_POP
-        scav_pom = MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iPOP))/scav_R_POPPOC
+        scav_pom = MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iPOP))
+# ifdef DARWIN_MACROMOLECULAR_DETRITUS
+        scav_pom = scav_pom + MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iDetCrna))
+     &                        /Y_CN_RNA*Y_PN_nucacid
+        scav_pom = scav_pom + MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iDetCdna))
+     &                        /Y_CN_DNA*Y_PN_nucacid
+        scav_pom = scav_pom + MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iDetCthy))
+     &                        /Y_CP_Plip
+# endif
+        scav_pom = scav_pom/scav_R_POPPOC
         scv = scav_rat*scav_inter*(scav_pom**scav_exp)
 #elif defined(DARWIN_PART_SCAV)
-        scav_pom = scav_POC_wgt*MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iPOC))
+        tmp = MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iPOC))
+# ifdef DARWIN_MACROMOLECULAR_DETRITUS
+        tmp = tmp + MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iDetCchl))
+        tmp = tmp + MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iDetCpho))
+        tmp = tmp + MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iDetCbio))
+        tmp = tmp + MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iDetCproo))
+        tmp = tmp + MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iDetCrna))
+        tmp = tmp + MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iDetCdna))
+        tmp = tmp + MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iDetCthy))
+        tmp = tmp + MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iDetCoth))
+        tmp = tmp + MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iDetCNsto))
+        tmp = tmp + MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iDetCsto))
+# endif
+        scav_pom = scav_POC_wgt*tmp
      &           + scav_PSi_wgt*MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iPOSi))
      &           + scav_PIC_wgt*MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iPIC))
      &           + scav_degrPOM
@@ -516,12 +538,32 @@ C     iron sediment source (in bottom grid cell above kMaxFeSed)
         IF (k .GE. kMinFeSed .AND. k .LE. kMaxFeSed) THEN
 #ifdef DARWIN_IRON_SED_SOURCE_VARIABLE
 # ifdef DARWIN_IRON_SED_SOURCE_POP
+          tmp = MAX(0 _d 0, Ptracer(i,j,k-1,bi,bj,iPOP))
+# ifdef DARWIN_MACROMOLECULAR_DETRITUS
+          tmp = tmp + MAX(0 _d 0, Ptracer(i,j,k-1,bi,bj,iDetCrna))
+     &                /Y_CN_RNA*Y_PN_nucacid
+          tmp = tmp + MAX(0 _d 0, Ptracer(i,j,k-1,bi,bj,iDetCdna))
+     &                /Y_CN_DNA*Y_PN_nucacid
+          tmp = tmp + MAX(0 _d 0, Ptracer(i,j,k-1,bi,bj,iDetCthy))
+     &                /Y_CP_Plip
+# endif
 C         mask is needed to make sure k-1 is not an ice shelf
-          flx = fesedflux_pcm*wp_sink*R_CP_fesed*
-     &            MAX(0 _d 0, Ptracer(i,j,k-1,bi,bj,iPOP))
+          flx = fesedflux_pcm*wp_sink*R_CP_fesed*tmp
      &            *maskC(i,j,k-1,bi,bj)
 # else
           POCl = MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iPOC))
+#  ifdef DARWIN_MACROMOLECULAR_DETRITUS
+          POCl = POCl + MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iDetCchl))
+          POCl = POCl + MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iDetCpho))
+          POCl = POCl + MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iDetCbio))
+          POCl = POCl + MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iDetCproo))
+          POCl = POCl + MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iDetCrna))
+          POCl = POCl + MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iDetCdna))
+          POCl = POCl + MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iDetCthy))
+          POCl = POCl + MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iDetCoth))
+          POCl = POCl + MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iDetCNsto))
+          POCl = POCl + MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iDetCsto))
+#  endif
           flx = fesedflux_pcm*wc_sink*POCl - fesedflux_min
           flx = MAX(0. _d 0, flx)
 # endif
@@ -866,7 +908,20 @@ C       resolve sediment fluxes at coastal regions
 
 C       Dependent variables
         fluxPIC(i,j) = wPIC_sink*MAX(0 _d 0,Ptracer(i,j,k,bi,bj,iPIC))
-        fluxPOC(i,j) = wC_sink*MAX(0 _d 0,Ptracer(i,j,k,bi,bj,iPOC))
+        tmp = MAX(0 _d 0,Ptracer(i,j,k,bi,bj,iPOC))
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+        tmp = tmp + MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iDetCchl))
+        tmp = tmp + MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iDetCpho))
+        tmp = tmp + MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iDetCbio))
+        tmp = tmp + MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iDetCproo))
+        tmp = tmp + MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iDetCrna))
+        tmp = tmp + MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iDetCdna))
+        tmp = tmp + MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iDetCthy))
+        tmp = tmp + MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iDetCoth))
+        tmp = tmp + MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iDetCNsto))
+        tmp = tmp + MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iDetCsto))
+#endif
+        fluxPOC(i,j) = wC_sink*tmp
 
         DICFsediment(i,j) = (sed_a1*omegaC0(i,j)*sed_c +
      &                       sed_b1*fluxPOC(i,j) +
@@ -965,9 +1020,44 @@ C      grid cell just above sea floor
 
 C       Dependent variables
         fluxPIC(i,j) = wPIC_sink*MAX(0 _d 0,Ptracer(i,j,k,bi,bj,iPIC))
-        fluxPOC(i,j) = wC_sink*MAX(0 _d 0,Ptracer(i,j,k,bi,bj,iPOC))
-        fluxPOP(i,j) = wP_sink*MAX(0 _d 0,Ptracer(i,j,k,bi,bj,iPOP))
-        fluxPON(i,j) = wN_sink*MAX(0 _d 0,Ptracer(i,j,k,bi,bj,iPON))
+
+        tmp = MAX(0 _d 0,Ptracer(i,j,k,bi,bj,iPOC))
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+        tmp = tmp + MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iDetCchl))
+        tmp = tmp + MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iDetCpho))
+        tmp = tmp + MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iDetCbio))
+        tmp = tmp + MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iDetCproo))
+        tmp = tmp + MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iDetCrna))
+        tmp = tmp + MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iDetCdna))
+        tmp = tmp + MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iDetCthy))
+        tmp = tmp + MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iDetCoth))
+        tmp = tmp + MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iDetCNsto))
+        tmp = tmp + MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iDetCsto))
+#endif
+        fluxPOC(i,j) = wC_sink*tmp
+
+        tmp = MAX(0 _d 0,Ptracer(i,j,k,bi,bj,iPOP))
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+        tmp = tmp + MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iDetCrna))
+     &              /Y_CN_RNA*Y_PN_nucacid
+        tmp = tmp + MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iDetCdna))
+     &              /Y_CN_DNA*Y_PN_nucacid
+        tmp = tmp + MAX(0 _d 0, Ptracer(i,j,k,bi,bj,iDetCthy))/Y_CP_Plip
+#endif
+        fluxPOP(i,j) = wP_sink*tmp
+
+        tmp = MAX(0 _d 0,Ptracer(i,j,k,bi,bj,iPON))
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+        tmp=tmp+MAX(0 _d 0,Ptracer(i,j,k,bi,bj,iDetCchl))*Y_NC_chl
+        tmp=tmp+MAX(0 _d 0,Ptracer(i,j,k,bi,bj,iDetCpho))/Y_CN_protein
+        tmp=tmp+MAX(0 _d 0,Ptracer(i,j,k,bi,bj,iDetCbio))/Y_CN_protein
+        tmp=tmp+MAX(0 _d 0,Ptracer(i,j,k,bi,bj,iDetCproo))/Y_CN_protein
+        tmp=tmp+MAX(0 _d 0,Ptracer(i,j,k,bi,bj,iDetCrna))/Y_CN_RNA
+        tmp=tmp+MAX(0 _d 0,Ptracer(i,j,k,bi,bj,iDetCdna))/Y_CN_DNA
+        tmp=tmp+MAX(0 _d 0,Ptracer(i,j,k,bi,bj,iDetCNsto))/Y_CN_cyano
+#endif
+        fluxPON(i,j) = wN_sink*tmp
+
         absT = ABS(Theta(i,j,k,bi,bj))
 
 C       Reset flux to zero before accumulation

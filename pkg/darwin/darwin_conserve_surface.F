@@ -80,6 +80,18 @@ c carbon budget
       totflxC=totflxC+totSurfCorPtr(iCDOM)*R_CP_CDOM
 # endif
 #endif
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+      totflxC=totflxC+totSurfCorPtr(iDetCchl)
+      totflxC=totflxC+totSurfCorPtr(iDetCpho)
+      totflxC=totflxC+totSurfCorPtr(iDetCbio)
+      totflxC=totflxC+totSurfCorPtr(iDetCproo)
+      totflxC=totflxC+totSurfCorPtr(iDetCrna)
+      totflxC=totflxC+totSurfCorPtr(iDetCdna)
+      totflxC=totflxC+totSurfCorPtr(iDetCthy)
+      totflxC=totflxC+totSurfCorPtr(iDetCoth)
+      totflxC=totflxC+totSurfCorPtr(iDetCNsto)
+      totflxC=totflxC+totSurfCorPtr(iDetCsto)
+#endif
 
 c Phosphorus budget
       totflxP=totflxP+totSurfCorPtr(iPO4)
@@ -100,6 +112,11 @@ c Phosphorus budget
 # else
       totflxP=totflxP+totSurfCorPtr(iCDOM)
 # endif
+#endif
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+      totflxP=totflxP+totSurfCorPtr(iDetCrna)/Y_CN_RNA*Y_PN_nucacid
+      totflxP=totflxP+totSurfCorPtr(iDetCdna)/Y_CN_DNA*Y_PN_nucacid
+      totflxP=totflxP+totSurfCorPtr(iDetCthy)/Y_CP_Plip
 #endif
 
 c Nitrogen budget
@@ -124,6 +141,15 @@ c Nitrogen budget
       totflxN=totflxN+totSurfCorPtr(iCDOM)*R_NP_CDOM
 # endif
 #endif
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+      totflxN=totflxN+totSurfCorPtr(iDetCchl)*Y_NC_chl
+      totflxN=totflxN+totSurfCorPtr(iDetCpho)/Y_CN_protein
+      totflxN=totflxN+totSurfCorPtr(iDetCbio)/Y_CN_protein
+      totflxN=totflxN+totSurfCorPtr(iDetCproo)/Y_CN_protein
+      totflxN=totflxN+totSurfCorPtr(iDetCrna)/Y_CN_RNA
+      totflxN=totflxN+totSurfCorPtr(iDetCdna)/Y_CN_DNA
+      totflxN=totflxN+totSurfCorPtr(iDetCNsto)/Y_CN_cyano
+#endif
 
 c Iron budget
       totflxFe=totflxFe+totSurfCorPtr(iFeT)
@@ -144,6 +170,9 @@ c Iron budget
 # else
       totflxFe=totflxFe+totSurfCorPtr(iCDOM)*R_FeP_CDOM
 # endif
+#endif
+#ifdef DARWIN_MACROMOLECULAR_DETRITUS
+      totflxFe=totflxFe+totSurfCorPtr(iDetCpho)/Y_CN_protein*Y_FeN_photo
 #endif
 
 c Silica budget

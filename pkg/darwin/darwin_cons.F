@@ -372,6 +372,7 @@ c Iron budget
         tiletotFe(bi,bj)=tiletotFe(bi,bj)+Ptracer(i,j,k,bi,bj,iFeT)*vol
         tiletotFe(bi,bj)=tiletotFe(bi,bj)+Ptracer(i,j,k,bi,bj,iDOFe)*vol
         tiletotFe(bi,bj)=tiletotFe(bi,bj)+Ptracer(i,j,k,bi,bj,iPOFe)*vol
+        tiletotFe(bi,bj)=tiletotFe(bi,bj)+Ptracer(i,j,k,bi,bj,iPIFe)*vol
         DO np=1,nplank
 #ifdef DARWIN_ALLOW_FEQUOTA
          iTr=ife+np-1
@@ -483,6 +484,9 @@ C 2-d conservation corrections
         ELSEIF (stage .EQ. 2) THEN
         tilesfcflxFe(bi,bj)=tilesfcflxFe(bi,bj)+alpfe*inputfe(i,j,bi,bj)
      &                                         *PTRACERS_dtLev(ks)*area
+        tilesfcflxFe(bi,bj)=tilesfcflxFe(bi,bj)
+     &                     +(1 _d 0-alpfe)*inputfe(i,j,bi,bj)
+     &                      *PTRACERS_dtLev(ks)*area
 #ifdef DARWIN_NUTRIENT_RUNOFF
         tilerunoffC(bi,bj) = tilerunoffC(bi,bj) + DOCrunoff(i,j,bi,bj)
      &                   *PTRACERS_dtLev(ks)*area
@@ -607,6 +611,8 @@ C Iron imp.FS corrections
          tileFSFe(bi,bj)=tileFSFe(bi,bj)+Ptracer(i,j,ks,bi,bj,iDOFe)
      &                                  *dvol
          tileFSFe(bi,bj)=tileFSFe(bi,bj)+Ptracer(i,j,ks,bi,bj,iPOFe)
+     &                                  *dvol
+         tileFSFe(bi,bj)=tileFSFe(bi,bj)+Ptracer(i,j,ks,bi,bj,iPIFe)
      &                                  *dvol
          DO np=1,nplank
 #ifdef DARWIN_ALLOW_FEQUOTA
@@ -767,6 +773,9 @@ C Iron E-P-R fluxes
      &                                     *dvol
          IF (PTRACERS_EvPrRn(iPOFe).EQ.UNSET_RL)
      &    tileEPRFe(bi,bj)=tileEPRFe(bi,bj)+Ptracer(i,j,ks,bi,bj,iPOFe)
+     &                                     *dvol
+         IF (PTRACERS_EvPrRn(iPIFe).EQ.UNSET_RL)
+     &    tileEPRFe(bi,bj)=tileEPRFe(bi,bj)+Ptracer(i,j,ks,bi,bj,iPIFe)
      &                                     *dvol
          DO np=1,nplank
 #ifdef DARWIN_ALLOW_FEQUOTA
@@ -946,6 +955,9 @@ C Iron E-P-R fluxes
      &                                    *dvol
          IF (PTRACERS_EvPrRn(iPOFe).NE.UNSET_RL)
      &   tileEPRFe(bi,bj)=tileEPRFe(bi,bj)-Ptracer(i,j,ks,bi,bj,iPOFe)
+     &                                    *dvol
+         IF (PTRACERS_EvPrRn(iPIFe).NE.UNSET_RL)
+     &   tileEPRFe(bi,bj)=tileEPRFe(bi,bj)-Ptracer(i,j,ks,bi,bj,iPIFe)
      &                                    *dvol
          DO np=1,nplank
 #ifdef DARWIN_ALLOW_FEQUOTA
@@ -1207,6 +1219,8 @@ C Iron E-P-R fluxes
      &   tmpEPRFe = tmpEPRFe - PTRACERS_ref(ks,iDOFe)*totPER
         IF (PTRACERS_EvPrRn(iPOFe).NE.UNSET_RL)
      &   tmpEPRFe = tmpEPRFe - PTRACERS_ref(ks,iPOFe)*totPER
+        IF (PTRACERS_EvPrRn(iPIFe).NE.UNSET_RL)
+     &   tmpEPRFe = tmpEPRFe - PTRACERS_ref(ks,iPIFe)*totPER
         DO np=1,nplank
          IF (PTRACERS_EvPrRn(iTr).NE.UNSET_RL) THEN
 #ifdef DARWIN_ALLOW_FEQUOTA
@@ -1348,6 +1362,8 @@ C Iron E-P-R fluxes
      &   tmpEPRFe = tmpEPRFe + PTRACERS_EvPrRn(iDOFe)*totPER
         IF (PTRACERS_EvPrRn(iPOFe).NE.UNSET_RL)
      &   tmpEPRFe = tmpEPRFe + PTRACERS_EvPrRn(iPOFe)*totPER
+        IF (PTRACERS_EvPrRn(iPIFe).NE.UNSET_RL)
+     &   tmpEPRFe = tmpEPRFe + PTRACERS_EvPrRn(iPIFe)*totPER
         DO np=1,nplank
          IF (PTRACERS_EvPrRn(iTr).NE.UNSET_RL) THEN
 #ifdef DARWIN_ALLOW_FEQUOTA

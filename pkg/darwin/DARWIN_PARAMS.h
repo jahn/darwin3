@@ -386,6 +386,7 @@ C     wP_sink           :: [m/s]  sinking velocity for POP
 C     wFe_sink          :: [m/s]  sinking velocity for POFe
 C     wSi_sink          :: [m/s]  sinking velocity for POSi
 C     wPIC_sink         :: [m/s]  sinking velocity for PIC
+C     wPOFe_sink        :: [m/s]  sinking velocity for PIFe
 C     darwin_KeirCoeff  :: [1/s]  Keir PIC dissolution rate coefficient
 C     darwin_KeirExp    :: [1]    Keir PIC dissolution rate exponent
 C     Kdissc            :: [1/s]  dissolution rate for PIC
@@ -517,6 +518,7 @@ C     depthdenit        :: [m]             not implemented (depth for denitrific
      &    wFe_sink,
      &    wSi_sink,
      &    wPIC_sink,
+     &    wPIFe_sink,
      &    Kdissc,
      &    DARWIN_KeirCoeff,
      &    DARWIN_KeirExp,
@@ -638,6 +640,7 @@ C     &    yono2,
       _RL wFe_sink
       _RL wSi_sink
       _RL wPIC_sink
+      _RL wPIFe_sink
       _RL Kdissc
       _RL DARWIN_KeirCoeff
       _RL DARWIN_KeirExp

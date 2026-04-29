@@ -480,7 +480,7 @@ C     iron dust input
       CALL TIMER_START('DARWIN_FE_DUST [DARWIN_FORCING]',myThid)
       DO j=jMin,jMax
        DO i=iMin,iMax
-        tmp3d(i,j,1) = alpfe * inputFe(i,j,bi,bj)
+        tmp3d(i,j,1) = inputFe(i,j,bi,bj)
      &               * recip_drF(1) * recip_hFacC(i,j,1,bi,bj)
        ENDDO
       ENDDO
@@ -495,7 +495,8 @@ C-    Account for change in level thickness
 #endif /* NONLIN_FRSURF */
       DO j=jMin,jMax
        DO i=iMin,iMax
-        gPtr(i,j,1,iFeT) = gPtr(i,j,1,iFeT) + tmp3d(i,j,1)
+        gPtr(i,j,1,iFeT) = gPtr(i,j,1,iFeT) + alpfe*tmp3d(i,j,1)
+        gPtr(i,j,1,iPIFe)=gPtr(i,j,1,iPIFe)+(1 _d 0-alpfe)*tmp3d(i,j,1)
        ENDDO
       ENDDO
       CALL TIMER_STOP ('DARWIN_FE_DUST [DARWIN_FORCING]',myThid)

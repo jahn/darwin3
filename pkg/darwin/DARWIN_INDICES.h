@@ -27,8 +27,11 @@ C these cannot be modified for now
       INTEGER iPOFe
       INTEGER iPOSi
       INTEGER iPIC
+#ifdef DARWIN_ALLOW_PIFE
       INTEGER iPIFe
+#endif
       INTEGER ic
+      INTEGER iCARBON
       INTEGER eCARBON
       INTEGER eCDOM
       INTEGER ec
@@ -56,15 +59,20 @@ C these cannot be modified for now
       PARAMETER (iPOFe  =iPOP +1)
       PARAMETER (iPOSi  =iPOFe+1)
       PARAMETER (iPIC   =iPOSi+1)
+#ifdef DARWIN_ALLOW_PIFE
       PARAMETER (iPIFe  =iPIC +1)
+      PARAMETER (iCARBON=iPIFe+1)
+#else
+      PARAMETER (iCARBON=iPIC +1)
+#endif
 #ifdef DARWIN_ALLOW_CARBON
       INTEGER iALK
       INTEGER iO2
-      PARAMETER (iALK   =iPIFe+1)
+      PARAMETER (iALK   =iCARBON)
       PARAMETER (iO2    =iALK +1)
       PARAMETER (eCARBON=iO2)
 #else
-      PARAMETER (eCARBON=iPIFe)
+      PARAMETER (eCARBON=iCARBON-1)
 #endif
 #ifdef DARWIN_ALLOW_CDOM
       INTEGER iCDOM

@@ -100,9 +100,11 @@ C-    Account for change in level thickness
           flux = wFe_sink*MAX(0 _d 0, Ptr(i,j,k,bi,bj,iPOFe))
           gTr(i,j,k  ,iPOFe) = gTr(i,j,k  ,iPOFe) - flux*upfc
           gTr(i,j,k+1,iPOFe) = gTr(i,j,k+1,iPOFe) + flux*dnfc
+#ifdef DARWIN_ALLOW_PIFE
           flux = wPIFe_sink*MAX(0 _d 0, Ptr(i,j,k,bi,bj,iPIFe))
           gTr(i,j,k  ,iPIFe) = gTr(i,j,k  ,iPIFe) - flux*upfc
           gTr(i,j,k+1,iPIFe) = gTr(i,j,k+1,iPIFe) + flux*dnfc
+#endif
           DO l = 1, nplank
            flux = (biosink(l)+bioswimDVMdn(i,j,k,l))*MAX(0.0,
      &           Ptr(i,j,k,bi,bj,ic+l-1))
@@ -236,10 +238,12 @@ C
           botSnkSi(i,j,bi,bj) = botSnkSi(i,j,bi,bj) + dTsub(k)*flux
 #endif
 C
+#ifdef DARWIN_ALLOW_PIFE
           flux = wPIFe_sink*MAX(0 _d 0, Ptr(i,j,k,bi,bj,iPIFe))
           gTr(i,j,k  ,iPIFe) = gTr(i,j,k  ,iPIFe) - flux*upfc
-#ifdef DARWIN_ALLOW_CONS
+# ifdef DARWIN_ALLOW_CONS
           botSnkFe(i,j,bi,bj) = botSnkFe(i,j,bi,bj) + dTsub(k)*flux
+# endif
 #endif
           DO l = 1, nplank
            flux = biosink(l)*MAX(0 _d 0, Ptr(i,j,k,bi,bj,ic+l-1))

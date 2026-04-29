@@ -85,7 +85,9 @@ c !LOCAL VARIABLES: ====================================================
       _RL POSi
       _RL POFe
       _RL PIC
+#ifdef DARWIN_ALLOW_PIFE
       _RL PIFe
+#endif
       _RL O2
 
       _RL X(nplank)
@@ -447,7 +449,9 @@ C==== Make all bio fields non-negative and compute quotas ==============
       POP  = MAX(0 _d 0, Ptr(iPOP))
       POSi = MAX(0 _d 0, Ptr(iPOSi))
       POFe = MAX(0 _d 0, Ptr(iPOFe))
+#ifdef DARWIN_ALLOW_PIFE
       PIFe = MAX(0 _d 0, Ptr(iPIFe))
+#endif
 #ifdef DARWIN_ALLOW_CARBON
       O2   = MAX(0 _d 0, Ptr(iO2))
 #endif

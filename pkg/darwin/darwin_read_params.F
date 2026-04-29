@@ -151,7 +151,9 @@ C----
      &    wFe_sink,
      &    wSi_sink,
      &    wPIC_sink,
+#ifdef DARWIN_ALLOW_PIFE
      &    wPIFe_sink,
+#endif
      &    darwin_disscSelect,
      &    Kdissc,
      &    darwin_KeirCoeff,
@@ -508,7 +510,9 @@ C
       wFe_sink = wC_sink
       wSi_sink = wC_sink
       wPIC_sink = 15 _d 0/pday
+#ifdef DARWIN_ALLOW_PIFE
       wPIFe_sink = wC_sink
+#endif
       darwin_disscSelect = 0
       Kdissc = 1 _d 0/(300 _d 0*pday)
       darwin_KeirCoeff = EXP(7.177 _d 0)/100 _d 0/86400 _d 0

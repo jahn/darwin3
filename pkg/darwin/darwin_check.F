@@ -94,12 +94,17 @@ CCOG]]]
       INTEGER i_POFe
       INTEGER i_POSi
       INTEGER i_PIC
+#ifdef DARWIN_ALLOW_PIFE
       INTEGER i_PIFe
+#endif
 #ifdef DARWIN_ALLOW_CARBON
       INTEGER i_ALK
 #endif
 #ifdef DARWIN_ALLOW_CARBON
       INTEGER i_O2
+#endif
+#ifdef DARWIN_ALLOW_PIFE
+      INTEGER i_CARBON, e_CARBON
 #endif
 #ifdef DARWIN_ALLOW_CDOM
       INTEGER i_CDOM, e_CDOM
@@ -123,7 +128,7 @@ CCOG]]]
 #ifdef DARWIN_ALLOW_CSTORE
       INTEGER i_ch, e_ch
 #endif
-CCOG[[[end]]] (checksum: 417ae637a5d38af3113ac8c0d881dce3)
+CCOG[[[end]]] (checksum: 23505e0769f86e51782e18aa264e1037)
       INTEGER n_DARWIN
       LOGICAL addBlkLn
       CHARACTER*1 blkLin
@@ -165,12 +170,17 @@ CCOG]]]
      &    i_POFe,
      &    i_POSi,
      &    i_PIC,
+#ifdef DARWIN_ALLOW_PIFE
      &    i_PIFe,
+#endif
 #ifdef DARWIN_ALLOW_CARBON
      &    i_ALK,
 #endif
 #ifdef DARWIN_ALLOW_CARBON
      &    i_O2,
+#endif
+#ifdef DARWIN_ALLOW_PIFE
+     &    i_CARBON, e_CARBON,
 #endif
 #ifdef DARWIN_ALLOW_CDOM
      &    i_CDOM, e_CDOM,
@@ -194,7 +204,7 @@ CCOG]]]
 #ifdef DARWIN_ALLOW_CSTORE
      &    i_ch, e_ch,
 #endif
-CCOG[[[end]]] (checksum: 3446c74cfcc134d8a4ac47595c070811)
+CCOG[[[end]]] (checksum: 80c79db70e84f7f3585568bb147a8422)
      &    n_DARWIN
 
       _BEGIN_MASTER(myThid)
@@ -228,12 +238,18 @@ CCOG]]]
        i_POFe = iPOFe
        i_POSi = iPOSi
        i_PIC = iPIC
+#ifdef DARWIN_ALLOW_PIFE
        i_PIFe = iPIFe
+#endif
 #ifdef DARWIN_ALLOW_CARBON
        i_ALK = iALK
 #endif
 #ifdef DARWIN_ALLOW_CARBON
        i_O2 = iO2
+#endif
+#ifdef DARWIN_ALLOW_PIFE
+       i_CARBON = iCARBON
+       e_CARBON = eCARBON
 #endif
 #ifdef DARWIN_ALLOW_CDOM
        i_CDOM = iCDOM
@@ -265,7 +281,7 @@ CCOG]]]
        i_ch = ich
        e_ch = ech
 #endif
-CCOG[[[end]]] (checksum: eaece47ed5a62c72a9429d1b64237a0e)
+CCOG[[[end]]] (checksum: d351e8fb1a4736bba25f154fe72ab6e7)
        n_DARWIN = nDARWIN
 
        CALL MDSFINDUNIT( oUnit, mythid )
@@ -2042,9 +2058,11 @@ C--   Print parameters from DARWIN_PARAMS.h
       CALL WRITE_0D_RL(wPIC_sink,INDEX_NONE,
      &'wPIC_sink =',
      &' /* sinking velocity for PIC (m/s) */')
+#ifdef DARWIN_ALLOW_PIFE
       CALL WRITE_0D_RL(wPIFe_sink,INDEX_NONE,
      &'wPIFe_sink =',
      &' /* sinking velocity for PIFe (m/s) */')
+#endif
       CALL WRITE_0D_I(darwin_disscSelect,INDEX_NONE,
      &'darwin_disscSelect = ',
      &' /* Switch for PIC dissolution rate formulation */')
@@ -3046,10 +3064,12 @@ CCOG]]]
       CALL PRINT_MESSAGE(msgBuf,standardMessageUnit,
      &                   SQUEEZE_RIGHT,myThid)
 
+#ifdef DARWIN_ALLOW_PIFE
       WRITE(msgBuf,'(A,I4,X,A,A32)') 'DARWIN_CHECK: ',
      &  iPIFe  ,'PIFe      ', PTRACERS_names(iPIFe  )
       CALL PRINT_MESSAGE(msgBuf,standardMessageUnit,
      &                   SQUEEZE_RIGHT,myThid)
+#endif
 
 #ifdef DARWIN_ALLOW_CARBON
       WRITE(msgBuf,'(A,I4,X,A,A32)') 'DARWIN_CHECK: ',
@@ -3063,6 +3083,16 @@ CCOG]]]
      &  iO2    ,'O2        ', PTRACERS_names(iO2    )
       CALL PRINT_MESSAGE(msgBuf,standardMessageUnit,
      &                   SQUEEZE_RIGHT,myThid)
+#endif
+
+#ifdef DARWIN_ALLOW_PIFE
+      DO j = 1, eCARBON+1-iCARBON
+        iPtr = iCARBON + j - 1
+        WRITE(msgBuf,'(A,I4,X,A,I4,X,A32)') 'DARWIN_CHECK: ',
+     &    iPtr, 'CARBON', j, PTRACERS_names(iPtr)
+        CALL PRINT_MESSAGE(msgBuf,standardMessageUnit,
+     &                     SQUEEZE_RIGHT,myThid)
+      ENDDO
 #endif
 
 #ifdef DARWIN_ALLOW_CDOM
@@ -3142,7 +3172,7 @@ CCOG]]]
      &                     SQUEEZE_RIGHT,myThid)
       ENDDO
 #endif
-CCOG[[[end]]] (checksum: f6b66769c9f666a842b7f118ad66bc05)
+CCOG[[[end]]] (checksum: 882a16844998ea1d99a77fa295ede910)
 
 C---+----1----+----2----+----3----+----4----+----5----+----6----+----7-|--+----|
 C     Log plankton types with ptracer indices

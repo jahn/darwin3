@@ -30,6 +30,9 @@ C enable silica quotas for all plankton
 C enable chlorophyll quotas for all phototrophs
 #undef  DARWIN_ALLOW_CHLQUOTA
 
+C enable PIFe tracer
+#undef  DARWIN_ALLOW_PIFE
+
 C enable internal c store for all phototrophs; also enables exudation
 #undef  DARWIN_ALLOW_CSTORE
 #undef  DARWIN_ALLOW_CSTORE_DIAGS

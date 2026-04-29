@@ -496,7 +496,9 @@ C-    Account for change in level thickness
       DO j=jMin,jMax
        DO i=iMin,iMax
         gPtr(i,j,1,iFeT) = gPtr(i,j,1,iFeT) + alpfe*tmp3d(i,j,1)
+#ifdef DARWIN_ALLOW_PIFE
         gPtr(i,j,1,iPIFe)=gPtr(i,j,1,iPIFe)+(1 _d 0-alpfe)*tmp3d(i,j,1)
+#endif
        ENDDO
       ENDDO
       CALL TIMER_STOP ('DARWIN_FE_DUST [DARWIN_FORCING]',myThid)

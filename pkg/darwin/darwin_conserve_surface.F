@@ -129,7 +129,9 @@ c Iron budget
       totflxFe=totflxFe+totSurfCorPtr(iFeT)
       totflxFe=totflxFe+totSurfCorPtr(iDOFe)
       totflxFe=totflxFe+totSurfCorPtr(iPOFe)
+#ifdef DARWIN_ALLOW_PIFE
       totflxFe=totflxFe+totSurfCorPtr(iPIFe)
+#endif
       DO np=1,nplank
 #ifdef DARWIN_ALLOW_FEQUOTA
         iTr=ife+np-1

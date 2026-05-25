@@ -496,12 +496,36 @@ C-    Account for change in level thickness
       DO j=jMin,jMax
        DO i=iMin,iMax
         gPtr(i,j,1,iFeT) = gPtr(i,j,1,iFeT) + alpfe*tmp3d(i,j,1)
-#ifdef DARWIN_ALLOW_PIFE
-        gPtr(i,j,1,iPIFe)=gPtr(i,j,1,iPIFe)+(1 _d 0-alpfe)*tmp3d(i,j,1)
-#endif
        ENDDO
       ENDDO
       CALL TIMER_STOP ('DARWIN_FE_DUST [DARWIN_FORCING]',myThid)
+
+#ifdef DARWIN_ALLOW_PIFE
+C ----------------------------------------------------------------------
+C     particulate inorganic iron dust input
+      CALL TIMER_START('DARWIN_PIFE_DUST [DARWIN_FORCING]',myThid)
+      DO j=jMin,jMax
+       DO i=iMin,iMax
+        tmp3d(i,j,1) = inputPIFe(i,j,bi,bj)
+     &               * recip_drF(1) * recip_hFacC(i,j,1,bi,bj)
+       ENDDO
+      ENDDO
+# ifdef NONLIN_FRSURF
+C-    Account for change in level thickness
+      IF (nonlinFreeSurf.GT.0) THEN
+        CALL FREESURF_RESCALE_G(
+     I                           bi, bj, 1,
+     U                           tmp3d,
+     I                           myThid )
+      ENDIF
+# endif /* NONLIN_FRSURF */
+      DO j=jMin,jMax
+       DO i=iMin,iMax
+        gPtr(i,j,1,iPIFe) = gPtr(i,j,1,iPIFe) + tmp3d(i,j,1)
+       ENDDO
+      ENDDO
+      CALL TIMER_STOP ('DARWIN_FE_DUST [DARWIN_FORCING]',myThid)
+#endif /* DARWIN_ALLOW_PIFE */
 
 C ----------------------------------------------------------------------
 C     iron sediment source (in bottom grid cell above kMaxFeSed)

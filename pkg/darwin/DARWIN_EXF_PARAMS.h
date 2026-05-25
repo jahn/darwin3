@@ -87,6 +87,42 @@ C iron forcing parameters for exf
       _RL  iron_lat_inc(MAX_LAT_INC)
 #endif
 
+C PIFe forcing parameters for exf
+
+      _RL PIFeStartTime
+
+      COMMON/darwin_forcing_PIFe_c/
+     &    PIFemask
+      COMMON/darwin_forcing_PIFe_i/
+     &    PIFestartdate1, PIFestartdate2
+      COMMON/darwin_forcing_PIFe_r/
+     &    PIFeStartTime,
+     &    PIFeperiod, PIFeRepCycle, PIFeconst,
+     &    PIFe_exfremo_intercept, PIFe_exfremo_slope,
+     &    darwin_inscal_PIFe
+      CHARACTER*1 PIFemask
+      INTEGER PIFestartdate1
+      INTEGER PIFestartdate2
+      _RL PIFeperiod
+      _RL PIFeRepCycle
+      _RL PIFeconst
+      _RL PIFe_exfremo_intercept
+      _RL PIFe_exfremo_slope
+      _RL darwin_inscal_PIFe
+
+#ifdef USE_EXF_INTERPOLATION
+      COMMON/darwin_interp_PIFe_i/
+     &    PIFe_nlon, PIFe_nlat, PIFe_interpMethod
+      COMMON/darwin_interp_PIFe_r/
+     &    PIFe_lon0, PIFe_lat0, PIFe_lon_inc,
+     &    PIFe_lat_inc
+      INTEGER PIFe_interpMethod, PIFe_nlon, PIFe_nlat
+      _RL  PIFe_lon0
+      _RL  PIFe_lat0
+      _RL  PIFe_lon_inc
+      _RL  PIFe_lat_inc(MAX_LAT_INC)
+#endif
+
 C ice forcing parameters for exf
 
       _RL iceStartTime

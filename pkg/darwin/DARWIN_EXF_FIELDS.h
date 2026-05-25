@@ -15,6 +15,7 @@ C     ventHe3file   :: file with He3 flux from hydrothermal vents (mmol He/m2/s)
       COMMON /DARWIN_FIELDS_C/
      &    PARfile,
      &    ironfile,
+     &    PIFefile,
      &    icefile,
      &    windfile,
      &    pCO2file,
@@ -35,6 +36,7 @@ C     ventHe3file   :: file with He3 flux from hydrothermal vents (mmol He/m2/s)
 
       CHARACTER*128 PARfile
       CHARACTER*128 ironfile
+      CHARACTER*128 PIFefile
       CHARACTER*128 icefile
       CHARACTER*128 windfile
       CHARACTER*128 pCO2file
@@ -58,6 +60,7 @@ C     ventHe3   :: He3 flux from hydrothermal vents (mmol He/m2/s)
       COMMON /DARWIN_FIELDS_R/
      &    PAR0, PAR1, surfPAR,
      &    iron0, iron1, inputFe,
+     &    PIFe0, PIFe1, inputPIFe,
      &    ice0, ice1, iceFrac,
      &    wind0, wind1, windSpeed,
      &    pCO20, pCO21, atmospCO2,
@@ -83,6 +86,10 @@ C     ventHe3   :: He3 flux from hydrothermal vents (mmol He/m2/s)
       _RL iron0(1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
       _RL iron1(1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
       _RL inputFe(1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
+
+      _RL PIFe0(1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
+      _RL PIFe1(1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
+      _RL inputPIFe(1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
 
       _RL ice0(1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
       _RL ice1(1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)

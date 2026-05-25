@@ -1307,6 +1307,13 @@ C-      use units & names from data.ptracers :
       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
      I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
 
+      WRITE(diagName,'(A)')'surfPIFe'
+      WRITE(diagTitle,'(A)')'PIFe forcing at surface'
+      diagUnits = 'mmol Fe/m^2/s   '
+      diagCode  = 'SM P    L1      '
+      CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
       WRITE(diagName,'(A)')'DARice'
       WRITE(diagTitle,'(A)')'ice area fraction'
       diagUnits = 'm^2/m^2         '

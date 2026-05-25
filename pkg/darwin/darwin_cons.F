@@ -486,9 +486,8 @@ C 2-d conservation corrections
         ELSEIF (stage .EQ. 2) THEN
         tilesfcflxFe(bi,bj)=tilesfcflxFe(bi,bj)+alpfe*inputfe(i,j,bi,bj)
      &                                         *PTRACERS_dtLev(ks)*area
-        tilesfcflxFe(bi,bj)=tilesfcflxFe(bi,bj)
-     &                     +(1 _d 0-alpfe)*inputfe(i,j,bi,bj)
-     &                      *PTRACERS_dtLev(ks)*area
+        tilesfcflxFe(bi,bj)=tilesfcflxFe(bi,bj)+inputPIFe(i,j,bi,bj)
+     &                                         *PTRACERS_dtLev(ks)*area
 #ifdef DARWIN_NUTRIENT_RUNOFF
         tilerunoffC(bi,bj) = tilerunoffC(bi,bj) + DOCrunoff(i,j,bi,bj)
      &                   *PTRACERS_dtLev(ks)*area

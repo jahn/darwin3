@@ -92,6 +92,18 @@ C
      &    ironmask,
      &    darwin_inscal_iron,
 C
+     &    PIFefile,
+     &    PIFeperiod,
+     &    PIFeRepCycle,
+     &    PIFeStartTime,
+     &    PIFestartdate1,
+     &    PIFestartdate2,
+     &    PIFeconst,
+     &    PIFe_exfremo_intercept,
+     &    PIFe_exfremo_slope,
+     &    PIFemask,
+     &    darwin_inscal_PIFe,
+C
      &    icefile,
      &    iceperiod,
      &    iceRepCycle,
@@ -315,6 +327,14 @@ C
      &    iron_interpMethod,
      &    iron_lat_inc,
 C
+     &    PIFe_lon0,
+     &    PIFe_lat0,
+     &    PIFe_nlon,
+     &    PIFe_nlat,
+     &    PIFe_lon_inc,
+     &    PIFe_interpMethod,
+     &    PIFe_lat_inc,
+C
      &    ice_lon0,
      &    ice_lat0,
      &    ice_nlon,
@@ -490,6 +510,19 @@ C Open and read the data.darwin file
       ironmask = 'c'
 
       darwin_inscal_iron    =  1. _d 0
+
+      PIFefile = ' '
+      PIFeperiod             = 0.0 _d 0
+      PIFeRepCycle           = repeatPeriod
+      PIFeStartTime          = UNSET_RL
+      PIFestartdate1         = 0
+      PIFestartdate2         = 0
+      PIFeconst              = 0 _d 0
+      PIFe_exfremo_intercept = 0.0 _d 0
+      PIFe_exfremo_slope     = 0.0 _d 0
+      PIFemask = 'c'
+
+      darwin_inscal_PIFe    =  1. _d 0
 
       icefile = ' '
       iceperiod             = 0.0 _d 0
@@ -728,6 +761,13 @@ C Open and read the data.darwin file
       iron_lon_inc = inp_dLon
       iron_interpMethod  = 1
 
+      PIFe_lon0 = inp_lon0
+      PIFe_lat0 = inp_lat0
+      PIFe_nlon = inp_gNx
+      PIFe_nlat = inp_gNy
+      PIFe_lon_inc = inp_dLon
+      PIFe_interpMethod  = 1
+
       ice_lon0 = inp_lon0
       ice_lat0 = inp_lat0
       ice_nlon = inp_gNx
@@ -850,6 +890,7 @@ C Open and read the data.darwin file
       DO j=1,MAX_LAT_INC
         PAR_lat_inc(j) = inp_dLat(j)
         iron_lat_inc(j) = inp_dLat(j)
+        PIFe_lat_inc(j) = inp_dLat(j)
         ice_lat_inc(j) = inp_dLat(j)
         wind_lat_inc(j) = inp_dLat(j)
         pCO2_lat_inc(j) = inp_dLat(j)
@@ -1005,6 +1046,13 @@ C     warn if darwin and radtrans ice forcing are different
         WRITE(msgBuf,'(3A)') 'DARWIN_EXF_READPARMS: The use of ',
      &   'useExfYearlyFields AND ',
      &   'ironRepCycle is not implemented'
+        CALL PRINT_ERROR( msgBuf, myThid )
+        errCount = errCount + 1
+       ENDIF
+       IF ( PIFeRepCycle.NE.0. ) THEN
+        WRITE(msgBuf,'(3A)') 'DARWIN_EXF_READPARMS: The use of ',
+     &   'useExfYearlyFields AND ',
+     &   'PIFeRepCycle is not implemented'
         CALL PRINT_ERROR( msgBuf, myThid )
         errCount = errCount + 1
        ENDIF

@@ -62,6 +62,18 @@ C     these load constant forcing fields
      &     mythid )
 
       call exf_init_fld (
+     &     'PIFe', PIFefile, PIFemask,
+     &     PIFeperiod, darwin_inscal_PIFe, PIFeconst,
+     &     inputPIFe, PIFe0, PIFe1,
+#ifdef USE_EXF_INTERPOLATION
+     &     PIFe_lon0, PIFe_lon_inc,
+     &     PIFe_lat0, PIFe_lat_inc,
+     &     PIFe_nlon, PIFe_nlat, xC, yC,
+     &     PIFe_interpMethod,
+#endif
+     &     mythid )
+
+      call exf_init_fld (
      &     'ice', icefile, icemask,
      &     iceperiod, darwin_inscal_ice, iceconst,
      &     iceFrac, ice0, ice1,
@@ -294,6 +306,20 @@ C       (usually done in darwin_fields_load, but may be needed for chl)
      &     iron_lat0, iron_lat_inc,
      &     iron_nlon, iron_nlat, xC, yC,
      &     iron_interpMethod,
+#endif
+     &     starttime, nIter0, mythid )
+
+        call exf_set_fld(
+     &     'PIFe', PIFefile, PIFemask,
+     &     PIFeStartTime, PIFeperiod, PIFeRepCycle,
+     &     darwin_inscal_PIFe,
+     &     PIFe_exfremo_intercept, PIFe_exfremo_slope,
+     &     inputPIFe, PIFe0, PIFe1,
+#ifdef USE_EXF_INTERPOLATION
+     &     PIFe_lon0, PIFe_lon_inc,
+     &     PIFe_lat0, PIFe_lat_inc,
+     &     PIFe_nlon, PIFe_nlat, xC, yC,
+     &     PIFe_interpMethod,
 #endif
      &     starttime, nIter0, mythid )
 

@@ -64,6 +64,18 @@ C     errCount  :: error counter
      I                         myThid )
       ENDIF
 
+      IF ( PIFefile .NE. ' ' ) THEN
+# ifdef ALLOW_DEBUG
+       IF (debugMode) CALL DEBUG_CALL('GETFFIELD_START PIFe',
+     &  myThid)
+# endif
+       CALL EXF_GETFFIELD_START( useExfYearlyFields,
+     I                         'darwin', 'PIFe', PIFeperiod,
+     I                         PIFestartdate1, PIFestartdate2,
+     U                         PIFeStartTime, errCount,
+     I                         myThid )
+      ENDIF
+
       IF ( icefile .NE. ' ' ) THEN
 # ifdef ALLOW_DEBUG
        IF (debugMode) CALL DEBUG_CALL('GETFFIELD_START ice',

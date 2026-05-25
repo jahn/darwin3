@@ -1114,6 +1114,42 @@ C--   iron
       CALL PRINT_MESSAGE( blkLin, standardMessageUnit,
      &                     SQUEEZE_RIGHT , myThid )
 
+C--   PIFe
+      IF ( PIFefile.NE.' ' ) THEN
+       CALL EXF_FLD_SUMMARY( 'PIFe forcing',
+     I      PIFefile, PIFeRepCycle, PIFeperiod,
+     I      PIFeStartTime, useExfYearlyFields, addBlkLn, myThid )
+#ifdef USE_EXF_INTERPOLATION
+       CALL EXF_PRINT_INTERP( 'PIFe',
+     &  PIFe_lon0, PIFe_lon_inc, PIFe_lat0, PIFe_lat_inc,
+     &  PIFe_nlon, PIFe_nlat, PIFe_interpMethod, myThid )
+#endif
+       CALL PRINT_MESSAGE( blkLin, standardMessageUnit,
+     &                     SQUEEZE_RIGHT , myThid )
+       CALL WRITE_0D_RL(PIFe_exfremo_intercept,INDEX_NONE,
+     &   'PIFe_exfremo_intercept =',
+     &   ' /* intercept for PIFe forcing mean removal */')
+       CALL WRITE_0D_RL(PIFe_exfremo_slope,INDEX_NONE,
+     &   'PIFe_exfremo_slope =',
+     &   ' /* slope for PIFe forcing trend removal */')
+       CALL WRITE_0D_RL(darwin_inscal_PIFe,INDEX_NONE,
+     &   'darwin_inscal_PIFe =',
+     &   ' /* scaling factor for PIFe fields */')
+      ELSE
+       CALL WRITE_0D_RL(PIFeconst,INDEX_NONE,
+     &   'PIFeconst =',
+     &   ' /* constant PIFe forcing */')
+      ENDIF
+
+      IF ( PIFefile.NE.' ' .OR. PIFeconst.NE.0 _d 0 ) THEN
+       CALL WRITE_0D_C(PIFemask,-1,INDEX_NONE,
+     &   'PIFemask =',
+     &   ' /* mask for PIFe forcing */')
+      ENDIF
+
+      CALL PRINT_MESSAGE( blkLin, standardMessageUnit,
+     &                     SQUEEZE_RIGHT , myThid )
+
 C--   ice
       IF ( icefile.NE.' ' ) THEN
        CALL EXF_FLD_SUMMARY( 'ice forcing',

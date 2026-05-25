@@ -71,6 +71,20 @@ c--   read forcing fields from files and temporal interpolation
      &     mytime, myiter, mythid )
 
        call exf_set_fld(
+     &     'PIFe', PIFefile, PIFemask,
+     &     PIFeStartTime, PIFeperiod, PIFeRepCycle,
+     &     darwin_inscal_PIFe,
+     &     PIFe_exfremo_intercept, PIFe_exfremo_slope,
+     &     inputPIFe, PIFe0, PIFe1,
+#ifdef USE_EXF_INTERPOLATION
+     &     PIFe_lon0, PIFe_lon_inc,
+     &     PIFe_lat0, PIFe_lat_inc,
+     &     PIFe_nlon, PIFe_nlat, xC, yC,
+     &     PIFe_interpMethod,
+#endif
+     &     mytime, myiter, mythid )
+
+       call exf_set_fld(
      &     'ice', icefile, icemask,
      &     iceStartTime, iceperiod, iceRepCycle,
      &     darwin_inscal_ice,

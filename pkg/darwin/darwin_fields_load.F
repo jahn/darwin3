@@ -73,6 +73,7 @@ c--   read forcing fields from files and temporal interpolation
       IF (useDIAGNOSTICS) THEN
        CALL DIAGNOSTICS_FILL(surfPAR,'surfPAR ',1,1,0,0,0,myThid)
        CALL DIAGNOSTICS_FILL(inputFe,'surfiron',0,1,0,0,0,myThid)
+       CALL DIAGNOSTICS_FILL(inputFe,'surfPIFe',0,1,0,0,0,myThid)
        CALL DIAGNOSTICS_FILL(iceFrac,'DARice  ',0,1,0,0,0,myThid)
        CALL DIAGNOSTICS_FILL(windSpeed,'DARwind ',0,1,0,0,0,myThid)
        CALL DIAGNOSTICS_FILL(atmospCO2,'surfpCO2',0,1,0,0,0,myThid)
